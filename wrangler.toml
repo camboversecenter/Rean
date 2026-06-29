@@ -1,0 +1,8 @@
+name = "rean-marketplace"
+compatibility_date = "2024-03-20"
+pages_build_output_dir = "dist"
+
+# If you need to bind specific environment variables for the frontend build process in Cloudflare
+# [vars]
+# API_KEY = "..." 
+# VITE_SUPABASE_URL = "..."

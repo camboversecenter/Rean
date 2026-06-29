@@ -1,0 +1,664 @@
+
+import React, { useEffect, useState } from 'react';
+import { 
+    Trash2, Loader2, Eye, X, ChevronLeft,
+    CheckCircle, AlertCircle, Users, Search, Filter,
+    BookOpen, CheckSquare, Save, FileText, ChevronRight,
+    Plus
+} from './Icons';
+import { 
+    getMissionEnrollments, 
+    MissionEnrollment, 
+    updateEnrollmentStatus, 
+    removeStudentFromMission,
+    updateStudentSquad,
+    updateStudentClass,
+    getReceiptSignedUrl,
+    approvePayment,
+    rejectPayment,
+    reviewSubmission,
+    addStudentByEmail
+} from '../services/missionProgressService';
+import { 
+    getMissionClasses
+} from '../services/missionService';
+import { Mission, MissionClass } from '../types';
+import MissionClassManager from './MissionClassManager';
+import MarkdownText from './MarkdownText';
+import toast from 'react-hot-toast';
+
+interface MissionManagerProps {
+    mission: Mission;
+    currentUserId: string | null;
+    onBack: () => void;
+    onEdit: (mission: Mission) => void;
+}
+
+const MissionManager: React.FC<MissionManagerProps> = ({ mission, currentUserId, onBack, onEdit }) => {
+    const [enrollments, setEnrollments] = useState<MissionEnrollment[]>([]);
+    const [classes, setClasses] = useState<MissionClass[]>([]);
+    const [loading, setLoading] = useState(true);
+    
+    // UI State
+    const [activeTab, setActiveTab] = useState<'unassigned' | 'classes' | 'grading'>('unassigned');
+    const [selectedClassId, setSelectedClassId] = useState<string | null>(null);
+    const [searchStudent, setSearchStudent] = useState('');
+    const [viewingReceipt, setViewingReceipt] = useState<string | null>(null);
+    
+    // Student Detail / Gradebook Modal State
+    const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null);
+
+    // Grading Review Modal State
+    const [submissionToReview, setSubmissionToReview] = useState<{
+        enrollmentId: string;
+        moduleId: string;
+        moduleTitle: string;
+        content: string;
+        feedback: string;
+    } | null>(null);
+    const [reviewFeedback, setReviewFeedback] = useState('');
+    const [isSubmittingReview, setIsSubmittingReview] = useState(false);
+
+    // Add Student State
+    const [showAddStudentModal, setShowAddStudentModal] = useState(false);
+    const [newStudentEmail, setNewStudentEmail] = useState('');
+    const [isAddingStudent, setIsAddingStudent] = useState(false);
+
+    useEffect(() => {
+        loadManagerData();
+    }, [mission.id]);
+
+    const loadManagerData = async () => {
+        setLoading(true);
+        try {
+            // Load ALL enrollments initially for client-side filtering (optimization: fetch by tab later if list huge)
+            const [enrollmentRes, classesRes] = await Promise.all([
+                getMissionEnrollments(mission.id, 1, 500, null), // Fetching larger batch
+                getMissionClasses(mission.id)
+            ]);
+            setEnrollments(enrollmentRes.data);
+            setClasses(classesRes);
+        } catch (e) {
+            toast.error("Failed to load management data");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // --- ACTIONS ---
+
+    const handleUpdateStatus = async (eid: string, status: any) => {
+        try {
+            await updateEnrollmentStatus(eid, status);
+            setEnrollments(prev => prev.map(e => e.id === eid ? { ...e, status } : e));
+            toast.success("Status updated");
+        } catch (e) {
+            toast.error("Update failed");
+        }
+    };
+
+    const handleApprovePayment = async (eid: string) => {
+        if (!window.confirm("Confirm payment approval?")) return;
+        try {
+            await approvePayment(eid);
+            toast.success("Payment approved");
+            // Refresh data to ensure all flags update
+            loadManagerData();
+        } catch (e) {
+            toast.error("Action failed");
+        }
+    };
+
+    const handleRejectPayment = async (eid: string) => {
+        if (!window.confirm("Reject this payment?")) return;
+        try {
+            await rejectPayment(eid);
+            toast.success("Payment rejected");
+            loadManagerData();
+        } catch (e) {
+            toast.error("Action failed");
+        }
+    };
+
+    const handleUpdateSquad = async (eid: string, squadId: number | null) => {
+        try {
+            await updateStudentSquad(eid, squadId);
+            setEnrollments(prev => prev.map(e => e.id === eid ? { ...e, squadId: squadId || undefined } : e));
+            toast.success("Squad updated");
+        } catch (e) {
+            toast.error("Failed to update squad");
+        }
+    };
+
+    const handleUpdateClass = async (eid: string, classId: string | null) => {
+        try {
+            await updateStudentClass(eid, classId);
+            setEnrollments(prev => prev.map(e => e.id === eid ? { ...e, classId: classId || undefined, className: classes.find(c => c.id === classId)?.title } : e));
+            toast.success("Class updated");
+        } catch (e) {
+            toast.error("Failed to update class");
+        }
+    };
+
+    const handleRemove = async (eid: string) => {
+        if (!window.confirm("Remove this student from the mission? This cannot be undone.")) return;
+        try {
+            await removeStudentFromMission(eid);
+            setEnrollments(prev => prev.filter(e => e.id !== eid));
+            if (selectedStudentId === eid) setSelectedStudentId(null);
+            toast.success("Student removed");
+        } catch (e) {
+            toast.error("Failed to remove");
+        }
+    };
+
+    const handleViewReceipt = async (url: string) => {
+        const signedUrl = await getReceiptSignedUrl(url);
+        if (signedUrl) {
+            setViewingReceipt(signedUrl);
+        } else {
+            toast.error("Could not load receipt");
+        }
+    };
+
+    const handleOpenReview = (enrollment: MissionEnrollment, moduleId: string) => {
+        const module = mission.modules.find(m => m.id === moduleId);
+        const detail = enrollment.progressDetails[moduleId];
+        setSubmissionToReview({
+            enrollmentId: enrollment.id,
+            moduleId,
+            moduleTitle: module?.title || 'Unknown Module',
+            content: detail?.submission || 'No content',
+            feedback: detail?.feedback || ''
+        });
+        setReviewFeedback(detail?.feedback || '');
+    };
+
+    const handleSubmitReview = async (status: 'completed' | 'active') => {
+        if (!submissionToReview) return;
+        setIsSubmittingReview(true);
+        try {
+            await reviewSubmission(submissionToReview.enrollmentId, submissionToReview.moduleId, status, reviewFeedback);
+            toast.success(status === 'completed' ? 'Marked as Completed!' : 'Returned for revision.');
+            
+            // Update local state
+            setEnrollments(prev => prev.map(e => {
+                if (e.id === submissionToReview.enrollmentId) {
+                    const newDetails = { ...e.progressDetails, [submissionToReview.moduleId]: { status, submission: submissionToReview.content, feedback: reviewFeedback } };
+                    const newProgress = { ...e.progress, [submissionToReview.moduleId]: status };
+                    return { ...e, progressDetails: newDetails, progress: newProgress };
+                }
+                return e;
+            }));
+            
+            setSubmissionToReview(null);
+        } catch (e) {
+            toast.error("Review failed");
+        } finally {
+            setIsSubmittingReview(false);
+        }
+    };
+
+    const handleAddStudent = async () => {
+        if (!newStudentEmail.trim()) return;
+        setIsAddingStudent(true);
+        try {
+            await addStudentByEmail(mission.id, newStudentEmail);
+            toast.success(`Student ${newStudentEmail} added successfully`);
+            setShowAddStudentModal(false);
+            setNewStudentEmail('');
+            loadManagerData();
+        } catch (e: any) {
+            toast.error(e.message || "Failed to add student");
+        } finally {
+            setIsAddingStudent(false);
+        }
+    };
+
+    // --- FILTERING ---
+
+    const getFilteredEnrollments = () => {
+        let filtered = enrollments;
+        
+        // 1. Search Filter
+        if (searchStudent) {
+            const lower = searchStudent.toLowerCase();
+            filtered = filtered.filter(e => 
+                e.student?.full_name?.toLowerCase().includes(lower) ||
+                e.student?.email?.toLowerCase().includes(lower)
+            );
+        }
+
+        // 2. Tab Filter
+        if (activeTab === 'unassigned') {
+            return filtered.filter(e => !e.classId);
+        } else if (activeTab === 'classes') {
+            if (!selectedClassId) return []; // Don't show students until class selected
+            return filtered.filter(e => e.classId === selectedClassId);
+        } else if (activeTab === 'grading') {
+            // Show any enrollment that has activity (In Progress)
+            return filtered.filter(e => e.status === 'In Progress');
+        }
+        
+        return filtered;
+    };
+
+    const displayEnrollments = getFilteredEnrollments();
+    const selectedStudent = enrollments.find(e => e.id === selectedStudentId);
+
+    // Helper function for table rows
+    const renderStudentRow = (e: MissionEnrollment) => {
+        const completedCount = Object.values(e.progress || {}).filter(s => s === 'completed').length;
+        const totalCount = mission.modules.length;
+
+        return (
+        <tr key={e.id} className="hover:bg-gray-50 transition-colors group border-b border-gray-50 cursor-pointer" onClick={() => { if(activeTab === 'grading') setSelectedStudentId(e.id); }}>
+            <td className="px-6 py-4">
+                <div className="flex items-center gap-3">
+                    <img src={e.student?.avatar_url || `https://ui-avatars.com/api/?name=${e.student?.full_name}`} className="w-9 h-9 rounded-full border border-gray-200 object-cover" />
+                    <div>
+                        <div className="font-bold text-gray-900">{e.student?.full_name || 'Unknown'}</div>
+                        <div className="text-[10px] text-gray-400">{e.student?.email}</div>
+                    </div>
+                </div>
+            </td>
+            <td className="px-6 py-4">
+                <div onClick={(ev) => ev.stopPropagation()}>
+                    <select 
+                        className={`text-[10px] font-bold px-2 py-1 rounded-lg border-0 focus:ring-2 focus:ring-primary/20 cursor-pointer outline-none ${
+                            e.status === 'In Progress' ? 'bg-green-100 text-green-700' : 
+                            e.status === 'Pending' ? 'bg-orange-100 text-orange-700' : 
+                            e.status === 'Completed' ? 'bg-blue-100 text-blue-700' :
+                            'bg-red-100 text-red-700'
+                        }`}
+                        value={e.status}
+                        onChange={(ev) => handleUpdateStatus(e.id, ev.target.value)}
+                    >
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">Active</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
+            </td>
+            {activeTab === 'unassigned' && (
+                <td className="px-6 py-4" onClick={(ev) => ev.stopPropagation()}>
+                    {e.paymentStatus === 'pending' ? (
+                        <div className="flex flex-col gap-1">
+                            <span className="text-[10px] text-orange-600 font-bold flex items-center"><AlertCircle className="h-3 w-3 mr-1"/> Review Needed</span>
+                            <div className="flex gap-1">
+                                {e.paymentReceiptUrl && (
+                                    <button onClick={() => handleViewReceipt(e.paymentReceiptUrl!)} className="p-1 bg-blue-50 text-blue-600 rounded hover:bg-blue-100" title="View Receipt"><Eye className="h-3 w-3"/></button>
+                                )}
+                                <button onClick={() => handleApprovePayment(e.id)} className="p-1 bg-green-50 text-green-600 rounded hover:bg-green-100" title="Approve"><CheckCircle className="h-3 w-3"/></button>
+                                <button onClick={() => handleRejectPayment(e.id)} className="p-1 bg-red-50 text-red-600 rounded hover:bg-red-100" title="Reject"><X className="h-3 w-3"/></button>
+                            </div>
+                        </div>
+                    ) : e.paymentStatus === 'paid' ? (
+                        <span className="text-[10px] font-bold text-green-600 flex items-center"><CheckCircle className="h-3 w-3 mr-1"/> Paid</span>
+                    ) : e.paymentStatus === 'rejected' ? (
+                        <span className="text-[10px] font-bold text-red-500">Rejected</span>
+                    ) : (
+                        <span className="text-[10px] text-gray-400">Free/None</span>
+                    )}
+                </td>
+            )}
+            <td className="px-6 py-4" onClick={(ev) => ev.stopPropagation()}>
+                <input 
+                    type="number" 
+                    className="w-16 p-1.5 border border-gray-200 rounded-lg text-xs text-center focus:ring-2 focus:ring-primary/20 outline-none" 
+                    value={e.squadId || ''} 
+                    onChange={(ev) => handleUpdateSquad(e.id, ev.target.value ? parseInt(ev.target.value) : null)}
+                    placeholder="-"
+                />
+            </td>
+            {activeTab !== 'grading' && (
+                <td className="px-6 py-4" onClick={(ev) => ev.stopPropagation()}>
+                    <select 
+                        className="w-32 text-xs p-1.5 border border-gray-200 rounded-lg bg-white focus:ring-2 focus:ring-primary/20 outline-none truncate"
+                        value={e.classId || ''}
+                        onChange={(ev) => handleUpdateClass(e.id, ev.target.value || null)}
+                    >
+                        <option value="">Unassigned</option>
+                        {classes.map(c => <option key={c.id} value={c.id}>{c.title}</option>)}
+                    </select>
+                </td>
+            )}
+            {activeTab === 'grading' && (
+                <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                        <button 
+                            onClick={(ev) => { ev.stopPropagation(); setSelectedStudentId(e.id); }}
+                            className="flex items-center text-xs font-bold text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-colors"
+                        >
+                            <FileText className="h-3 w-3 mr-1.5" />
+                            Gradebook
+                        </button>
+                        <span className="text-[10px] font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded border border-gray-200">
+                            {completedCount} / {totalCount}
+                        </span>
+                    </div>
+                </td>
+            )}
+            <td className="px-6 py-4 text-right" onClick={(ev) => ev.stopPropagation()}>
+                <button 
+                    onClick={() => handleRemove(e.id)} 
+                    className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                    title="Remove Student"
+                >
+                    <Trash2 className="h-4 w-4" />
+                </button>
+            </td>
+        </tr>
+    )};
+
+    return (
+        <div className="min-h-screen bg-gray-50 pb-24 pt-6 px-4 animate-fade-in">
+            <div className="max-w-7xl mx-auto">
+                {/* Header */}
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                    <div className="flex items-center gap-4">
+                        <button onClick={onBack} className="bg-white p-2.5 hover:bg-gray-100 rounded-xl border border-gray-200 shadow-sm transition-colors text-gray-600">
+                            <ChevronLeft className="h-5 w-5" />
+                        </button>
+                        <div>
+                            <div className="flex items-center gap-2">
+                                <h1 className="text-2xl font-bold text-gray-900 leading-tight">{mission.title}</h1>
+                                <span className="bg-primary/10 text-primary text-xs px-2 py-0.5 rounded font-bold uppercase">{mission.level}</span>
+                            </div>
+                            <p className="text-sm text-gray-500 mt-1 flex items-center">
+                                <Users className="h-4 w-4 mr-1" /> {enrollments.length} Total Students
+                            </p>
+                        </div>
+                    </div>
+                    {/* Removed Edit Button */}
+                </div>
+
+                {/* Navigation Tabs */}
+                <div className="flex gap-2 mb-6 bg-white p-1 rounded-xl border border-gray-200 w-fit">
+                    <button 
+                        onClick={() => setActiveTab('unassigned')}
+                        className={`px-4 py-2 rounded-lg text-sm font-bold flex items-center transition-all ${activeTab === 'unassigned' ? 'bg-gray-900 text-white shadow' : 'text-gray-500 hover:bg-gray-50'}`}
+                    >
+                        <Users className="h-4 w-4 mr-2" /> សិស្សថ្មី (Unassigned)
+                    </button>
+                    <button 
+                        onClick={() => setActiveTab('classes')}
+                        className={`px-4 py-2 rounded-lg text-sm font-bold flex items-center transition-all ${activeTab === 'classes' ? 'bg-gray-900 text-white shadow' : 'text-gray-500 hover:bg-gray-50'}`}
+                    >
+                        <BookOpen className="h-4 w-4 mr-2" /> ថ្នាក់រៀន (Classes)
+                    </button>
+                    <button 
+                        onClick={() => setActiveTab('grading')}
+                        className={`px-4 py-2 rounded-lg text-sm font-bold flex items-center transition-all ${activeTab === 'grading' ? 'bg-gray-900 text-white shadow' : 'text-gray-500 hover:bg-gray-50'}`}
+                    >
+                        <CheckSquare className="h-4 w-4 mr-2" /> ដាក់ពិន្ទុ (Grading)
+                    </button>
+                </div>
+
+                {/* Main Content Area */}
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    
+                    {/* LEFT PANEL (Only for Classes Tab) */}
+                    {activeTab === 'classes' && (
+                        <div className="lg:col-span-1">
+                            <MissionClassManager 
+                                missionId={mission.id}
+                                classes={classes}
+                                selectedClassId={selectedClassId}
+                                onSelectClass={setSelectedClassId}
+                                onUpdate={loadManagerData}
+                            />
+                        </div>
+                    )}
+
+                    {/* RIGHT PANEL (Data Table) */}
+                    <div className={activeTab === 'classes' ? 'lg:col-span-3' : 'lg:col-span-4'}>
+                        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col min-h-[500px]">
+                            {/* Toolbar */}
+                            <div className="p-4 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4 bg-gray-50/50">
+                                <h3 className="font-bold text-gray-900 text-lg flex items-center">
+                                    {activeTab === 'unassigned' ? 'សិស្សមិនទាន់មានថ្នាក់' : 
+                                     activeTab === 'classes' ? (selectedClassId ? `សិស្សក្នុងថ្នាក់ ${classes.find(c => c.id === selectedClassId)?.title}` : 'សូមជ្រើសរើសថ្នាក់') : 
+                                     'បញ្ជីសិស្ស (Click to Grade)'}
+                                    <span className="ml-2 bg-gray-200 text-gray-600 text-xs px-2 py-0.5 rounded-full">{displayEnrollments.length}</span>
+                                </h3>
+                                <div className="flex gap-2 w-full sm:w-auto">
+                                    {/* Add Student Button */}
+                                    <button 
+                                        onClick={() => setShowAddStudentModal(true)}
+                                        className="bg-primary text-white px-3 py-2 rounded-xl text-sm font-bold flex items-center shadow-sm hover:bg-primary/90 transition-colors whitespace-nowrap"
+                                    >
+                                        <Plus className="h-4 w-4 mr-2" /> Add Student
+                                    </button>
+                                    <div className="relative w-full sm:w-64">
+                                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                        <input type="text" placeholder="ស្វែងរកសិស្ស..." className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 bg-white" value={searchStudent} onChange={(e) => setSearchStudent(e.target.value)} />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Table */}
+                            <div className="overflow-x-auto flex-1">
+                                {activeTab === 'classes' && !selectedClassId ? (
+                                    <div className="flex flex-col items-center justify-center h-64 text-gray-400">
+                                        <BookOpen className="h-12 w-12 mb-2 opacity-20" />
+                                        <p>សូមជ្រើសរើសថ្នាក់រៀននៅខាងឆ្វេង</p>
+                                    </div>
+                                ) : (
+                                    <table className="w-full text-sm text-left">
+                                        <thead className="bg-gray-50 text-gray-500 font-bold text-xs uppercase sticky top-0 z-10">
+                                            <tr>
+                                                <th className="px-6 py-4">Student</th>
+                                                <th className="px-6 py-4">Status</th>
+                                                {activeTab === 'unassigned' && <th className="px-6 py-4">Payment</th>}
+                                                <th className="px-6 py-4">Squad</th>
+                                                {activeTab !== 'grading' && <th className="px-6 py-4">Class</th>}
+                                                {activeTab === 'grading' && <th className="px-6 py-4">Actions</th>}
+                                                <th className="px-6 py-4 text-right">Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-gray-100">
+                                            {loading ? (
+                                                <tr><td colSpan={7} className="text-center py-20"><Loader2 className="animate-spin h-8 w-8 mx-auto text-gray-300" /></td></tr>
+                                            ) : displayEnrollments.length === 0 ? (
+                                                <tr>
+                                                    <td colSpan={7} className="text-center py-20 text-gray-400">
+                                                        No students found in this view.
+                                                    </td>
+                                                </tr>
+                                            ) : displayEnrollments.map(renderStudentRow)}
+                                        </tbody>
+                                    </table>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Receipt Modal (Quick View) */}
+            {viewingReceipt && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm">
+                    <div className="relative w-full max-w-2xl">
+                        <button onClick={() => setViewingReceipt(null)} className="absolute -top-12 right-0 text-white flex items-center hover:text-gray-300 transition-colors"><X className="h-8 w-8" /></button>
+                        <img src={viewingReceipt} className="w-full rounded-lg shadow-2xl" alt="Receipt" />
+                    </div>
+                </div>
+            )}
+
+            {/* STUDENT GRADEBOOK MODAL */}
+            {selectedStudent && (
+                <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm animate-fade-in">
+                    <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+                        {/* Header */}
+                        <div className="bg-gray-50 border-b border-gray-100 p-5 flex justify-between items-start">
+                            <div className="flex items-center gap-4">
+                                <img src={selectedStudent.student?.avatar_url || `https://ui-avatars.com/api/?name=${selectedStudent.student?.full_name}`} className="w-12 h-12 rounded-full border-2 border-white shadow-sm" />
+                                <div>
+                                    <h3 className="font-bold text-lg text-gray-900 leading-tight">{selectedStudent.student?.full_name}</h3>
+                                    <p className="text-xs text-gray-500">{selectedStudent.student?.email}</p>
+                                    <div className="flex items-center gap-2 mt-1">
+                                        <span className="text-[10px] bg-white border border-gray-200 px-2 py-0.5 rounded text-gray-600">Squad {selectedStudent.squadId || '-'}</span>
+                                        {selectedStudent.className && <span className="text-[10px] bg-white border border-gray-200 px-2 py-0.5 rounded text-gray-600">{selectedStudent.className}</span>}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="flex flex-col items-end gap-2">
+                                <button onClick={() => setSelectedStudentId(null)} className="text-gray-400 hover:text-gray-600 p-1"><X className="h-6 w-6" /></button>
+                                
+                                {/* Payment Status in Gradebook */}
+                                <div className="flex items-center gap-2">
+                                    {selectedStudent.paymentReceiptUrl && (
+                                        <button 
+                                            onClick={() => handleViewReceipt(selectedStudent.paymentReceiptUrl!)}
+                                            className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded flex items-center hover:bg-blue-100 transition-colors"
+                                        >
+                                            <Eye className="h-3 w-3 mr-1" /> Receipt
+                                        </button>
+                                    )}
+                                    <span className={`text-[10px] font-bold px-2 py-1 rounded ${
+                                        selectedStudent.paymentStatus === 'paid' ? 'bg-green-100 text-green-700' : 
+                                        selectedStudent.paymentStatus === 'pending' ? 'bg-orange-100 text-orange-700' : 'bg-gray-100 text-gray-500'
+                                    }`}>
+                                        {selectedStudent.paymentStatus === 'paid' ? 'Paid' : selectedStudent.paymentStatus === 'pending' ? 'Pending Payment' : 'No Payment'}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Modules List */}
+                        <div className="p-6 overflow-y-auto flex-1 space-y-4">
+                            <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Modules Progress</h4>
+                            {mission.modules.map((m, idx) => {
+                                const status = selectedStudent.progress[m.id];
+                                const detail = selectedStudent.progressDetails[m.id];
+                                const hasSubmission = detail?.submission && detail.submission.length > 0;
+                                const isPassed = status === 'completed';
+
+                                return (
+                                    <div key={m.id} className={`border rounded-xl p-4 transition-colors ${isPassed ? 'bg-green-50/50 border-green-100' : 'bg-white border-gray-100 hover:border-gray-300'}`}>
+                                        <div className="flex justify-between items-center mb-2">
+                                            <div className="flex items-center gap-3">
+                                                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${isPassed ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-500'}`}>
+                                                    {isPassed ? <CheckCircle className="h-3 w-3" /> : idx + 1}
+                                                </div>
+                                                <h5 className={`font-bold text-sm ${isPassed ? 'text-green-900' : 'text-gray-900'}`}>{m.title}</h5>
+                                            </div>
+                                            
+                                            {hasSubmission ? (
+                                                <button 
+                                                    onClick={() => handleOpenReview(selectedStudent, m.id)}
+                                                    className={`px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition-all flex items-center ${
+                                                        isPassed 
+                                                        ? 'bg-white text-green-600 border border-green-200 hover:bg-green-50' 
+                                                        : 'bg-primary text-white hover:bg-primary/90'
+                                                    }`}
+                                                >
+                                                    {isPassed ? 'View Result' : 'Review & Grade'} <ChevronRight className="h-3 w-3 ml-1" />
+                                                </button>
+                                            ) : (
+                                                <span className="text-[10px] text-gray-400 font-medium bg-gray-50 px-2 py-1 rounded">No Submission</span>
+                                            )}
+                                        </div>
+                                        
+                                        {/* Quick Summary if Passed */}
+                                        {isPassed && detail?.feedback && (
+                                            <div className="ml-9 text-xs text-green-700 bg-green-100/50 p-2 rounded-lg border border-green-100">
+                                                <p className="line-clamp-2">{detail.feedback.replace(/\*\*/g, '')}</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Submission Review Modal (Stacked on top of Gradebook) */}
+            {submissionToReview && selectedStudent && (
+                <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm animate-fade-in">
+                    <div className="bg-white rounded-2xl w-full max-w-2xl h-[85vh] flex flex-col shadow-2xl animate-scale-in">
+                        <div className="flex justify-between items-center p-4 border-b border-gray-100 bg-gray-50 rounded-t-2xl">
+                            <div>
+                                <h3 className="font-bold text-lg text-gray-900">Review: {submissionToReview.moduleTitle}</h3>
+                                <p className="text-xs text-gray-500">Student: {selectedStudent.student?.full_name}</p>
+                            </div>
+                            <button onClick={() => setSubmissionToReview(null)}><X className="h-6 w-6 text-gray-400" /></button>
+                        </div>
+                        
+                        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                            <div>
+                                <h4 className="text-xs font-bold text-gray-500 uppercase mb-2">Student Submission</h4>
+                                <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 text-sm leading-relaxed whitespace-pre-wrap font-mono text-gray-800">
+                                    {submissionToReview.content}
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 className="text-xs font-bold text-gray-500 uppercase mb-2">Mentor Feedback</h4>
+                                <textarea 
+                                    className="w-full p-4 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none min-h-[150px]"
+                                    placeholder="Write your feedback here..."
+                                    value={reviewFeedback}
+                                    onChange={e => setReviewFeedback(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="p-4 border-t border-gray-100 bg-gray-50 flex justify-end gap-3 rounded-b-2xl">
+                            <button 
+                                onClick={() => handleSubmitReview('active')} 
+                                disabled={isSubmittingReview}
+                                className="px-5 py-2.5 bg-yellow-100 text-yellow-800 font-bold rounded-xl hover:bg-yellow-200 disabled:opacity-50"
+                            >
+                                Request Changes
+                            </button>
+                            <button 
+                                onClick={() => handleSubmitReview('completed')} 
+                                disabled={isSubmittingReview}
+                                className="px-5 py-2.5 bg-green-600 text-white font-bold rounded-xl shadow-lg hover:bg-green-700 disabled:opacity-50 flex items-center"
+                            >
+                                {isSubmittingReview ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <CheckCircle className="h-4 w-4 mr-2" />}
+                                Pass & Complete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ADD STUDENT MODAL */}
+            {showAddStudentModal && (
+                <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm animate-fade-in">
+                    <div className="bg-white rounded-2xl w-full max-w-sm p-6 shadow-2xl animate-scale-in">
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="font-bold text-lg">Add Student Manually</h3>
+                            <button onClick={() => setShowAddStudentModal(false)}><X className="h-5 w-5 text-gray-400" /></button>
+                        </div>
+                        <p className="text-sm text-gray-500 mb-4">Enter the email of the student you want to enroll. They must have a REAN account.</p>
+                        <input 
+                            className="w-full p-3 border border-gray-200 rounded-xl text-sm mb-4 focus:ring-2 focus:ring-primary/20 outline-none"
+                            placeholder="student@example.com"
+                            value={newStudentEmail}
+                            onChange={e => setNewStudentEmail(e.target.value)}
+                        />
+                        <div className="flex justify-end gap-2">
+                            <button onClick={() => setShowAddStudentModal(false)} className="px-4 py-2 text-gray-500 font-bold text-sm">Cancel</button>
+                            <button 
+                                onClick={handleAddStudent} 
+                                disabled={isAddingStudent || !newStudentEmail.trim()}
+                                className="bg-primary text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center disabled:opacity-50"
+                            >
+                                {isAddingStudent ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Add'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default MissionManager;

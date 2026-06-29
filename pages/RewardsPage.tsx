@@ -1,0 +1,332 @@
+import React, { useState, useEffect } from 'react';
+import { Gift, Zap, DollarSign, Lock, AlertCircle, Loader2, CheckCircle, Clock, ChevronDown } from '../components/Icons';
+import { getCurrentUserProfile } from '../services/authService';
+import { spendPoints, fetchMysteryBoxes, recordRewardClaim, getMyRewardClaims, fetchPointHistory } from '../services/gamificationService';
+import { UserProfile, MysteryBox, RewardClaim, PointTransaction } from '../types';
+import toast from 'react-hot-toast';
+import confetti from 'canvas-confetti';
+
+const RewardsPage: React.FC = () => {
+    const [profile, setProfile] = useState<UserProfile | null>(null);
+    const [activeTab, setActiveTab] = useState<'shop' | 'inventory' | 'history'>('shop');
+    const [boxes, setBoxes] = useState<MysteryBox[]>([]);
+    const [myClaims, setMyClaims] = useState<RewardClaim[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [opening, setOpening] = useState<string | null>(null);
+
+    // History State
+    const [history, setHistory] = useState<PointTransaction[]>([]);
+    const [historyPage, setHistoryPage] = useState(1);
+    const [historyHasMore, setHistoryHasMore] = useState(true);
+    const [historyLoading, setHistoryLoading] = useState(false);
+
+    useEffect(() => {
+        loadData();
+        
+        // Listen for balance updates
+        const handleUpdate = () => {
+            getCurrentUserProfile().then(p => { if(p) setProfile(p); });
+        };
+        window.addEventListener('rean-points-updated', handleUpdate);
+        return () => window.removeEventListener('rean-points-updated', handleUpdate);
+    }, []);
+
+    // Effect to reload data based on tab
+    useEffect(() => {
+        if (activeTab === 'inventory') {
+            getMyRewardClaims().then(setMyClaims);
+        } else if (activeTab === 'history') {
+            // Only load if empty to prevent excessive calls, allow manual refresh via pull/reload if needed later
+            if (history.length === 0) loadHistory(1);
+        }
+    }, [activeTab]);
+
+    const loadData = async () => {
+        const p = await getCurrentUserProfile();
+        const b = await fetchMysteryBoxes();
+        setProfile(p);
+        setBoxes(b);
+        setLoading(false);
+    };
+
+    const loadHistory = async (page: number) => {
+        setHistoryLoading(true);
+        const data = await fetchPointHistory(page, 20);
+        if (data.length < 20) setHistoryHasMore(false);
+        
+        if (page === 1) setHistory(data);
+        else setHistory(prev => [...prev, ...data]);
+        
+        setHistoryLoading(false);
+    };
+
+    const handleHistoryLoadMore = () => {
+        const nextPage = historyPage + 1;
+        setHistoryPage(nextPage);
+        loadHistory(nextPage);
+    };
+
+    const handlePurchase = async (box: MysteryBox) => {
+        if (!profile) return;
+        if ((profile.spendable_points || 0) < box.price_points) {
+            toast.error("ពិន្ទុមិនគ្រប់គ្រាន់! (Not enough points)");
+            return;
+        }
+
+        if (!window.confirm(`ចំណាយ ${box.price_points} ពិន្ទុលើ "${box.title}"?`)) return;
+
+        setOpening(box.id);
+        
+        try {
+            // 1. Determine Winning Item (Client-side for MVP, Server-side ideally)
+            let wonItemName = box.title; // Default fall back
+            const items = box.items || [];
+            
+            if (items.length > 0) {
+                const totalWeight = items.reduce((sum, item) => sum + (item.probability || 0), 0);
+                if (totalWeight > 0) {
+                    let random = Math.random() * totalWeight;
+                    let selected = false;
+                    for (const item of items) {
+                        if (random < (item.probability || 0)) {
+                            wonItemName = item.name;
+                            selected = true;
+                            break;
+                        }
+                        random -= (item.probability || 0);
+                    }
+                    // Fallback if rounding errors caused loop to finish
+                    if (!selected) {
+                        wonItemName = items[items.length - 1].name;
+                    }
+                } else {
+                    // Fallback if all weights are 0
+                    wonItemName = items[0].name;
+                }
+            }
+
+            // 2. Transact
+            const success = await spendPoints(box.price_points, `Opened Box: ${box.title}`);
+            
+            if (success) {
+                // 3. Record specific win
+                await recordRewardClaim(box.id, wonItemName);
+
+                // 4. Animation & Feedback
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 150,
+                        spread: 80,
+                        origin: { y: 0.6 }
+                    });
+                    
+                    toast.success(`អបអរសាទរ! អ្នកឈ្នះ៖ ${wonItemName}`, { 
+                        duration: 6000, 
+                        icon: '🎁',
+                        style: {
+                            background: '#10B981',
+                            color: '#fff',
+                            fontWeight: 'bold'
+                        }
+                    });
+                    
+                    setOpening(null);
+                    
+                    // Update lists if we are already on those tabs
+                    if (activeTab === 'inventory') getMyRewardClaims().then(setMyClaims);
+                    if (activeTab === 'history') { 
+                        setHistoryPage(1); 
+                        setHistoryHasMore(true); 
+                        loadHistory(1); 
+                    }
+                }, 1500);
+            } else {
+                setOpening(null);
+                toast.error("ប្រតិបត្តិការបរាជ័យ។");
+            }
+        } catch (e) {
+            console.error(e);
+            setOpening(null);
+            toast.error("មានបញ្ហា។");
+        }
+    };
+
+    return (
+        <div className="min-h-screen bg-gray-50 pb-20 pt-6 px-4">
+            <div className="max-w-5xl mx-auto">
+                {/* Header with Balance */}
+                <div className="bg-gray-900 rounded-2xl p-6 text-white mb-6 shadow-xl relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-8 bg-white/5 rounded-full -mr-4 -mt-4"></div>
+                    <div className="relative z-10">
+                        <p className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">សមតុល្យរបស់អ្នក (Balance)</p>
+                        <h1 className="text-4xl font-bold flex items-center">
+                            {profile?.spendable_points || 0} <span className="text-lg ml-2 text-yellow-400">ពិន្ទុ</span>
+                        </h1>
+                        <p className="text-sm text-gray-400 mt-2">ប្រើពិន្ទុដើម្បីដូរយករង្វាន់ និងការបញ្ចុះតម្លៃ។</p>
+                    </div>
+                </div>
+
+                {/* Tabs */}
+                <div className="flex bg-white rounded-xl p-1 shadow-sm border border-gray-100 mb-6">
+                    <button 
+                        onClick={() => setActiveTab('shop')}
+                        className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'shop' ? 'bg-gray-900 text-white shadow' : 'text-gray-500 hover:text-gray-900'}`}
+                    >
+                        ហាង (Shop)
+                    </button>
+                    <button 
+                        onClick={() => setActiveTab('inventory')}
+                        className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'inventory' ? 'bg-gray-900 text-white shadow' : 'text-gray-500 hover:text-gray-900'}`}
+                    >
+                        របស់ខ្ញុំ (My)
+                    </button>
+                    <button 
+                        onClick={() => setActiveTab('history')}
+                        className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'history' ? 'bg-gray-900 text-white shadow' : 'text-gray-500 hover:text-gray-900'}`}
+                    >
+                        ប្រវត្តិ (History)
+                    </button>
+                </div>
+
+                {/* SHOP CONTENT */}
+                {activeTab === 'shop' && (
+                    <>
+                        <div className="mb-4 flex items-center gap-2">
+                            <Gift className="h-5 w-5 text-primary" />
+                            <h2 className="font-bold text-gray-900 text-lg">ប្រអប់សំណាង</h2>
+                        </div>
+
+                        {loading ? (
+                            <div className="flex justify-center py-10"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>
+                        ) : boxes.length === 0 ? (
+                            <div className="text-center py-10 text-gray-400 bg-white rounded-xl border border-dashed border-gray-200">
+                                <p>មិនទាន់មានរង្វាន់នៅឡើយទេ។</p>
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {boxes.map(item => (
+                                    <div key={item.id} className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center gap-4 hover:shadow-md transition-shadow relative overflow-hidden">
+                                        <div className="w-16 h-16 rounded-xl flex items-center justify-center text-3xl shadow-inner bg-purple-50 text-purple-600 overflow-hidden">
+                                            {item.cover_image ? <img src={item.cover_image} className="w-full h-full object-cover" /> : '🎁'}
+                                        </div>
+                                        <div className="flex-1">
+                                            <h3 className="font-bold text-gray-900">{item.title}</h3>
+                                            <p className="text-xs text-gray-500 line-clamp-1">{item.description}</p>
+                                            {item.items && item.items.length > 0 && (
+                                                <p className="text-[10px] text-purple-600 font-bold mt-1 bg-purple-50 inline-block px-1.5 rounded">
+                                                    មាន {item.items.length} រង្វាន់ក្នុងប្រអប់
+                                                </p>
+                                            )}
+                                        </div>
+                                        <button 
+                                            onClick={() => handlePurchase(item)}
+                                            disabled={opening !== null}
+                                            className={`px-4 py-2 rounded-xl font-bold text-sm shadow-sm transition-transform active:scale-95 ${
+                                                (profile?.spendable_points || 0) >= item.price_points 
+                                                ? 'bg-primary text-white hover:bg-primary/90' 
+                                                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                            }`}
+                                        >
+                                            {opening === item.id ? (
+                                                <Zap className="h-4 w-4 animate-spin" />
+                                            ) : (
+                                                <span className="flex items-center">
+                                                    {item.price_points} <span className="ml-1 text-[10px]">pts</span>
+                                                </span>
+                                            )}
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </>
+                )}
+
+                {/* INVENTORY CONTENT */}
+                {activeTab === 'inventory' && (
+                    <div className="animate-fade-in">
+                        <div className="mb-4 flex items-center gap-2">
+                            <CheckCircle className="h-5 w-5 text-green-600" />
+                            <h2 className="font-bold text-gray-900 text-lg">ប្រវត្តិឈ្នះរង្វាន់</h2>
+                        </div>
+
+                        {myClaims.length === 0 ? (
+                            <div className="text-center py-12 bg-white rounded-xl border border-dashed border-gray-200">
+                                <Gift className="h-10 w-10 text-gray-300 mx-auto mb-2" />
+                                <p className="text-gray-500">អ្នកមិនទាន់មានរង្វាន់ទេ។</p>
+                            </div>
+                        ) : (
+                            <div className="space-y-3">
+                                {myClaims.map(claim => (
+                                    <div key={claim.id} className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between">
+                                        <div className="flex items-center gap-3">
+                                            <div className="bg-green-50 p-2 rounded-lg text-green-600">
+                                                <Gift className="h-6 w-6" />
+                                            </div>
+                                            <div>
+                                                <h4 className="font-bold text-gray-900">{claim.reward_detail}</h4>
+                                                <p className="text-xs text-gray-500">ពីប្រអប់: {claim.box_title} • {claim.created_at}</p>
+                                            </div>
+                                        </div>
+                                        <span className={`text-[10px] font-bold px-2 py-1 rounded ${
+                                            claim.status === 'Fulfilled' 
+                                            ? 'bg-green-100 text-green-700' 
+                                            : 'bg-yellow-100 text-yellow-700'
+                                        }`}>
+                                            {claim.status}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* HISTORY CONTENT */}
+                {activeTab === 'history' && (
+                    <div className="animate-fade-in">
+                        <div className="mb-4 flex items-center gap-2">
+                            <Clock className="h-5 w-5 text-gray-600" />
+                            <h2 className="font-bold text-gray-900 text-lg">ប្រវត្តិប្រតិបត្តិការ</h2>
+                        </div>
+
+                        {history.length === 0 && !historyLoading ? (
+                            <div className="text-center py-12 bg-white rounded-xl border border-dashed border-gray-200 text-gray-400">
+                                គ្មានប្រវត្តិ។
+                            </div>
+                        ) : (
+                            <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+                                {history.map((tx, idx) => (
+                                    <div key={tx.id || idx} className="p-4 border-b border-gray-50 last:border-0 flex justify-between items-center hover:bg-gray-50">
+                                        <div>
+                                            <p className="font-bold text-gray-800 text-sm">{tx.reason}</p>
+                                            <p className="text-[10px] text-gray-400">{new Date(tx.created_at).toLocaleString()}</p>
+                                        </div>
+                                        <span className={`font-mono font-bold ${tx.amount > 0 ? 'text-green-600' : 'text-red-500'}`}>
+                                            {tx.amount > 0 ? '+' : ''}{tx.amount}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {historyHasMore && (
+                            <div className="text-center mt-4">
+                                <button 
+                                    onClick={handleHistoryLoadMore}
+                                    disabled={historyLoading}
+                                    className="bg-white border border-gray-200 text-gray-600 text-xs font-bold py-2 px-4 rounded-lg shadow-sm hover:bg-gray-50 disabled:opacity-50 flex items-center justify-center mx-auto"
+                                >
+                                    {historyLoading ? <Loader2 className="h-3 w-3 animate-spin mr-1"/> : <ChevronDown className="h-3 w-3 mr-1"/>}
+                                    Load More
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+};
+
+export default RewardsPage;
