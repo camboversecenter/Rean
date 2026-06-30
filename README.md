@@ -1,14 +1,13 @@
-
 # REAN - Educational Marketplace (Cambodia)
 
 REAN is a comprehensive educational platform connecting students with schools, tutors, and AI-driven learning missions. It features a gamified community, real-time AI tutoring, and a marketplace for short courses.
 
 ## Tech Stack
 
-*   **Frontend**: React (v18+), TypeScript, Tailwind CSS, Lucide React.
-*   **Backend / Database**: Supabase (PostgreSQL, Auth, Storage, Edge Functions).
-*   **AI**: Google Gemini API (@google/genai).
-*   **Build Tool**: Vite.
+- **Frontend**: React (v18+), TypeScript, Tailwind CSS, Lucide React.
+- **Backend / Database**: Supabase (PostgreSQL, Auth, Storage, Edge Functions).
+- **AI**: Google Gemini API (@google/genai).
+- **Build Tool**: Vite.
 
 ---
 
@@ -34,16 +33,15 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 
 Run the following SQL scripts in the **Supabase SQL Editor** to set up the schema, security, and functions.
 
-
-
 ### 4. Storage Buckets
 
 In Supabase Storage, create a public bucket named **`Rean`**.
 Create the following folders inside: `avatars`, `school-logos`, `school-covers`, `course-covers`, `missions`, `rewards`.
 
 **Storage Policy**: Ensure the `Rean` bucket has policies allowing:
-*   **Select**: Public (give access to `anon` role).
-*   **Insert/Update/Delete**: Authenticated users only.
+
+- **Select**: Public (give access to `anon` role).
+- **Insert/Update/Delete**: Authenticated users only.
 
 ### 5. Edge Functions
 
@@ -51,6 +49,7 @@ To enable the server-side AI processing and secure point deduction:
 
 1.  Make sure you have the Supabase CLI installed.
 2.  Deploy the functions:
+
 ```bash
 supabase functions deploy ai-assistant --no-verify-jwt
 supabase functions deploy og --no-verify-jwt
@@ -75,3 +74,12 @@ npm run dev
 ```
 
 Visit `http://localhost:5173` to start learning!
+
+## 🚀 CI/CD Architecture
+
+This project uses **GitHub Actions** for Continuous Integration and Continuous Deployment (CI/CD), following professional DevOps best practices to ensure high code quality and reliable deployments.
+
+*   **Automated Code Quality & Testing:** Every push and Pull Request triggers a pipeline that enforces formatting (`Prettier`), type safety (`TypeScript`), and runs unit tests (`Vitest`).
+*   **Fail-Fast Strategy:** The `build` and `deploy` jobs are strictly dependent on the tests passing. If a test fails, the pipeline aborts to prevent broken code from being built.
+*   **Preview Environments:** Pull requests automatically generate temporary, isolated Cloudflare Preview URLs. This allows for QA and stakeholder review before merging.
+*   **Continuous Deployment:** Code merged into the `main` branch is automatically built and deployed to the live **Cloudflare Pages** production environment with zero human intervention.

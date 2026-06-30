@@ -8,14 +8,21 @@ const RoleSelectionPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const roles: { id: UserRole; title: string; subtitle: string; description: string; icon: any; color: string }[] = [
+  const roles: {
+    id: UserRole;
+    title: string;
+    subtitle: string;
+    description: string;
+    icon: any;
+    color: string;
+  }[] = [
     {
       id: 'student',
       title: 'សិស្ស / និស្សិត',
       subtitle: 'Learner',
       description: 'ស្វែងរកសាលា, ស្វែងរកគ្រូ និងរៀនជំនាញថ្មីៗ។',
       icon: User,
-      color: 'bg-blue-100 text-blue-600'
+      color: 'bg-blue-100 text-blue-600',
     },
     {
       id: 'tutor',
@@ -23,7 +30,7 @@ const RoleSelectionPage: React.FC = () => {
       subtitle: 'Educator',
       description: 'បង្កើតប្រវត្តិរូបបង្រៀន និងទទួលសិស្ស។',
       icon: GraduationCap,
-      color: 'bg-green-100 text-green-600'
+      color: 'bg-green-100 text-green-600',
     },
     {
       id: 'school',
@@ -31,7 +38,7 @@ const RoleSelectionPage: React.FC = () => {
       subtitle: 'Institution',
       description: 'គ្រប់គ្រងទំព័រសាលា និងជ្រើសរើសសិស្សថ្មី។',
       icon: Building2,
-      color: 'bg-purple-100 text-purple-600'
+      color: 'bg-purple-100 text-purple-600',
     },
     {
       id: 'business',
@@ -39,8 +46,8 @@ const RoleSelectionPage: React.FC = () => {
       subtitle: 'Partner',
       description: 'បង្កើត Missions និងជ្រើសរើសបុគ្គលិក។',
       icon: Briefcase,
-      color: 'bg-orange-100 text-orange-600'
-    }
+      color: 'bg-orange-100 text-orange-600',
+    },
   ];
 
   const handleConfirm = async () => {
@@ -51,11 +58,11 @@ const RoleSelectionPage: React.FC = () => {
     try {
       await updateUserRole(selectedRole);
       // Reload to trigger the App.tsx auth state check
-      window.location.reload(); 
+      window.location.reload();
     } catch (error: any) {
-      console.error("Error updating role:", error);
+      console.error('Error updating role:', error);
       setLoading(false);
-      setErrorMsg(error.message || "An unexpected error occurred. Please try again.");
+      setErrorMsg(error.message || 'An unexpected error occurred. Please try again.');
     }
   };
 
@@ -83,8 +90,8 @@ const RoleSelectionPage: React.FC = () => {
               key={role.id}
               onClick={() => setSelectedRole(role.id)}
               className={`relative cursor-pointer bg-white p-5 rounded-2xl border-2 transition-all active:scale-[0.98] ${
-                selectedRole === role.id 
-                  ? 'border-primary shadow-lg ring-1 ring-primary' 
+                selectedRole === role.id
+                  ? 'border-primary shadow-lg ring-1 ring-primary'
                   : 'border-gray-100 shadow-sm hover:border-gray-300'
               }`}
             >
@@ -99,9 +106,11 @@ const RoleSelectionPage: React.FC = () => {
                 )}
               </div>
               <div>
-                  <h3 className="font-bold text-gray-900 text-base">{role.title}</h3>
-                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-1">{role.subtitle}</p>
-                  <p className="text-sm text-gray-500 leading-relaxed">{role.description}</p>
+                <h3 className="font-bold text-gray-900 text-base">{role.title}</h3>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-1">
+                  {role.subtitle}
+                </p>
+                <p className="text-sm text-gray-500 leading-relaxed">{role.description}</p>
               </div>
             </div>
           ))}
@@ -109,24 +118,24 @@ const RoleSelectionPage: React.FC = () => {
 
         {/* Floating Bottom Button for Mobile, Static for Desktop */}
         <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 md:static md:bg-transparent md:border-none md:p-2 z-10">
-            <div className="max-w-2xl mx-auto">
-                <button
-                onClick={handleConfirm}
-                disabled={!selectedRole || loading}
-                className="w-full bg-primary text-white font-bold text-lg py-4 rounded-xl shadow-lg shadow-primary/30 disabled:opacity-50 disabled:shadow-none active:scale-[0.99] transition-transform flex items-center justify-center"
-                >
-                {loading ? (
-                    <>
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                    កំពុងដំណើរការ...
-                    </>
-                ) : (
-                    'បន្តទៅមុខ (Continue)'
-                )}
-                </button>
-            </div>
+          <div className="max-w-2xl mx-auto">
+            <button
+              onClick={handleConfirm}
+              disabled={!selectedRole || loading}
+              className="w-full bg-primary text-white font-bold text-lg py-4 rounded-xl shadow-lg shadow-primary/30 disabled:opacity-50 disabled:shadow-none active:scale-[0.99] transition-transform flex items-center justify-center"
+            >
+              {loading ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                  កំពុងដំណើរការ...
+                </>
+              ) : (
+                'បន្តទៅមុខ (Continue)'
+              )}
+            </button>
+          </div>
         </div>
-        
+
         {/* Spacer for mobile scrolling behind fixed button */}
         <div className="h-20 md:hidden"></div>
       </div>
