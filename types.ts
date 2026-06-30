@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 // Renamed from Course to Mission to reflect active learning
@@ -92,14 +91,14 @@ export interface Tutor {
   id: string;
   name: string;
   avatar: string;
-  subjects: string[]; 
-  grades: string[]; 
+  subjects: string[];
+  grades: string[];
   pricePerHour: number;
   location: string;
   teachingMode: 'Home' | 'Online' | 'Both';
-  experience: string; 
+  experience: string;
   bio: string;
-  verified: boolean; 
+  verified: boolean;
 }
 
 // Tutor Profile (Database View)
@@ -141,11 +140,11 @@ export interface TutorBooking {
 export interface TutorRequest {
   id: string;
   studentId?: string; // Optional for mocks
-  name: string; 
+  name: string;
   subject: string;
   grade: string;
   location: string;
-  budget: string; 
+  budget: string;
   description: string;
   timestamp: string;
   status?: 'Open' | 'Closed';
@@ -157,7 +156,7 @@ export enum MissionCategory {
   BUSINESS = 'អាជីវកម្ម',
   CREATIVE = 'ការបង្កើតថ្មី',
   SOCIAL = 'សង្គម',
-  STEM = 'វិទ្យាសាស្ត្រ (STEM)'
+  STEM = 'វិទ្យាសាស្ត្រ (STEM)',
 }
 
 // --- NEW ADMISSION TYPES ---
@@ -190,7 +189,7 @@ export interface School {
   coverImage: string;
   location: string;
   type: 'University' | 'High School' | 'Vocational' | 'Center';
-  tuitionRange: string; 
+  tuitionRange: string;
   description: string;
   majors: string[]; // General majors list for the school
   admissions: Admission[]; // Replaces the old recruitment object
@@ -205,7 +204,7 @@ export interface Scholarship {
   admissionId?: string; // Optional link to specific admission
   title: string;
   deadline: string;
-  discount: string; 
+  discount: string;
 }
 
 export interface ChatMessage {
@@ -235,13 +234,13 @@ export interface StudentPost {
   author_id?: string; // Optional for mocks, required for DB
   authorName: string;
   authorAvatar: string;
-  content: string; 
+  content: string;
   timestamp: string;
   likes: number; // Legacy total count
   reactions: ReactionCounts; // Breakdown
   userReaction?: ReactionType | null; // Current user state
-  attachmentType?: 'text' | 'voice' | 'image'; 
-  tags?: string[]; 
+  attachmentType?: 'text' | 'voice' | 'image';
+  tags?: string[];
   bounty_points?: number; // Phase 1: Bounty system
   ai_quality_score?: number; // Phase 3: AI filtering
   isAnonymous?: boolean; // New: Anonymous posting
@@ -254,7 +253,7 @@ export interface CommunityReply {
   post_id?: string;
   author_id?: string;
   authorName: string;
-  authorAvatar: string; 
+  authorAvatar: string;
   content: string;
   isAI: boolean;
   timestamp: string;
@@ -329,11 +328,11 @@ export interface RewardClaim {
 
 // --- ACHIEVEMENT TYPE ---
 export interface Achievement {
-    id: string;
-    title: string;
-    type: 'Mission' | 'Course' | 'Tutor Session';
-    providerName: string; // School Name, Tutor Name, or Mission Creator
-    completedDate: string;
-    score?: number; // Optional score if available
-    icon?: string; // Optional icon url
+  id: string;
+  title: string;
+  type: 'Mission' | 'Course' | 'Tutor Session';
+  providerName: string; // School Name, Tutor Name, or Mission Creator
+  completedDate: string;
+  score?: number; // Optional score if available
+  icon?: string; // Optional icon url
 }

@@ -1,6 +1,5 @@
-
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.7";
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.7';
 
 // Declare Deno for environments where types are missing
 declare const Deno: any;
@@ -19,14 +18,14 @@ serve(async (req: Request) => {
   try {
     const url = new URL(req.url);
     const missionId = url.searchParams.get('id');
-    
+
     // The web application URL (frontend)
     const frontendUrl = Deno.env.get('FRONTEND_URL') || 'http://localhost:5173';
 
     if (!missionId) {
-      return new Response("Missing ID", { 
-        status: 400, 
-        headers: { ...corsHeaders, 'Content-Type': 'text/plain' } 
+      return new Response('Missing ID', {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'text/plain' },
       });
     }
 
@@ -46,9 +45,9 @@ serve(async (req: Request) => {
       // Redirect to home if mission not found
       return new Response(null, {
         status: 302,
-        headers: { 
-            ...corsHeaders,
-            Location: `${frontendUrl}/` 
+        headers: {
+          ...corsHeaders,
+          Location: `${frontendUrl}/`,
         },
       });
     }
@@ -56,7 +55,9 @@ serve(async (req: Request) => {
     // 4. Sanitize strings for HTML attributes
     const safeTitle = (mission.title || 'Mission').replace(/"/g, '&quot;');
     const safeDesc = (mission.description || '').substring(0, 160).replace(/"/g, '&quot;');
-    const image = mission.thumbnail || 'https://apirean.e-khmer.com/storage/v1/object/public/Rean/missions/default-og.png';
+    const image =
+      mission.thumbnail ||
+      'https://apirean.e-khmer.com/storage/v1/object/public/Rean/missions/default-og.png';
     const redirectUrl = `${frontendUrl}/#/mission/${missionId}`;
 
     // 5. Construct HTML Template with Open Graph Tags
@@ -129,10 +130,9 @@ serve(async (req: Request) => {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'text/html; charset=utf-8',
         'X-Content-Type-Options': 'nosniff',
-        'Cache-Control': 'public, max-age=60'
+        'Cache-Control': 'public, max-age=60',
       },
     });
-
   } catch (error: any) {
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,

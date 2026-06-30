@@ -1,4 +1,3 @@
-
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkMath from 'remark-math';
@@ -15,12 +14,15 @@ interface MarkdownTextProps {
 const processMentions = (text: string) => {
   // Regex looks for @tonsay or @sopheatonsay (case insensitive)
   const parts = text.split(/(@(?:tonsay|sopheatonsay)\b)/gi);
-  
+
   if (parts.length === 1) return text;
 
   return parts.map((part, i) =>
     /@(?:tonsay|sopheatonsay)\b/i.test(part) ? (
-      <span key={i} className="text-primary font-bold bg-primary/10 px-1.5 py-0.5 rounded text-[0.9em] mx-0.5 inline-block">
+      <span
+        key={i}
+        className="text-primary font-bold bg-primary/10 px-1.5 py-0.5 rounded text-[0.9em] mx-0.5 inline-block"
+      >
         {part}
       </span>
     ) : (
@@ -45,7 +47,9 @@ const HighlightRenderer: React.FC<{ children: React.ReactNode }> = ({ children }
 
 const MarkdownText: React.FC<MarkdownTextProps> = ({ content, className = '' }) => {
   return (
-    <div className={`prose prose-sm max-w-none prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-li:my-0 ${className} prose-strong:font-bold prose-strong:inherit`}>
+    <div
+      className={`prose prose-sm max-w-none prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-li:my-0 ${className} prose-strong:font-bold prose-strong:inherit`}
+    >
       <ReactMarkdown
         remarkPlugins={[remarkMath]}
         rehypePlugins={[rehypeKatex]}
@@ -68,7 +72,10 @@ const MarkdownText: React.FC<MarkdownTextProps> = ({ content, className = '' }) 
                 </SyntaxHighlighter>
               </div>
             ) : (
-              <code className={`${className} bg-gray-100 text-red-500 px-1.5 py-0.5 rounded font-mono text-xs border border-gray-200`} {...props}>
+              <code
+                className={`${className} bg-gray-100 text-red-500 px-1.5 py-0.5 rounded font-mono text-xs border border-gray-200`}
+                {...props}
+              >
                 {children}
               </code>
             );
@@ -84,7 +91,7 @@ const MarkdownText: React.FC<MarkdownTextProps> = ({ content, className = '' }) 
             <li>
               <HighlightRenderer>{children}</HighlightRenderer>
             </li>
-          )
+          ),
         }}
       >
         {content}

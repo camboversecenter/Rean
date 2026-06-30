@@ -1,6 +1,5 @@
-
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.7";
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.7';
 
 // Declare Deno for environments where types are missing
 declare const Deno: any;
@@ -19,14 +18,14 @@ serve(async (req: Request) => {
   try {
     const url = new URL(req.url);
     const schoolId = url.searchParams.get('id');
-    
+
     // The web application URL (frontend)
     const frontendUrl = Deno.env.get('FRONTEND_URL') || 'http://localhost:5173';
 
     if (!schoolId) {
-      return new Response("Missing ID", { 
-        status: 400, 
-        headers: { ...corsHeaders, 'Content-Type': 'text/plain' } 
+      return new Response('Missing ID', {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'text/plain' },
       });
     }
 
@@ -46,18 +45,23 @@ serve(async (req: Request) => {
       // Redirect to home if school not found
       return new Response(null, {
         status: 302,
-        headers: { 
-            ...corsHeaders,
-            Location: `${frontendUrl}/` 
+        headers: {
+          ...corsHeaders,
+          Location: `${frontendUrl}/`,
         },
       });
     }
 
     // 4. Sanitize strings for HTML attributes
     const safeTitle = (school.name || 'School Profile').replace(/"/g, '&quot;');
-    const safeDesc = (school.description || 'View school details on REAN').substring(0, 160).replace(/"/g, '&quot;');
+    const safeDesc = (school.description || 'View school details on REAN')
+      .substring(0, 160)
+      .replace(/"/g, '&quot;');
     // Use cover image first, then logo, then default
-    const image = school.cover_image || school.logo || 'https://apirean.e-khmer.com/storage/v1/object/public/Rean/school-covers/default-school.png';
+    const image =
+      school.cover_image ||
+      school.logo ||
+      'https://apirean.e-khmer.com/storage/v1/object/public/Rean/school-covers/default-school.png';
     const redirectUrl = `${frontendUrl}/#/school/${schoolId}`;
 
     // 5. Construct HTML Template with Open Graph Tags
@@ -130,10 +134,9 @@ serve(async (req: Request) => {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'text/html; charset=utf-8',
         'X-Content-Type-Options': 'nosniff',
-        'Cache-Control': 'public, max-age=60'
+        'Cache-Control': 'public, max-age=60',
       },
     });
-
   } catch (error: any) {
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
