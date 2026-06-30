@@ -42,7 +42,7 @@ class ErrorBoundary extends Component<Props, State> {
                 {this.state.error?.message}
               </span>
             </p>
-            <button
+            <button type="button"
               onClick={() => window.location.reload()}
               className="bg-primary text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-primary/90 transition-all flex items-center justify-center w-full"
             >

@@ -20,7 +20,7 @@ const AdmissionsDoc: React.FC = () => {
     <div className="min-h-screen bg-gray-50 pb-20 pt-8 px-4 font-['Kantumruy_Pro']">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <button
+        <button type="button"
           onClick={() => navigate('/docs')}
           className="mb-6 flex items-center text-gray-500 hover:text-gray-900 font-medium transition-colors"
         >
@@ -121,7 +121,7 @@ const AdmissionsDoc: React.FC = () => {
                     <h3 className="font-bold text-gray-800">
                       បង្កើតការជ្រើសរើស (Create Admission)
                     </h3>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <div className="text-sm text-gray-600 mt-1">
                       ជំនួសឱ្យការបង្ហោះរូបភាព Poster តែមួយមុខ សាលាអាចបង្កើត "Admission Digital"
                       ដែលមានព័ត៌មានច្បាស់លាស់អំពី៖
                       <ul className="list-disc list-inside mt-1 ml-2 text-gray-500">
@@ -130,7 +130,7 @@ const AdmissionsDoc: React.FC = () => {
                         <li>ជំនាញដែលបើកទទួល (Majors)</li>
                         <li>ប្រភេទអាហារូបករណ៍ (Manage Scholarships)</li>
                       </ul>
-                    </p>
+                    </div>
                   </div>
                 </div>
 

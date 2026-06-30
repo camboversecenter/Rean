@@ -14,7 +14,7 @@ const mapSchoolFromDB = (data: any): School => {
   const admissions: Admission[] = (data.admissions || []).map((adm: any) => {
     const linkedScholarships = (data.scholarships || [])
       .filter((s: any) => s.admission_id === adm.id)
-      .map(mapScholarshipFromDB);
+      .map((s: any) => mapScholarshipFromDB(s));
 
     return {
       id: adm.id,
@@ -42,7 +42,7 @@ const mapSchoolFromDB = (data: any): School => {
     verified: data.verified || false,
     isPublished: data.is_published, // Map visibility
     admissions: admissions,
-    shortCourses: data.short_courses ? data.short_courses.map(mapCourseFromDB) : [],
+    shortCourses: data.short_courses ? data.short_courses.map((c: any) => mapCourseFromDB(c)) : [],
   };
 };
 
@@ -116,7 +116,7 @@ export const fetchAllSchools = async (
   if (typeFilter && typeFilter !== 'All') query = query.eq('type', typeFilter);
   const { data, error } = await query;
   if (error) return [];
-  return data.map(mapSchoolFromDB);
+  return data.map((item: any) => mapSchoolFromDB(item));
 };
 
 export const fetchSchoolById = async (id: string): Promise<School | null> => {
@@ -381,7 +381,7 @@ export const getMyInquiries = async (schoolId: string): Promise<SchoolInquiry[]>
     .eq('school_id', schoolId)
     .order('created_at', { ascending: false });
   if (error) return [];
-  return data.map(mapInquiryFromDB);
+  return data.map((item: any) => mapInquiryFromDB(item));
 };
 
 export const updateInquiryStatus = async (id: string, status: string) => {
@@ -396,7 +396,7 @@ export const getSchoolEnrollments = async (schoolId: string) => {
     .eq('short_courses.school_id', schoolId)
     .order('created_at', { ascending: false });
   if (error) return [];
-  return data.map(mapEnrollmentFromDB);
+  return data.map((item: any) => mapEnrollmentFromDB(item));
 };
 
 export const updateEnrollmentStatus = async (enrollmentId: string, status: string) => {

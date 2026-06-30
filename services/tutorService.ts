@@ -3,7 +3,7 @@ import { TutorProfile, TutorBooking, TutorRequest } from '../types';
 
 // --- MAPPERS ---
 
-const mapTutorProfileFromDB = (data: any, profileMap?: Record<string, any>): TutorProfile => {
+const mapTutorProfileFromDB = (data: Record<string, any>, profileMap?: Record<string, any>): TutorProfile => {
   // Try to find profile in the joined data OR the lookup map
   let profile = null;
 
@@ -31,7 +31,7 @@ const mapTutorProfileFromDB = (data: any, profileMap?: Record<string, any>): Tut
   };
 };
 
-const mapBookingFromDB = (data: any, profileMap?: Record<string, any>): TutorBooking => {
+const mapBookingFromDB = (data: Record<string, any>, profileMap?: Record<string, any>): TutorBooking => {
   // Handle joins or manual map
   let tutorName = 'Tutor';
   let studentName = 'Unknown Student';
@@ -71,7 +71,7 @@ const mapBookingFromDB = (data: any, profileMap?: Record<string, any>): TutorBoo
   };
 };
 
-const mapRequestFromDB = (data: any, profileMap?: Record<string, any>): TutorRequest => {
+const mapRequestFromDB = (data: Record<string, any>, profileMap?: Record<string, any>): TutorRequest => {
   let profile = null;
   if (data.profiles) {
     profile = Array.isArray(data.profiles) ? data.profiles[0] : data.profiles;
@@ -103,7 +103,7 @@ const fetchProfilesManual = async (userIds: string[]) => {
     .in('id', userIds);
 
   const map: Record<string, any> = {};
-  data?.forEach((p: any) => (map[p.id] = p));
+  data?.forEach((p: { id: string; full_name?: string; avatar_url?: string }) => (map[p.id] = p));
   return map;
 };
 
@@ -159,21 +159,19 @@ export const updateTutorProfile = async (profile: Partial<TutorProfile>) => {
   } = await supabase.auth.getUser();
   if (!user) throw new Error('Not logged in');
 
-  const payload = {
-    hourly_rate: profile.hourlyRate,
-    bio: profile.bio,
-    subjects: profile.subjects,
-    grades: profile.grades,
-    teaching_mode: profile.teachingMode,
-    location: profile.location,
-    experience: profile.experience,
-    phone_contact: profile.phoneContact,
-    is_listed: profile.is_listed,
-    cover_image: profile.coverImage, // Include new field
-  };
-
-  Object.keys(payload).forEach(
-    (key) => (payload as any)[key] === undefined && delete (payload as any)[key]
+  const payload = Object.fromEntries(
+    Object.entries({
+      hourly_rate: profile.hourlyRate,
+      bio: profile.bio,
+      subjects: profile.subjects,
+      grades: profile.grades,
+      teaching_mode: profile.teachingMode,
+      location: profile.location,
+      experience: profile.experience,
+      phone_contact: profile.phoneContact,
+      is_listed: profile.is_listed,
+      cover_image: profile.coverImage,
+    }).filter(([_, v]) => v !== undefined)
   );
 
   const { error } = await supabase.from('tutors').upsert({ id: user.id, ...payload });
@@ -202,10 +200,10 @@ export const fetchAllTutors = async (
 
   if (error || !tutors) return [];
 
-  const userIds = tutors.map((t: any) => t.id);
+  const userIds = tutors.map((t: { id: string }) => t.id);
   const profileMap = await fetchProfilesManual(userIds);
 
-  return tutors.map((t: any) => mapTutorProfileFromDB(t, profileMap));
+  return tutors.map((t: Record<string, any>) => mapTutorProfileFromDB(t, profileMap));
 };
 
 // --- BOOKINGS (SHARED) ---
@@ -274,10 +272,10 @@ export const getTutorBookings = async (): Promise<TutorBooking[]> => {
 
   if (error || !bookings) return [];
 
-  const studentIds = bookings.map((b: any) => b.student_id);
+  const studentIds = bookings.map((b: { student_id: string }) => b.student_id);
   const profileMap = await fetchProfilesManual(studentIds);
 
-  return bookings.map((b: any) => mapBookingFromDB(b, profileMap));
+  return bookings.map((b: Record<string, any>) => mapBookingFromDB(b, profileMap));
 };
 
 export const getStudentBookings = async (): Promise<TutorBooking[]> => {
@@ -294,10 +292,10 @@ export const getStudentBookings = async (): Promise<TutorBooking[]> => {
 
   if (error || !bookings) return [];
 
-  const tutorIds = bookings.map((b: any) => b.tutor_id);
+  const tutorIds = bookings.map((b: { tutor_id: string }) => b.tutor_id);
   const profileMap = await fetchProfilesManual(tutorIds);
 
-  return bookings.map((b: any) => mapBookingFromDB(b, profileMap));
+  return bookings.map((b: Record<string, any>) => mapBookingFromDB(b, profileMap));
 };
 
 export const getBookingById = async (id: string): Promise<TutorBooking | null> => {
@@ -386,10 +384,10 @@ export const fetchStudentRequests = async (
 
   if (error || !requests) return [];
 
-  const studentIds = requests.map((r: any) => r.student_id);
+  const studentIds = requests.map((r: { student_id: string }) => r.student_id);
   const profileMap = await fetchProfilesManual(studentIds);
 
-  return requests.map((r: any) => mapRequestFromDB(r, profileMap));
+  return requests.map((r: Record<string, any>) => mapRequestFromDB(r, profileMap));
 };
 
 export const createStudentRequest = async (request: Partial<TutorRequest>) => {

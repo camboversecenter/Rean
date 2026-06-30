@@ -86,62 +86,85 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
   squadId,
 }) => {
   const navigate = useNavigate();
-  const [activeModuleId, setActiveModuleId] = useState<string>(() => {
-    if (!initialProgress) return mission.modules[0].id;
-    const firstActive = mission.modules.find((m) => {
-      const status = initialProgress[m.id];
-      return status === 'active' || !status;
-    });
-    return firstActive ? firstActive.id : mission.modules[0].id;
-  });
-
-  const [moduleStatus, setModuleStatus] = useState<Record<string, MissionModuleStatus>>(() => {
-    if (initialProgress && Object.keys(initialProgress).length > 0) {
-      return initialProgress;
+  const [state, setState] = useState(() => {
+    let initialActiveModuleId = mission.modules[0].id;
+    if (initialProgress) {
+      const firstActive = mission.modules.find((m) => {
+        const status = initialProgress[m.id];
+        return status === 'active' || !status;
+      });
+      initialActiveModuleId = firstActive ? firstActive.id : mission.modules[0].id;
     }
-    const initial: Record<string, MissionModuleStatus> = {};
-    mission.modules.forEach((m, idx) => {
-      initial[m.id] = idx === 0 ? 'active' : 'locked';
-    });
-    return initial;
+
+    let initialModuleStatus: Record<string, MissionModuleStatus> = {};
+    if (initialProgress && Object.keys(initialProgress).length > 0) {
+      initialModuleStatus = initialProgress;
+    } else {
+      mission.modules.forEach((m, idx) => {
+        initialModuleStatus[m.id] = idx === 0 ? 'active' : 'locked';
+      });
+    }
+
+    return {
+      activeModuleId: initialActiveModuleId,
+      moduleStatus: initialModuleStatus,
+      activeTab: 'brief' as 'brief' | 'learn' | 'studio' | 'team' | 'simulation',
+      chatInput: '',
+      messages: {} as Record<string, ChatMessage[]>,
+      submissionData: {} as Record<string, string>,
+      submissionType: 'text' as 'text' | 'code',
+      codeLanguage: 'javascript' as 'javascript' | 'python' | 'html',
+      submissionImage: null as string | null,
+      evaluationData: {} as Record<string, { passed: boolean; score?: number; feedback: string } | null>,
+      generatedLessons: {} as Record<string, string>,
+      loadingLesson: false,
+      lessonLanguage: 'km' as 'km' | 'en',
+      squadNote: initialSquadNote || '',
+      isSaving: false,
+      lastSaved: null as Date | null,
+      squadMembers: [] as SquadMember[],
+      isEvaluating: false,
+      isChatLoading: false,
+      showCompletionModal: false,
+    };
   });
 
-  // Added 'simulation' to activeTab types
-  const [activeTab, setActiveTab] = useState<'brief' | 'learn' | 'studio' | 'team' | 'simulation'>(
-    'brief'
-  );
-  const [chatInput, setChatInput] = useState('');
-  const [messages, setMessages] = useState<Record<string, ChatMessage[]>>({});
+  const {
+    activeModuleId, moduleStatus, activeTab, chatInput, messages,
+    submissionData, submissionType, codeLanguage, submissionImage,
+    evaluationData, generatedLessons, loadingLesson, lessonLanguage,
+    squadNote, isSaving, lastSaved, squadMembers, isEvaluating,
+    isChatLoading, showCompletionModal
+  } = state;
 
-  // Submission State
-  const [submissionData, setSubmissionData] = useState<Record<string, string>>({});
-  const [submissionType, setSubmissionType] = useState<'text' | 'code'>('text');
-  const [codeLanguage, setCodeLanguage] = useState<'javascript' | 'python' | 'html'>('javascript');
-  const [submissionImage, setSubmissionImage] = useState<string | null>(null); // Base64
+  const setActiveModuleId = React.useCallback((v: any) => setState(s => ({ ...s, activeModuleId: v })), []);
+  const setModuleStatus = React.useCallback((v: any) => setState(s => ({ ...s, moduleStatus: typeof v === 'function' ? v(s.moduleStatus) : v })), []);
+  const setActiveTab = React.useCallback((v: any) => setState(s => ({ ...s, activeTab: v })), []);
+  const setChatInput = React.useCallback((v: any) => setState(s => ({ ...s, chatInput: v })), []);
+  const setMessages = React.useCallback((v: any) => setState(s => ({ ...s, messages: typeof v === 'function' ? v(s.messages) : v })), []);
+  const setSubmissionData = React.useCallback((v: any) => setState(s => ({ ...s, submissionData: typeof v === 'function' ? v(s.submissionData) : v })), []);
+  const setSubmissionType = React.useCallback((v: any) => setState(s => ({ ...s, submissionType: v })), []);
+  const setCodeLanguage = React.useCallback((v: any) => setState(s => ({ ...s, codeLanguage: v })), []);
+  const setSubmissionImage = React.useCallback((v: any) => setState(s => ({ ...s, submissionImage: v })), []);
+  const setEvaluationData = React.useCallback((v: any) => setState(s => ({ ...s, evaluationData: typeof v === 'function' ? v(s.evaluationData) : v })), []);
+  const setGeneratedLessons = React.useCallback((v: any) => setState(s => ({ ...s, generatedLessons: typeof v === 'function' ? v(s.generatedLessons) : v })), []);
+  const setLoadingLesson = React.useCallback((v: any) => setState(s => ({ ...s, loadingLesson: v })), []);
+  const setLessonLanguage = React.useCallback((v: any) => setState(s => ({ ...s, lessonLanguage: v })), []);
+  const setSquadNote = React.useCallback((v: any) => setState(s => ({ ...s, squadNote: v })), []);
+  const setIsSavingNote = React.useCallback((v: any) => setState(s => ({ ...s, isSaving: v })), []);
+  const setLastSaved = React.useCallback((v: any) => setState(s => ({ ...s, lastSaved: v })), []);
+  const setSquadMembers = React.useCallback((v: any) => setState(s => ({ ...s, squadMembers: v })), []);
+  const setIsEvaluating = React.useCallback((v: any) => setState(s => ({ ...s, isEvaluating: v })), []);
+  const setIsChatLoading = React.useCallback((v: any) => setState(s => ({ ...s, isChatLoading: v })), []);
+  const setShowCompletionModal = React.useCallback((v: any) => setState(s => ({ ...s, showCompletionModal: v })), []);
 
-  const [evaluationData, setEvaluationData] = useState<
-    Record<string, { passed: boolean; score?: number; feedback: string } | null>
-  >({});
-
-  const [generatedLessons, setGeneratedLessons] = useState<Record<string, string>>({});
-  const [loadingLesson, setLoadingLesson] = useState(false);
-  const [lessonLanguage, setLessonLanguage] = useState<'km' | 'en'>('km');
-
-  const [squadNote, setSquadNote] = useState(initialSquadNote || '');
-  const [isSaving, setIsSavingNote] = useState(false);
-  const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const noteSaveTimeout = useRef<any>(null);
-  const [squadMembers, setSquadMembers] = useState<SquadMember[]>([]);
-
-  const [isEvaluating, setIsEvaluating] = useState(false);
-  const [isChatLoading, setIsChatLoading] = useState(false);
-  const [showCompletionModal, setShowCompletionModal] = useState(false);
-
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const simFileInputRef = useRef<HTMLInputElement>(null);
 
   const prevEnrollmentIdRef = useRef(enrollmentId);
+  const prevInitialSquadNoteRef = useRef(initialSquadNote);
 
   const activeModule = mission.modules.find((m) => m.id === activeModuleId) || mission.modules[0];
   const isLocked = moduleStatus[activeModuleId] === 'locked';
@@ -158,7 +181,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
       // Optional: Auto-switch could be annoying, maybe just show a notification or indicator
       // For now, let's keep tabs stable unless explicitly clicked
     }
-  }, [activeModuleId]);
+  }, [activeModuleId, activeModule, activeTab, initialProgressDetails]);
 
   const getTheoryPromptText = () => {
     return (
@@ -167,7 +190,10 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
     );
   };
 
-  useEffect(() => {
+  const prevInitialProgressDetailsRef = React.useRef(initialProgressDetails);
+
+  if (initialProgressDetails !== prevInitialProgressDetailsRef.current) {
+    prevInitialProgressDetailsRef.current = initialProgressDetails;
     if (initialProgressDetails) {
       const texts: Record<string, string> = {};
       const evals: Record<string, any> = {};
@@ -189,17 +215,15 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
       setSubmissionData((prev) => ({ ...prev, ...texts }));
       setEvaluationData((prev) => ({ ...prev, ...evals }));
     }
-  }, [initialProgressDetails]);
+  }
 
-  // Squad Note Sync Effect
-  useEffect(() => {
-    if (enrollmentId !== prevEnrollmentIdRef.current) {
-      setSquadNote(initialSquadNote || '');
-      prevEnrollmentIdRef.current = enrollmentId;
-    } else if (initialSquadNote && !squadNote && !isSaving) {
-      setSquadNote(initialSquadNote);
-    }
-  }, [initialSquadNote, enrollmentId]);
+  if (enrollmentId !== prevEnrollmentIdRef.current) {
+    prevEnrollmentIdRef.current = enrollmentId;
+    setSquadNote(initialSquadNote || '');
+  } else if (initialSquadNote && !squadNote && !isSaving && initialSquadNote !== prevInitialSquadNoteRef.current) {
+    prevInitialSquadNoteRef.current = initialSquadNote;
+    setSquadNote(initialSquadNote);
+  }
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -219,13 +243,13 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
         ],
       }));
     }
-  }, [activeModuleId, isLocked, activeModule]);
+  }, [activeModuleId, isLocked, activeModule, messages, setMessages]);
 
   useEffect(() => {
     if (activeTab === 'team' && squadId && squadMembers.length === 0) {
       getSquadMembers(mission.id, squadId).then(setSquadMembers);
     }
-  }, [activeTab, squadId, mission.id]);
+  }, [activeTab, squadId, mission.id, squadMembers.length, setSquadMembers]);
 
   const handleModuleClick = (id: string) => {
     if (moduleStatus[id] !== 'locked') {
@@ -510,13 +534,13 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
               សមិទ្ធិផលនេះត្រូវបានកត់ត្រាក្នុងប្រវត្តិរូបរបស់អ្នក។
             </p>
             <div className="space-y-3">
-              <button
+              <button type="button"
                 onClick={() => navigate('/account')}
                 className="w-full bg-primary text-white py-3 rounded-xl font-bold shadow-lg hover:bg-primary/90 transition-transform active:scale-95 flex items-center justify-center"
               >
                 <Award className="h-5 w-5 mr-2" /> មើលវិញ្ញាបនបត្រ (View Profile)
               </button>
-              <button
+              <button type="button"
                 onClick={() => navigate('/')}
                 className="w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-200 transition-colors flex items-center justify-center"
               >
@@ -581,7 +605,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                 }
 
                 return (
-                  <button
+                  <button type="button"
                     key={mod.id}
                     onClick={() => handleModuleClick(mod.id)}
                     className={`relative z-10 w-full flex items-center text-left p-2 rounded-xl transition-all duration-200 group ${isActive ? 'bg-white shadow-sm ring-1 ring-gray-100' : 'hover:bg-gray-50'}`}
@@ -614,7 +638,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
 
         <div className="flex-1 flex flex-col min-w-0 bg-gray-50">
           <div className="flex bg-white border-b border-gray-200 px-4 overflow-x-auto scrollbar-hide">
-            <button
+            <button type="button"
               onClick={() => setActiveTab('brief')}
               className={`py-3 px-4 text-sm font-bold border-b-2 transition-colors flex items-center whitespace-nowrap ${activeTab === 'brief' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
             >
@@ -623,7 +647,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
 
             {/* Add Simulation Tab conditionally */}
             {activeModule.simulationConfig && (
-              <button
+              <button type="button"
                 onClick={() => setActiveTab('simulation')}
                 className={`py-3 px-4 text-sm font-bold border-b-2 transition-colors flex items-center whitespace-nowrap ${activeTab === 'simulation' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
               >
@@ -634,19 +658,19 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
               </button>
             )}
 
-            <button
+            <button type="button"
               onClick={() => setActiveTab('learn')}
               className={`py-3 px-4 text-sm font-bold border-b-2 transition-colors flex items-center whitespace-nowrap ${activeTab === 'learn' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
             >
               <BookOpen className="h-4 w-4 mr-2" /> រៀន
             </button>
-            <button
+            <button type="button"
               onClick={() => setActiveTab('studio')}
               className={`py-3 px-4 text-sm font-bold border-b-2 transition-colors flex items-center whitespace-nowrap ${activeTab === 'studio' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
             >
               <Edit className="h-4 w-4 mr-2" /> កន្លែងអនុវត្ត
             </button>
-            <button
+            <button type="button"
               onClick={() => setActiveTab('team')}
               className={`py-3 px-4 text-sm font-bold border-b-2 transition-colors flex items-center whitespace-nowrap ${activeTab === 'team' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
             >
@@ -693,21 +717,21 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                   </div>
                 </div>
                 <div className="flex justify-end gap-3">
-                  <button
+                  <button type="button"
                     onClick={() => setActiveTab('learn')}
                     className="bg-white border border-gray-200 text-gray-700 px-6 py-3 rounded-xl font-bold flex items-center hover:bg-gray-50 transition-colors"
                   >
                     <BookOpen className="h-4 w-4 mr-2" /> រៀនសិន
                   </button>
                   {activeModule.simulationConfig ? (
-                    <button
+                    <button type="button"
                       onClick={() => setActiveTab('simulation')}
                       className="bg-primary text-white px-6 py-3 rounded-xl font-bold shadow-lg flex items-center hover:scale-105 transition-transform"
                     >
                       <Experiment className="h-4 w-4 mr-2" /> ចាប់ផ្តើមពិសោធន៍
                     </button>
                   ) : (
-                    <button
+                    <button type="button"
                       onClick={() => setActiveTab('studio')}
                       className="bg-primary text-white px-6 py-3 rounded-xl font-bold shadow-lg flex items-center hover:scale-105 transition-transform"
                     >
@@ -768,6 +792,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                         accept="image/*"
                         className="hidden"
                         ref={simFileInputRef}
+                        aria-label="Upload Screenshot"
                         onChange={(e) => {
                           if (e.target.files?.[0]) {
                             const reader = new FileReader();
@@ -783,7 +808,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                           }
                         }}
                       />
-                      <button
+                      <button type="button"
                         onClick={() => simFileInputRef.current?.click()}
                         className="bg-primary text-white px-6 py-3 rounded-xl font-bold shadow-lg flex items-center justify-center hover:bg-primary/90 transition-transform"
                       >
@@ -803,7 +828,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                       <h3 className="font-bold text-gray-900">
                         មេរៀន ({lessonLanguage === 'km' ? 'ភាសាខ្មែរ' : 'English'})
                       </h3>
-                      <button
+                      <button type="button"
                         onClick={() =>
                           setGeneratedLessons((prev) => ({ ...prev, [activeModuleId]: '' }))
                         }
@@ -816,7 +841,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                       <MarkdownText content={generatedLessons[activeModuleId]} />
                     </div>
                     <div className="mt-8 pt-6 border-t border-gray-100 flex justify-end">
-                      <button
+                      <button type="button"
                         onClick={() => setActiveTab('studio')}
                         className="bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-indigo-700 transition-colors"
                       >
@@ -835,13 +860,13 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                     </p>
 
                     <div className="flex gap-4 mb-6">
-                      <button
+                      <button type="button"
                         onClick={() => setLessonLanguage('km')}
                         className={`px-6 py-3 rounded-xl font-bold border transition-all ${lessonLanguage === 'km' ? 'bg-indigo-50 border-indigo-200 text-indigo-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'}`}
                       >
                         🇰🇭 ភាសាខ្មែរ
                       </button>
-                      <button
+                      <button type="button"
                         onClick={() => setLessonLanguage('en')}
                         className={`px-6 py-3 rounded-xl font-bold border transition-all ${lessonLanguage === 'en' ? 'bg-indigo-50 border-indigo-200 text-indigo-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'}`}
                       >
@@ -849,7 +874,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                       </button>
                     </div>
 
-                    <button
+                    <button type="button"
                       onClick={handleStartLesson}
                       disabled={loadingLesson}
                       className="bg-indigo-600 text-white px-8 py-4 rounded-xl font-bold shadow-xl flex items-center hover:scale-105 transition-transform"
@@ -873,13 +898,13 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col overflow-hidden">
                   <div className="p-3 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
                     <div className="flex gap-1 p-1 bg-white rounded-lg border border-gray-200 shadow-sm">
-                      <button
+                      <button type="button"
                         onClick={() => setSubmissionType('text')}
                         className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-1.5 ${submissionType === 'text' ? 'bg-gray-100 text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
                       >
                         <FileText className="h-3.5 w-3.5" /> Text Answer
                       </button>
-                      <button
+                      <button type="button"
                         onClick={() => setSubmissionType('code')}
                         className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-1.5 ${submissionType === 'code' ? 'bg-indigo-50 text-indigo-700' : 'text-gray-500 hover:text-gray-700'}`}
                       >
@@ -903,9 +928,10 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                           alt="Homework"
                           className="w-full h-full object-contain"
                         />
-                        <button
+                        <button type="button"
                           onClick={() => setSubmissionImage(null)}
                           className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full shadow hover:bg-red-600"
+                          aria-label="Remove Image"
                         >
                           <X className="h-4 w-4" />
                         </button>
@@ -925,12 +951,13 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                           ref={fileInputRef}
                           onChange={handleFileChange}
                           className="hidden"
+                          aria-label="Upload Attachment"
                         />
                       </div>
                     ) : (
                       <div className="flex gap-2 mb-2">
                         {['javascript', 'python', 'html'].map((lang) => (
-                          <button
+                          <button type="button"
                             key={lang}
                             onClick={() => setCodeLanguage(lang as any)}
                             className={`px-3 py-1 rounded text-xs font-bold uppercase transition-colors ${codeLanguage === lang ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
@@ -954,7 +981,9 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                       </div>
                     ) : (
                       <>
+                        <label htmlFor="submissionTextInput" className="sr-only">Submission Text</label>
                         <textarea
+                          id="submissionTextInput"
                           className="w-full resize-y focus:outline-none text-sm text-gray-800 leading-relaxed min-h-[150px] bg-transparent p-2"
                           placeholder="សរសេរចម្លើយរបស់អ្នកនៅទីនេះ..."
                           value={currentSubmissionText}
@@ -974,7 +1003,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                         ? 'Code is run in browser sandbox'
                         : 'Supports Markdown & LaTeX $$...$$'}
                     </span>
-                    <button
+                    <button type="button"
                       onClick={handleSubmitWork}
                       disabled={
                         isEvaluating ||
@@ -1083,7 +1112,9 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                     </div>
                   </div>
                   <div className="flex-1 p-4 flex flex-col">
+                    <label htmlFor="squadNoteInput" className="sr-only">Squad Note</label>
                     <textarea
+                      id="squadNoteInput"
                       className="flex-1 bg-transparent resize-none focus:outline-none text-sm text-gray-800 placeholder-yellow-800/40"
                       placeholder="ប្រើកន្លែងនេះដើម្បីសហការគ្នា (Auto-saved)..."
                       value={squadNote}
@@ -1123,7 +1154,9 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
           </div>
           <div className="p-3 border-t border-gray-100 bg-white">
             <div className="relative">
+              <label htmlFor="chatInput" className="sr-only">សួរសំណួរ</label>
               <input
+                id="chatInput"
                 type="text"
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
@@ -1131,10 +1164,11 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                 placeholder="សួរសំណួរ... (1 Pt)"
                 className="w-full bg-gray-100 text-sm rounded-xl pl-3 pr-10 py-3 focus:outline-none"
               />
-              <button
+              <button type="button"
                 onClick={handleSendMessage}
                 disabled={!chatInput.trim() || isChatLoading}
                 className="absolute right-2 top-1.5 p-1.5 bg-primary text-white rounded-lg disabled:opacity-50"
+                aria-label="Send Message"
               >
                 <Send className="h-4 w-4" />
               </button>

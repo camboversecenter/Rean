@@ -38,7 +38,7 @@ const ReactionBar: React.FC<ReactionBarProps> = ({
 
   return (
     <div className="flex items-center gap-1">
-      <button
+      <button type="button"
         onClick={(e) => {
           e.stopPropagation();
           onReact('bulb');
@@ -52,7 +52,7 @@ const ReactionBar: React.FC<ReactionBarProps> = ({
         {reactions.bulb > 0 && <span>{reactions.bulb}</span>}
       </button>
 
-      <button
+      <button type="button"
         onClick={(e) => {
           e.stopPropagation();
           onReact('heart');
@@ -66,7 +66,7 @@ const ReactionBar: React.FC<ReactionBarProps> = ({
         {reactions.heart > 0 && <span>{reactions.heart}</span>}
       </button>
 
-      <button
+      <button type="button"
         onClick={(e) => {
           e.stopPropagation();
           onReact('thumb');

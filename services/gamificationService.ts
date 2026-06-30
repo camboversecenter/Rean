@@ -56,7 +56,7 @@ export const canAfford = async (amount: number): Promise<boolean> => {
 };
 
 // New Helper to check limits without awarding
-export const checkCanEarn = async (userId: string, action: GameAction): Promise<boolean> => {
+export const checkCanEarn = async (targetId: string, action: GameAction): Promise<boolean> => {
   const rule = GAME_RULES[action];
   if (!rule) return false;
   if (rule.dailyLimit === -1) return true;
@@ -65,7 +65,7 @@ export const checkCanEarn = async (userId: string, action: GameAction): Promise<
   const { count, error } = await supabase
     .from('point_transactions')
     .select('*', { count: 'exact', head: true })
-    .eq('user_id', userId)
+    .eq('user_id', targetId)
     .eq('reason', rule.label)
     .gte('created_at', startOfDay);
 
@@ -104,20 +104,20 @@ export const spendPoints = async (amount: number, reason: string): Promise<boole
     return false;
   }
 
-  await supabase.from('point_transactions').insert([
-    {
-      user_id: user.id,
+  const spendLog = {
       amount: -amount,
       type: 'spend',
       reason: reason,
-    },
-  ]);
+      user_id: user.id
+  };
+
+  await supabase.from('point_transactions').insert([spendLog]);
 
   notifyPointsUpdate();
   return true;
 };
 
-export const awardAction = async (userId: string, action: GameAction, customPoints?: number) => {
+export const awardAction = async (targetId: string, action: GameAction, customPoints?: number) => {
   const rule = GAME_RULES[action];
   if (!rule) return;
 
@@ -126,7 +126,7 @@ export const awardAction = async (userId: string, action: GameAction, customPoin
     const { count, error } = await supabase
       .from('point_transactions')
       .select('*', { count: 'exact', head: true })
-      .eq('user_id', userId)
+      .eq('user_id', targetId)
       .eq('reason', rule.label)
       .gte('created_at', startOfDay);
 
@@ -140,7 +140,7 @@ export const awardAction = async (userId: string, action: GameAction, customPoin
   const { data: profile } = await supabase
     .from('profiles')
     .select('lifetime_xp, spendable_points')
-    .eq('id', userId)
+    .eq('id', targetId)
     .single();
 
   if (profile) {
@@ -150,18 +150,18 @@ export const awardAction = async (userId: string, action: GameAction, customPoin
         lifetime_xp: (profile.lifetime_xp || 0) + xpToAdd,
         spendable_points: (profile.spendable_points || 0) + pointsToAdd,
       })
-      .eq('id', userId);
+      .eq('id', targetId);
   }
 
-  // Only log transaction if points are involved or for XP tracking purposes if needed
-  await supabase.from('point_transactions').insert([
-    {
-      user_id: userId,
+  const earnLog = {
       amount: pointsToAdd,
       type: 'earn',
       reason: rule.label,
-    },
-  ]);
+      user_id: targetId
+  };
+
+  // Only log transaction if points are involved or for XP tracking purposes if needed
+  await supabase.from('point_transactions').insert([earnLog]);
 
   notifyPointsUpdate();
 };
@@ -178,14 +178,13 @@ export const transferBountyReward = async (recipientId: string, amount: number) 
       .from('profiles')
       .update({ spendable_points: (profile.spendable_points || 0) + amount })
       .eq('id', recipientId);
-    await supabase.from('point_transactions').insert([
-      {
-        user_id: recipientId,
+    const bountyLog = {
         amount: amount,
         type: 'earn',
         reason: 'Bounty Reward Claimed',
-      },
-    ]);
+        user_id: recipientId
+    };
+    await supabase.from('point_transactions').insert([bountyLog]);
     notifyPointsUpdate();
   }
 };
@@ -243,17 +242,17 @@ export const createMysteryBox = async (box: Partial<MysteryBox>) => {
   } = await supabase.auth.getUser();
   if (!user) throw new Error('Not authenticated');
 
-  const { data, error } = await supabase
-    .from('mystery_boxes')
-    .insert([
-      {
+  const newBox = {
         title: box.title,
         description: box.description,
         price_points: box.price_points,
         cover_image: box.cover_image,
-        owner_id: user.id,
-      },
-    ])
+        owner_id: user.id
+  };
+
+  const { data, error } = await supabase
+    .from('mystery_boxes')
+    .insert([newBox])
     .select()
     .single();
 
@@ -301,15 +300,15 @@ export const recordRewardClaim = async (boxId: string, rewardDetail: string) => 
   } = await supabase.auth.getUser();
   if (!user) return;
 
-  // Record the win
-  const { error } = await supabase.from('reward_claims').insert([
-    {
-      user_id: user.id,
+  const newClaim = {
       box_id: boxId,
       reward_detail: rewardDetail,
       status: 'Pending',
-    },
-  ]);
+      user_id: user.id
+  };
+
+  // Record the win
+  const { error } = await supabase.from('reward_claims').insert([newClaim]);
 
   if (error) console.error('Failed to record claim', error);
 };
@@ -330,7 +329,7 @@ export const fetchCreatorClaims = async (): Promise<RewardClaim[]> => {
   if (!boxes || boxes.length === 0) return [];
 
   const boxIds = boxes.map((b) => b.id);
-  const boxMap = boxes.reduce((acc: any, b: any) => {
+  const boxMap = boxes.reduce((acc: Record<string, string>, b: { id: string; title: string }) => {
     acc[b.id] = b.title;
     return acc;
   }, {});
@@ -350,19 +349,19 @@ export const fetchCreatorClaims = async (): Promise<RewardClaim[]> => {
   if (!claims || claims.length === 0) return [];
 
   // 3. Manually fetch profiles of winners
-  const userIds = [...new Set(claims.map((c: any) => c.user_id))];
+  const userIds = [...new Set(claims.map((c: { user_id: string }) => c.user_id))];
   const { data: profiles } = await supabase
     .from('profiles')
     .select('id, full_name, avatar_url, email')
     .in('id', userIds);
 
-  const profileMap = (profiles || []).reduce((acc: any, p: any) => {
+  const profileMap = (profiles || []).reduce((acc: Record<string, { id: string; full_name?: string; avatar_url?: string; email?: string }>, p: { id: string; full_name?: string; avatar_url?: string; email?: string }) => {
     acc[p.id] = p;
     return acc;
   }, {});
 
   // 4. Map everything together
-  return claims.map((row: any) => {
+  return claims.map((row: { id: string; box_id: string; user_id: string; reward_detail: string; status: string; created_at: string }) => {
     const profile = profileMap[row.user_id];
     return {
       id: row.id,
@@ -399,21 +398,21 @@ export const getMyRewardClaims = async (): Promise<RewardClaim[]> => {
   }
 
   // Fetch box details
-  const boxIds = [...new Set(claims.map((c: any) => c.box_id))];
-  let boxMap: any = {};
+  const boxIds = [...new Set(claims.map((c: { box_id: string }) => c.box_id))];
+  let boxMap: Record<string, { id: string; title: string }> = {};
 
   if (boxIds.length > 0) {
     const { data: boxes } = await supabase
       .from('mystery_boxes')
       .select('id, title')
       .in('id', boxIds);
-    boxMap = (boxes || []).reduce((acc: any, b: any) => {
+    boxMap = (boxes || []).reduce((acc: Record<string, { id: string; title: string }>, b: { id: string; title: string }) => {
       acc[b.id] = b;
       return acc;
     }, {});
   }
 
-  return claims.map((row: any) => ({
+  return claims.map((row: { id: string; box_id: string; user_id: string; reward_detail: string; status: string; created_at: string }) => ({
     id: row.id,
     box_id: row.box_id,
     user_id: row.user_id,

@@ -21,9 +21,7 @@ import { supabase } from '../services/supabaseClient';
 const Header: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [profile, setProfile] = useState<any>(null);
-  const [activity, setActivity] = useState<any[]>([]);
-  const [showActivity, setShowActivity] = useState(false);
+  const [state, setState] = useState({ profile: null as any, activity: [] as any[], showActivity: false });
 
   const isHome = location.pathname === '/';
   const isExplore = location.pathname === '/explore';
@@ -46,9 +44,9 @@ const Header: React.FC = () => {
   useEffect(() => {
     const loadProfileData = () => {
       getCurrentUserProfile().then((p) => {
-        if (p) setProfile(p);
+        if (p) setState(prev => ({ ...prev, profile: p }));
       });
-      fetchRecentActivity().then(setActivity);
+      fetchRecentActivity().then(a => setState(prev => ({ ...prev, activity: a })));
     };
 
     // Load initially
@@ -61,8 +59,7 @@ const Header: React.FC = () => {
       if (session) {
         loadProfileData();
       } else {
-        setProfile(null);
-        setActivity([]);
+        setState(prev => ({ ...prev, profile: null, activity: [] }));
       }
     });
 
@@ -80,13 +77,13 @@ const Header: React.FC = () => {
 
   // Updated to include 'tutor' so they see both icons
   const canAccessStudio =
-    profile &&
-    (profile.role === 'business' ||
-      profile.role === 'school' ||
-      profile.role === 'admin' ||
-      profile.role === 'tutor');
-  const isTutor = profile && (profile.role === 'tutor' || profile.role === 'admin');
-  const isSchool = profile && (profile.role === 'school' || profile.role === 'admin');
+    state.profile &&
+    (state.profile.role === 'business' ||
+      state.profile.role === 'school' ||
+      state.profile.role === 'admin' ||
+      state.profile.role === 'tutor');
+  const isTutor = state.profile && (state.profile.role === 'tutor' || state.profile.role === 'admin');
+  const isSchool = state.profile && (state.profile.role === 'school' || state.profile.role === 'admin');
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
@@ -102,14 +99,15 @@ const Header: React.FC = () => {
             isLeaderboard ||
             isRewards ||
             isDocs ? (
-              <button
+              <button type="button"
                 onClick={() => navigate(-1)}
+                aria-label="Go back"
                 className="p-2 -ml-2 text-gray-600 hover:text-primary rounded-full hover:bg-gray-100"
               >
                 <ChevronLeft className="h-6 w-6" />
               </button>
             ) : (
-              <Link to="/" className="flex items-center space-x-2">
+              <Link to="/" className="flex items-center space-x-2" aria-label="Home">
                 <div className="bg-primary p-1 rounded-lg">
                   <BookOpen className="h-5 w-5 text-white" />
                 </div>
@@ -159,39 +157,42 @@ const Header: React.FC = () => {
               to="/tutors"
               className={`p-2 rounded-full transition-colors ${isTutorMarket ? 'bg-blue-50 text-blue-600' : 'text-gray-400 hover:text-blue-600'}`}
               title="Tutor Market"
+              aria-label="Tutor Market"
             >
               <Users className="h-5 w-5" />
             </Link>
 
             {/* Only show these if logged in */}
-            {profile && (
+            {state.profile && (
               <>
                 {/* Gamification Links */}
                 <Link
                   to="/rewards"
                   className={`p-2 rounded-full transition-colors ${isRewards ? 'bg-pink-50 text-pink-500' : 'text-gray-400 hover:text-pink-500'}`}
                   title="Rewards"
+                  aria-label="Rewards"
                 >
                   <Gift className="h-5 w-5 fill-current" />
                 </Link>
 
                 {/* Notifications */}
                 <div className="relative">
-                  <button
-                    onClick={() => setShowActivity(!showActivity)}
+                  <button type="button"
+                    onClick={() => setState(prev => ({ ...prev, showActivity: !prev.showActivity }))}
+                    aria-label="Notifications"
                     className="p-2 text-gray-400 hover:text-primary relative"
                   >
                     <Bell className="h-5 w-5" />
-                    {activity.length > 0 && (
+                    {state.activity.length > 0 && (
                       <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
                     )}
                   </button>
 
-                  {showActivity && (
+                  {state.showActivity && (
                     <>
                       <div
                         className="fixed inset-0 z-40"
-                        onClick={() => setShowActivity(false)}
+                        onClick={() => setState(prev => ({ ...prev, showActivity: false }))}
                       ></div>
                       <div className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden animate-fade-in">
                         <div className="p-3 border-b border-gray-50 flex justify-between items-center bg-gray-50">
@@ -199,16 +200,16 @@ const Header: React.FC = () => {
                             សកម្មភាពថ្មីៗ
                           </span>
                           <span className="text-xs text-primary font-bold">
-                            {profile?.spendable_points || 0} PTS
+                            {state.profile?.spendable_points || 0} PTS
                           </span>
                         </div>
                         <div className="max-h-64 overflow-y-auto">
-                          {activity.length === 0 ? (
+                          {state.activity.length === 0 ? (
                             <div className="p-4 text-center text-xs text-gray-400">
                               មិនទាន់មានសកម្មភាពទេ។
                             </div>
                           ) : (
-                            activity.map((act) => (
+                            state.activity.map((act) => (
                               <div
                                 key={act.id}
                                 className="p-3 border-b border-gray-50 hover:bg-gray-50 flex items-start gap-3"
@@ -238,7 +239,7 @@ const Header: React.FC = () => {
                         <Link
                           to="/leaderboard"
                           className="block p-2 text-center text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors"
-                          onClick={() => setShowActivity(false)}
+                          onClick={() => setState(prev => ({ ...prev, showActivity: false }))}
                         >
                           មើលតារាងពិន្ទុ (Leaderboard)
                         </Link>
@@ -253,6 +254,7 @@ const Header: React.FC = () => {
                     to="/school/dashboard"
                     className={`p-2 rounded-full transition-colors ${isSchoolDash ? 'bg-blue-50 text-blue-600' : 'text-gray-400 hover:text-blue-600'}`}
                     title="School Management"
+                    aria-label="School Management"
                   >
                     <Building2 className="h-5 w-5" />
                   </Link>
@@ -264,6 +266,7 @@ const Header: React.FC = () => {
                     to="/creator"
                     className={`p-2 rounded-full transition-colors ${isCreator ? 'bg-indigo-50 text-indigo-600' : 'text-gray-400 hover:text-indigo-600'}`}
                     title="Mission Studio"
+                    aria-label="Mission Studio"
                   >
                     <Zap className="h-5 w-5 fill-current" />
                   </Link>
@@ -275,6 +278,7 @@ const Header: React.FC = () => {
                     to="/tutor/dashboard"
                     className={`p-2 rounded-full transition-colors ${isTutorDash ? 'bg-green-50 text-green-600' : 'text-gray-400 hover:text-green-600'}`}
                     title="Tutor Dashboard"
+                    aria-label="Tutor Dashboard"
                   >
                     <GraduationCap className="h-5 w-5 fill-current" />
                   </Link>
@@ -282,23 +286,24 @@ const Header: React.FC = () => {
               </>
             )}
 
-            {profile ? (
+            {state.profile ? (
               <Link
                 to="/account"
+                aria-label="Account Profile"
                 className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity ml-1"
               >
                 <div className="hidden md:flex flex-col items-end mr-1">
                   <span className="text-xs font-bold text-gray-800">
-                    {profile.full_name || 'User'}
+                    {state.profile.full_name || 'User'}
                   </span>
                   <span className="text-[10px] bg-gray-100 px-1 rounded text-gray-500 uppercase">
-                    {profile.role || 'Guest'}
+                    {state.profile.role || 'Guest'}
                   </span>
                 </div>
                 <img
                   src={
-                    profile.avatar_url ||
-                    `https://ui-avatars.com/api/?name=${profile.full_name || 'User'}`
+                    state.profile.avatar_url ||
+                    `https://ui-avatars.com/api/?name=${state.profile.full_name || 'User'}`
                   }
                   alt="Profile"
                   className="w-8 h-8 rounded-full border border-gray-200 object-cover"
@@ -307,6 +312,7 @@ const Header: React.FC = () => {
             ) : (
               <Link
                 to="/login"
+                aria-label="Login"
                 className="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-primary text-white hover:bg-primary/90 transition-colors"
               >
                 <UserIcon className="h-4 w-4" />

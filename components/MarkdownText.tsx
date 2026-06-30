@@ -20,7 +20,7 @@ const processMentions = (text: string) => {
   return parts.map((part, i) =>
     /@(?:tonsay|sopheatonsay)\b/i.test(part) ? (
       <span
-        key={i}
+        key={`${i}-${part}`}
         className="text-primary font-bold bg-primary/10 px-1.5 py-0.5 rounded text-[0.9em] mx-0.5 inline-block"
       >
         {part}
