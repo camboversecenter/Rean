@@ -113,7 +113,7 @@ serve(async (req: Request) => {
     switch (action) {
       case 'chat': {
         const { message, history, systemInstruction, useSearch } = payload;
-        const modelName = useSearch ? 'gemini-3-pro-preview' : 'gemini-3-flash-preview';
+        const modelName = 'gemini-3-flash-preview'; // gemini-3-pro-preview is discontinued
 
         const chat = ai.chats.create({
           model: modelName,
