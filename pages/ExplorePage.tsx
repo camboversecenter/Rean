@@ -20,86 +20,91 @@ import { ShortCourse, Mission } from '../types';
 import { chatWithAI, AI_COSTS } from '../services/geminiService';
 import toast from 'react-hot-toast';
 
+const LIMIT = 10;
+
 const ExplorePage: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
-  const [viewType, setViewType] = useState<'mission' | 'short-course'>('mission');
-  const [courses, setCourses] = useState<(ShortCourse & { schoolName: string })[]>([]);
-  const [missions, setMissions] = useState<Mission[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [state, setState] = useState({
+    selectedCategory: 'All',
+    viewType: 'mission' as 'mission' | 'short-course',
+    courses: [] as (ShortCourse & { schoolName: string })[],
+    missions: [] as Mission[],
+    loading: true,
+    page: 1,
+    hasMore: true,
+    loadingMore: false,
+    formatFilter: 'All' as 'All' | 'Online' | 'On-Campus' | 'Hybrid',
+    compareList: [] as (ShortCourse & { schoolName: string })[],
+    showCompareModal: false,
+    comparisonResult: '',
+    analyzing: false,
+  });
 
-  // Pagination State
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const LIMIT = 10;
+  const {
+    selectedCategory,
+    viewType,
+    courses,
+    missions,
+    loading,
+    page,
+    hasMore,
+    loadingMore,
+    formatFilter,
+    compareList,
+    showCompareModal,
+    comparisonResult,
+    analyzing,
+  } = state;
 
-  // Advanced Filters for Short Courses
-  const [formatFilter, setFormatFilter] = useState<'All' | 'Online' | 'On-Campus' | 'Hybrid'>(
-    'All'
-  );
-  // Note: Schedule filter logic is complex to do purely server-side with simple text matching,
-  // so for MVP scalability we might drop it or implement it client-side on the page chunk (imperfect but acceptable)
-  // For now, we rely on the primary Category/Format filters which are server-side capable.
 
-  // Comparison State
-  const [compareList, setCompareList] = useState<(ShortCourse & { schoolName: string })[]>([]);
-  const [showCompareModal, setShowCompareModal] = useState(false);
-  const [comparisonResult, setComparisonResult] = useState('');
-  const [analyzing, setAnalyzing] = useState(false);
-
-  // --- EFFECT: Reset on Filter Change ---
-  useEffect(() => {
-    setPage(1);
-    setCourses([]);
-    setMissions([]);
-    setHasMore(true);
-    loadData(1, true);
-  }, [viewType, selectedCategory, formatFilter]);
-
-  const loadData = async (pageToLoad: number, isReset: boolean = false) => {
-    if (!isReset) setLoadingMore(true);
-    else setLoading(true);
+  const loadData = React.useCallback(async (pageToLoad: number, isReset: boolean = false) => {
+    if (!isReset) setState(prev => ({ ...prev, loadingMore: true }));
+    else setState(prev => ({ ...prev, loading: true }));
 
     try {
       if (viewType === 'mission') {
         const data = await fetchAllMissions(pageToLoad, LIMIT, selectedCategory);
-        if (data.length < LIMIT) setHasMore(false);
+        if (data.length < LIMIT) setState(prev => ({ ...prev, hasMore: false }));
 
-        if (isReset) setMissions(data);
-        else setMissions((prev) => [...prev, ...data]);
+        if (isReset) setState(prev => ({ ...prev, missions: data }));
+        else setState(prev => ({ ...prev, missions: [...prev.missions, ...data] }));
       } else {
         // Fetch Courses
         const data = await fetchAllShortCourses(pageToLoad, LIMIT, selectedCategory, formatFilter);
-        if (data.length < LIMIT) setHasMore(false);
+        if (data.length < LIMIT) setState(prev => ({ ...prev, hasMore: false }));
 
-        if (isReset) setCourses(data);
-        else setCourses((prev) => [...prev, ...data]);
+        if (isReset) setState(prev => ({ ...prev, courses: data }));
+        else setState(prev => ({ ...prev, courses: [...prev.courses, ...data] }));
       }
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false);
-      setLoadingMore(false);
+      setState(prev => ({ ...prev, loading: false, loadingMore: false }));
     }
-  };
+  }, [viewType, selectedCategory, formatFilter]);
+
+  // --- EFFECT: Reset on Filter Change ---
+  useEffect(() => {
+    setState(prev => ({ ...prev, page: 1, courses: [], missions: [], hasMore: true }));
+    loadData(1, true);
+  }, [loadData]);
 
   const handleLoadMore = () => {
     const nextPage = page + 1;
-    setPage(nextPage);
+    setState(prev => ({ ...prev, page: nextPage }));
     loadData(nextPage);
   };
 
   const handleToggleCompare = (course: ShortCourse & { schoolName: string }) => {
-    setCompareList((prev) => {
-      const exists = prev.find((c) => c.id === course.id);
+    setState((prev) => {
+      const exists = prev.compareList.find((c) => c.id === course.id);
       if (exists) {
-        return prev.filter((c) => c.id !== course.id);
+        return { ...prev, compareList: prev.compareList.filter((c) => c.id !== course.id) };
       } else {
-        if (prev.length >= 2) {
+        if (prev.compareList.length >= 2) {
           toast.error('អាចប្រៀបធៀបបានត្រឹមតែ ២ វគ្គសិក្សាប៉ុណ្ណោះ។');
           return prev;
         }
-        return [...prev, course];
+        return { ...prev, compareList: [...prev.compareList, course] };
       }
     });
   };
@@ -107,9 +112,7 @@ const ExplorePage: React.FC = () => {
   const handleAnalyzeComparison = async () => {
     if (compareList.length < 2) return;
 
-    setAnalyzing(true);
-    setShowCompareModal(true);
-    setComparisonResult('');
+    setState(prev => ({ ...prev, analyzing: true, showCompareModal: true, comparisonResult: '' }));
 
     try {
       const c1 = compareList[0];
@@ -142,12 +145,12 @@ const ExplorePage: React.FC = () => {
           `;
 
       const result = await chatWithAI(prompt);
-      setComparisonResult(result);
+      setState(prev => ({ ...prev, comparisonResult: result }));
     } catch (error) {
       console.error(error);
-      setComparisonResult('បរាជ័យក្នុងការវិភាគ។ សូមព្យាយាមម្តងទៀត។');
+      setState(prev => ({ ...prev, comparisonResult: 'បរាជ័យក្នុងការវិភាគ។ សូមព្យាយាមម្តងទៀត។' }));
     } finally {
-      setAnalyzing(false);
+      setState(prev => ({ ...prev, analyzing: false }));
     }
   };
 
@@ -161,8 +164,8 @@ const ExplorePage: React.FC = () => {
 
         {/* Type Toggle */}
         <div className="flex p-1 bg-gray-200 rounded-xl mb-6 shadow-inner">
-          <button
-            onClick={() => setViewType('mission')}
+          <button type="button"
+            onClick={() => setState(prev => ({ ...prev, viewType: 'mission' }))}
             className={`flex-1 py-3 text-xs font-bold rounded-lg transition-all ${viewType === 'mission' ? 'bg-white shadow-sm text-primary' : 'text-gray-500'}`}
           >
             <div className="flex items-center justify-center">
@@ -170,8 +173,8 @@ const ExplorePage: React.FC = () => {
               Missions (បេសកកម្ម)
             </div>
           </button>
-          <button
-            onClick={() => setViewType('short-course')}
+          <button type="button"
+            onClick={() => setState(prev => ({ ...prev, viewType: 'short-course' }))}
             className={`flex-1 py-3 text-xs font-bold rounded-lg transition-all ${viewType === 'short-course' ? 'bg-white shadow-sm text-primary' : 'text-gray-500'}`}
           >
             <div className="flex items-center justify-center">
@@ -183,8 +186,8 @@ const ExplorePage: React.FC = () => {
 
         {/* Category Filter (Common) */}
         <div className="flex overflow-x-auto space-x-2 mb-4 pb-2 scrollbar-hide">
-          <button
-            onClick={() => setSelectedCategory('All')}
+          <button type="button"
+            onClick={() => setState(prev => ({ ...prev, selectedCategory: 'All' }))}
             className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold transition-all ${
               selectedCategory === 'All'
                 ? 'bg-gray-800 text-white'
@@ -194,9 +197,9 @@ const ExplorePage: React.FC = () => {
             ទាំងអស់
           </button>
           {CATEGORIES_LIST.map((cat) => (
-            <button
+            <button type="button"
               key={cat}
-              onClick={() => setSelectedCategory(cat)}
+              onClick={() => setState(prev => ({ ...prev, selectedCategory: cat }))}
               className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold transition-all ${
                 selectedCategory === cat
                   ? 'bg-gray-800 text-white'
@@ -217,10 +220,11 @@ const ExplorePage: React.FC = () => {
             <div className="flex flex-wrap gap-4">
               {/* Format Filter */}
               <div className="flex items-center space-x-2">
-                <span className="text-xs font-bold text-gray-700">ទម្រង់៖</span>
+                <label htmlFor="format-filter" className="text-xs font-bold text-gray-700">ទម្រង់៖</label>
                 <select
+                  id="format-filter"
                   value={formatFilter}
-                  onChange={(e) => setFormatFilter(e.target.value as any)}
+                  onChange={(e) => setState(prev => ({ ...prev, formatFilter: e.target.value as any }))}
                   className="bg-gray-50 border border-gray-200 text-gray-700 text-xs rounded-lg focus:ring-primary focus:border-primary block p-2 outline-none"
                 >
                   <option value="All">ទាំងអស់</option>
@@ -263,7 +267,7 @@ const ExplorePage: React.FC = () => {
                   )}
                   {courses.map((sc, idx) => (
                     <ShortCourseCard
-                      key={`${sc.id}-${idx}`}
+                      key={sc.id}
                       course={sc}
                       schoolName={sc.schoolName}
                       onCompare={() => handleToggleCompare(sc)}
@@ -277,7 +281,7 @@ const ExplorePage: React.FC = () => {
             {/* Load More */}
             {hasMore && (
               <div className="pt-8 pb-4 flex justify-center">
-                <button
+                <button type="button"
                   onClick={handleLoadMore}
                   disabled={loadingMore}
                   className="bg-white border border-gray-200 text-gray-600 font-bold py-2 px-6 rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-50 flex items-center text-sm"
@@ -319,7 +323,7 @@ const ExplorePage: React.FC = () => {
             </div>
 
             {compareList.length === 2 ? (
-              <button
+              <button type="button"
                 onClick={handleAnalyzeComparison}
                 className="bg-primary text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors flex items-center animate-pulse"
               >
@@ -329,8 +333,8 @@ const ExplorePage: React.FC = () => {
               <span className="text-xs text-gray-400">ជ្រើសរើស 1 ទៀត</span>
             )}
 
-            <button
-              onClick={() => setCompareList([])}
+            <button type="button"
+              onClick={() => setState(prev => ({ ...prev, compareList: [] }))}
               className="absolute -top-2 -right-2 bg-gray-700 rounded-full p-1 text-gray-300"
             >
               <X className="h-3 w-3" />
@@ -348,7 +352,7 @@ const ExplorePage: React.FC = () => {
                 <Zap className="h-5 w-5 text-secondary fill-secondary" />
                 <h3 className="font-bold text-gray-900">ការប្រៀបធៀបដោយ AI</h3>
               </div>
-              <button onClick={() => setShowCompareModal(false)}>
+              <button type="button" onClick={() => setState(prev => ({ ...prev, showCompareModal: false }))}>
                 <X className="h-5 w-5 text-gray-400" />
               </button>
             </div>
@@ -368,8 +372,9 @@ const ExplorePage: React.FC = () => {
                     {compareList.map((c) => (
                       <div key={c.id} className="flex-1">
                         <img
-                          src={c.coverImage || 'https://via.placeholder.com/150'}
+                          src={c.coverImage || 'https://via.placeholder.com/300x200'}
                           className="w-full h-24 object-cover rounded-lg mb-2 bg-gray-100"
+                          alt="Cover"
                         />
                         <h4 className="font-bold text-xs text-gray-900 line-clamp-2">{c.title}</h4>
                         <p className="text-[10px] text-gray-500">{c.schoolName}</p>
@@ -384,8 +389,8 @@ const ExplorePage: React.FC = () => {
             </div>
 
             <div className="p-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
-              <button
-                onClick={() => setShowCompareModal(false)}
+              <button type="button"
+                onClick={() => setState(prev => ({ ...prev, showCompareModal: false }))}
                 className="w-full bg-gray-900 text-white font-bold py-3 rounded-xl"
               >
                 បិទ (Close)

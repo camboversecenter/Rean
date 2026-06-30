@@ -6,13 +6,9 @@ import { fetchStudentAchievements } from '../services/achievementService';
 import { getStudentBookings, updateBookingStatus } from '../services/tutorService';
 import { calculateLevel, calculateNextLevelProgress } from '../services/leaderboardService';
 import { supabase } from '../services/supabaseClient';
-import {
-  User,
   Camera,
   LogOut,
-  Save,
   Loader2,
-  AlertCircle,
   Building2,
   ChevronRight,
   Target,
@@ -22,12 +18,7 @@ import {
   Clock,
   Award,
   Gift,
-  CheckCircle,
-  X,
   Bell,
-  FileText,
-  Monitor,
-  BookOpen,
   HelpCircle,
   Edit,
 } from './Icons';
@@ -54,36 +45,36 @@ const AccountPage: React.FC = () => {
   const [levelStats, setLevelStats] = useState<any>(null);
 
   useEffect(() => {
-    loadProfile();
-  }, [location.key]);
+    const loadProfile = async () => {
+      try {
+        const userProfile = await getCurrentUserProfile();
+        if (userProfile) {
+          setProfile(userProfile);
+          setFullName(userProfile.full_name || '');
+          setLevelStats(calculateNextLevelProgress(userProfile.lifetime_xp || 0));
 
-  const loadProfile = async () => {
-    try {
-      const userProfile = await getCurrentUserProfile();
-      if (userProfile) {
-        setProfile(userProfile);
-        setFullName(userProfile.full_name || '');
-        setLevelStats(calculateNextLevelProgress(userProfile.lifetime_xp || 0));
+          // Load active missions
+          const missions = await getMyActiveMissions();
+          setActiveMissions(missions);
 
-        // Load active missions
-        const missions = await getMyActiveMissions();
-        setActiveMissions(missions);
+          // Load Tutor Bookings
+          const studentBookings = await getStudentBookings();
+          setBookings(studentBookings);
 
-        // Load Tutor Bookings
-        const studentBookings = await getStudentBookings();
-        setBookings(studentBookings);
-
-        // Load Achievements
-        const studentAchievements = await fetchStudentAchievements(userProfile.id);
-        setAchievements(studentAchievements);
+          // Load Achievements
+          const studentAchievements = await fetchStudentAchievements(userProfile.id);
+          setAchievements(studentAchievements);
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error('បរាជ័យក្នុងការផ្ទុកទិន្នន័យ');
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error(error);
-      toast.error('បរាជ័យក្នុងការផ្ទុកទិន្នន័យ');
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+
+    loadProfile();
+  }, []);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -216,7 +207,7 @@ const AccountPage: React.FC = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <button
+              <button type="button"
                 onClick={() => fileInputRef.current?.click()}
                 className="absolute bottom-1 right-1 bg-gray-900 text-white p-2 rounded-full shadow-lg hover:scale-105 transition-transform border-2 border-white"
                 title="Change Photo"
@@ -224,6 +215,8 @@ const AccountPage: React.FC = () => {
                 <Camera className="h-4 w-4" />
               </button>
               <input
+                id="profile-photo"
+                aria-label="Profile photo"
                 type="file"
                 ref={fileInputRef}
                 onChange={handleFileChange}
@@ -380,13 +373,13 @@ const AccountPage: React.FC = () => {
                           )}
                         </div>
                         <div className="flex flex-row sm:flex-col gap-2 shrink-0">
-                          <button
+                          <button type="button"
                             onClick={() => handleStudentBookingAction(booking.id, 'Accepted')}
                             className="flex-1 bg-green-600 text-white font-bold py-2 px-4 rounded-xl text-xs hover:bg-green-700 shadow-sm transition-colors"
                           >
                             ទទួល (Accept)
                           </button>
-                          <button
+                          <button type="button"
                             onClick={() => handleStudentBookingAction(booking.id, 'Rejected')}
                             className="flex-1 bg-white border border-gray-200 text-gray-600 font-bold py-2 px-4 rounded-xl text-xs hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors"
                           >
@@ -552,7 +545,10 @@ const AccountPage: React.FC = () => {
               </div>
 
               <div className="space-y-3">
+                <label htmlFor="full-name" className="sr-only">ឈ្មោះរបស់អ្នក</label>
                 <input
+                  id="full-name"
+                  aria-label="Full Name"
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
@@ -560,7 +556,7 @@ const AccountPage: React.FC = () => {
                   placeholder="ឈ្មោះរបស់អ្នក (Full Name)"
                 />
 
-                <button
+                <button type="button"
                   onClick={handleSave}
                   disabled={saving}
                   className="w-full bg-gray-900 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center text-sm"
@@ -579,7 +575,7 @@ const AccountPage: React.FC = () => {
                 <HelpCircle className="h-4 w-4 mr-2" /> មជ្ឈមណ្ឌលជំនួយ
               </Link>
 
-              <button
+              <button type="button"
                 onClick={handleLogout}
                 className="w-full bg-white border border-red-100 text-red-500 font-bold py-3 rounded-xl hover:bg-red-50 transition-colors flex items-center justify-center text-sm"
               >

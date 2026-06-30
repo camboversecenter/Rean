@@ -8,19 +8,22 @@ import confetti from 'canvas-confetti';
 
 const LuckyDropManager: React.FC = () => {
   const location = useLocation();
-  const [isVisible, setIsVisible] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
+  const [state, setState] = useState({
+    isVisible: false,
+    userId: null as string | null
+  });
 
   useEffect(() => {
-    getCurrentUser().then((u) => setUserId(u?.id || null));
+    getCurrentUser().then((u) => setState(s => ({ ...s, userId: u?.id || null })));
   }, []);
 
   useEffect(() => {
     // Reset state on every navigation
-    setIsVisible(false);
+    setState(s => ({ ...s, isVisible: false }));
+    let timeoutId: NodeJS.Timeout;
 
     const tryTriggerLuck = async () => {
-      if (!userId) return;
+      if (!state.userId) return;
 
       // 1. Chance Logic: 15% Chance per page navigation
       // A low percentage keeps it exciting without being annoying
@@ -28,29 +31,33 @@ const LuckyDropManager: React.FC = () => {
 
       if (isLucky) {
         // 2. Check Daily Limit (Max 3 per day)
-        const canEarn = await checkCanEarn(userId, 'LUCKY_DROP');
+        const canEarn = await checkCanEarn(state.userId, 'LUCKY_DROP');
         if (canEarn) {
           // Delay slightly (1.5s) so it doesn't clutter the UI immediately upon load
-          setTimeout(() => setIsVisible(true), 1500);
+          timeoutId = setTimeout(() => setState(s => ({ ...s, isVisible: true })), 1500);
         }
       }
     };
 
-    if (userId) {
+    if (state.userId) {
       tryTriggerLuck();
     }
-  }, [location.pathname, userId]);
+    
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [location, state.userId]);
 
   const handleClaim = async () => {
-    if (!userId) return;
+    if (!state.userId) return;
 
     // Calculate random points (Between 5 and 20)
     const points = Math.floor(Math.random() * (20 - 5 + 1)) + 5;
 
-    setIsVisible(false); // Hide immediately to prevent double clicks
+    setState(s => ({ ...s, isVisible: false })); // Hide immediately to prevent double clicks
 
     try {
-      await awardAction(userId, 'LUCKY_DROP', points);
+      await awardAction(state.userId, 'LUCKY_DROP', points);
 
       // Visual Celebration
       confetti({
@@ -86,14 +93,15 @@ const LuckyDropManager: React.FC = () => {
     }
   };
 
-  if (!isVisible) return null;
+  if (!state.isVisible) return null;
 
   return (
     <div className="fixed bottom-24 right-4 z-[90] animate-bounce-in">
-      <div
-        className="relative group cursor-pointer transition-transform hover:scale-110 active:scale-95"
+      <button type="button"
+        className="relative group cursor-pointer transition-transform hover:scale-110 active:scale-95 border-none bg-transparent p-0 m-0 text-left"
         onClick={handleClaim}
         title="ចុចដើម្បីទទួលរង្វាន់ (Click to Claim)"
+        aria-label="Claim Lucky Drop"
       >
         {/* Glow Effect */}
         <div className="absolute inset-0 bg-yellow-400 rounded-full blur-xl opacity-60 animate-pulse"></div>
@@ -117,7 +125,7 @@ const LuckyDropManager: React.FC = () => {
           </p>
           <div className="absolute right-[-5px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-white rotate-45 border-r border-t border-gray-100"></div>
         </div>
-      </div>
+      </button>
     </div>
   );
 };

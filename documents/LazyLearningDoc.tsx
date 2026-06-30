@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Zap,
-  MessageCircle,
   Gift,
   ShieldCheck,
   ChevronLeft,
@@ -19,7 +18,7 @@ const LazyLearningDoc: React.FC = () => {
     <div className="min-h-screen bg-gray-50 pb-20 pt-8 px-4 font-['Kantumruy_Pro']">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <button
+        <button type="button"
           onClick={() => navigate('/docs')}
           className="mb-6 flex items-center text-gray-500 hover:text-gray-900 font-medium transition-colors"
         >
@@ -121,7 +120,7 @@ const LazyLearningDoc: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-bold text-gray-800">ការទទួលបាន XP & Points</h3>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <div className="text-sm text-gray-600 mt-1">
                       ប្រសិនបើចម្លើយរបស់អ្នកមានប្រយោជន៍ (ឆ្លងកាត់ Quality Gate)៖
                       <ul className="list-disc list-inside mt-1 ml-2 text-gray-500">
                         <li>
@@ -129,7 +128,7 @@ const LazyLearningDoc: React.FC = () => {
                         </li>
                         <li>ទទួលបាន XP បន្ថែមនៅពេលមានគេចុច Like។</li>
                       </ul>
-                    </p>
+                    </div>
                   </div>
                 </div>
 
@@ -139,13 +138,13 @@ const LazyLearningDoc: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-bold text-gray-800">ការទទួលយកចម្លើយ (Solution Accepted)</h3>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <div className="text-sm text-gray-600 mt-1">
                       ប្រសិនបើម្ចាស់សំណួរចុច <strong>"ទទួលយក (Accept)"</strong> លើចម្លើយរបស់អ្នក៖
                       <ul className="list-disc list-inside mt-1 ml-2 text-gray-500">
                         <li>អ្នកនឹងទទួលបានប្រាក់រង្វាន់ Bounty ទាំងស្រុង (ប្រសិនបើមាន)។</li>
                         <li>ទទួលបាន XP បន្ថែមយ៉ាងច្រើន (+20 XP)។</li>
                       </ul>
-                    </p>
+                    </div>
                   </div>
                 </div>
               </div>

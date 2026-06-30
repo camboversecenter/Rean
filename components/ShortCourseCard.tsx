@@ -103,7 +103,7 @@ const ShortCourseCard: React.FC<ShortCourseCardProps> = ({
 
       {/* Compare Button Overlay */}
       {onCompare && (
-        <button
+        <button type="button"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();

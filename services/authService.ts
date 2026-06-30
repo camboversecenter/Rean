@@ -54,7 +54,6 @@ export const getCurrentUserProfile = async () => {
         email: user.email,
         full_name: user.user_metadata?.full_name || user.email?.split('@')[0],
         avatar_url: user.user_metadata?.avatar_url,
-        role: null,
         lifetime_xp: 0,
         spendable_points: INITIAL_POINTS,
         level: 1,
@@ -72,15 +71,14 @@ export const getCurrentUserProfile = async () => {
         return { ...newProfile, role: null };
       }
 
+      const logData = {
+        amount: INITIAL_POINTS,
+        type: 'earn',
+        reason: 'Welcome Bonus (កាដូស្វាគមន៍)',
+        user_id: user.id
+      };
       // Log the Welcome Bonus Transaction so it shows in history
-      await supabase.from('point_transactions').insert([
-        {
-          user_id: user.id,
-          amount: INITIAL_POINTS,
-          type: 'earn',
-          reason: 'Welcome Bonus (កាដូស្វាគមន៍)',
-        },
-      ]);
+      await supabase.from('point_transactions').insert([logData]);
 
       return createdProfile;
     }
@@ -109,23 +107,37 @@ export const getUserProfileById = async (userId: string) => {
 /**
  * Updates the role in public.profiles table (not auth.users)
  */
-export const updateUserRole = async (role: UserRole) => {
+export const updateUserRole = async (newRole: UserRole) => {
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) throw new Error('No user logged in');
+    data: { session },
+  } = await supabase.auth.getSession();
+  if (!session?.user) throw new Error('No user logged in');
 
-  const { data, error } = await supabase
-    .from('profiles')
-    .update({ role: role })
-    .eq('id', user.id)
-    .select()
-    .single();
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+  
+  if (!supabaseUrl || !anonKey) {
+     throw new Error('Supabase credentials missing');
+  }
 
-  if (error) throw error;
-  return data;
+  const response = await fetch(`${supabaseUrl}/rest/v1/profiles?id=eq.${session.user.id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${session.access_token}`,
+      'apikey': anonKey
+    },
+    body: JSON.stringify({ role: newRole })
+  });
+
+  if (!response.ok) throw new Error('Failed to update role');
+  const result = await response.json();
+  return result && result.length > 0 ? result[0] : null;
 };
 
-export const hasRole = (profile: any): boolean => {
-  return !!profile?.role;
+export const hasRole = (profile: { role?: string } | null | unknown): boolean => {
+  if (profile && typeof profile === 'object' && 'role' in profile) {
+    return !!(profile as { role?: string }).role;
+  }
+  return false;
 };

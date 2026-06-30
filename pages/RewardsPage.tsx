@@ -23,18 +23,65 @@ import toast from 'react-hot-toast';
 import confetti from 'canvas-confetti';
 
 const RewardsPage: React.FC = () => {
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [activeTab, setActiveTab] = useState<'shop' | 'inventory' | 'history'>('shop');
-  const [boxes, setBoxes] = useState<MysteryBox[]>([]);
-  const [myClaims, setMyClaims] = useState<RewardClaim[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [opening, setOpening] = useState<string | null>(null);
+  const [state, setState] = useState({
+    profile: null as UserProfile | null,
+    activeTab: 'shop' as 'shop' | 'inventory' | 'history',
+    boxes: [] as MysteryBox[],
+    myClaims: [] as RewardClaim[],
+    loading: true,
+    opening: null as string | null,
+    pointHistory: [] as PointTransaction[],
+    pointHistoryPage: 1,
+    pointHistoryHasMore: true,
+    historyLoading: false,
+  });
 
-  // History State
-  const [history, setHistory] = useState<PointTransaction[]>([]);
-  const [historyPage, setHistoryPage] = useState(1);
-  const [historyHasMore, setHistoryHasMore] = useState(true);
-  const [historyLoading, setHistoryLoading] = useState(false);
+  const {
+    profile,
+    activeTab,
+    boxes,
+    myClaims,
+    loading,
+    opening,
+    pointHistory,
+    pointHistoryPage,
+    pointHistoryHasMore,
+    historyLoading,
+  } = state;
+
+  const setProfile = React.useCallback((v: any) => setState((s) => ({ ...s, profile: v })), []);
+  const setActiveTab = React.useCallback((v: any) => setState((s) => ({ ...s, activeTab: v })), []);
+  const setBoxes = React.useCallback((v: any) => setState((s) => ({ ...s, boxes: v })), []);
+  const setMyClaims = React.useCallback((v: any) => setState((s) => ({ ...s, myClaims: v })), []);
+  const setLoading = React.useCallback((v: any) => setState((s) => ({ ...s, loading: v })), []);
+  const setOpening = React.useCallback((v: any) => setState((s) => ({ ...s, opening: v })), []);
+  const setPointHistory = React.useCallback((v: any) =>
+    setState((s) => ({
+      ...s,
+      pointHistory: typeof v === 'function' ? v(s.pointHistory) : v,
+    })), []);
+  const setpointHistoryPage = React.useCallback((v: any) => setState((s) => ({ ...s, pointHistoryPage: v })), []);
+  const setpointHistoryHasMore = React.useCallback((v: any) => setState((s) => ({ ...s, pointHistoryHasMore: v })), []);
+  const setPointHistoryLoading = React.useCallback((v: any) => setState((s) => ({ ...s, historyLoading: v })), []);
+
+  const loadData = React.useCallback(async () => {
+    const p = await getCurrentUserProfile();
+    const b = await fetchMysteryBoxes();
+    setProfile(p);
+    setBoxes(b);
+    setLoading(false);
+  }, []);
+
+  const loadHistory = React.useCallback(async (page: number) => {
+    setPointHistoryLoading(true);
+    const data = await fetchPointHistory(page, 20);
+    if (data.length < 20) setpointHistoryHasMore(false);
+
+    if (page === 1) setPointHistory(data);
+    else setPointHistory((prev: any) => [...prev, ...data]);
+
+    setPointHistoryLoading(false);
+  }, [setPointHistoryLoading, setpointHistoryHasMore, setPointHistory]);
 
   useEffect(() => {
     loadData();
@@ -47,7 +94,7 @@ const RewardsPage: React.FC = () => {
     };
     window.addEventListener('rean-points-updated', handleUpdate);
     return () => window.removeEventListener('rean-points-updated', handleUpdate);
-  }, []);
+  }, [loadData]);
 
   // Effect to reload data based on tab
   useEffect(() => {
@@ -55,32 +102,13 @@ const RewardsPage: React.FC = () => {
       getMyRewardClaims().then(setMyClaims);
     } else if (activeTab === 'history') {
       // Only load if empty to prevent excessive calls, allow manual refresh via pull/reload if needed later
-      if (history.length === 0) loadHistory(1);
+      if (pointHistory.length === 0) loadHistory(1);
     }
-  }, [activeTab]);
-
-  const loadData = async () => {
-    const p = await getCurrentUserProfile();
-    const b = await fetchMysteryBoxes();
-    setProfile(p);
-    setBoxes(b);
-    setLoading(false);
-  };
-
-  const loadHistory = async (page: number) => {
-    setHistoryLoading(true);
-    const data = await fetchPointHistory(page, 20);
-    if (data.length < 20) setHistoryHasMore(false);
-
-    if (page === 1) setHistory(data);
-    else setHistory((prev) => [...prev, ...data]);
-
-    setHistoryLoading(false);
-  };
+  }, [activeTab, pointHistory.length, loadHistory]);
 
   const handleHistoryLoadMore = () => {
-    const nextPage = historyPage + 1;
-    setHistoryPage(nextPage);
+    const nextPage = pointHistoryPage + 1;
+    setpointHistoryPage(nextPage);
     loadHistory(nextPage);
   };
 
@@ -153,8 +181,8 @@ const RewardsPage: React.FC = () => {
           // Update lists if we are already on those tabs
           if (activeTab === 'inventory') getMyRewardClaims().then(setMyClaims);
           if (activeTab === 'history') {
-            setHistoryPage(1);
-            setHistoryHasMore(true);
+            setpointHistoryPage(1);
+            setpointHistoryHasMore(true);
             loadHistory(1);
           }
         }, 1500);
@@ -191,19 +219,19 @@ const RewardsPage: React.FC = () => {
 
         {/* Tabs */}
         <div className="flex bg-white rounded-xl p-1 shadow-sm border border-gray-100 mb-6">
-          <button
+          <button type="button"
             onClick={() => setActiveTab('shop')}
             className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'shop' ? 'bg-gray-900 text-white shadow' : 'text-gray-500 hover:text-gray-900'}`}
           >
             ហាង (Shop)
           </button>
-          <button
+          <button type="button"
             onClick={() => setActiveTab('inventory')}
             className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'inventory' ? 'bg-gray-900 text-white shadow' : 'text-gray-500 hover:text-gray-900'}`}
           >
             របស់ខ្ញុំ (My)
           </button>
-          <button
+          <button type="button"
             onClick={() => setActiveTab('history')}
             className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'history' ? 'bg-gray-900 text-white shadow' : 'text-gray-500 hover:text-gray-900'}`}
           >
@@ -236,7 +264,7 @@ const RewardsPage: React.FC = () => {
                   >
                     <div className="w-16 h-16 rounded-xl flex items-center justify-center text-3xl shadow-inner bg-purple-50 text-purple-600 overflow-hidden">
                       {item.cover_image ? (
-                        <img src={item.cover_image} className="w-full h-full object-cover" />
+                        <img src={item.cover_image} className="w-full h-full object-cover" alt="Cover Image" />
                       ) : (
                         '🎁'
                       )}
@@ -250,7 +278,7 @@ const RewardsPage: React.FC = () => {
                         </p>
                       )}
                     </div>
-                    <button
+                    <button type="button"
                       onClick={() => handlePurchase(item)}
                       disabled={opening !== null}
                       className={`px-4 py-2 rounded-xl font-bold text-sm shadow-sm transition-transform active:scale-95 ${
@@ -329,15 +357,15 @@ const RewardsPage: React.FC = () => {
               <h2 className="font-bold text-gray-900 text-lg">ប្រវត្តិប្រតិបត្តិការ</h2>
             </div>
 
-            {history.length === 0 && !historyLoading ? (
+            {pointHistory.length === 0 && !historyLoading ? (
               <div className="text-center py-12 bg-white rounded-xl border border-dashed border-gray-200 text-gray-400">
                 គ្មានប្រវត្តិ។
               </div>
             ) : (
               <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-                {history.map((tx, idx) => (
+                {pointHistory.map((tx) => (
                   <div
-                    key={tx.id || idx}
+                    key={tx.id}
                     className="p-4 border-b border-gray-50 last:border-0 flex justify-between items-center hover:bg-gray-50"
                   >
                     <div>
@@ -357,9 +385,9 @@ const RewardsPage: React.FC = () => {
               </div>
             )}
 
-            {historyHasMore && (
+            {pointHistoryHasMore && (
               <div className="text-center mt-4">
-                <button
+                <button type="button"
                   onClick={handleHistoryLoadMore}
                   disabled={historyLoading}
                   className="bg-white border border-gray-200 text-gray-600 text-xs font-bold py-2 px-4 rounded-lg shadow-sm hover:bg-gray-50 disabled:opacity-50 flex items-center justify-center mx-auto"

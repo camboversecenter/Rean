@@ -25,13 +25,15 @@ import { getCurrentUserProfile } from '../services/authService';
 import { School, Mission, TutorProfile } from '../types';
 
 const HomePage: React.FC = () => {
-  const [searchTab, setSearchTab] = useState<'school' | 'mission' | 'tutor'>('school');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [schools, setSchools] = useState<School[]>([]);
-  const [missions, setMissions] = useState<Mission[]>([]);
-  const [tutors, setTutors] = useState<TutorProfile[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [profile, setProfile] = useState<any>(null);
+  const [state, setState] = useState({
+    searchTab: 'school' as 'school' | 'mission' | 'tutor',
+    searchQuery: '',
+    schools: [] as School[],
+    missions: [] as Mission[],
+    tutors: [] as TutorProfile[],
+    loading: true,
+    profile: null as any
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,35 +46,31 @@ const HomePage: React.FC = () => {
         getCurrentUserProfile(),
       ]);
 
-      setSchools(schoolData);
-      setMissions(missionData);
-      setTutors(tutorData);
-      setProfile(userProfile);
-      setLoading(false);
+      setState(s => ({ ...s, schools: schoolData, missions: missionData, tutors: tutorData, profile: userProfile, loading: false }));
     };
     loadData();
   }, []);
 
   // --- Filtering Logic ---
-  const filteredSchools = schools.filter(
+  const filteredSchools = state.schools.filter(
     (s) =>
-      s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      s.majors.some((m) => m.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      s.location.toLowerCase().includes(searchQuery.toLowerCase())
+      s.name.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
+      s.majors.some((m) => m.toLowerCase().includes(state.searchQuery.toLowerCase())) ||
+      s.location.toLowerCase().includes(state.searchQuery.toLowerCase())
   );
 
-  const filteredMissions = missions.filter(
+  const filteredMissions = state.missions.filter(
     (m) =>
-      m.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      m.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      m.category.toLowerCase().includes(searchQuery.toLowerCase())
+      m.title.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
+      m.description.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
+      m.category.toLowerCase().includes(state.searchQuery.toLowerCase())
   );
 
-  const filteredTutors = tutors.filter(
+  const filteredTutors = state.tutors.filter(
     (t) =>
-      (t.fullName || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (t.subjects || []).some((s) => s.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (t.bio || '').toLowerCase().includes(searchQuery.toLowerCase())
+      (t.fullName || '').toLowerCase().includes(state.searchQuery.toLowerCase()) ||
+      (t.subjects || []).some((s) => s.toLowerCase().includes(state.searchQuery.toLowerCase())) ||
+      (t.bio || '').toLowerCase().includes(state.searchQuery.toLowerCase())
   );
 
   return (
@@ -84,23 +82,23 @@ const HomePage: React.FC = () => {
           <div className="flex flex-col md:flex-row gap-4 items-center">
             {/* Search Tabs */}
             <div className="flex justify-center space-x-1 p-1 bg-gray-100 md:bg-white rounded-xl w-fit md:w-auto shrink-0 transition-all md:shadow-sm md:border md:border-gray-200">
-              <button
-                onClick={() => setSearchTab('school')}
-                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center ${searchTab === 'school' ? 'bg-white text-primary shadow-sm md:bg-gray-100' : 'text-gray-500 hover:text-gray-700'}`}
+              <button type="button"
+                onClick={() => setState(s => ({ ...s, searchTab: 'school' }))}
+                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center ${state.searchTab === 'school' ? 'bg-white text-primary shadow-sm md:bg-gray-100' : 'text-gray-500 hover:text-gray-700'}`}
               >
                 <Building2 className="h-3.5 w-3.5 mr-2" />
                 សាលារៀន
               </button>
-              <button
-                onClick={() => setSearchTab('mission')}
-                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center ${searchTab === 'mission' ? 'bg-white text-primary shadow-sm md:bg-gray-100' : 'text-gray-500 hover:text-gray-700'}`}
+              <button type="button"
+                onClick={() => setState(s => ({ ...s, searchTab: 'mission' }))}
+                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center ${state.searchTab === 'mission' ? 'bg-white text-primary shadow-sm md:bg-gray-100' : 'text-gray-500 hover:text-gray-700'}`}
               >
                 <Target className="h-3.5 w-3.5 mr-2" />
                 បេសកកម្ម
               </button>
-              <button
-                onClick={() => setSearchTab('tutor')}
-                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center ${searchTab === 'tutor' ? 'bg-white text-primary shadow-sm md:bg-gray-100' : 'text-gray-500 hover:text-gray-700'}`}
+              <button type="button"
+                onClick={() => setState(s => ({ ...s, searchTab: 'tutor' }))}
+                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center ${state.searchTab === 'tutor' ? 'bg-white text-primary shadow-sm md:bg-gray-100' : 'text-gray-500 hover:text-gray-700'}`}
               >
                 <Users className="h-3.5 w-3.5 mr-2" />
                 គ្រូបង្រៀន
@@ -110,13 +108,14 @@ const HomePage: React.FC = () => {
             {/* Search Input */}
             <div className="relative w-full md:flex-1">
               <input
+                aria-label="Search"
                 type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                value={state.searchQuery}
+                onChange={(e) => setState(s => ({ ...s, searchQuery: e.target.value }))}
                 placeholder={
-                  searchTab === 'school'
+                  state.searchTab === 'school'
                     ? 'ស្វែងរកសាកលវិទ្យាល័យ ឬជំនាញសិក្សា...'
-                    : searchTab === 'mission'
+                    : state.searchTab === 'mission'
                       ? 'ស្វែងរកជំនាញ (Digital Marketing, Coding...)'
                       : 'ស្វែងរកគ្រូបង្រៀន (គណិតវិទ្យា, អង់គ្លេស...)'
                 }
@@ -125,15 +124,16 @@ const HomePage: React.FC = () => {
               <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
                 <Search className="w-5 h-5 text-gray-400" />
               </div>
-              {searchQuery ? (
-                <button
-                  onClick={() => setSearchQuery('')}
+              {state.searchQuery ? (
+                <button type="button"
+                  onClick={() => setState(s => ({ ...s, searchQuery: '' }))}
+                  aria-label="Clear Search"
                   className="absolute right-3 top-2.5 p-1.5 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100"
                 >
                   <X className="h-4 w-4" />
                 </button>
               ) : (
-                <button className="absolute right-2 top-2 bg-primary text-white font-medium rounded-lg text-xs px-4 py-1.5 hover:bg-primary/90 transition-colors">
+                <button type="button" className="absolute right-2 top-2 bg-primary text-white font-medium rounded-lg text-xs px-4 py-1.5 hover:bg-primary/90 transition-colors">
                   ស្វែងរក
                 </button>
               )}
@@ -144,16 +144,16 @@ const HomePage: React.FC = () => {
         {/* --- CONTENT AREA --- */}
 
         {/* 1. SEARCH RESULTS VIEW */}
-        {searchQuery ? (
+        {state.searchQuery ? (
           <div className="px-4 md:px-0 min-h-[50vh] animate-fade-in">
             <div className="flex items-center justify-between mb-4">
               <h2 className="font-bold text-gray-900">
-                លទ្ធផលស្វែងរក "{searchQuery}"{' '}
+                លទ្ធផលស្វែងរក "{state.searchQuery}"{' '}
                 <span className="text-gray-400 font-normal ml-1">
                   (
-                  {searchTab === 'school'
+                  {state.searchTab === 'school'
                     ? filteredSchools.length
-                    : searchTab === 'mission'
+                    : state.searchTab === 'mission'
                       ? filteredMissions.length
                       : filteredTutors.length}
                   )
@@ -161,7 +161,7 @@ const HomePage: React.FC = () => {
               </h2>
             </div>
 
-            {searchTab === 'school' && (
+            {state.searchTab === 'school' && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredSchools.length > 0 ? (
                   filteredSchools.map((s) => <SchoolCard key={s.id} school={s} />)
@@ -174,7 +174,7 @@ const HomePage: React.FC = () => {
               </div>
             )}
 
-            {searchTab === 'mission' && (
+            {state.searchTab === 'mission' && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredMissions.length > 0 ? (
                   filteredMissions.map((m) => <MissionCard key={m.id} mission={m} />)
@@ -187,7 +187,7 @@ const HomePage: React.FC = () => {
               </div>
             )}
 
-            {searchTab === 'tutor' && (
+            {state.searchTab === 'tutor' && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredTutors.length > 0 ? (
                   filteredTutors.map((t) => <TutorCard key={t.id} tutor={t} />)
@@ -215,13 +215,13 @@ const HomePage: React.FC = () => {
                 </Link>
               </div>
 
-              {loading ? (
+              {state.loading ? (
                 <div className="flex justify-center py-8">
                   <Loader2 className="animate-spin text-gray-300" />
                 </div>
-              ) : missions.length > 0 ? (
+              ) : state.missions.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {missions.slice(0, 3).map((mission) => (
+                  {state.missions.slice(0, 3).map((mission) => (
                     <MissionCard key={mission.id} mission={mission} compact={true} />
                   ))}
                 </div>
@@ -274,12 +274,12 @@ const HomePage: React.FC = () => {
                 </Link>
               </div>
               <div className="px-4 md:px-0 grid grid-cols-1 md:grid-cols-2 gap-4">
-                {loading ? (
+                {state.loading ? (
                   <div className="col-span-2 flex justify-center py-8">
                     <Loader2 className="animate-spin text-gray-300" />
                   </div>
                 ) : (
-                  schools
+                  state.schools
                     .slice(0, 4)
                     .map((school) => <SchoolCard key={school.id} school={school} />)
                 )}
@@ -298,17 +298,17 @@ const HomePage: React.FC = () => {
                     មើលបន្ថែម
                   </Link>
                 </div>
-                {loading ? (
+                {state.loading ? (
                   <div className="flex justify-center py-4">
                     <Loader2 className="animate-spin text-blue-300" />
                   </div>
                 ) : (
                   <div className="flex overflow-x-auto space-x-4 pb-4 -mx-4 px-4 scrollbar-hide md:grid md:grid-cols-2 md:gap-4 md:space-x-0 md:overflow-visible md:mx-0 md:px-0">
-                    {schools
+                    {state.schools
                       .flatMap((s) => s.shortCourses.map((sc) => ({ ...sc, schoolName: s.name })))
                       .slice(0, 6)
-                      .map((course, idx) => (
-                        <div key={idx} className="min-w-[280px] md:min-w-0 h-full">
+                      .map((course) => (
+                        <div key={course.id} className="min-w-[280px] md:min-w-0 h-full">
                           <ShortCourseCard course={course} schoolName={course.schoolName} />
                         </div>
                       ))}
@@ -329,12 +329,12 @@ const HomePage: React.FC = () => {
                 </Link>
               </div>
               <div className="px-4 md:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                {loading ? (
+                {state.loading ? (
                   <div className="col-span-2 flex justify-center py-8">
                     <Loader2 className="animate-spin text-gray-300" />
                   </div>
-                ) : tutors.length > 0 ? (
-                  tutors.slice(0, 4).map((tutor) => <TutorCard key={tutor.id} tutor={tutor} />)
+                ) : state.tutors.length > 0 ? (
+                  state.tutors.slice(0, 4).map((tutor) => <TutorCard key={tutor.id} tutor={tutor} />)
                 ) : (
                   <div className="col-span-2 text-center py-8 text-gray-400 bg-gray-50 rounded-xl border border-dashed border-gray-200">
                     <Users className="h-8 w-8 mx-auto mb-2 opacity-50" />

@@ -37,53 +37,72 @@ import toast from 'react-hot-toast';
 import { TutorBooking, Achievement } from '../types';
 
 const AccountPage: React.FC = () => {
-  const [profile, setProfile] = useState<any>(null);
-  const [fullName, setFullName] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [avatarFile, setAvatarFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [activeMissions, setActiveMissions] = useState<any[]>([]);
-  const [achievements, setAchievements] = useState<Achievement[]>([]);
-  const [bookings, setBookings] = useState<TutorBooking[]>([]);
+  const [state, setState] = React.useReducer(
+    (prev: any, next: any) => ({ ...prev, ...(typeof next === 'function' ? next(prev) : next) }),
+    {
+      profile: null as any,
+      fullName: '',
+      loading: true,
+      saving: false,
+      avatarFile: null as File | null,
+      previewUrl: null as string | null,
+      activeMissions: [] as any[],
+      achievements: [] as Achievement[],
+      bookings: [] as TutorBooking[],
+      levelStats: null as any,
+    }
+  );
+
+  const {
+    profile, fullName, loading, saving, avatarFile, previewUrl,
+    activeMissions, achievements, bookings, levelStats
+  } = state;
+
+  const setProfile = (v: any) => setState({ profile: v });
+  const setFullName = (v: any) => setState({ fullName: v });
+  const setLoading = (v: any) => setState({ loading: v });
+  const setSaving = (v: any) => setState({ saving: v });
+  const setAvatarFile = (v: any) => setState({ avatarFile: v });
+  const setPreviewUrl = (v: any) => setState({ previewUrl: v });
+  const setActiveMissions = (v: any) => setState({ activeMissions: v });
+  const setAchievements = (v: any) => setState({ achievements: v });
+  const setBookings = (v: any) => setState((prev: any) => ({ bookings: typeof v === 'function' ? v(prev.bookings) : v }));
+  const setLevelStats = (v: any) => setState({ levelStats: v });
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Gamification Stats
-  const [levelStats, setLevelStats] = useState<any>(null);
-
   useEffect(() => {
-    loadProfile();
-  }, [location.key]);
+    const loadProfile = async () => {
+      try {
+        const userProfile = await getCurrentUserProfile();
+        if (userProfile) {
+          setProfile(userProfile);
+          setFullName(userProfile.full_name || '');
+          setLevelStats(calculateNextLevelProgress(userProfile.lifetime_xp || 0));
 
-  const loadProfile = async () => {
-    try {
-      const userProfile = await getCurrentUserProfile();
-      if (userProfile) {
-        setProfile(userProfile);
-        setFullName(userProfile.full_name || '');
-        setLevelStats(calculateNextLevelProgress(userProfile.lifetime_xp || 0));
+          // Load active missions
+          const missions = await getMyActiveMissions();
+          setActiveMissions(missions);
 
-        // Load active missions
-        const missions = await getMyActiveMissions();
-        setActiveMissions(missions);
+          // Load Tutor Bookings
+          const studentBookings = await getStudentBookings();
+          setBookings(studentBookings);
 
-        // Load Tutor Bookings
-        const studentBookings = await getStudentBookings();
-        setBookings(studentBookings);
-
-        // Load Achievements
-        const studentAchievements = await fetchStudentAchievements(userProfile.id);
-        setAchievements(studentAchievements);
+          // Load Achievements
+          const studentAchievements = await fetchStudentAchievements(userProfile.id);
+          setAchievements(studentAchievements);
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error('បរាជ័យក្នុងការផ្ទុកទិន្នន័យ');
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error(error);
-      toast.error('បរាជ័យក្នុងការផ្ទុកទិន្នន័យ');
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+    loadProfile();
+  }, []);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -217,19 +236,23 @@ const AccountPage: React.FC = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <button
+              <button type="button"
                 onClick={() => fileInputRef.current?.click()}
                 className="absolute bottom-1 right-1 bg-gray-900 text-white p-2 rounded-full shadow-lg hover:scale-105 transition-transform border-2 border-white"
                 title="Change Photo"
+                aria-label="Change Photo"
               >
                 <Camera className="h-4 w-4" />
               </button>
+              <label htmlFor="avatar-upload" className="sr-only">Upload Avatar</label>
               <input
+                id="avatar-upload"
                 type="file"
                 ref={fileInputRef}
                 onChange={handleFileChange}
                 accept="image/*"
                 className="hidden"
+                aria-label="Upload Avatar"
               />
             </div>
 
@@ -381,13 +404,13 @@ const AccountPage: React.FC = () => {
                           )}
                         </div>
                         <div className="flex flex-row sm:flex-col gap-2 shrink-0">
-                          <button
+                          <button type="button"
                             onClick={() => handleStudentBookingAction(booking.id, 'Accepted')}
                             className="flex-1 bg-green-600 text-white font-bold py-2 px-4 rounded-xl text-xs hover:bg-green-700 shadow-sm transition-colors"
                           >
                             ទទួល (Accept)
                           </button>
-                          <button
+                          <button type="button"
                             onClick={() => handleStudentBookingAction(booking.id, 'Rejected')}
                             className="flex-1 bg-white border border-gray-200 text-gray-600 font-bold py-2 px-4 rounded-xl text-xs hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors"
                           >
@@ -553,15 +576,18 @@ const AccountPage: React.FC = () => {
               </div>
 
               <div className="space-y-3">
+                <label htmlFor="fullName" className="sr-only">Full Name</label>
                 <input
+                  id="fullName"
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                   placeholder="ឈ្មោះរបស់អ្នក (Full Name)"
+                  aria-label="Full Name"
                 />
 
-                <button
+                <button type="button"
                   onClick={handleSave}
                   disabled={saving}
                   className="w-full bg-gray-900 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center text-sm"
@@ -580,7 +606,7 @@ const AccountPage: React.FC = () => {
                 <HelpCircle className="h-4 w-4 mr-2" /> មជ្ឈមណ្ឌលជំនួយ
               </Link>
 
-              <button
+              <button type="button"
                 onClick={handleLogout}
                 className="w-full bg-white border border-red-100 text-red-500 font-bold py-3 rounded-xl hover:bg-red-50 transition-colors flex items-center justify-center text-sm"
               >
