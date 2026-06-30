@@ -1,4 +1,3 @@
-
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { AlertCircle, RefreshCw } from './Icons';
 
@@ -33,10 +32,12 @@ class ErrorBoundary extends Component<Props, State> {
             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <AlertCircle className="h-8 w-8 text-red-600" />
             </div>
-            <h1 className="text-xl font-bold text-gray-900 mb-2">មានបញ្ហាបច្ចេកទេស (Something went wrong)</h1>
+            <h1 className="text-xl font-bold text-gray-900 mb-2">
+              មានបញ្ហាបច្ចេកទេស (Something went wrong)
+            </h1>
             <p className="text-gray-500 text-sm mb-6">
               កម្មវិធីបានជួបបញ្ហាដែលមិនរំពឹងទុក។ សូមព្យាយាមផ្ទុកទំព័រឡើងវិញ។
-              <br/>
+              <br />
               <span className="text-xs font-mono bg-gray-100 px-2 py-1 rounded mt-2 inline-block max-w-full truncate">
                 {this.state.error?.message}
               </span>
