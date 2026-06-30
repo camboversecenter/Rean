@@ -29,50 +29,55 @@ import SchoolCourseManager from '../components/SchoolCourseManager';
 import toast from 'react-hot-toast';
 
 const SchoolDashboard: React.FC = () => {
-  const [school, setSchool] = useState<School | null>(null);
-  const [inquiries, setInquiries] = useState<SchoolInquiry[]>([]);
-  const [enrollments, setEnrollments] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState<
-    'profile' | 'admissions' | 'courses' | 'leads' | 'enrollments'
-  >('profile');
+  const [state, setState] = useState({
+    school: null as School | null,
+    inquiries: [] as SchoolInquiry[],
+    enrollments: [] as any[],
+    loading: true,
+    saving: false,
+    activeTab: 'profile' as 'profile' | 'admissions' | 'courses' | 'leads' | 'enrollments',
+  });
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const loadData = async () => {
-    setLoading(true);
+  const loadData = React.useCallback(async () => {
+    setState((s) => ({ ...s, loading: true }));
     try {
       const schoolData = await getMySchool();
-      setSchool(schoolData);
+      let leads: SchoolInquiry[] = [];
+      let apps: any[] = [];
       if (schoolData) {
-        const [leads, apps] = await Promise.all([
+        [leads, apps] = await Promise.all([
           getMyInquiries(schoolData.id),
           getSchoolEnrollments(schoolData.id),
         ]);
-        setInquiries(leads);
-        setEnrollments(apps);
       }
+      setState((s) => ({
+        ...s,
+        school: schoolData,
+        inquiries: leads,
+        enrollments: apps,
+      }));
     } catch (e) {
       console.error(e);
     } finally {
-      setLoading(false);
+      setState((s) => ({ ...s, loading: false }));
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const handleCreateSchool = async () => {
-    setSaving(true);
+    setState((s) => ({ ...s, saving: true }));
     try {
       const newSchool = await createMySchool('សាលារបស់ខ្ញុំ (My School)');
-      setSchool(newSchool);
+      setState((s) => ({ ...s, school: newSchool }));
       toast.success('បានបង្កើតសាលារៀនជោគជ័យ!');
       await loadData();
     } catch (e: any) {
       toast.error(e.message || 'បរាជ័យក្នុងការបង្កើតសាលា។');
     } finally {
-      setSaving(false);
+      setState((s) => ({ ...s, saving: false }));
     }
   };
 
@@ -80,11 +85,11 @@ const SchoolDashboard: React.FC = () => {
     updates: Partial<School>,
     files: { logo: File | Blob | null; cover: File | Blob | null }
   ) => {
-    if (!school) return;
-    setSaving(true);
+    if (!state.school) return;
+    setState((s) => ({ ...s, saving: true }));
     try {
-      let logoUrl = school.logo;
-      let coverUrl = school.coverImage;
+      let logoUrl = state.school.logo;
+      let coverUrl = state.school.coverImage;
 
       if (files.logo) {
         if (logoUrl?.includes('supabase')) await deleteFileFromUrl(logoUrl);
@@ -96,36 +101,36 @@ const SchoolDashboard: React.FC = () => {
         coverUrl = (await uploadFile(files.cover, 'school-covers')) || coverUrl;
       }
 
-      await updateSchoolProfile(school.id, { ...updates, logo: logoUrl, coverImage: coverUrl });
+      await updateSchoolProfile(state.school.id, { ...updates, logo: logoUrl, coverImage: coverUrl });
       toast.success('រក្សាទុកជោគជ័យ!');
       await loadData();
     } catch (e) {
       toast.error('បរាជ័យក្នុងការរក្សាទុក');
     } finally {
-      setSaving(false);
+      setState((s) => ({ ...s, saving: false }));
     }
   };
 
-  if (loading)
+  if (state.loading)
     return (
       <div className="flex h-screen items-center justify-center">
         <Loader2 className="animate-spin text-primary h-8 w-8" />
       </div>
     );
 
-  if (!school) {
+  if (!state.school) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
         <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 text-center max-w-md w-full">
           <Building2 className="h-16 w-16 mx-auto text-gray-200 mb-4" />
           <h2 className="text-xl font-bold text-gray-900 mb-2">មិនទាន់មានព័ត៌មានសាលារៀន</h2>
           <p className="text-gray-500 text-sm mb-6">អ្នកមិនទាន់បានបង្កើតទំព័រសាលារៀននៅឡើយទេ។</p>
-          <button
+          <button type="button"
             onClick={handleCreateSchool}
-            disabled={saving}
+            disabled={state.saving}
             className="w-full bg-primary text-white py-3 rounded-xl font-bold flex items-center justify-center shadow-lg active:scale-95 disabled:opacity-50 transition-all"
           >
-            {saving ? (
+            {state.saving ? (
               <Loader2 className="h-5 w-5 animate-spin mr-2" />
             ) : (
               <Plus className="h-5 w-5 mr-2" />
@@ -159,10 +164,10 @@ const SchoolDashboard: React.FC = () => {
             { id: 'leads', icon: MessageCircle, label: 'សំណួរ' },
             { id: 'enrollments', icon: CheckCircle, label: 'ការចុះឈ្មោះ' },
           ].map((tab) => (
-            <button
+            <button type="button"
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center px-5 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap transition-all ${activeTab === tab.id ? 'bg-primary text-white shadow-lg' : 'bg-white text-gray-500 border border-gray-100 hover:bg-gray-50'}`}
+              onClick={() => setState((s) => ({ ...s, activeTab: tab.id as any }))}
+              className={`flex items-center px-5 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap transition-all ${state.activeTab === tab.id ? 'bg-primary text-white shadow-lg' : 'bg-white text-gray-500 border border-gray-100 hover:bg-gray-50'}`}
             >
               <tab.icon className="h-4 w-4 mr-2" /> {tab.label}
             </button>
@@ -170,32 +175,32 @@ const SchoolDashboard: React.FC = () => {
         </div>
 
         <div className="space-y-6">
-          {activeTab === 'profile' && (
-            <SchoolForm school={school} isSaving={saving} onSave={handleSaveProfile} />
+          {state.activeTab === 'profile' && (
+            <SchoolForm school={state.school} isSaving={state.saving} onSave={handleSaveProfile} />
           )}
 
-          {activeTab === 'admissions' && (
+          {state.activeTab === 'admissions' && (
             <SchoolAdmissionManager
-              schoolId={school.id}
-              admissions={school.admissions}
+              schoolId={state.school.id}
+              admissions={state.school.admissions}
               onUpdate={loadData}
             />
           )}
 
-          {activeTab === 'courses' && (
+          {state.activeTab === 'courses' && (
             <SchoolCourseManager
-              schoolId={school.id}
-              courses={school.shortCourses}
+              schoolId={state.school.id}
+              courses={state.school.shortCourses}
               onUpdate={loadData}
             />
           )}
 
-          {activeTab === 'leads' && (
-            <SchoolInquiryManager inquiries={inquiries} onUpdate={loadData} />
+          {state.activeTab === 'leads' && (
+            <SchoolInquiryManager inquiries={state.inquiries} onUpdate={loadData} />
           )}
 
-          {activeTab === 'enrollments' && (
-            <SchoolEnrollmentManager enrollments={enrollments} onUpdate={loadData} />
+          {state.activeTab === 'enrollments' && (
+            <SchoolEnrollmentManager enrollments={state.enrollments} onUpdate={loadData} />
           )}
         </div>
       </div>

@@ -8,19 +8,11 @@ import {
   Target,
   Gift,
   Award,
-  HelpCircle,
-  ShieldCheck,
   BookOpen,
   Brain,
   Users,
-  Search,
-  MessageCircle,
-  MapPin,
-  DollarSign,
-  Layout,
-  Monitor,
   CheckCircle,
-  AlertCircle,
+  ShieldCheck,
 } from '../components/Icons';
 
 const DocumentationPage: React.FC = () => {

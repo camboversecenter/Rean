@@ -5,18 +5,21 @@ import { UserProfile } from '../types';
 import { Award, Zap, ShieldCheck, Loader2 } from '../components/Icons';
 
 const LeaderboardPage: React.FC = () => {
-  const [users, setUsers] = useState<UserProfile[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [state, setState] = useState({
+    users: [] as UserProfile[],
+    loading: true,
+  });
+
+  const { users, loading } = state;
+
+  const loadData = React.useCallback(async () => {
+    const data = await fetchLeaderboard();
+    setState({ users: data, loading: false });
+  }, []);
 
   useEffect(() => {
     loadData();
-  }, []);
-
-  const loadData = async () => {
-    const data = await fetchLeaderboard();
-    setUsers(data);
-    setLoading(false);
-  };
+  }, [loadData]);
 
   if (loading)
     return (

@@ -24,18 +24,18 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
   enrollments,
   onUpdate,
 }) => {
-  const [selectedEnrollment, setSelectedEnrollment] = useState<
-    (CourseEnrollment & { courseTitle: string }) | null
-  >(null);
-  const [processingId, setProcessingId] = useState<string | null>(null);
-  const [searchStudent, setSearchStudent] = useState('');
-  const [selectedCourse, setSelectedCourse] = useState<string>('All');
+  const [state, setState] = useState({
+    selectedEnrollment: null as (CourseEnrollment & { courseTitle: string }) | null,
+    processingId: null as string | null,
+    searchStudent: '',
+    selectedCourse: 'All',
+  });
 
   // Extract unique course titles for the filter dropdown
   const uniqueCourses = Array.from(new Set(enrollments.map((e) => e.courseTitle)));
 
   const handleAction = async (id: string, status: 'Approved' | 'Rejected' | 'Completed') => {
-    setProcessingId(id);
+    setState((prev) => ({ ...prev, processingId: id }));
     try {
       await updateEnrollmentStatus(id, status);
       const msg =
@@ -46,18 +46,18 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
             : 'បានបដិសេធការចុះឈ្មោះ';
       toast.success(msg);
       onUpdate();
-      setSelectedEnrollment(null); // Close modal on success
+      setState((prev) => ({ ...prev, selectedEnrollment: null })); // Close modal on success
     } catch (e) {
       console.error(e);
       toast.error('ប្រតិបត្តិការបរាជ័យ (Permission Error)');
     } finally {
-      setProcessingId(null);
+      setState((prev) => ({ ...prev, processingId: null }));
     }
   };
 
   const filteredEnrollments = enrollments.filter((e) => {
-    const matchesSearch = (e.studentName || '').toLowerCase().includes(searchStudent.toLowerCase());
-    const matchesCourse = selectedCourse === 'All' || e.courseTitle === selectedCourse;
+    const matchesSearch = (e.studentName || '').toLowerCase().includes(state.searchStudent.toLowerCase());
+    const matchesCourse = state.selectedCourse === 'All' || e.courseTitle === state.selectedCourse;
     return matchesSearch && matchesCourse;
   });
 
@@ -77,10 +77,11 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             <input
               type="text"
+              aria-label="ស្វែងរកឈ្មោះសិស្ស"
               placeholder="ស្វែងរកឈ្មោះសិស្ស..."
               className="pl-9 pr-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 w-full sm:w-64"
-              value={searchStudent}
-              onChange={(e) => setSearchStudent(e.target.value)}
+              value={state.searchStudent}
+              onChange={(e) => setState((prev) => ({ ...prev, searchStudent: e.target.value }))}
             />
           </div>
 
@@ -88,9 +89,10 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
           <div className="relative">
             <Filter className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             <select
+              aria-label="ជ្រើសរើសវគ្គសិក្សា"
               className="pl-9 pr-8 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 appearance-none bg-white w-full sm:w-48 cursor-pointer"
-              value={selectedCourse}
-              onChange={(e) => setSelectedCourse(e.target.value)}
+              value={state.selectedCourse}
+              onChange={(e) => setState((prev) => ({ ...prev, selectedCourse: e.target.value }))}
             >
               <option value="All">វគ្គសិក្សាទាំងអស់</option>
               {uniqueCourses.map((course) => (
@@ -128,7 +130,7 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
                   <tr
                     key={item.id}
                     className="hover:bg-gray-50 transition-colors cursor-pointer group"
-                    onClick={() => setSelectedEnrollment(item)}
+                    onClick={() => setState((prev) => ({ ...prev, selectedEnrollment: item }))}
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
@@ -175,13 +177,14 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
       </div>
 
       {/* Detail Modal */}
-      {selectedEnrollment && (
+      {state.selectedEnrollment && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm animate-fade-in">
           <div className="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl animate-scale-in">
             <div className="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
               <h3 className="font-bold text-gray-900 text-lg">ព័ត៌មានលម្អិត (Details)</h3>
-              <button
-                onClick={() => setSelectedEnrollment(null)}
+              <button type="button"
+                aria-label="Close"
+                onClick={() => setState((prev) => ({ ...prev, selectedEnrollment: null }))}
                 className="text-gray-400 hover:text-gray-600"
               >
                 <X className="h-6 w-6" />
@@ -192,17 +195,17 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
               {/* Student Info */}
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-xl font-bold">
-                  {selectedEnrollment.studentName?.charAt(0) || <User />}
+                  {state.selectedEnrollment.studentName?.charAt(0) || <User />}
                 </div>
                 <div>
                   <h4 className="text-lg font-bold text-gray-900">
-                    {selectedEnrollment.studentName}
+                    {state.selectedEnrollment.studentName}
                   </h4>
                   <a
-                    href={`tel:${selectedEnrollment.studentPhone}`}
+                    href={`tel:${state.selectedEnrollment.studentPhone}`}
                     className="flex items-center text-sm text-gray-500 hover:text-primary mt-1 font-medium bg-gray-50 px-2 py-1 rounded w-fit"
                   >
-                    <Phone className="h-3.5 w-3.5 mr-1.5" /> {selectedEnrollment.studentPhone}
+                    <Phone className="h-3.5 w-3.5 mr-1.5" /> {state.selectedEnrollment.studentPhone}
                   </a>
                 </div>
               </div>
@@ -211,65 +214,65 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
                 <div className="flex justify-between">
                   <span className="text-xs font-bold text-gray-500 uppercase">វគ្គសិក្សា</span>
                   <span className="text-sm font-bold text-gray-900 text-right">
-                    {selectedEnrollment.courseTitle}
+                    {state.selectedEnrollment.courseTitle}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-xs font-bold text-gray-500 uppercase">កាលបរិច្ឆេទ</span>
                   <span className="text-sm text-gray-700 flex items-center">
-                    <Clock className="h-3.5 w-3.5 mr-1" /> {selectedEnrollment.createdAt}
+                    <Clock className="h-3.5 w-3.5 mr-1" /> {state.selectedEnrollment.createdAt}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-xs font-bold text-gray-500 uppercase">ស្ថានភាព</span>
                   <span
                     className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                      selectedEnrollment.status === 'Pending'
+                      state.selectedEnrollment.status === 'Pending'
                         ? 'bg-orange-100 text-orange-700'
-                        : selectedEnrollment.status === 'Approved'
+                        : state.selectedEnrollment.status === 'Approved'
                           ? 'bg-blue-100 text-blue-700'
-                          : selectedEnrollment.status === 'Completed'
+                          : state.selectedEnrollment.status === 'Completed'
                             ? 'bg-green-100 text-green-700'
                             : 'bg-red-100 text-red-700'
                     }`}
                   >
-                    {selectedEnrollment.status}
+                    {state.selectedEnrollment.status}
                   </span>
                 </div>
               </div>
 
               {/* Actions */}
-              {selectedEnrollment.status === 'Pending' ? (
+              {state.selectedEnrollment.status === 'Pending' ? (
                 <div className="grid grid-cols-2 gap-3 pt-2">
-                  <button
-                    onClick={() => handleAction(selectedEnrollment.id, 'Approved')}
-                    disabled={!!processingId}
+                  <button type="button"
+                    onClick={() => handleAction(state.selectedEnrollment!.id, 'Approved')}
+                    disabled={!!state.processingId}
                     className="bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-blue-700 transition-all active:scale-95 flex items-center justify-center"
                   >
-                    {processingId === selectedEnrollment.id ? (
+                    {state.processingId === state.selectedEnrollment.id ? (
                       <Loader2 className="h-5 w-5 animate-spin" />
                     ) : (
                       <CheckCircle className="h-5 w-5 mr-2" />
                     )}
                     អនុម័ត (Approve)
                   </button>
-                  <button
-                    onClick={() => handleAction(selectedEnrollment.id, 'Rejected')}
-                    disabled={!!processingId}
+                  <button type="button"
+                    onClick={() => handleAction(state.selectedEnrollment!.id, 'Rejected')}
+                    disabled={!!state.processingId}
                     className="bg-white border border-red-200 text-red-600 font-bold py-3 rounded-xl hover:bg-red-50 transition-all active:scale-95 flex items-center justify-center"
                   >
                     <X className="h-5 w-5 mr-2" />
                     បដិសេធ (Reject)
                   </button>
                 </div>
-              ) : selectedEnrollment.status === 'Approved' ? (
+              ) : state.selectedEnrollment.status === 'Approved' ? (
                 <div className="pt-2">
-                  <button
-                    onClick={() => handleAction(selectedEnrollment.id, 'Completed')}
-                    disabled={!!processingId}
+                  <button type="button"
+                    onClick={() => handleAction(state.selectedEnrollment!.id, 'Completed')}
+                    disabled={!!state.processingId}
                     className="w-full bg-green-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-green-700 transition-all active:scale-95 flex items-center justify-center"
                   >
-                    {processingId === selectedEnrollment.id ? (
+                    {state.processingId === state.selectedEnrollment.id ? (
                       <Loader2 className="h-5 w-5 animate-spin" />
                     ) : (
                       <Award className="h-5 w-5 mr-2" />
@@ -282,7 +285,7 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
                 </div>
               ) : (
                 <div className="text-center text-gray-400 text-sm italic pt-2 bg-gray-50 p-3 rounded-xl border border-gray-100">
-                  {selectedEnrollment.status === 'Completed'
+                  {state.selectedEnrollment.status === 'Completed'
                     ? 'វគ្គសិក្សានេះបានបញ្ចប់ហើយ។ (Completed)'
                     : 'ការចុះឈ្មោះនេះត្រូវបានបដិសេធ។'}
                 </div>

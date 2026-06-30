@@ -6,42 +6,43 @@ import MarkdownText from './MarkdownText';
 import toast from 'react-hot-toast';
 
 const KruReanChat: React.FC = () => {
-  const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      id: 'welcome',
-      role: 'model',
-      text: 'សួស្តី! ខ្ញុំគឺ "សុភាទន្សាយ" (Sophea Tonsay)។ ខ្ញុំអាចជួយស្វែងរក សាលារៀន គ្រូបង្រៀន ឬបេសកកម្មសិក្សាសម្រាប់អ្នកបាន។ តើអ្នកចង់សិក្សាអ្វីថ្ងៃនេះ?',
-      timestamp: new Date(),
-    },
-  ]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [state, setState] = useState({
+    input: '',
+    messages: [
+      {
+        id: 'welcome',
+        role: 'model',
+        text: 'សួស្តី! ខ្ញុំគឺ "សុភាទន្សាយ" (Sophea Tonsay)។ ខ្ញុំអាចជួយស្វែងរក សាលារៀន គ្រូបង្រៀន ឬបេសកកម្មសិក្សាសម្រាប់អ្នកបាន។ តើអ្នកចង់សិក្សាអ្វីថ្ងៃនេះ?',
+        timestamp: new Date(),
+      },
+    ] as ChatMessage[],
+    isLoading: false,
+  });
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [state.messages]);
 
   const handleSend = async () => {
-    if (!input.trim() || isLoading) return;
+    if (!state.input.trim() || state.isLoading) return;
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
       role: 'user',
-      text: input,
+      text: state.input,
       timestamp: new Date(),
     };
 
-    setMessages((prev) => [...prev, userMessage]);
-    setInput('');
-    setIsLoading(true);
+    setState((prev) => ({
+      ...prev,
+      messages: [...prev.messages, userMessage],
+      input: '',
+      isLoading: true,
+    }));
 
     try {
-      const history = messages
+      const history = state.messages
         .filter((m) => m.id !== 'welcome')
         .map((m) => ({
           role: m.role,
@@ -57,10 +58,11 @@ const KruReanChat: React.FC = () => {
         text: responseText,
         timestamp: new Date(),
       };
-      setMessages((prev) => [...prev, botMessage]);
-    } catch (error: any) {
+      setState((prev) => ({ ...prev, messages: [...prev.messages, botMessage] }));
+    } catch (error) {
       console.error(error);
-      const errorMsg = error.message.includes('Insufficient')
+      const isInsufficient = error instanceof Error && error.message.includes('Insufficient');
+      const errorMsg = isInsufficient
         ? 'ពិន្ទុមិនគ្រប់គ្រាន់! (Not enough points)'
         : 'បរាជ័យក្នុងការឆ្លើយតប។';
 
@@ -70,10 +72,10 @@ const KruReanChat: React.FC = () => {
         text: `🚫 ${errorMsg}`,
         timestamp: new Date(),
       };
-      setMessages((prev) => [...prev, errorMessage]);
+      setState((prev) => ({ ...prev, messages: [...prev.messages, errorMessage] }));
       toast.error(errorMsg);
     } finally {
-      setIsLoading(false);
+      setState((prev) => ({ ...prev, isLoading: false }));
     }
   };
 
@@ -89,7 +91,7 @@ const KruReanChat: React.FC = () => {
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-6 scroll-smooth">
         <div className="max-w-5xl mx-auto space-y-6">
-          {messages.map((msg) => (
+          {state.messages.map((msg) => (
             <div
               key={msg.id}
               className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}
@@ -135,7 +137,7 @@ const KruReanChat: React.FC = () => {
           ))}
 
           {/* Loading State */}
-          {isLoading && (
+          {state.isLoading && (
             <div className="flex justify-start animate-pulse">
               <div className="flex flex-row items-end gap-3">
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-teal-600 flex items-center justify-center flex-shrink-0 shadow-sm border border-white">
@@ -170,12 +172,14 @@ const KruReanChat: React.FC = () => {
           <div className="relative flex-1">
             <input
               type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
+              id="chat-input"
+              aria-label="Chat input"
+              value={state.input}
+              onChange={(e) => setState((prev) => ({ ...prev, input: e.target.value }))}
               onKeyDown={handleKeyPress}
               placeholder="សួរសំណួរ... (1 Pt/Chat)"
               className="w-full pl-5 pr-16 py-3.5 bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-inner"
-              disabled={isLoading}
+              disabled={state.isLoading}
               autoFocus
             />
             {/* Currency hint inside input */}
@@ -186,11 +190,12 @@ const KruReanChat: React.FC = () => {
             </div>
           </div>
 
-          <button
+          <button type="button"
             onClick={handleSend}
-            disabled={!input.trim() || isLoading}
+            aria-label="Send message"
+            disabled={!state.input.trim() || state.isLoading}
             className={`p-3.5 rounded-full shadow-lg transition-all transform active:scale-95 flex-shrink-0 ${
-              input.trim()
+              state.input.trim()
                 ? 'bg-gradient-to-r from-primary to-teal-600 text-white hover:shadow-primary/30'
                 : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`}

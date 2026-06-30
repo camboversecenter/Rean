@@ -31,18 +31,31 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   onChange,
   readOnly = false,
 }) => {
-  const [code, setCode] = useState(initialCode);
-  const [output, setOutput] = useState<string[]>([]);
-  const [isRunning, setIsRunning] = useState(false);
+  const [state, setState] = useState({
+    code: initialCode,
+    prevInitialCode: initialCode,
+    output: [] as {id: number, text: string}[],
+    isRunning: false,
+    isPyodideLoading: false,
+  });
+
+  const nextId = useRef(0);
+
+  const addLog = (msg: string) => {
+    setState(s => ({ ...s, output: [...s.output, { id: nextId.current++, text: msg }] }));
+  };
+  const setLogs = (msgs: string[]) => {
+    setState(s => ({ ...s, output: msgs.map(text => ({ id: nextId.current++, text })) }));
+  };
+  const clearLogs = () => setState(s => ({ ...s, output: [] }));
 
   // Pyodide State
   const pyodideRef = useRef<any>(null);
-  const [isPyodideLoading, setIsPyodideLoading] = useState(false);
 
   // Sync local state when initialCode changes
-  useEffect(() => {
-    setCode(initialCode);
-  }, [initialCode]);
+  if (initialCode !== state.prevInitialCode) {
+    setState(s => ({ ...s, prevInitialCode: initialCode, code: initialCode }));
+  }
 
   // Determine extension based on language
   const getExtension = () => {
@@ -58,7 +71,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
 
   const handleChange = useCallback(
     (val: string) => {
-      setCode(val);
+      setState(s => ({ ...s, code: val }));
       if (onChange) onChange(val);
     },
     [onChange]
@@ -68,8 +81,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   const initPyodide = async () => {
     if (pyodideRef.current) return pyodideRef.current;
 
-    setIsPyodideLoading(true);
-    setOutput((prev) => [...prev, '> Initializing Python Engine...']);
+    setState(s => ({ ...s, isPyodideLoading: true }));
+    addLog('> Initializing Python Engine...');
 
     try {
       if (!window.loadPyodide) {
@@ -83,7 +96,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
       // Redirect stdout
       pyodide.setStdout({
         batched: (msg: string) => {
-          setOutput((prev) => [...prev, msg]);
+          addLog(msg);
         },
       });
 
@@ -91,18 +104,18 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
       pyodide.setStderr({
         batched: (msg: string) => {
           // Filter out internal Pyodide warnings if needed
-          setOutput((prev) => [...prev, `Error: ${msg}`]);
+          addLog(`Error: ${msg}`);
         },
       });
 
       pyodideRef.current = pyodide;
-      setOutput((prev) => [...prev, '> Python Ready!']);
+      addLog('> Python Ready!');
       return pyodide;
     } catch (e: any) {
-      setOutput((prev) => [...prev, `> Failed to load Python: ${e.message}`]);
+      addLog(`> Failed to load Python: ${e.message}`);
       return null;
     } finally {
-      setIsPyodideLoading(false);
+      setState(s => ({ ...s, isPyodideLoading: false }));
     }
   };
 
@@ -116,7 +129,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     try {
       // Run the code
       // We use runPythonAsync to support top-level await
-      await pyodide.runPythonAsync(code);
+      await pyodide.runPythonAsync(state.code);
     } catch (err: any) {
       // Clean up the error message
       let msg = err.message || String(err);
@@ -127,13 +140,13 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
       msg = msg.replace(/line \d+, in eval_code_async\n/g, '');
       msg = msg.replace(/PythonError: /, '');
 
-      setOutput((prev) => [...prev, `⚠️ Error:\n${msg.trim()}`]);
+      addLog(`⚠️ Error:\n${msg.trim()}`);
     }
   };
 
   const runCode = async () => {
-    setOutput([]); // Clear previous run
-    setIsRunning(true);
+    clearLogs(); // Clear previous run
+    setState(s => ({ ...s, isRunning: true }));
 
     try {
       if (language === 'javascript') {
@@ -151,29 +164,31 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
         };
 
         try {
-          // Wrap in async IIFE to allow await
-          const asyncCode = `(async () => { ${code} })()`;
-          await eval(asyncCode);
+          const asyncCode = `(async () => { ${state.code} })()`;
+          const blob = new Blob([asyncCode], { type: 'text/javascript' });
+          const url = URL.createObjectURL(blob);
+          await import(/* @vite-ignore */ url);
+          URL.revokeObjectURL(url);
         } catch (e: any) {
           logs.push(`Error: ${e.message}`);
         }
 
         console.log = originalLog;
-        setOutput(logs.length ? logs : ['> Code ran successfully (No output)']);
+        setLogs(logs.length ? logs : ['> Code ran successfully (No output)']);
       } else if (language === 'python') {
         await runPython();
       } else {
-        setOutput(['> HTML Preview is not supported in the console.']);
+        setLogs(['> HTML Preview is not supported in the console.']);
       }
     } catch (e: any) {
-      setOutput((prev) => [...prev, `System Error: ${e.message}`]);
+      addLog(`System Error: ${e.message}`);
     } finally {
-      setIsRunning(false);
+      setState(s => ({ ...s, isRunning: false }));
     }
   };
 
   const copyCode = () => {
-    navigator.clipboard.writeText(code);
+    navigator.clipboard.writeText(state.code);
     toast.success('Code copied!');
   };
 
@@ -190,7 +205,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
           <span className="ml-3 text-xs text-gray-400 font-mono">{language}</span>
         </div>
         <div className="flex items-center gap-2">
-          <button
+          <button type="button"
             onClick={copyCode}
             className="p-1.5 text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-white/10"
             title="Copy Code"
@@ -198,21 +213,21 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
             <Copy className="h-4 w-4" />
           </button>
           {language !== 'html' && (
-            <button
+            <button type="button"
               onClick={runCode}
-              disabled={isRunning || isPyodideLoading}
+              disabled={state.isRunning || state.isPyodideLoading}
               className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                isRunning || isPyodideLoading
+                state.isRunning || state.isPyodideLoading
                   ? 'bg-gray-600 text-gray-300 cursor-wait'
                   : 'bg-green-600 text-white hover:bg-green-500 shadow-lg shadow-green-900/20'
               }`}
             >
-              {isRunning || isPyodideLoading ? (
+              {state.isRunning || state.isPyodideLoading ? (
                 <Loader2 className="h-3 w-3 animate-spin" />
               ) : (
                 <PlayCircle className="h-3 w-3" />
               )}
-              {isPyodideLoading ? 'Engine...' : 'Run'}
+              {state.isPyodideLoading ? 'Engine...' : 'Run'}
             </button>
           )}
         </div>
@@ -221,7 +236,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
       {/* Editor Area */}
       <div className="flex-1 overflow-auto">
         <CodeMirror
-          value={code}
+          value={state.code}
           height="100%"
           theme={oneDark}
           extensions={[getExtension()]}
@@ -238,26 +253,26 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
             <span className="text-[10px] uppercase font-bold text-gray-500 flex items-center gap-1">
               <Terminal className="h-3 w-3" /> Console
             </span>
-            <button
-              onClick={() => setOutput([])}
+            <button type="button"
+              onClick={clearLogs}
               className="text-[10px] text-gray-500 hover:text-red-400 flex items-center gap-1"
             >
               <Trash2 className="h-3 w-3" /> Clear
             </button>
           </div>
           <div className="flex-1 p-4 overflow-y-auto font-mono text-xs text-gray-300 space-y-1">
-            {output.length === 0 ? (
+            {state.output.length === 0 ? (
               <span className="text-gray-600 italic">
                 No output yet. Run the code to see results.
               </span>
             ) : (
-              output.map((line, idx) => (
+              state.output.map((line) => (
                 <div
-                  key={idx}
+                  key={line.id}
                   className="break-words whitespace-pre-wrap border-b border-white/5 pb-0.5 mb-0.5"
                 >
                   <span className="text-green-500 mr-2">&gt;</span>
-                  {line}
+                  {line.text}
                 </div>
               ))
             )}

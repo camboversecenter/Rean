@@ -37,74 +37,77 @@ const getSchoolShareLink = (schoolId: string) => {
 const SchoolDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [school, setSchool] = useState<School | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'admissions' | 'courses' | 'about'>('admissions');
-  const [userProfile, setUserProfile] = useState<any>(null);
+  const [state, setState] = useState({
+    school: null as School | null,
+    loading: true,
+    activeTab: 'admissions' as 'admissions' | 'courses' | 'about',
+    userProfile: null as any
+  });
 
   // Modal State
-  const [showModal, setShowModal] = useState(false);
-  const [targetAdmission, setTargetAdmission] = useState<{ id: string; title: string } | null>(
-    null
-  );
-  const [inquiryForm, setInquiryForm] = useState({ phone: '', message: '' });
-  const [submitting, setSubmitting] = useState(false);
+  const [modalState, setModalState] = useState({
+    show: false,
+    targetAdmission: null as { id: string; title: string } | null,
+    inquiryForm: { phone: '', message: '' },
+    submitting: false
+  });
 
   useEffect(() => {
     const load = async () => {
       if (!id) return;
       const data = await fetchSchoolById(id);
-      setSchool(data);
       const user = await getCurrentUserProfile();
-      setUserProfile(user);
-      setLoading(false);
+      setState(s => ({ ...s, school: data, userProfile: user, loading: false }));
     };
     load();
   }, [id]);
 
   const openInquiryModal = (admission?: Admission, isInterested: boolean = false) => {
-    if (!userProfile) {
+    if (!state.userProfile) {
       toast.error('សូមចូលគណនីជាមុនសិន។ (Please login)');
       return;
     }
 
-    setTargetAdmission(admission ? { id: admission.id, title: admission.title } : null);
-    setInquiryForm({
-      phone: '',
-      message: isInterested
-        ? `ខ្ញុំចាប់អារម្មណ៍លើ "${admission?.title || 'សាលារបស់អ្នក'}". សូមទាក់ទងមកខ្ញុំវិញផង។`
-        : '',
-    });
-    setShowModal(true);
+    setModalState(s => ({
+      ...s,
+      targetAdmission: admission ? { id: admission.id, title: admission.title } : null,
+      inquiryForm: {
+        phone: '',
+        message: isInterested
+          ? `ខ្ញុំចាប់អារម្មណ៍លើ "${admission?.title || 'សាលារបស់អ្នក'}". សូមទាក់ទងមកខ្ញុំវិញផង។`
+          : '',
+      },
+      show: true
+    }));
   };
 
   const handleSubmitInquiry = async () => {
-    if (!school || !inquiryForm.phone) {
+    if (!state.school || !modalState.inquiryForm.phone) {
       toast.error('សូមបញ្ចូលលេខទូរស័ព្ទរបស់អ្នក។');
       return;
     }
-    setSubmitting(true);
+    setModalState(s => ({ ...s, submitting: true }));
     try {
       await createStudentInquiry({
-        schoolId: school.id,
-        admissionId: targetAdmission?.id,
-        studentName: userProfile.full_name || 'Anonymous Student',
-        studentPhone: inquiryForm.phone,
-        message: inquiryForm.message,
+        schoolId: state.school.id,
+        admissionId: modalState.targetAdmission?.id,
+        studentName: state.userProfile.full_name || 'Anonymous Student',
+        studentPhone: modalState.inquiryForm.phone,
+        message: modalState.inquiryForm.message,
       });
       toast.success('បានផ្ញើសំណួររួចរាល់!');
-      setShowModal(false);
+      setModalState(s => ({ ...s, show: false }));
     } catch (error) {
       console.error(error);
       toast.error('បរាជ័យក្នុងការផ្ញើ។');
     } finally {
-      setSubmitting(false);
+      setModalState(s => ({ ...s, submitting: false }));
     }
   };
 
   const handleShare = async () => {
-    if (!school) return;
-    const link = getSchoolShareLink(school.id);
+    if (!state.school) return;
+    const link = getSchoolShareLink(state.school.id);
     try {
       await navigator.clipboard.writeText(link);
       toast.success('បានចម្លងតំណភ្ជាប់! (Link Copied)', {
@@ -119,16 +122,16 @@ const SchoolDetailPage: React.FC = () => {
     }
   };
 
-  if (loading)
+  if (state.loading)
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="animate-spin text-primary h-8 w-8" />
       </div>
     );
-  if (!school) return <div className="p-10 text-center">School not found.</div>;
+  if (!state.school) return <div className="p-10 text-center">School not found.</div>;
 
   // Filter active admissions
-  const activeAdmissions = school.admissions.filter((a) => a.status !== 'Closed');
+  const activeAdmissions = state.school.admissions.filter((a) => a.status !== 'Closed');
 
   const getSchoolTypeKH = (type: string) => {
     switch (type) {
@@ -150,7 +153,7 @@ const SchoolDetailPage: React.FC = () => {
       {/* --- HERO SECTION --- */}
       <div className="relative h-48 md:h-64 bg-gray-200">
         <img
-          src={school.coverImage || 'https://via.placeholder.com/1200x400'}
+          src={state.school.coverImage || 'https://via.placeholder.com/1200x400'}
           alt="Cover"
           className="w-full h-full object-cover"
         />
@@ -158,13 +161,14 @@ const SchoolDetailPage: React.FC = () => {
 
         {/* Navigation Buttons */}
         <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-10">
-          <button
+          <button type="button"
             onClick={() => navigate(-1)}
+            aria-label="Go back"
             className="p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/30 transition-colors"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
-          <button
+          <button type="button"
             onClick={handleShare}
             className="p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/30 transition-colors"
             title="ចែករំលែក (Share)"
@@ -179,27 +183,27 @@ const SchoolDetailPage: React.FC = () => {
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 md:p-6 flex flex-col md:flex-row items-start md:items-center gap-4">
           <div className="bg-white p-1 rounded-2xl shadow-md -mt-16 md:mt-0">
             <img
-              src={school.logo || 'https://via.placeholder.com/150'}
+              src={state.school.logo || 'https://via.placeholder.com/150'}
               alt="Logo"
               className="w-24 h-24 rounded-xl object-contain bg-white"
             />
           </div>
           <div className="flex-1">
             <div className="flex flex-wrap items-center gap-2 mb-1">
-              <h1 className="text-xl md:text-2xl font-bold text-gray-900">{school.name}</h1>
-              {school.verified && <CheckCircle className="h-5 w-5 text-blue-500 fill-white" />}
+              <h1 className="text-xl md:text-2xl font-bold text-gray-900">{state.school.name}</h1>
+              {state.school.verified && <CheckCircle className="h-5 w-5 text-blue-500 fill-white" />}
             </div>
             <div className="flex flex-col md:flex-row gap-2 md:gap-4 text-sm text-gray-500 mb-2">
               <span className="flex items-center">
-                <MapPin className="h-4 w-4 mr-1" /> {school.location}
+                <MapPin className="h-4 w-4 mr-1" /> {state.school.location}
               </span>
               <span className="flex items-center">
-                <Building2 className="h-4 w-4 mr-1" /> {getSchoolTypeKH(school.type)}
+                <Building2 className="h-4 w-4 mr-1" /> {getSchoolTypeKH(state.school.type)}
               </span>
             </div>
           </div>
           <div className="w-full md:w-auto flex gap-2">
-            <button
+            <button type="button"
               onClick={() => openInquiryModal()}
               className="flex-1 md:flex-none bg-primary text-white font-bold py-2.5 px-6 rounded-xl shadow-lg shadow-primary/30 active:scale-95 transition-transform flex items-center justify-center"
             >
@@ -212,21 +216,21 @@ const SchoolDetailPage: React.FC = () => {
       {/* --- TABS --- */}
       <div className="max-w-5xl mx-auto px-4 mt-6">
         <div className="flex border-b border-gray-200 overflow-x-auto scrollbar-hide">
-          <button
-            onClick={() => setActiveTab('admissions')}
-            className={`px-6 py-3 text-sm font-bold whitespace-nowrap border-b-2 transition-colors ${activeTab === 'admissions' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
+          <button type="button"
+            onClick={() => setState(s => ({ ...s, activeTab: 'admissions' }))}
+            className={`px-6 py-3 text-sm font-bold whitespace-nowrap border-b-2 transition-colors ${state.activeTab === 'admissions' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
           >
             ការជ្រើសរើស ({activeAdmissions.length})
           </button>
-          <button
-            onClick={() => setActiveTab('courses')}
-            className={`px-6 py-3 text-sm font-bold whitespace-nowrap border-b-2 transition-colors ${activeTab === 'courses' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
+          <button type="button"
+            onClick={() => setState(s => ({ ...s, activeTab: 'courses' }))}
+            className={`px-6 py-3 text-sm font-bold whitespace-nowrap border-b-2 transition-colors ${state.activeTab === 'courses' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
           >
-            វគ្គសិក្សាខ្លី ({school.shortCourses.length})
+            វគ្គសិក្សាខ្លី ({state.school.shortCourses.length})
           </button>
-          <button
-            onClick={() => setActiveTab('about')}
-            className={`px-6 py-3 text-sm font-bold whitespace-nowrap border-b-2 transition-colors ${activeTab === 'about' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
+          <button type="button"
+            onClick={() => setState(s => ({ ...s, activeTab: 'about' }))}
+            className={`px-6 py-3 text-sm font-bold whitespace-nowrap border-b-2 transition-colors ${state.activeTab === 'about' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
           >
             អំពី & ជំនាញ
           </button>
@@ -236,7 +240,7 @@ const SchoolDetailPage: React.FC = () => {
       {/* --- CONTENT --- */}
       <div className="max-w-5xl mx-auto px-4 py-6">
         {/* 1. ADMISSIONS TAB */}
-        {activeTab === 'admissions' && (
+        {state.activeTab === 'admissions' && (
           <div className="space-y-6">
             {activeAdmissions.length === 0 && (
               <div className="text-center py-10 bg-white rounded-xl border border-gray-200">
@@ -315,13 +319,13 @@ const SchoolDetailPage: React.FC = () => {
                   )}
                 </div>
                 <div className="bg-gray-50 p-3 flex gap-3">
-                  <button
+                  <button type="button"
                     onClick={() => openInquiryModal(adm, false)}
                     className="flex-1 bg-white border border-gray-200 text-gray-700 font-bold py-2.5 rounded-xl hover:bg-gray-100 transition-colors text-sm"
                   >
                     សួរព័ត៌មាន (Ask Info)
                   </button>
-                  <button
+                  <button type="button"
                     onClick={() => openInquiryModal(adm, true)}
                     className="flex-1 bg-primary text-white font-bold py-2.5 rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-colors text-sm"
                   >
@@ -334,12 +338,12 @@ const SchoolDetailPage: React.FC = () => {
         )}
 
         {/* 2. COURSES TAB */}
-        {activeTab === 'courses' && (
+        {state.activeTab === 'courses' && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {school.shortCourses.map((course) => (
+            {state.school.shortCourses.map((course) => (
               <ShortCourseCard key={course.id} course={course} />
             ))}
-            {school.shortCourses.length === 0 && (
+            {state.school.shortCourses.length === 0 && (
               <div className="col-span-full text-center py-10">
                 <p className="text-gray-400 text-sm">មិនមានវគ្គសិក្សាខ្លីទេ។</p>
               </div>
@@ -348,22 +352,22 @@ const SchoolDetailPage: React.FC = () => {
         )}
 
         {/* 3. ABOUT TAB */}
-        {activeTab === 'about' && (
+        {state.activeTab === 'about' && (
           <div className="space-y-6">
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-              <h3 className="font-bold text-gray-900 mb-3">អំពី {school.name}</h3>
+              <h3 className="font-bold text-gray-900 mb-3">អំពី {state.school.name}</h3>
               <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">
-                {school.description}
+                {state.school.description}
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                 <div className="p-3 bg-gray-50 rounded-xl">
                   <p className="text-xs text-gray-500 mb-1">តម្លៃសិក្សា (Tuition Range)</p>
-                  <p className="font-bold text-gray-900">{school.tuitionRange}</p>
+                  <p className="font-bold text-gray-900">{state.school.tuitionRange}</p>
                 </div>
                 <div className="p-3 bg-gray-50 rounded-xl">
                   <p className="text-xs text-gray-500 mb-1">ទីតាំង (Location)</p>
-                  <p className="font-bold text-gray-900">{school.location}</p>
+                  <p className="font-bold text-gray-900">{state.school.location}</p>
                 </div>
               </div>
             </div>
@@ -371,7 +375,7 @@ const SchoolDetailPage: React.FC = () => {
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
               <h3 className="font-bold text-gray-900 mb-4">ជំនាញ / ដេប៉ាតឺម៉ង់ (Majors)</h3>
               <div className="flex flex-wrap gap-2">
-                {school.majors.map((major) => (
+                {state.school.majors.map((major) => (
                   <span
                     key={major}
                     className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium"
@@ -383,11 +387,11 @@ const SchoolDetailPage: React.FC = () => {
             </div>
 
             {/* Gallery */}
-            {school.gallery && school.gallery.length > 0 && (
+            {state.school.gallery && state.school.gallery.length > 0 && (
               <div className="grid grid-cols-2 gap-2">
-                {school.gallery.map((img, idx) => (
+                {state.school.gallery.map((img) => (
                   <img
-                    key={idx}
+                    key={img}
                     src={img}
                     alt="Gallery"
                     className="w-full h-32 object-cover rounded-xl"
@@ -400,16 +404,17 @@ const SchoolDetailPage: React.FC = () => {
       </div>
 
       {/* --- INQUIRY MODAL --- */}
-      {showModal && (
+      {modalState.show && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="bg-white rounded-2xl w-full max-w-sm overflow-hidden animate-scale-in">
             <div className="bg-primary/5 p-4 border-b border-gray-100 flex justify-between items-center">
               <div>
                 <h3 className="font-bold text-gray-900">ផ្ញើសំណួរ (Send Inquiry)</h3>
-                <p className="text-xs text-gray-500">ទៅកាន់៖ {school.name}</p>
+                <p className="text-xs text-gray-500">ទៅកាន់៖ {state.school.name}</p>
               </div>
-              <button
-                onClick={() => setShowModal(false)}
+              <button type="button"
+                onClick={() => setModalState(s => ({ ...s, show: false }))}
+                aria-label="Close modal"
                 className="text-gray-400 hover:text-gray-600"
               >
                 <X className="h-5 w-5" />
@@ -417,41 +422,43 @@ const SchoolDetailPage: React.FC = () => {
             </div>
 
             <div className="p-4 space-y-4">
-              {targetAdmission && (
+              {modalState.targetAdmission && (
                 <div className="bg-blue-50 text-blue-800 text-xs px-3 py-2 rounded-lg font-medium">
-                  ទាក់ទងនឹង៖ {targetAdmission.title}
+                  ទាក់ទងនឹង៖ {modalState.targetAdmission.title}
                 </div>
               )}
 
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1">
+                <label htmlFor="inquiry-phone" className="block text-xs font-bold text-gray-500 mb-1">
                   លេខទូរស័ព្ទរបស់អ្នក <span className="text-red-500">*</span>
                 </label>
                 <input
+                  id="inquiry-phone"
                   type="tel"
-                  value={inquiryForm.phone}
-                  onChange={(e) => setInquiryForm({ ...inquiryForm, phone: e.target.value })}
+                  value={modalState.inquiryForm.phone}
+                  onChange={(e) => setModalState(s => ({ ...s, inquiryForm: { ...s.inquiryForm, phone: e.target.value } }))}
                   placeholder="012 345 678"
                   className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1">សារ (Message)</label>
+                <label htmlFor="inquiry-message" className="block text-xs font-bold text-gray-500 mb-1">សារ (Message)</label>
                 <textarea
-                  value={inquiryForm.message}
-                  onChange={(e) => setInquiryForm({ ...inquiryForm, message: e.target.value })}
+                  id="inquiry-message"
+                  value={modalState.inquiryForm.message}
+                  onChange={(e) => setModalState(s => ({ ...s, inquiryForm: { ...s.inquiryForm, message: e.target.value } }))}
                   placeholder="តើអ្នកចង់ដឹងអ្វីខ្លះ?"
                   className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl h-24 resize-none focus:outline-none focus:ring-2 focus:ring-primary/20"
                 />
               </div>
 
-              <button
+              <button type="button"
                 onClick={handleSubmitInquiry}
-                disabled={submitting || !inquiryForm.phone}
+                disabled={modalState.submitting || !modalState.inquiryForm.phone}
                 className="w-full bg-primary text-white font-bold py-3 rounded-xl shadow-lg shadow-primary/20 disabled:opacity-50 disabled:shadow-none flex items-center justify-center"
               >
-                {submitting ? <Loader2 className="h-5 w-5 animate-spin" /> : 'ផ្ញើទៅសាលា'}
+                {modalState.submitting ? <Loader2 className="h-5 w-5 animate-spin" /> : 'ផ្ញើទៅសាលា'}
               </button>
             </div>
           </div>

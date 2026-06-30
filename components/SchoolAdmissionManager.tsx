@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   GraduationCap,
   Plus,
@@ -10,7 +10,6 @@ import {
   CheckCircle,
   Loader2,
   BookOpen,
-  FileText,
 } from './Icons';
 import { Admission, Scholarship } from '../types';
 import {
@@ -33,54 +32,60 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
   admissions,
   onUpdate,
 }) => {
-  const [showAdmissionModal, setShowAdmissionModal] = useState(false);
-  const [editingAdmission, setEditingAdmission] = useState<Partial<Admission> | null>(null);
-  const [majorsStr, setMajorsStr] = useState('');
-  const [showScholarshipModal, setShowScholarshipModal] = useState<{
+  const [admissionForm, setAdmissionForm] = useState<{
+    show: boolean;
+    editing: Partial<Admission> | null;
+    majorsStr: string;
+  }>({ show: false, editing: null, majorsStr: '' });
+  
+  const [scholarshipForm, setScholarshipForm] = useState<{
     show: boolean;
     admissionId?: string;
-  }>({ show: false });
-  const [newScholarship, setNewScholarship] = useState<Partial<Scholarship>>({
-    title: '',
-    discount: '',
+    newScholarship: Partial<Scholarship>;
+  }>({
+    show: false,
+    newScholarship: { title: '', discount: '' },
   });
   const [saving, setSaving] = useState(false);
 
   const handleOpenAdmissionModal = (adm?: Admission) => {
     if (adm) {
-      setEditingAdmission(adm);
-      setMajorsStr(adm.majors?.join(', ') || '');
-    } else {
-      setEditingAdmission({
-        status: 'Open',
-        majors: [],
-        description: '',
-        startDate: '',
-        endDate: '',
+      setAdmissionForm({
+        show: true,
+        editing: adm,
+        majorsStr: adm.majors?.join(', ') || '',
       });
-      setMajorsStr('');
+    } else {
+      setAdmissionForm({
+        show: true,
+        editing: {
+          status: 'Open',
+          majors: [],
+          description: '',
+          startDate: '',
+          endDate: '',
+        },
+        majorsStr: '',
+      });
     }
-    setShowAdmissionModal(true);
   };
 
   const handleSaveAdmission = async () => {
-    if (!editingAdmission?.title) return;
+    if (!admissionForm.editing?.title) return;
     setSaving(true);
     try {
-      const processedMajors = majorsStr
+      const processedMajors = admissionForm.majorsStr
         .split(',')
         .map((m) => m.trim())
         .filter((m) => m !== '');
-      const payload = { ...editingAdmission, majors: processedMajors };
+      const payload = { ...admissionForm.editing, majors: processedMajors };
 
-      if (editingAdmission.id) {
-        await updateAdmission(editingAdmission.id, payload);
+      if (admissionForm.editing.id) {
+        await updateAdmission(admissionForm.editing.id, payload);
       } else {
         await addAdmission(schoolId, payload as any);
       }
-      setShowAdmissionModal(false);
-      setEditingAdmission(null);
-      setMajorsStr('');
+      setAdmissionForm({ show: false, editing: null, majorsStr: '' });
       toast.success('រក្សាទុកជោគជ័យ!');
       onUpdate();
     } catch (e) {
@@ -102,12 +107,11 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
   };
 
   const handleAddScholarship = async () => {
-    if (!newScholarship.title) return;
+    if (!scholarshipForm.newScholarship.title) return;
     setSaving(true);
     try {
-      await addScholarship(schoolId, showScholarshipModal.admissionId, newScholarship as any);
-      setShowScholarshipModal({ show: false });
-      setNewScholarship({ title: '', discount: '' });
+      await addScholarship(schoolId, scholarshipForm.admissionId, scholarshipForm.newScholarship as any);
+      setScholarshipForm({ show: false, newScholarship: { title: '', discount: '' } });
       toast.success('បន្ថែមអាហារូបករណ៍ជោគជ័យ!');
       onUpdate();
     } catch (e) {
@@ -131,7 +135,7 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
     <div className="space-y-6 animate-fade-in">
       <div className="flex justify-between items-center">
         <h3 className="font-bold text-gray-900 text-lg">យុទ្ធនាការជ្រើសរើសសិស្ស (Admissions)</h3>
-        <button
+        <button type="button"
           onClick={() => handleOpenAdmissionModal()}
           className="bg-primary text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center shadow-lg hover:scale-105 transition-transform"
         >
@@ -178,8 +182,8 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
                   <h5 className="text-[10px] font-bold text-yellow-800 uppercase flex items-center">
                     <Award className="h-3 w-3 mr-1" /> អាហារូបករណ៍
                   </h5>
-                  <button
-                    onClick={() => setShowScholarshipModal({ show: true, admissionId: adm.id })}
+                  <button type="button"
+                    onClick={() => setScholarshipForm(prev => ({ ...prev, show: true, admissionId: adm.id }))}
                     className="text-[10px] font-bold text-yellow-700 hover:underline"
                   >
                     បន្ថែម
@@ -197,8 +201,9 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
                       <span className="text-gray-600 truncate mr-2">{sch.title}</span>
                       <div className="flex items-center gap-2 flex-shrink-0">
                         <span className="font-bold text-green-600">{sch.discount}</span>
-                        <button
+                        <button type="button"
                           onClick={() => handleDeleteScholarship(sch.id)}
+                          aria-label="Delete Scholarship"
                           className="text-red-400 hover:text-red-600"
                         >
                           <Trash2 className="h-3 w-3" />
@@ -210,14 +215,15 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
               </div>
 
               <div className="flex gap-2">
-                <button
+                <button type="button"
                   onClick={() => handleOpenAdmissionModal(adm)}
                   className="flex-1 py-2 bg-gray-50 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-100 flex items-center justify-center transition-colors"
                 >
                   <Edit className="h-3.5 w-3.5 mr-1.5" /> កែប្រែ
                 </button>
-                <button
+                <button type="button"
                   onClick={() => handleDeleteAdmission(adm.id)}
+                  aria-label="Delete Admission"
                   className="p-2 text-red-400 hover:text-red-600 bg-red-50 rounded-xl transition-colors"
                 >
                   <Trash2 className="h-4 w-4" />
@@ -229,96 +235,102 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
       </div>
 
       {/* ADMISSION MODAL */}
-      {showAdmissionModal && (
+      {admissionForm.show && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm overflow-y-auto">
           <div className="bg-white rounded-3xl w-full max-w-lg my-8 animate-scale-in">
             <div className="p-6 border-b border-gray-100 flex justify-between items-center">
               <h3 className="font-bold text-xl">
-                {editingAdmission?.id ? 'កែប្រែការជ្រើសរើស' : 'បន្ថែមការជ្រើសរើស'}
+                {admissionForm.editing?.id ? 'កែប្រែការជ្រើសរើស' : 'បន្ថែមការជ្រើសរើស'}
               </h3>
-              <button onClick={() => setShowAdmissionModal(false)}>
+              <button type="button" onClick={() => setAdmissionForm(prev => ({ ...prev, show: false }))} aria-label="Close Admission Modal">
                 <X className="h-6 w-6 text-gray-400" />
               </button>
             </div>
             <div className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1 uppercase">
+                <label htmlFor="adm-title" className="block text-xs font-bold text-gray-500 mb-1 uppercase">
                   ចំណងជើងយុទ្ធនាការ
                 </label>
                 <input
+                  id="adm-title"
                   className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
-                  value={editingAdmission?.title || ''}
+                  value={admissionForm.editing?.title || ''}
                   onChange={(e) =>
-                    setEditingAdmission({ ...editingAdmission, title: e.target.value })
+                    setAdmissionForm(prev => ({ ...prev, editing: { ...prev.editing, title: e.target.value } }))
                   }
                   placeholder="ឧ. បរិញ្ញាបត្រឆ្នាំទី១ ជំនាន់ទី១៥"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1 uppercase">
+                <label htmlFor="adm-desc" className="block text-xs font-bold text-gray-500 mb-1 uppercase">
                   ការពិពណ៌នា
                 </label>
                 <textarea
+                  id="adm-desc"
                   className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none h-24 resize-none"
-                  value={editingAdmission?.description || ''}
+                  value={admissionForm.editing?.description || ''}
                   onChange={(e) =>
-                    setEditingAdmission({ ...editingAdmission, description: e.target.value })
+                    setAdmissionForm(prev => ({ ...prev, editing: { ...prev.editing, description: e.target.value } }))
                   }
                   placeholder="ព័ត៌មានលម្អិតអំពីការជ្រើសរើស..."
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1 uppercase flex items-center">
+                <label htmlFor="adm-majors" className="block text-xs font-bold text-gray-500 mb-1 uppercase flex items-center">
                   <BookOpen className="h-3 w-3 mr-1" /> ជំនាញដែលបើកទទួល (Majors)
                 </label>
                 <input
+                  id="adm-majors"
                   className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
-                  value={majorsStr}
-                  onChange={(e) => setMajorsStr(e.target.value)}
+                  value={admissionForm.majorsStr}
+                  onChange={(e) => setAdmissionForm(prev => ({ ...prev, majorsStr: e.target.value }))}
                   placeholder="ឧ. វិទ្យាសាស្ត្រកុំព្យូទ័រ, គ្រប់គ្រង, ភាសាអង់គ្លេស (បំបែកដោយក្បៀស)"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 mb-1 uppercase">
+                  <label htmlFor="adm-start" className="block text-xs font-bold text-gray-500 mb-1 uppercase">
                     ថ្ងៃចាប់ផ្តើម
                   </label>
                   <input
+                    id="adm-start"
                     type="date"
                     className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
-                    value={editingAdmission?.startDate || ''}
+                    value={admissionForm.editing?.startDate || ''}
                     onChange={(e) =>
-                      setEditingAdmission({ ...editingAdmission, startDate: e.target.value })
+                      setAdmissionForm(prev => ({ ...prev, editing: { ...prev.editing, startDate: e.target.value } }))
                     }
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 mb-1 uppercase">
+                  <label htmlFor="adm-end" className="block text-xs font-bold text-gray-500 mb-1 uppercase">
                     ថ្ងៃផុតកំណត់
                   </label>
                   <input
+                    id="adm-end"
                     type="date"
                     className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
-                    value={editingAdmission?.endDate || ''}
+                    value={admissionForm.editing?.endDate || ''}
                     onChange={(e) =>
-                      setEditingAdmission({ ...editingAdmission, endDate: e.target.value })
+                      setAdmissionForm(prev => ({ ...prev, editing: { ...prev.editing, endDate: e.target.value } }))
                     }
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1 uppercase">
+                <label htmlFor="adm-status" className="block text-xs font-bold text-gray-500 mb-1 uppercase">
                   ស្ថានភាព
                 </label>
                 <select
+                  id="adm-status"
                   className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
-                  value={editingAdmission?.status || 'Open'}
+                  value={admissionForm.editing?.status || 'Open'}
                   onChange={(e) =>
-                    setEditingAdmission({ ...editingAdmission, status: e.target.value as any })
+                    setAdmissionForm(prev => ({ ...prev, editing: { ...prev.editing, status: e.target.value as any } }))
                   }
                 >
                   <option value="Open">កំពុងទទួល (Open)</option>
@@ -328,7 +340,7 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
               </div>
             </div>
             <div className="p-6 border-t bg-gray-50 flex justify-end gap-3 rounded-b-3xl">
-              <button
+              <button type="button"
                 onClick={handleSaveAdmission}
                 disabled={saving}
                 className="w-full bg-primary text-white py-3 rounded-xl font-bold shadow-lg flex items-center justify-center active:scale-95 transition-transform"
@@ -346,43 +358,45 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
       )}
 
       {/* SCHOLARSHIP MODAL */}
-      {showScholarshipModal.show && (
+      {scholarshipForm.show && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
           <div className="bg-white rounded-3xl w-full max-w-sm animate-scale-in">
             <div className="p-5 border-b border-gray-100 flex justify-between items-center">
               <h3 className="font-bold text-lg">បន្ថែមអាហារូបករណ៍</h3>
-              <button onClick={() => setShowScholarshipModal({ show: false })}>
+              <button type="button" onClick={() => setScholarshipForm(prev => ({ ...prev, show: false }))} aria-label="Close Scholarship Modal">
                 <X className="h-5 w-5 text-gray-400" />
               </button>
             </div>
             <div className="p-5 space-y-4">
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1 uppercase">
+                <label htmlFor="sch-title" className="block text-xs font-bold text-gray-500 mb-1 uppercase">
                   ឈ្មោះអាហារូបករណ៍
                 </label>
                 <input
+                  id="sch-title"
                   className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
-                  value={newScholarship.title}
-                  onChange={(e) => setNewScholarship({ ...newScholarship, title: e.target.value })}
+                  value={scholarshipForm.newScholarship.title}
+                  onChange={(e) => setScholarshipForm(prev => ({ ...prev, newScholarship: { ...prev.newScholarship, title: e.target.value } }))}
                   placeholder="ឧ. អាហារូបករណ៍សិស្សពូកែ"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1 uppercase">
+                <label htmlFor="sch-discount" className="block text-xs font-bold text-gray-500 mb-1 uppercase">
                   ការបញ្ចុះតម្លៃ (%)
                 </label>
                 <input
+                  id="sch-discount"
                   className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl font-bold focus:ring-2 focus:ring-primary/20 outline-none"
-                  value={newScholarship.discount}
+                  value={scholarshipForm.newScholarship.discount}
                   onChange={(e) =>
-                    setNewScholarship({ ...newScholarship, discount: e.target.value })
+                    setScholarshipForm(prev => ({ ...prev, newScholarship: { ...prev.newScholarship, discount: e.target.value } }))
                   }
                   placeholder="ឧ. ១០០%"
                 />
               </div>
-              <button
+              <button type="button"
                 onClick={handleAddScholarship}
-                disabled={saving || !newScholarship.title}
+                disabled={saving || !scholarshipForm.newScholarship.title}
                 className="w-full bg-yellow-500 text-white py-3 rounded-xl font-bold shadow-lg flex items-center justify-center active:scale-95 transition-transform"
               >
                 {saving ? (

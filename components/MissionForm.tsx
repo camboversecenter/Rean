@@ -56,57 +56,61 @@ const MissionForm: React.FC<MissionFormProps> = ({
   onSave,
   onCancel,
 }) => {
-  const [currentMission, setCurrentMission] = useState<Partial<Mission>>(initialMission);
-  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
-  const [thumbnailBase64, setThumbnailBase64] = useState<string | null>(null);
-  const [qrFile, setQrFile] = useState<File | null>(null);
-  const [teacherEmail, setTeacherEmail] = useState('');
-  const [assigningTeacher, setAssigningTeacher] = useState(false);
-  const [aiPrompt, setAiPrompt] = useState('');
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [showAiModal, setShowAiModal] = useState(false);
+  const [state, setState] = useState({
+    currentMission: (() => {
+      let patchedMission = { ...initialMission };
+      if (patchedMission.modules && patchedMission.modules.some((m) => !m.id)) {
+        patchedMission.modules = patchedMission.modules.map((m, idx) => ({
+          ...m,
+          id: m.id || `mod-${Date.now()}-${idx}`,
+        }));
+      }
+      return patchedMission;
+    })(),
+    thumbnailFile: null as File | null,
+    thumbnailBase64: null as string | null,
+    qrFile: null as File | null,
+    teacherEmail: '',
+    assigningTeacher: false,
+    aiPrompt: '',
+    isGenerating: false,
+    showAiModal: false,
+  });
 
-  // Sync state when initialMission changes (e.g. switching between missions)
-  useEffect(() => {
-    // Auto-patch missing module IDs to fix "All Green" bug
-    let patchedMission = { ...initialMission };
-    if (patchedMission.modules && patchedMission.modules.some((m) => !m.id)) {
-      patchedMission.modules = patchedMission.modules.map((m, idx) => ({
-        ...m,
-        id: m.id || `mod-${Date.now()}-${idx}`,
-      }));
-    }
-
-    setCurrentMission(patchedMission);
-    setThumbnailFile(null);
-    setThumbnailBase64(null);
-    setQrFile(null);
-    setTeacherEmail('');
-  }, [initialMission]);
+  const {
+    currentMission,
+    thumbnailFile,
+    thumbnailBase64,
+    qrFile,
+    teacherEmail,
+    assigningTeacher,
+    aiPrompt,
+    isGenerating,
+    showAiModal,
+  } = state;
 
   const isOwner = currentMission.ownerId === currentUserId || !currentMission.id;
 
   const handleGenerateThumbnail = async () => {
     if (!currentMission.title) return;
-    setIsGenerating(true);
+    setState((prev) => ({ ...prev, isGenerating: true }));
     try {
       const prompt = `A modern, sleek educational thumbnail for a mission titled "${currentMission.title}". 3D abstract style, vibrant colors.`;
       const base64 = await generateImage(prompt);
       if (base64) {
-        setThumbnailBase64(base64);
-        setThumbnailFile(null);
+        setState((prev) => ({ ...prev, thumbnailBase64: base64, thumbnailFile: null }));
         toast.success('បានបង្កើតរូបភាព!');
       }
     } catch (e) {
       toast.error('បរាជ័យក្នុងការបង្កើតរូបភាព');
     } finally {
-      setIsGenerating(false);
+      setState((prev) => ({ ...prev, isGenerating: false }));
     }
   };
 
   const handleAiGenerateStructure = async () => {
     if (!aiPrompt.trim()) return;
-    setIsGenerating(true);
+    setState((prev) => ({ ...prev, isGenerating: true }));
     try {
       const structure = await generateMissionStructure(aiPrompt);
       if (structure) {
@@ -116,22 +120,25 @@ const MissionForm: React.FC<MissionFormProps> = ({
           id: m.id || `mod-${Date.now()}-${idx}`,
         }));
 
-        setCurrentMission((prev) => ({
+        setState((prev) => ({
           ...prev,
-          title: structure.title || prev.title,
-          description: structure.description || prev.description,
-          level: structure.level || prev.level,
-          price: structure.price || prev.price,
-          squadSize: structure.squadSize || prev.squadSize,
-          modules: newModules,
+          currentMission: {
+            ...prev.currentMission,
+            title: structure.title || prev.currentMission.title,
+            description: structure.description || prev.currentMission.description,
+            level: structure.level || prev.currentMission.level,
+            price: structure.price || prev.currentMission.price,
+            squadSize: structure.squadSize || prev.currentMission.squadSize,
+            modules: newModules,
+          },
+          showAiModal: false,
         }));
-        setShowAiModal(false);
         toast.success('បេសកកម្មត្រូវបានរៀបចំរួចរាល់!');
       }
     } catch (error: any) {
       toast.error(error.message);
     } finally {
-      setIsGenerating(false);
+      setState((prev) => ({ ...prev, isGenerating: false }));
     }
   };
 
@@ -140,83 +147,89 @@ const MissionForm: React.FC<MissionFormProps> = ({
       toast.error('សូមរក្សាទុកបេសកកម្មជាមុនសិន ឬបញ្ចូលអ៊ីមែល។');
       return;
     }
-    setAssigningTeacher(true);
+    setState((prev) => ({ ...prev, assigningTeacher: true }));
     try {
       const teacherProfile = await assignMissionMentor(currentMission.id, teacherEmail);
-      setCurrentMission((prev) => ({
+      setState((prev) => ({
         ...prev,
-        mentorId: teacherProfile.id,
-        mentor: teacherProfile.full_name,
+        currentMission: {
+          ...prev.currentMission,
+          mentorId: teacherProfile.id,
+          mentor: teacherProfile.full_name,
+        },
+        teacherEmail: '',
       }));
-      setTeacherEmail('');
       toast.success(`បានចាត់តាំង ${teacherProfile.full_name} ជាគ្រូ!`);
     } catch (e: any) {
       toast.error(e.message || 'បរាជ័យក្នុងការចាត់តាំង។');
     } finally {
-      setAssigningTeacher(false);
+      setState((prev) => ({ ...prev, assigningTeacher: false }));
     }
   };
 
   const addModule = () => {
-    setCurrentMission((prev) => ({
+    setState((prev) => ({
       ...prev,
-      modules: [
-        ...(prev.modules || []),
-        {
-          id: `mod-${Date.now()}`,
-          title: 'មេរៀនថ្មី',
-          task: '',
-          aiPersona: 'You are a helpful mentor.',
-          initialPrompt: 'Hello! Ready to start?',
-          theoryPrompt: '',
-        },
-      ],
+      currentMission: {
+        ...prev.currentMission,
+        modules: [
+          ...(prev.currentMission.modules || []),
+          {
+            id: `mod-${Date.now()}`,
+            title: 'មេរៀនថ្មី',
+            task: '',
+            aiPersona: 'You are a helpful mentor.',
+            initialPrompt: 'Hello! Ready to start?',
+            theoryPrompt: '',
+          },
+        ],
+      },
     }));
   };
 
   const updateModule = (index: number, field: keyof MissionModule, value: string) => {
     // Use functional update to ensure we always have the latest state, avoiding closure staleness issues
-    setCurrentMission((prev) => {
-      const updated = [...(prev.modules || [])];
+    setState((prev) => {
+      const updated = [...(prev.currentMission.modules || [])];
       updated[index] = { ...updated[index], [field]: value };
-      return { ...prev, modules: updated };
+      return { ...prev, currentMission: { ...prev.currentMission, modules: updated } };
     });
   };
 
   const batchUpdateModule = (index: number, updates: Partial<MissionModule>) => {
-    setCurrentMission((prev) => {
-      const updated = [...(prev.modules || [])];
+    setState((prev) => {
+      const updated = [...(prev.currentMission.modules || [])];
       updated[index] = { ...updated[index], ...updates };
-      return { ...prev, modules: updated };
+      return { ...prev, currentMission: { ...prev.currentMission, modules: updated } };
     });
   };
 
   const removeModule = (index: number) => {
     if (!window.confirm('តើអ្នកពិតជាចង់លុបមេរៀននេះមែនទេ?')) return;
-    setCurrentMission((prev) => {
-      const updated = [...(prev.modules || [])];
+    setState((prev) => {
+      const updated = [...(prev.currentMission.modules || [])];
       updated.splice(index, 1);
-      return { ...prev, modules: updated };
+      return { ...prev, currentMission: { ...prev.currentMission, modules: updated } };
     });
   };
 
   return (
     <div className="max-w-4xl mx-auto animate-fade-in">
       <div className="flex justify-between items-center mb-6">
-        <button
+        <button type="button"
           onClick={onCancel}
           className="text-gray-500 font-bold flex items-center hover:text-gray-900 text-sm"
         >
           <ChevronLeft className="h-4 w-4 mr-1" /> ត្រឡប់ក្រោយ
         </button>
         <div className="flex gap-2">
-          <button
-            onClick={() => setShowAiModal(true)}
+          <button type="button"
+            onClick={() => setState(prev => ({ ...prev, showAiModal: true }))}
             className="bg-purple-100 text-purple-700 px-4 py-2 rounded-lg font-bold flex items-center hover:bg-purple-200 transition-colors text-sm"
           >
             <Brain className="h-4 w-4 mr-2" /> AI បង្កើត
           </button>
-          <button
+          <button type="button"
             onClick={() => onSave(currentMission, thumbnailFile, thumbnailBase64, qrFile)}
             disabled={isSaving || (currentMission.description?.length || 0) > DESC_LIMIT}
             className="bg-primary text-white px-6 py-2 rounded-lg font-bold shadow-lg flex items-center hover:scale-105 transition-transform text-sm disabled:opacity-50"
@@ -247,6 +260,7 @@ const MissionForm: React.FC<MissionFormProps> = ({
                         : currentMission.thumbnail
                   }
                   className="w-full h-full object-cover"
+                  alt="Thumbnail"
                 />
               ) : (
                 <div className="w-full h-full flex flex-col items-center justify-center text-gray-400">
@@ -255,19 +269,19 @@ const MissionForm: React.FC<MissionFormProps> = ({
                 </div>
               )}
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
-                <label className="bg-white text-gray-800 px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer hover:bg-gray-100">
+                <label htmlFor="thumbnail-upload" className="bg-white text-gray-800 px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer hover:bg-gray-100">
                   Upload
                   <input
+                    id="thumbnail-upload"
                     type="file"
                     className="hidden"
                     accept="image/*"
                     onChange={(e) => {
-                      setThumbnailFile(e.target.files?.[0] || null);
-                      setThumbnailBase64(null);
+                      setState(prev => ({ ...prev, thumbnailFile: e.target.files?.[0] || null, thumbnailBase64: null }));
                     }}
                   />
                 </label>
-                <button
+                <button type="button"
                   onClick={handleGenerateThumbnail}
                   className="bg-purple-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-purple-700 flex items-center"
                 >
@@ -291,13 +305,16 @@ const MissionForm: React.FC<MissionFormProps> = ({
                       <p className="text-xs text-green-700 font-bold uppercase mb-1">បានចាត់តាំង</p>
                       <p className="font-bold text-gray-900 text-sm">{currentMission.mentor}</p>
                     </div>
-                    <button
+                    <button type="button"
                       onClick={() =>
-                        setCurrentMission({
-                          ...currentMission,
-                          mentorId: undefined,
-                          mentor: 'សុភាទន្សាយ',
-                        })
+                        setState(prev => ({
+                          ...prev,
+                          currentMission: {
+                            ...prev.currentMission,
+                            mentorId: undefined,
+                            mentor: 'សុភាទន្សាយ',
+                          }
+                        }))
                       }
                       className="text-red-400 hover:text-red-600 p-1"
                     >
@@ -306,13 +323,15 @@ const MissionForm: React.FC<MissionFormProps> = ({
                   </div>
                 ) : (
                   <div className="space-y-2">
+                    <label htmlFor="teacherEmail" className="sr-only">អ៊ីមែលគ្រូ</label>
                     <input
+                      id="teacherEmail"
                       className="w-full p-2 border border-gray-200 rounded-lg text-sm"
                       placeholder="អ៊ីមែលគ្រូ"
                       value={teacherEmail}
-                      onChange={(e) => setTeacherEmail(e.target.value)}
+                      onChange={(e) => setState(prev => ({ ...prev, teacherEmail: e.target.value }))}
                     />
-                    <button
+                    <button type="button"
                       onClick={handleAssignTeacher}
                       disabled={assigningTeacher || !teacherEmail.trim()}
                       className="w-full bg-gray-900 text-white py-2 rounded-lg text-xs font-bold hover:bg-black transition-colors disabled:opacity-50"
@@ -344,17 +363,21 @@ const MissionForm: React.FC<MissionFormProps> = ({
               ការកំណត់បេសកកម្ម
             </h3>
             <div>
-              <label className="block text-xs font-bold text-gray-500 mb-1">
+              <label htmlFor="category" className="block text-xs font-bold text-gray-500 mb-1">
                 ប្រភេទ (Category)
               </label>
               <select
+                id="category"
                 className="w-full p-2 border border-gray-200 rounded-lg text-sm"
                 value={currentMission.category}
                 onChange={(e) =>
-                  setCurrentMission({
-                    ...currentMission,
-                    category: e.target.value as MissionCategory,
-                  })
+                  setState(prev => ({
+                    ...prev,
+                    currentMission: {
+                      ...prev.currentMission,
+                      category: e.target.value as MissionCategory,
+                    }
+                  }))
                 }
               >
                 {Object.values(MissionCategory).map((cat) => (
@@ -366,28 +389,30 @@ const MissionForm: React.FC<MissionFormProps> = ({
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1">
+                <label htmlFor="squadSize" className="block text-xs font-bold text-gray-500 mb-1">
                   ចំនួនសិស្សក្នុងក្រុម
                 </label>
                 <input
+                  id="squadSize"
                   type="number"
                   className="w-full p-2 border border-gray-200 rounded-lg text-sm"
                   value={currentMission.squadSize}
                   onChange={(e) =>
-                    setCurrentMission({ ...currentMission, squadSize: parseInt(e.target.value) })
+                    setState(prev => ({ ...prev, currentMission: { ...prev.currentMission, squadSize: parseInt(e.target.value) } }))
                   }
                   min={1}
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1">
+                <label htmlFor="squadCreation" className="block text-xs font-bold text-gray-500 mb-1">
                   របៀបបង្កើតក្រុម
                 </label>
                 <select
+                  id="squadCreation"
                   className="w-full p-2 border border-gray-200 rounded-lg text-sm"
                   value={currentMission.squadCreation}
                   onChange={(e) =>
-                    setCurrentMission({ ...currentMission, squadCreation: e.target.value as any })
+                    setState(prev => ({ ...prev, currentMission: { ...prev.currentMission, squadCreation: e.target.value as any } }))
                   }
                 >
                   <option value="auto">Auto (ស្វ័យប្រវត្តិ)</option>
@@ -396,14 +421,15 @@ const MissionForm: React.FC<MissionFormProps> = ({
               </div>
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-500 mb-1">
+              <label htmlFor="enrollmentType" className="block text-xs font-bold text-gray-500 mb-1">
                 ប្រភេទការចុះឈ្មោះ
               </label>
               <select
+                id="enrollmentType"
                 className="w-full p-2 border border-gray-200 rounded-lg text-sm"
                 value={currentMission.enrollmentType}
                 onChange={(e) =>
-                  setCurrentMission({ ...currentMission, enrollmentType: e.target.value as any })
+                  setState(prev => ({ ...prev, currentMission: { ...prev.currentMission, enrollmentType: e.target.value as any } }))
                 }
               >
                 <option value="open">Open (សាធារណៈ)</option>
@@ -412,16 +438,20 @@ const MissionForm: React.FC<MissionFormProps> = ({
             </div>
             {/* Enable Plagiarism Check Toggle */}
             <div className="pt-2 border-t border-gray-100">
-              <label className="flex items-center space-x-2 cursor-pointer">
+              <label htmlFor="plagiarismCheck" className="flex items-center space-x-2 cursor-pointer">
                 <input
+                  id="plagiarismCheck"
                   type="checkbox"
                   className="form-checkbox text-primary rounded h-4 w-4"
                   checked={currentMission.enablePlagiarismCheck || false}
                   onChange={(e) =>
-                    setCurrentMission({
-                      ...currentMission,
-                      enablePlagiarismCheck: e.target.checked,
-                    })
+                    setState(prev => ({
+                      ...prev,
+                      currentMission: {
+                        ...prev.currentMission,
+                        enablePlagiarismCheck: e.target.checked,
+                      }
+                    }))
                   }
                 />
                 <span className="text-xs font-bold text-gray-700">
@@ -442,7 +472,7 @@ const MissionForm: React.FC<MissionFormProps> = ({
             </h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1">
+                <label htmlFor="khqrUpload" className="block text-xs font-bold text-gray-500 mb-1">
                   KHQR (សម្រាប់បង់ប្រាក់)
                 </label>
                 {currentMission.paymentQrUrl ? (
@@ -452,9 +482,9 @@ const MissionForm: React.FC<MissionFormProps> = ({
                       className="w-full h-full object-cover rounded-lg border border-gray-200"
                       alt="QR"
                     />
-                    <button
+                    <button type="button"
                       onClick={() =>
-                        setCurrentMission({ ...currentMission, paymentQrUrl: undefined })
+                        setState(prev => ({ ...prev, currentMission: { ...prev.currentMission, paymentQrUrl: undefined } }))
                       }
                       className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
                     >
@@ -463,33 +493,36 @@ const MissionForm: React.FC<MissionFormProps> = ({
                   </div>
                 ) : (
                   <input
+                    id="khqrUpload"
                     type="file"
                     accept="image/*"
-                    onChange={(e) => setQrFile(e.target.files?.[0] || null)}
+                    onChange={(e) => setState(prev => ({ ...prev, qrFile: e.target.files?.[0] || null }))}
                     className="block w-full text-xs text-gray-500 file:mr-2 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
                   />
                 )}
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1">ណែនាំបង់ប្រាក់</label>
+                <label htmlFor="paymentInstruction" className="block text-xs font-bold text-gray-500 mb-1">ណែនាំបង់ប្រាក់</label>
                 <input
+                  id="paymentInstruction"
                   className="w-full p-2 border border-gray-200 rounded-lg text-sm"
                   value={currentMission.paymentInstruction || ''}
                   onChange={(e) =>
-                    setCurrentMission({ ...currentMission, paymentInstruction: e.target.value })
+                    setState(prev => ({ ...prev, currentMission: { ...prev.currentMission, paymentInstruction: e.target.value } }))
                   }
                   placeholder="Ex: ABA 001 234 567"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1">
+                <label htmlFor="telegramLink" className="block text-xs font-bold text-gray-500 mb-1">
                   Telegram Group Link
                 </label>
                 <input
+                  id="telegramLink"
                   className="w-full p-2 border border-gray-200 rounded-lg text-sm text-blue-600"
                   value={currentMission.telegramGroupLink || ''}
                   onChange={(e) =>
-                    setCurrentMission({ ...currentMission, telegramGroupLink: e.target.value })
+                    setState(prev => ({ ...prev, currentMission: { ...prev.currentMission, telegramGroupLink: e.target.value } }))
                   }
                   placeholder="https://t.me/+AbCdEfGh"
                 />
@@ -506,22 +539,24 @@ const MissionForm: React.FC<MissionFormProps> = ({
               ព័ត៌មានលម្អិត
             </h3>
             <div>
-              <label className="block text-xs font-bold text-gray-500 mb-1">ចំណងជើងបេសកកម្ម</label>
+              <label htmlFor="missionTitle" className="block text-xs font-bold text-gray-500 mb-1">ចំណងជើងបេសកកម្ម</label>
               <input
+                id="missionTitle"
                 className="w-full p-3 border border-gray-200 rounded-xl text-base font-bold focus:ring-2 focus:ring-primary/20 outline-none"
                 value={currentMission.title}
-                onChange={(e) => setCurrentMission({ ...currentMission, title: e.target.value })}
+                onChange={(e) => setState(prev => ({ ...prev, currentMission: { ...prev.currentMission, title: e.target.value } }))}
                 placeholder="Enter mission title..."
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1">កម្រិតជំនាញ</label>
+                <label htmlFor="missionLevel" className="block text-xs font-bold text-gray-500 mb-1">កម្រិតជំនាញ</label>
                 <select
+                  id="missionLevel"
                   className="w-full p-3 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20"
                   value={currentMission.level}
                   onChange={(e) =>
-                    setCurrentMission({ ...currentMission, level: e.target.value as any })
+                    setState(prev => ({ ...prev, currentMission: { ...prev.currentMission, level: e.target.value as any } }))
                   }
                 >
                   <option value="Beginner">Beginner (ដំបូង)</option>
@@ -530,27 +565,29 @@ const MissionForm: React.FC<MissionFormProps> = ({
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1">តម្លៃ (រៀល)</label>
+                <label htmlFor="missionPrice" className="block text-xs font-bold text-gray-500 mb-1">តម្លៃ (រៀល)</label>
                 <input
+                  id="missionPrice"
                   type="number"
                   className="w-full p-3 border border-gray-200 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20"
                   value={currentMission.price}
                   onChange={(e) =>
-                    setCurrentMission({ ...currentMission, price: parseFloat(e.target.value) })
+                    setState(prev => ({ ...prev, currentMission: { ...prev.currentMission, price: parseFloat(e.target.value) } }))
                   }
                   min={0}
                 />
               </div>
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-500 mb-1">
+              <label htmlFor="missionDescription" className="block text-xs font-bold text-gray-500 mb-1">
                 បរិយាយ (Description)
               </label>
               <textarea
+                id="missionDescription"
                 className="w-full p-3 border border-gray-200 rounded-xl text-sm h-32 resize-none focus:ring-2 focus:ring-primary/20 outline-none"
                 value={currentMission.description}
                 onChange={(e) =>
-                  setCurrentMission({ ...currentMission, description: e.target.value })
+                  setState(prev => ({ ...prev, currentMission: { ...prev.currentMission, description: e.target.value } }))
                 }
                 placeholder="Describe the mission goal and outcome..."
               />
@@ -562,7 +599,7 @@ const MissionForm: React.FC<MissionFormProps> = ({
           <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200">
             <div className="flex justify-between items-center mb-4">
               <h3 className="font-bold text-gray-900">កម្មវិធីសិក្សា (Modules)</h3>
-              <button
+              <button type="button"
                 onClick={addModule}
                 className="bg-white text-gray-700 px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-bold hover:bg-gray-100 flex items-center"
               >
@@ -573,7 +610,7 @@ const MissionForm: React.FC<MissionFormProps> = ({
             <div className="space-y-4">
               {currentMission.modules?.map((mod, idx) => (
                 <ModuleEditor
-                  key={mod.id || idx}
+                  key={mod.id}
                   module={mod}
                   index={idx}
                   onChange={updateModule}
@@ -605,16 +642,16 @@ const MissionForm: React.FC<MissionFormProps> = ({
               className="w-full p-3 border border-gray-200 rounded-xl text-sm h-24 mb-4 focus:ring-2 focus:ring-purple-200 outline-none"
               placeholder="e.g. A comprehensive guide to Python for Data Science..."
               value={aiPrompt}
-              onChange={(e) => setAiPrompt(e.target.value)}
+              onChange={(e) => setState(prev => ({ ...prev, aiPrompt: e.target.value }))}
             />
             <div className="flex justify-end gap-2">
-              <button
-                onClick={() => setShowAiModal(false)}
+              <button type="button"
+                onClick={() => setState(prev => ({ ...prev, showAiModal: false }))}
                 className="px-4 py-2 text-gray-500 font-bold text-sm"
               >
                 Cancel
               </button>
-              <button
+              <button type="button"
                 onClick={handleAiGenerateStructure}
                 disabled={isGenerating || !aiPrompt.trim()}
                 className="px-4 py-2 bg-purple-600 text-white rounded-lg font-bold text-sm shadow-lg disabled:opacity-50"
@@ -768,7 +805,7 @@ const ModuleEditor: React.FC<{
         <div className="flex items-center gap-2">
           {/* Magic Wand for generating content */}
           {isExpanded && (
-            <button
+            <button type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 handleAutoGenerate();
@@ -785,7 +822,7 @@ const ModuleEditor: React.FC<{
               <span className="hidden sm:inline">Magic Fill</span>
             </button>
           )}
-          <button
+          <button type="button"
             onClick={(e) => {
               e.stopPropagation();
               onDelete(index);
@@ -801,8 +838,9 @@ const ModuleEditor: React.FC<{
       {isExpanded && (
         <div className="space-y-4 mt-4 pt-4 border-t border-gray-100 animate-fade-in">
           <div>
-            <label className="block text-xs font-bold text-gray-400 mb-1 uppercase">Title</label>
+            <label htmlFor={`mod-title-${index}`} className="block text-xs font-bold text-gray-400 mb-1 uppercase">Title</label>
             <input
+              id={`mod-title-${index}`}
               className="w-full p-3 border border-gray-200 rounded-lg text-sm font-bold focus:ring-2 focus:ring-primary/20 outline-none"
               placeholder="Module Title"
               value={module.title}
@@ -812,9 +850,10 @@ const ModuleEditor: React.FC<{
           </div>
           <div>
             <div className="flex justify-between items-center mb-1">
-              <label className="block text-xs font-bold text-gray-400 uppercase">Task</label>
+              <label htmlFor={`mod-task-${index}`} className="block text-xs font-bold text-gray-400 uppercase">Task</label>
             </div>
             <textarea
+              id={`mod-task-${index}`}
               className="w-full p-3 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 outline-none resize-none min-h-[100px]"
               placeholder="Task Description"
               value={module.task}
@@ -824,10 +863,11 @@ const ModuleEditor: React.FC<{
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-gray-400 mb-1 uppercase">
+              <label htmlFor={`mod-persona-${index}`} className="block text-xs font-bold text-gray-400 mb-1 uppercase">
                 AI Persona
               </label>
               <textarea
+                id={`mod-persona-${index}`}
                 className="w-full p-3 border border-gray-200 rounded-lg text-xs focus:ring-2 focus:ring-primary/20 outline-none resize-none min-h-[120px]"
                 placeholder="AI Persona"
                 value={module.aiPersona}
@@ -836,10 +876,11 @@ const ModuleEditor: React.FC<{
               <CharCounter current={module.aiPersona.length} limit={PERSONA_LIMIT} />
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-400 mb-1 uppercase">
+              <label htmlFor={`mod-prompt-${index}`} className="block text-xs font-bold text-gray-400 mb-1 uppercase">
                 Initial Greeting
               </label>
               <textarea
+                id={`mod-prompt-${index}`}
                 className="w-full p-3 border border-gray-200 rounded-lg text-xs focus:ring-2 focus:ring-primary/20 outline-none resize-none min-h-[120px]"
                 placeholder="Initial AI Greeting"
                 value={module.initialPrompt}
@@ -849,10 +890,11 @@ const ModuleEditor: React.FC<{
             </div>
           </div>
           <div>
-            <label className="block text-xs font-bold text-gray-400 mb-1 uppercase">
+            <label htmlFor={`mod-theory-${index}`} className="block text-xs font-bold text-gray-400 mb-1 uppercase">
               Theory Prompt
             </label>
             <textarea
+              id={`mod-theory-${index}`}
               className="w-full p-3 border border-gray-200 rounded-lg text-xs focus:ring-2 focus:ring-primary/20 outline-none resize-none min-h-[100px]"
               placeholder="Theory Prompt"
               value={module.theoryPrompt || ''}
@@ -862,11 +904,12 @@ const ModuleEditor: React.FC<{
           </div>
 
           <div className="mt-4 border-t border-gray-100 pt-4">
-            <label className="block text-xs font-bold text-gray-400 mb-1 uppercase flex items-center gap-1">
+            <label htmlFor={`mod-sim-${index}`} className="block text-xs font-bold text-gray-400 mb-1 uppercase flex items-center gap-1">
               <Experiment className="h-3 w-3" /> Simulation Configuration
             </label>
             <div className="flex gap-2">
               <select
+                id={`mod-sim-${index}`}
                 className="w-1/3 p-3 border border-gray-200 rounded-lg text-xs font-bold bg-gray-50 focus:ring-2 focus:ring-primary/20 outline-none"
                 value={module.simulationConfig?.type || 'phet'}
                 onChange={(e) => handleSimulationTypeChange(e.target.value as any)}
@@ -875,7 +918,9 @@ const ModuleEditor: React.FC<{
                 <option value="wokwi">Wokwi (IoT/Arduino)</option>
                 <option value="other">Other (Embed)</option>
               </select>
+              <label htmlFor={`mod-sim-url-${index}`} className="sr-only">Simulation URL</label>
               <input
+                id={`mod-sim-url-${index}`}
                 className="flex-1 p-3 border border-gray-200 rounded-lg text-xs font-mono text-blue-600 focus:ring-2 focus:ring-primary/20 outline-none"
                 placeholder={
                   module.simulationConfig?.type === 'wokwi'

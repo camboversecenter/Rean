@@ -41,24 +41,36 @@ const QuestionDetailPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState<any>(null);
 
-  // Pagination
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
+  // Combined States
+  const [pagination, setPagination] = useState({ page: 1, hasMore: true, loadingMore: false });
   const LIMIT = 20;
-
-  // Reply Input
-  const [replyContent, setReplyContent] = useState('');
-  const [isReplying, setIsReplying] = useState(false);
-
-  // Editing State
-  const [editingReplyId, setEditingReplyId] = useState<string | null>(null);
-  const [editContent, setEditContent] = useState('');
+  const [replyState, setReplyState] = useState({ content: '', isReplying: false });
+  const [editState, setEditState] = useState({ replyId: null as string | null, content: '' });
 
   // Interaction
   const [bookmarked, setBookmarked] = useState(false);
 
   const replyInputRef = useRef<HTMLTextAreaElement>(null);
+
+  const loadReplies = React.useCallback(async (pageToLoad: number, reset: boolean = false) => {
+    if (!id) return;
+    if (!reset) setPagination(p => ({ ...p, loadingMore: true }));
+
+    try {
+      const newReplies = await fetchReplies(id, pageToLoad, LIMIT);
+      if (newReplies.length < LIMIT) setPagination(p => ({ ...p, hasMore: false }));
+
+      if (reset) {
+        setReplies(newReplies);
+      } else {
+        setReplies((prev) => [...prev, ...newReplies]);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setPagination(p => ({ ...p, loadingMore: false }));
+    }
+  }, [id, LIMIT]);
 
   useEffect(() => {
     const init = async () => {
@@ -79,31 +91,11 @@ const QuestionDetailPage: React.FC = () => {
       setLoading(false);
     };
     init();
-  }, [id]);
-
-  const loadReplies = async (pageToLoad: number, reset: boolean = false) => {
-    if (!id) return;
-    if (!reset) setLoadingMore(true);
-
-    try {
-      const newReplies = await fetchReplies(id, pageToLoad, LIMIT);
-      if (newReplies.length < LIMIT) setHasMore(false);
-
-      if (reset) {
-        setReplies(newReplies);
-      } else {
-        setReplies((prev) => [...prev, ...newReplies]);
-      }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoadingMore(false);
-    }
-  };
+  }, [id, loadReplies]);
 
   const handleLoadMore = () => {
-    const nextPage = page + 1;
-    setPage(nextPage);
+    const nextPage = pagination.page + 1;
+    setPagination(p => ({ ...p, page: nextPage }));
     loadReplies(nextPage);
   };
 
@@ -182,13 +174,13 @@ const QuestionDetailPage: React.FC = () => {
   };
 
   const handleSubmitReply = async () => {
-    if (!replyContent.trim() || !post || !currentUser || replyContent.length > REPLY_LIMIT) {
+    if (!replyState.content.trim() || !post || !currentUser || replyState.content.length > REPLY_LIMIT) {
       if (!currentUser) toast.error('Please login to reply.');
       return;
     }
 
     // --- AI TAGGING LOGIC ---
-    const isTaggingAI = /@(tonsay|sopheatonsay)\b/i.test(replyContent);
+    const isTaggingAI = /@(tonsay|sopheatonsay)\b/i.test(replyState.content);
     const cost = isTaggingAI ? AI_COSTS.TAG_REPLY : 0;
 
     if (isTaggingAI) {
@@ -199,12 +191,12 @@ const QuestionDetailPage: React.FC = () => {
       }
     }
 
-    setIsReplying(true);
+    setReplyState(s => ({ ...s, isReplying: true }));
     try {
       // 1. Save user reply
-      const newReply = await createCommunityReply(post.id, replyContent, false);
+      const newReply = await createCommunityReply(post.id, replyState.content, false);
       setReplies((prev) => [...prev, newReply]);
-      setReplyContent('');
+      setReplyState(s => ({ ...s, content: '' }));
 
       // 2. Handle AI if tagged
       if (isTaggingAI) {
@@ -219,7 +211,7 @@ const QuestionDetailPage: React.FC = () => {
                     CONTEXT:
                     The user has tagged you in a reply to a question.
                     Original Question: "${post.content}"
-                    User's Reply (Tagging you): "${replyContent}"
+                    User's Reply (Tagging you): "${replyState.content}"
                     
                     INSTRUCTIONS:
                     1.  **TONE:** Casual, friendly, like a peer/student. **DO NOT** use formal introductions (e.g., do NOT say "In my name as Sophea Tonsay..." or "I am happy to explain..."). Just answer the question directly.
@@ -231,7 +223,7 @@ const QuestionDetailPage: React.FC = () => {
 
         try {
           // This service call handles server-side payment
-          const aiResponseText = await chatWithAiTag(replyContent, systemPrompt);
+          const aiResponseText = await chatWithAiTag(replyState.content, systemPrompt);
 
           if (aiResponseText && !aiResponseText.includes('__IGNORE__')) {
             const aiReply = await createCommunityReply(post.id, aiResponseText, true);
@@ -253,7 +245,7 @@ const QuestionDetailPage: React.FC = () => {
     } catch (e) {
       toast.error('Failed to reply.');
     } finally {
-      setIsReplying(false);
+      setReplyState(s => ({ ...s, isReplying: false }));
     }
   };
 
@@ -271,24 +263,22 @@ const QuestionDetailPage: React.FC = () => {
   };
 
   const handleEditClick = (reply: CommunityReply) => {
-    setEditingReplyId(reply.id);
-    setEditContent(reply.content);
+    setEditState({ replyId: reply.id, content: reply.content });
   };
 
   const handleCancelEdit = () => {
-    setEditingReplyId(null);
-    setEditContent('');
+    setEditState({ replyId: null, content: '' });
   };
 
   const handleSaveEdit = async (replyId: string) => {
-    if (!editContent.trim() || editContent.length > REPLY_LIMIT) return;
+    if (!editState.content.trim() || editState.content.length > REPLY_LIMIT) return;
     try {
-      await updateCommunityReply(replyId, editContent);
+      await updateCommunityReply(replyId, editState.content);
       setReplies((prev) =>
-        prev.map((r) => (r.id === replyId ? { ...r, content: editContent } : r))
+        prev.map((r) => (r.id === replyId ? { ...r, content: editState.content } : r))
       );
       toast.success('កែប្រែបានជោគជ័យ! (Updated)');
-      setEditingReplyId(null);
+      setEditState({ replyId: null, content: '' });
     } catch (e) {
       toast.error('Failed to update.');
     }
@@ -304,14 +294,15 @@ const QuestionDetailPage: React.FC = () => {
 
   const isPostAnonymous = post.isAnonymous;
   const displayAuthor = isPostAnonymous ? 'សិស្សអនាមិក' : post.authorName;
-  const isTaggingAI = /@(tonsay|sopheatonsay)\b/i.test(replyContent);
+  const isTaggingAI = /@(tonsay|sopheatonsay)\b/i.test(replyState.content);
 
   return (
     <div className="bg-gray-50 min-h-screen pb-32 font-sans">
       <div className="bg-white border-b border-gray-200 px-4 py-3 sticky top-0 z-30 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <button
+          <button type="button"
             onClick={() => navigate(-1)}
+            aria-label="Go back"
             className="p-2 hover:bg-gray-100 rounded-full text-gray-500"
           >
             <ChevronLeft className="h-6 w-6" />
@@ -322,8 +313,9 @@ const QuestionDetailPage: React.FC = () => {
           </div>
         </div>
 
-        <button
+        <button type="button"
           onClick={handleBookmark}
+          aria-label="Bookmark"
           className={`p-2 rounded-full transition-colors ${bookmarked ? 'bg-blue-50 text-blue-600' : 'text-gray-400 hover:bg-gray-100'}`}
         >
           <Bookmark className={`h-5 w-5 ${bookmarked ? 'fill-blue-600' : ''}`} />
@@ -341,6 +333,7 @@ const QuestionDetailPage: React.FC = () => {
               <img
                 src={post.authorAvatar || `https://ui-avatars.com/api/?name=${post.authorName}`}
                 className="w-12 h-12 rounded-full object-cover border border-gray-200"
+                alt="Author Avatar"
               />
             )}
             <div>
@@ -371,7 +364,7 @@ const QuestionDetailPage: React.FC = () => {
               size="md"
             />
             <div className="h-4 w-[1px] bg-gray-200 mx-2"></div>
-            <button
+            <button type="button"
               onClick={() => replyInputRef.current?.focus()}
               className="flex items-center gap-1 text-sm font-medium text-gray-500 hover:text-gray-700"
             >
@@ -414,6 +407,7 @@ const QuestionDetailPage: React.FC = () => {
                         reply.authorAvatar || `https://ui-avatars.com/api/?name=${reply.authorName}`
                       }
                       className="w-8 h-8 rounded-full object-cover"
+                      alt="Avatar"
                     />
                   )}
                   <div>
@@ -434,21 +428,23 @@ const QuestionDetailPage: React.FC = () => {
                     </span>
                   )}
                   {!reply.accepted && !reply.isAI && currentUser?.id === post.author_id && (
-                    <button
+                    <button type="button"
                       onClick={() => handleAcceptAnswer(reply)}
                       className="text-gray-400 hover:text-green-600 p-1"
                       title="Accept Answer"
+                      aria-label="Accept Answer"
                     >
                       <CheckCircle className="h-5 w-5" />
                     </button>
                   )}
                   {!reply.isAI &&
                     currentUser?.id === reply.author_id &&
-                    editingReplyId !== reply.id && (
-                      <button
+                    editState.replyId !== reply.id && (
+                      <button type="button"
                         onClick={() => handleEditClick(reply)}
                         className="text-gray-400 hover:text-blue-600 p-1"
                         title="Edit Reply"
+                        aria-label="Edit Reply"
                       >
                         <Edit className="h-4 w-4" />
                       </button>
@@ -456,25 +452,26 @@ const QuestionDetailPage: React.FC = () => {
                 </div>
               </div>
 
-              {editingReplyId === reply.id ? (
+              {editState.replyId === reply.id ? (
                 <div className="pl-10 mt-2 animate-fade-in">
                   <textarea
-                    value={editContent}
-                    onChange={(e) => setEditContent(e.target.value)}
+                    value={editState.content}
+                    aria-label="Edit reply"
+                    onChange={(e) => setEditState(s => ({ ...s, content: e.target.value }))}
                     className="w-full p-3 bg-gray-50 border border-blue-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-100 focus:outline-none resize-none"
                     rows={3}
                   />
-                  <CharCounter current={editContent.length} limit={REPLY_LIMIT} />
+                  <CharCounter current={editState.content.length} limit={REPLY_LIMIT} />
                   <div className="flex justify-end gap-2 mt-2">
-                    <button
+                    <button type="button"
                       onClick={handleCancelEdit}
                       className="px-3 py-1.5 text-xs font-bold text-gray-500 hover:bg-gray-100 rounded-lg transition-colors"
                     >
                       បោះបង់ (Cancel)
                     </button>
-                    <button
+                    <button type="button"
                       onClick={() => handleSaveEdit(reply.id)}
-                      disabled={editContent.length > REPLY_LIMIT || !editContent.trim()}
+                      disabled={editState.content.length > REPLY_LIMIT || !editState.content.trim()}
                       className="px-3 py-1.5 text-xs font-bold bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
                     >
                       រក្សាទុក (Save)
@@ -499,13 +496,13 @@ const QuestionDetailPage: React.FC = () => {
             </div>
           ))}
 
-          {hasMore && (
-            <button
+          {pagination.hasMore && (
+            <button type="button"
               onClick={handleLoadMore}
-              disabled={loadingMore}
+              disabled={pagination.loadingMore}
               className="w-full py-3 text-sm text-gray-500 font-bold hover:bg-gray-200 rounded-xl transition-colors flex items-center justify-center"
             >
-              {loadingMore ? (
+              {pagination.loadingMore ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
                 'បង្ហាញបន្ថែម (Load More)'
@@ -520,17 +517,19 @@ const QuestionDetailPage: React.FC = () => {
           <div className="flex gap-3">
             <textarea
               ref={replyInputRef}
-              value={replyContent}
-              onChange={(e) => setReplyContent(e.target.value)}
+              aria-label="Write your reply"
+              value={replyState.content}
+              onChange={(e) => setReplyState(s => ({ ...s, content: e.target.value }))}
               placeholder="សរសេរចម្លើយរបស់អ្នក..."
               className="flex-1 bg-gray-100 border-0 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary/20 focus:outline-none resize-none h-12 max-h-32"
             />
-            <button
+            <button type="button"
               onClick={handleSubmitReply}
-              disabled={isReplying || !replyContent.trim() || replyContent.length > REPLY_LIMIT}
+              disabled={replyState.isReplying || !replyState.content.trim() || replyState.content.length > REPLY_LIMIT}
               className={`p-3 rounded-xl transition-all disabled:opacity-50 flex-shrink-0 ${isTaggingAI ? 'bg-yellow-500 hover:bg-yellow-600 text-white shadow-lg shadow-yellow-200' : 'bg-primary text-white hover:bg-primary/90'}`}
+              aria-label="Send reply"
             >
-              {isReplying ? (
+              {replyState.isReplying ? (
                 <Loader2 className="h-5 w-5 animate-spin" />
               ) : isTaggingAI ? (
                 <div className="flex flex-col items-center leading-none">
@@ -547,13 +546,13 @@ const QuestionDetailPage: React.FC = () => {
               Tip: Tag{' '}
               <span
                 className="font-bold text-primary cursor-pointer hover:underline"
-                onClick={() => setReplyContent((prev) => prev + '@tonsay ')}
+                onClick={() => setReplyState(s => ({ ...s, content: s.content + '@tonsay ' }))}
               >
                 @tonsay
               </span>{' '}
               to get AI help ({AI_COSTS.TAG_REPLY} pts).
             </p>
-            <CharCounter current={replyContent.length} limit={REPLY_LIMIT} className="mt-0" />
+            <CharCounter current={replyState.content.length} limit={REPLY_LIMIT} className="mt-0" />
           </div>
         </div>
       </div>

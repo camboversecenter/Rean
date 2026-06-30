@@ -30,93 +30,81 @@ interface SchoolFormProps {
   ) => Promise<void>;
 }
 
+const base64ToBlob = (base64: string, mimeType: string = 'image/png') => {
+  const byteCharacters = atob(base64);
+  const byteNumbers = new Array(byteCharacters.length);
+  for (let i = 0; i < byteCharacters.length; i++) byteNumbers[i] = byteCharacters.charCodeAt(i);
+  return new Blob([new Uint8Array(byteNumbers)], { type: mimeType });
+};
+
 const SchoolForm: React.FC<SchoolFormProps> = ({ school, isSaving, onSave }) => {
-  const [formData, setFormData] = useState<School>(school);
-  const [majorsInput, setMajorsInput] = useState(school.majors?.join(', ') || '');
-
-  // File states
-  const [logoFile, setLogoFile] = useState<File | null>(null);
-  const [logoBase64, setLogoBase64] = useState<string | null>(null);
-  const [coverFile, setCoverFile] = useState<File | null>(null);
-  const [coverBase64, setCoverBase64] = useState<string | null>(null);
-
-  // AI states
-  const [aiModalOpen, setAiModalOpen] = useState(false);
-  const [aiTarget, setAiTarget] = useState<'logo' | 'cover' | null>(null);
-  const [aiPrompt, setAiPrompt] = useState('');
-  const [generating, setGenerating] = useState(false);
-
-  // Local loading state for toggle
-  const [toggling, setToggling] = useState(false);
-
-  // Sync if school prop changes
-  useEffect(() => {
-    setFormData(school);
-    setMajorsInput(school.majors?.join(', ') || '');
-  }, [school]);
-
-  const base64ToBlob = (base64: string, mimeType: string = 'image/png') => {
-    const byteCharacters = atob(base64);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) byteNumbers[i] = byteCharacters.charCodeAt(i);
-    return new Blob([new Uint8Array(byteNumbers)], { type: mimeType });
-  };
+  const [state, setState] = useState({
+    formData: school,
+    majorsInput: school.majors?.join(', ') || '',
+    logoFile: null as File | null,
+    logoBase64: null as string | null,
+    coverFile: null as File | null,
+    coverBase64: null as string | null,
+    aiModalOpen: false,
+    aiTarget: null as 'logo' | 'cover' | null,
+    aiPrompt: '',
+    generating: false,
+    toggling: false,
+  });
 
   const handleGenerateImage = async () => {
-    if (!aiPrompt.trim()) return;
-    setGenerating(true);
+    if (!state.aiPrompt.trim()) return;
+    setState((prev) => ({ ...prev, generating: true }));
     try {
-      const base64 = await generateImage(aiPrompt);
+      const base64 = await generateImage(state.aiPrompt);
       if (base64) {
-        if (aiTarget === 'logo') {
-          setLogoBase64(base64);
-          setLogoFile(null);
-        } else {
-          setCoverBase64(base64);
-          setCoverFile(null);
-        }
-        setAiModalOpen(false);
+        setState((prev) => ({
+          ...prev,
+          ...(prev.aiTarget === 'logo'
+            ? { logoBase64: base64, logoFile: null }
+            : { coverBase64: base64, coverFile: null }),
+          aiModalOpen: false,
+        }));
         toast.success('រូបភាពត្រូវបានបង្កើត!');
       }
     } catch (e: any) {
       toast.error(e.message);
     } finally {
-      setGenerating(false);
+      setState((prev) => ({ ...prev, generating: false }));
     }
   };
 
   const openAiModal = (target: 'logo' | 'cover') => {
-    setAiTarget(target);
-    setAiPrompt(
-      target === 'logo'
-        ? `Professional flat vector logo for ${formData.name}, educational style, clean background.`
-        : `Modern university campus photography for ${formData.name}, high quality architecture, sunny day.`
-    );
-    setAiModalOpen(true);
+    setState((prev) => ({
+      ...prev,
+      aiTarget: target,
+      aiPrompt:
+        target === 'logo'
+          ? `Professional flat vector logo for ${prev.formData.name}, educational style, clean background.`
+          : `Modern university campus photography for ${prev.formData.name}, high quality architecture, sunny day.`,
+      aiModalOpen: true,
+    }));
   };
 
   const handleFormSubmit = () => {
     const files = {
-      logo: logoBase64 ? base64ToBlob(logoBase64) : logoFile,
-      cover: coverBase64 ? base64ToBlob(coverBase64) : coverFile,
+      logo: state.logoBase64 ? base64ToBlob(state.logoBase64) : state.logoFile,
+      cover: state.coverBase64 ? base64ToBlob(state.coverBase64) : state.coverFile,
     };
 
     // Convert comma-separated string to array
-    const majorsArray = majorsInput
+    const majorsArray = state.majorsInput
       .split(',')
       .map((m) => m.trim())
       .filter((m) => m !== '');
 
-    onSave({ ...formData, majors: majorsArray }, files);
+    onSave({ ...state.formData, majors: majorsArray }, files);
   };
 
   const togglePublishStatus = async () => {
-    if (toggling) return;
-    const newStatus = !formData.isPublished;
-    setToggling(true);
-
-    // Optimistic Update
-    setFormData((prev) => ({ ...prev, isPublished: newStatus }));
+    if (state.toggling) return;
+    const newStatus = !state.formData.isPublished;
+    setState((prev) => ({ ...prev, toggling: true, formData: { ...prev.formData, isPublished: newStatus } }));
 
     try {
       // Immediate Save for better UX on toggles
@@ -127,10 +115,10 @@ const SchoolForm: React.FC<SchoolFormProps> = ({ school, isSaving, onSave }) => 
       // Parent (SchoolDashboard) currently shows "Saved Successfully", which is fine.
     } catch (e) {
       // Revert on error
-      setFormData((prev) => ({ ...prev, isPublished: !newStatus }));
+      setState((prev) => ({ ...prev, formData: { ...prev.formData, isPublished: !newStatus } }));
       toast.error('បរាជ័យក្នុងការប្តូរស្ថានភាព');
     } finally {
-      setToggling(false);
+      setState((prev) => ({ ...prev, toggling: false }));
     }
   };
 
@@ -140,26 +128,26 @@ const SchoolForm: React.FC<SchoolFormProps> = ({ school, isSaving, onSave }) => 
       <div className="lg:col-span-3">
         <div
           className={`p-4 rounded-2xl border-2 flex flex-col sm:flex-row justify-between items-center gap-4 transition-all ${
-            formData.isPublished ? 'bg-green-50 border-green-100' : 'bg-amber-50 border-amber-100'
+            state.formData.isPublished ? 'bg-green-50 border-green-100' : 'bg-amber-50 border-amber-100'
           }`}
         >
           <div className="flex items-center gap-4">
             <div
-              className={`p-3 rounded-xl ${formData.isPublished ? 'bg-green-500 text-white' : 'bg-amber-500 text-white'}`}
+              className={`p-3 rounded-xl ${state.formData.isPublished ? 'bg-green-500 text-white' : 'bg-amber-500 text-white'}`}
             >
-              {formData.isPublished ? <Eye className="h-6 w-6" /> : <EyeOff className="h-6 w-6" />}
+              {state.formData.isPublished ? <Eye className="h-6 w-6" /> : <EyeOff className="h-6 w-6" />}
             </div>
             <div>
               <h3 className="font-bold text-gray-900 flex items-center gap-2">
                 ស្ថានភាពសាលា (Visibility)
                 <span
-                  className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${formData.isPublished ? 'bg-green-200 text-green-800' : 'bg-amber-200 text-amber-800'}`}
+                  className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${state.formData.isPublished ? 'bg-green-200 text-green-800' : 'bg-amber-200 text-amber-800'}`}
                 >
-                  {formData.isPublished ? 'Published' : 'Draft / Hidden'}
+                  {state.formData.isPublished ? 'Published' : 'Draft / Hidden'}
                 </span>
               </h3>
               <p className="text-xs text-gray-600 mt-1">
-                {formData.isPublished
+                {state.formData.isPublished
                   ? 'សាលារបស់អ្នកកំពុងបង្ហាញជាសាធារណៈ។ សិស្សអាចស្វែងរកបាន។'
                   : 'សាលារបស់អ្នកត្រូវបានលាក់។ មានតែអ្នកប៉ុណ្ណោះដែលមើលឃើញ។'}
               </p>
@@ -167,25 +155,26 @@ const SchoolForm: React.FC<SchoolFormProps> = ({ school, isSaving, onSave }) => 
           </div>
           <div className="flex items-center gap-3 bg-white/50 p-2 rounded-xl">
             <span
-              className={`text-xs font-bold ${formData.isPublished ? 'text-gray-400' : 'text-amber-600'}`}
+              className={`text-xs font-bold ${state.formData.isPublished ? 'text-gray-400' : 'text-amber-600'}`}
             >
               លាក់
             </span>
-            <button
+            <button type="button"
               onClick={togglePublishStatus}
-              disabled={toggling}
+              disabled={state.toggling}
+              aria-label="Toggle publish status"
               className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors focus:outline-none ${
-                formData.isPublished ? 'bg-green-500' : 'bg-gray-300'
+                state.formData.isPublished ? 'bg-green-500' : 'bg-gray-300'
               }`}
             >
               <span
                 className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform duration-200 ease-in-out ${
-                  formData.isPublished ? 'translate-x-6' : 'translate-x-1'
+                  state.formData.isPublished ? 'translate-x-6' : 'translate-x-1'
                 }`}
               />
             </button>
             <span
-              className={`text-xs font-bold ${formData.isPublished ? 'text-green-600' : 'text-gray-400'}`}
+              className={`text-xs font-bold ${state.formData.isPublished ? 'text-green-600' : 'text-gray-400'}`}
             >
               បង្ហាញ
             </span>
@@ -199,9 +188,9 @@ const SchoolForm: React.FC<SchoolFormProps> = ({ school, isSaving, onSave }) => 
             <h3 className="font-bold text-gray-900 flex items-center">
               <Layout className="h-5 w-5 mr-2 text-primary" /> ព័ត៌មានទូទៅ
             </h3>
-            <button
+            <button type="button"
               onClick={handleFormSubmit}
-              disabled={isSaving || formData.description.length > SCHOOL_DESC_LIMIT}
+              disabled={isSaving || state.formData.description.length > SCHOOL_DESC_LIMIT}
               className="bg-primary text-white px-6 py-2 rounded-xl font-bold text-sm flex items-center shadow-lg disabled:opacity-50 transition-all active:scale-95"
             >
               {isSaving ? (
@@ -216,24 +205,26 @@ const SchoolForm: React.FC<SchoolFormProps> = ({ school, isSaving, onSave }) => 
           <div className="space-y-5">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1.5 uppercase">
+                <label htmlFor="schoolName" className="block text-xs font-bold text-gray-500 mb-1.5 uppercase">
                   ឈ្មោះសាលា
                 </label>
                 <input
+                  id="schoolName"
                   className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  value={state.formData.name}
+                  onChange={(e) => setState((prev) => ({ ...prev, formData: { ...prev.formData, name: e.target.value } }))}
                   placeholder="បញ្ចូលឈ្មោះសាលារៀន"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1.5 uppercase">
+                <label htmlFor="schoolType" className="block text-xs font-bold text-gray-500 mb-1.5 uppercase">
                   ប្រភេទគ្រឹះស្ថាន
                 </label>
                 <select
+                  id="schoolType"
                   className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
-                  value={formData.type}
-                  onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
+                  value={state.formData.type}
+                  onChange={(e) => setState((prev) => ({ ...prev, formData: { ...prev.formData, type: e.target.value as any } }))}
                 >
                   <option value="University">សាកលវិទ្យាល័យ</option>
                   <option value="Vocational">វិជ្ជាជីវៈ</option>
@@ -244,43 +235,46 @@ const SchoolForm: React.FC<SchoolFormProps> = ({ school, isSaving, onSave }) => 
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-gray-500 mb-1.5 uppercase">
+              <label htmlFor="schoolDesc" className="block text-xs font-bold text-gray-500 mb-1.5 uppercase">
                 ការពិពណ៌នា
               </label>
               <textarea
+                id="schoolDesc"
                 className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl h-32 resize-none focus:ring-2 focus:ring-primary/20 outline-none leading-relaxed"
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                value={state.formData.description}
+                onChange={(e) => setState((prev) => ({ ...prev, formData: { ...prev.formData, description: e.target.value } }))}
                 placeholder="រៀបរាប់អំពីសាលារបស់អ្នក..."
               />
-              <CharCounter current={formData.description.length} limit={SCHOOL_DESC_LIMIT} />
+              <CharCounter current={state.formData.description.length} limit={SCHOOL_DESC_LIMIT} />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1.5 uppercase">
+                <label htmlFor="schoolLoc" className="block text-xs font-bold text-gray-500 mb-1.5 uppercase">
                   ទីតាំង
                 </label>
                 <div className="relative">
                   <MapPin className="absolute left-3 top-3.5 h-4 w-4 text-gray-400" />
                   <input
+                    id="schoolLoc"
                     className="w-full pl-9 pr-3 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
-                    value={formData.location}
-                    onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                    value={state.formData.location}
+                    onChange={(e) => setState((prev) => ({ ...prev, formData: { ...prev.formData, location: e.target.value } }))}
                     placeholder="ឧ. រាជធានីភ្នំពេញ"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1.5 uppercase">
+                <label htmlFor="schoolTuition" className="block text-xs font-bold text-gray-500 mb-1.5 uppercase">
                   តម្លៃសិក្សា (Tuition Range)
                 </label>
                 <div className="relative">
                   <DollarSign className="absolute left-3 top-3.5 h-4 w-4 text-gray-400" />
                   <input
+                    id="schoolTuition"
                     className="w-full pl-9 pr-3 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
-                    value={formData.tuitionRange || ''}
-                    onChange={(e) => setFormData({ ...formData, tuitionRange: e.target.value })}
+                    value={state.formData.tuitionRange || ''}
+                    onChange={(e) => setState((prev) => ({ ...prev, formData: { ...prev.formData, tuitionRange: e.target.value } }))}
                     placeholder="ឧ. $500 - $1,500 / ឆ្នាំ"
                   />
                 </div>
@@ -288,15 +282,16 @@ const SchoolForm: React.FC<SchoolFormProps> = ({ school, isSaving, onSave }) => 
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-gray-500 mb-1.5 uppercase">
+              <label htmlFor="schoolMajors" className="block text-xs font-bold text-gray-500 mb-1.5 uppercase">
                 ជំនាញសិក្សា (Majors)
               </label>
               <div className="relative">
                 <BookOpen className="absolute left-3 top-3.5 h-4 w-4 text-gray-400" />
                 <input
+                  id="schoolMajors"
                   className="w-full pl-9 pr-3 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
-                  value={majorsInput}
-                  onChange={(e) => setMajorsInput(e.target.value)}
+                  value={state.majorsInput}
+                  onChange={(e) => setState((prev) => ({ ...prev, majorsInput: e.target.value }))}
                   placeholder="ឧ. វិទ្យាសាស្ត្រកុំព្យូទ័រ, គ្រប់គ្រងអាជីវកម្ម (បំបែកដោយសញ្ញាក្បៀស)"
                 />
               </div>
@@ -313,7 +308,7 @@ const SchoolForm: React.FC<SchoolFormProps> = ({ school, isSaving, onSave }) => 
         <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-bold text-gray-900">រូបភាពគម្រប</h3>
-            <button
+            <button type="button"
               onClick={() => openAiModal('cover')}
               className="text-[10px] font-bold text-purple-600 flex items-center bg-purple-50 px-2 py-1 rounded-lg hover:bg-purple-100 transition-colors"
             >
@@ -323,26 +318,29 @@ const SchoolForm: React.FC<SchoolFormProps> = ({ school, isSaving, onSave }) => 
           <div className="relative aspect-video rounded-2xl bg-gray-50 overflow-hidden border border-dashed border-gray-200 flex items-center justify-center group">
             <img
               src={
-                coverBase64
-                  ? `data:image/png;base64,${coverBase64}`
-                  : coverFile
-                    ? URL.createObjectURL(coverFile)
-                    : formData.coverImage
+                state.coverBase64
+                  ? `data:image/png;base64,${state.coverBase64}`
+                  : state.coverFile
+                    ? URL.createObjectURL(state.coverFile)
+                    : state.formData.coverImage
               }
               className="w-full h-full object-cover"
               alt="Cover Preview"
             />
             <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-              <label className="bg-white p-2.5 rounded-full cursor-pointer shadow-lg hover:scale-110 transition-transform">
+              <label htmlFor="coverInput" className="bg-white p-2.5 rounded-full cursor-pointer shadow-lg hover:scale-110 transition-transform">
                 <Camera className="h-5 w-5 text-primary" />
                 <input
+                  id="coverInput"
+                  aria-label="Upload Cover Image"
                   type="file"
                   className="hidden"
                   accept="image/*"
-                  onChange={(e) => {
-                    setCoverFile(e.target.files?.[0] || null);
-                    setCoverBase64(null);
-                  }}
+                  onChange={(e) => setState((prev) => ({
+                    ...prev,
+                    coverFile: e.target.files?.[0] || null,
+                    coverBase64: null,
+                  }))}
                 />
               </label>
             </div>
@@ -353,7 +351,7 @@ const SchoolForm: React.FC<SchoolFormProps> = ({ school, isSaving, onSave }) => 
         <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-bold text-gray-900">ឡូហ្គោសាលា</h3>
-            <button
+            <button type="button"
               onClick={() => openAiModal('logo')}
               className="text-[10px] font-bold text-purple-600 flex items-center bg-purple-50 px-2 py-1 rounded-lg hover:bg-purple-100 transition-colors"
             >
@@ -363,26 +361,29 @@ const SchoolForm: React.FC<SchoolFormProps> = ({ school, isSaving, onSave }) => 
           <div className="w-24 h-24 mx-auto relative rounded-2xl bg-gray-50 border border-dashed border-gray-200 flex items-center justify-center group overflow-hidden">
             <img
               src={
-                logoBase64
-                  ? `data:image/png;base64,${logoBase64}`
-                  : logoFile
-                    ? URL.createObjectURL(logoFile)
-                    : formData.logo
+                state.logoBase64
+                  ? `data:image/png;base64,${state.logoBase64}`
+                  : state.logoFile
+                    ? URL.createObjectURL(state.logoFile)
+                    : state.formData.logo
               }
               className="w-full h-full object-contain p-2"
               alt="Logo Preview"
             />
             <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-              <label className="bg-white p-2 rounded-full cursor-pointer shadow-lg hover:scale-110 transition-transform">
+              <label htmlFor="logoInput" className="bg-white p-2 rounded-full cursor-pointer shadow-lg hover:scale-110 transition-transform">
                 <Camera className="h-4 w-4 text-primary" />
                 <input
+                  id="logoInput"
+                  aria-label="Upload Logo"
                   type="file"
                   className="hidden"
                   accept="image/*"
-                  onChange={(e) => {
-                    setLogoFile(e.target.files?.[0] || null);
-                    setLogoBase64(null);
-                  }}
+                  onChange={(e) => setState((prev) => ({
+                    ...prev,
+                    logoFile: e.target.files?.[0] || null,
+                    logoBase64: null,
+                  }))}
                 />
               </label>
             </div>
@@ -391,7 +392,7 @@ const SchoolForm: React.FC<SchoolFormProps> = ({ school, isSaving, onSave }) => 
       </div>
 
       {/* AI Image Generation Modal */}
-      {aiModalOpen && (
+      {state.aiModalOpen && (
         <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
           <div className="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl animate-scale-in">
             <div className="flex items-center gap-3 mb-4">
@@ -407,27 +408,28 @@ const SchoolForm: React.FC<SchoolFormProps> = ({ school, isSaving, onSave }) => 
             </div>
             <p className="text-sm text-gray-600 mb-4">
               ពណ៌នាពីរូបភាពដែលអ្នកចង់បានសម្រាប់{' '}
-              <strong>{aiTarget === 'logo' ? 'ឡូហ្គោ' : 'រូបភាពគម្រប'}</strong>។
+              <strong>{state.aiTarget === 'logo' ? 'ឡូហ្គោ' : 'រូបភាពគម្រប'}</strong>។
             </p>
             <textarea
+              aria-label="AI Prompt"
               className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl h-28 text-sm focus:ring-2 focus:ring-purple-200 outline-none resize-none"
-              value={aiPrompt}
-              onChange={(e) => setAiPrompt(e.target.value)}
+              value={state.aiPrompt}
+              onChange={(e) => setState((prev) => ({ ...prev, aiPrompt: e.target.value }))}
               placeholder="Describe visual style, colors, elements..."
             />
             <div className="flex gap-2 mt-6">
-              <button
-                onClick={() => setAiModalOpen(false)}
+              <button type="button"
+                onClick={() => setState((prev) => ({ ...prev, aiModalOpen: false }))}
                 className="flex-1 py-3 text-gray-500 font-bold hover:bg-gray-50 rounded-xl"
               >
                 Cancel
               </button>
-              <button
+              <button type="button"
                 onClick={handleGenerateImage}
-                disabled={generating || !aiPrompt.trim()}
+                disabled={state.generating || !state.aiPrompt.trim()}
                 className="flex-1 bg-purple-600 text-white rounded-xl font-bold shadow-lg shadow-purple-200 flex items-center justify-center transition-all active:scale-95 disabled:opacity-50"
               >
-                {generating ? (
+                {state.generating ? (
                   <Loader2 className="h-5 w-5 animate-spin" />
                 ) : (
                   <>
