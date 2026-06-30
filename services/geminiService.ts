@@ -163,7 +163,7 @@ export const chatWithAI = async (
   } catch (error: any) {
     console.error('Secure Chat Failed:', error);
     const fallback = await tryDirectFallback('Chat', async () => {
-      const modelName = useSearch ? 'gemini-3-pro-preview' : 'gemini-3-flash-preview';
+      const modelName = 'gemini-3-flash-preview'; // gemini-3-pro-preview is discontinued
       const chat = ai.chats.create({
         model: modelName,
         config: {
