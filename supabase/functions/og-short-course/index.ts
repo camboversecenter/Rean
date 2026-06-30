@@ -1,6 +1,5 @@
-
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.7";
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.7';
 
 // Declare Deno for environments where types are missing
 declare const Deno: any;
@@ -19,14 +18,14 @@ serve(async (req: Request) => {
   try {
     const url = new URL(req.url);
     const courseId = url.searchParams.get('id');
-    
+
     // The web application URL (frontend)
     const frontendUrl = Deno.env.get('FRONTEND_URL') || 'http://localhost:5173';
 
     if (!courseId) {
-      return new Response("Missing ID", { 
-        status: 400, 
-        headers: { ...corsHeaders, 'Content-Type': 'text/plain' } 
+      return new Response('Missing ID', {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'text/plain' },
       });
     }
 
@@ -45,17 +44,21 @@ serve(async (req: Request) => {
     if (error || !course) {
       return new Response(null, {
         status: 302,
-        headers: { 
-            ...corsHeaders,
-            Location: `${frontendUrl}/` 
+        headers: {
+          ...corsHeaders,
+          Location: `${frontendUrl}/`,
         },
       });
     }
 
     // 4. Sanitize strings
     const safeTitle = (course.title || 'Short Course').replace(/"/g, '&quot;');
-    const safeDesc = (course.description || 'View course details on REAN').substring(0, 160).replace(/"/g, '&quot;');
-    const image = course.cover_image || 'https://apirean.e-khmer.com/storage/v1/object/public/Rean/course-covers/default-course.png';
+    const safeDesc = (course.description || 'View course details on REAN')
+      .substring(0, 160)
+      .replace(/"/g, '&quot;');
+    const image =
+      course.cover_image ||
+      'https://apirean.e-khmer.com/storage/v1/object/public/Rean/course-covers/default-course.png';
     const redirectUrl = `${frontendUrl}/#/course/${courseId}`;
     const schoolName = course.schools?.name || 'REAN';
 
@@ -128,10 +131,9 @@ serve(async (req: Request) => {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'text/html; charset=utf-8',
         'X-Content-Type-Options': 'nosniff',
-        'Cache-Control': 'public, max-age=60'
+        'Cache-Control': 'public, max-age=60',
       },
     });
-
   } catch (error: any) {
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,

@@ -7,6 +7,6 @@ export const formatRiel = (amount: number): string => {
     style: 'currency',
     currency: 'KHR',
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0
+    maximumFractionDigits: 0,
   }).format(amount);
 };
