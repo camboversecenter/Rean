@@ -4,54 +4,49 @@ import SchoolCard from '../components/SchoolCard';
 import { fetchAllSchools } from '../services/schoolService';
 import { School } from '../types';
 
-const SchoolsListPage: React.FC = () => {
-  const [filterType, setFilterType] = useState<string>('All');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [schools, setSchools] = useState<School[]>([]);
-  const [loading, setLoading] = useState(true);
+const LIMIT = 10;
 
-  // Pagination State
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const LIMIT = 10;
+const SchoolsListPage: React.FC = () => {
+  const [state, setState] = useState({
+    filterType: 'All',
+    searchQuery: '',
+    schools: [] as School[],
+    loading: true,
+    page: 1,
+    hasMore: true,
+    loadingMore: false,
+  });
+
+  const loadData = React.useCallback(async (pageToLoad: number, isReset: boolean = false, currentSearchQuery: string, currentFilterType: string) => {
+    if (!isReset) setState(s => ({ ...s, loadingMore: true }));
+    else setState(s => ({ ...s, loading: true }));
+
+    try {
+      const data = await fetchAllSchools(pageToLoad, LIMIT, currentSearchQuery, currentFilterType);
+
+      setState(s => ({
+        ...s,
+        hasMore: data.length >= LIMIT,
+        schools: isReset ? data : [...s.schools, ...data],
+        loading: false,
+        loadingMore: false,
+      }));
+    } catch (e) {
+      console.error(e);
+      setState(s => ({ ...s, loading: false, loadingMore: false }));
+    }
+  }, []);
 
   useEffect(() => {
     // Reset list when filters change
-    setPage(1);
-    setSchools([]);
-    setHasMore(true);
-    loadData(1, true);
-  }, [filterType, searchQuery]);
-
-  const loadData = async (pageToLoad: number, isReset: boolean = false) => {
-    if (!isReset) setLoadingMore(true);
-    else setLoading(true);
-
-    try {
-      const data = await fetchAllSchools(pageToLoad, LIMIT, searchQuery, filterType);
-
-      if (data.length < LIMIT) {
-        setHasMore(false);
-      }
-
-      if (isReset) {
-        setSchools(data);
-      } else {
-        setSchools((prev) => [...prev, ...data]);
-      }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-      setLoadingMore(false);
-    }
-  };
+    setState(s => ({ ...s, page: 1, schools: [], hasMore: true }));
+    loadData(1, true, state.searchQuery, state.filterType);
+  }, [state.searchQuery, state.filterType, loadData]);
 
   const handleLoadMore = () => {
-    const nextPage = page + 1;
-    setPage(nextPage);
-    loadData(nextPage);
+    const nextPage = state.page + 1;
+    setState(s => ({ ...s, page: nextPage }));
+    loadData(nextPage, false, state.searchQuery, state.filterType);
   };
 
   const types = ['All', 'University', 'High School', 'Vocational', 'Center'];
@@ -73,25 +68,27 @@ const SchoolsListPage: React.FC = () => {
 
           {/* Search */}
           <div className="relative mb-4">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="ស្វែងរកតាមឈ្មោះសាលា..."
-              className="w-full bg-white border border-gray-200 rounded-xl py-3 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-sm"
-            />
-            <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-          </div>
+              <input
+                id="searchSchools"
+                type="text"
+                aria-label="Search schools"
+                value={state.searchQuery}
+                onChange={(e) => setState(s => ({ ...s, searchQuery: e.target.value }))}
+                placeholder="ស្វែងរកតាមឈ្មោះសាលា..."
+                className="w-full bg-white border border-gray-200 rounded-xl py-3 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-sm"
+              />
+              <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+            </div>
 
-          {/* Filter Chips */}
-          <div className="flex overflow-x-auto space-x-2 pb-2 scrollbar-hide">
-            {types.map((t) => (
-              <button
-                key={t}
-                onClick={() => setFilterType(t)}
-                className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold transition-colors ${filterType === t ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
-              >
-                {typeMapping[t]}
+            {/* Filter Chips */}
+            <div className="flex overflow-x-auto space-x-2 pb-2 scrollbar-hide">
+              {types.map((t) => (
+                <button type="button"
+                  key={t}
+                  onClick={() => setState(s => ({ ...s, filterType: t }))}
+                  className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold transition-colors ${state.filterType === t ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                >
+                  {typeMapping[t]}
               </button>
             ))}
           </div>
@@ -99,27 +96,27 @@ const SchoolsListPage: React.FC = () => {
 
         {/* List (Grid View on Desktop) */}
         <div>
-          {loading ? (
+          {state.loading ? (
             <div className="flex justify-center py-10">
               <Loader2 className="h-8 w-8 animate-spin text-gray-300" />
             </div>
-          ) : schools.length > 0 ? (
+          ) : state.schools.length > 0 ? (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {schools.map((school) => (
+                {state.schools.map((school) => (
                   <SchoolCard key={school.id} school={school} />
                 ))}
               </div>
 
               {/* Load More Button */}
-              {hasMore && (
+              {state.hasMore && (
                 <div className="pt-8 pb-8 flex justify-center">
-                  <button
+                  <button type="button"
                     onClick={handleLoadMore}
-                    disabled={loadingMore}
+                    disabled={state.loadingMore}
                     className="bg-white border border-gray-200 text-gray-600 font-bold py-2 px-6 rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-50 flex items-center text-sm"
                   >
-                    {loadingMore ? (
+                    {state.loadingMore ? (
                       <Loader2 className="h-4 w-4 animate-spin mr-2" />
                     ) : (
                       <ChevronDown className="h-4 w-4 mr-2" />

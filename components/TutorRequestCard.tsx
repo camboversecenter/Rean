@@ -11,6 +11,16 @@ interface TutorRequestCardProps {
   onApply?: (request: TutorRequest) => void;
 }
 
+// Parse and format budget
+const getFormattedBudget = (budget: string) => {
+  // If it's a number-like string, format it
+  const num = parseInt(budget.replace(/,/g, ''));
+  if (!isNaN(num) && num > 100) {
+    return formatRiel(num);
+  }
+  return budget;
+};
+
 const TutorRequestCard: React.FC<TutorRequestCardProps> = ({
   request,
   isOwner,
@@ -18,16 +28,6 @@ const TutorRequestCard: React.FC<TutorRequestCardProps> = ({
   onDelete,
   onApply,
 }) => {
-  // Parse and format budget
-  const getFormattedBudget = (budget: string) => {
-    // If it's a number-like string, format it
-    const num = parseInt(budget.replace(/,/g, ''));
-    if (!isNaN(num) && num > 100) {
-      return formatRiel(num);
-    }
-    return budget;
-  };
-
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-3 hover:shadow-md transition-shadow relative group">
       <div className="flex justify-between items-start mb-2">
@@ -58,14 +58,14 @@ const TutorRequestCard: React.FC<TutorRequestCardProps> = ({
       </div>
 
       {isOwner ? (
-        <button
+        <button type="button"
           onClick={() => onDelete && onDelete(request.id)}
           className="w-full mt-3 py-2 bg-red-50 text-red-600 font-bold text-xs rounded-lg hover:bg-red-100 transition-colors flex items-center justify-center"
         >
           <Trash2 className="h-3.5 w-3.5 mr-2" /> លុបសំណើ (Delete)
         </button>
       ) : showApply ? (
-        <button
+        <button type="button"
           onClick={() => onApply && onApply(request)}
           className="w-full mt-3 py-2 bg-gray-900 text-white font-bold text-xs rounded-lg hover:bg-black transition-colors flex items-center justify-center shadow-lg shadow-gray-200"
         >

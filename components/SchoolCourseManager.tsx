@@ -47,53 +47,56 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
   courses,
   onUpdate,
 }) => {
-  // View State: 'list' or 'editor'
-  const [view, setView] = useState<'list' | 'editor'>('list');
+  const [state, setState] = useState({
+    view: 'list' as 'list' | 'editor',
+    editingCourse: null as Partial<ShortCourse> | null,
+    syllabusText: '',
+    coverFile: null as File | null,
+    coverBase64: null as string | null,
+    generatingSyllabus: false,
+    generatingImage: false,
+    saving: false,
+  });
 
-  const [editingCourse, setEditingCourse] = useState<Partial<ShortCourse> | null>(null);
-  const [syllabusText, setSyllabusText] = useState('');
-
-  // Media States
-  const [coverFile, setCoverFile] = useState<File | null>(null);
-  const [coverBase64, setCoverBase64] = useState<string | null>(null);
-
-  // Loading States
-  const [generatingSyllabus, setGeneratingSyllabus] = useState(false);
-  const [generatingImage, setGeneratingImage] = useState(false);
-  const [saving, setSaving] = useState(false);
+  const { view, editingCourse, syllabusText, coverFile, coverBase64, generatingSyllabus, generatingImage, saving } = state;
 
   const handleCreateNew = () => {
-    setEditingCourse({
-      format: 'Online',
-      price: 0,
-      maxSeats: 20,
-      title: '',
-      category: 'បច្ចេកវិទ្យា',
-      instructorName: '',
-      startDate: '',
-      deadline: '',
-      duration: '',
-      schedule: '',
-      description: '',
-      isListed: true, // Default visible
-    });
-    setSyllabusText('');
-    setCoverFile(null);
-    setCoverBase64(null);
-    setView('editor');
+    setState(prev => ({
+      ...prev,
+      editingCourse: {
+        format: 'Online',
+        price: 0,
+        maxSeats: 20,
+        title: '',
+        category: 'បច្ចេកវិទ្យា',
+        instructorName: '',
+        startDate: '',
+        deadline: '',
+        duration: '',
+        schedule: '',
+        description: '',
+        isListed: true, // Default visible
+      },
+      syllabusText: '',
+      coverFile: null,
+      coverBase64: null,
+      view: 'editor'
+    }));
   };
 
   const handleEdit = (course: ShortCourse) => {
-    setEditingCourse(course);
-    setSyllabusText(course.syllabus?.[0]?.content || '');
-    setCoverFile(null);
-    setCoverBase64(null);
-    setView('editor');
+    setState(prev => ({
+      ...prev,
+      editingCourse: course,
+      syllabusText: course.syllabus?.[0]?.content || '',
+      coverFile: null,
+      coverBase64: null,
+      view: 'editor'
+    }));
   };
 
   const handleCancel = () => {
-    setView('list');
-    setEditingCourse(null);
+    setState(prev => ({ ...prev, view: 'list', editingCourse: null }));
   };
 
   const handleToggleList = async (course: ShortCourse) => {
@@ -112,16 +115,16 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
       toast.error('សូមបញ្ចូលចំណងជើង និងរយៈពេលវគ្គសិក្សាជាមុនសិន។');
       return;
     }
-    setGeneratingSyllabus(true);
+    setState(prev => ({ ...prev, generatingSyllabus: true }));
     try {
       const prompt = `Create a professional structured syllabus for a course titled "${editingCourse.title}" that lasts "${editingCourse.duration}". Write in Khmer language (ភាសាខ្មែរ). Focus on practical modules.`;
       const response = await chatWithAI(prompt, [], 'You are an expert curriculum designer.');
-      setSyllabusText(response);
+      setState(prev => ({ ...prev, syllabusText: response }));
       toast.success('កម្មវិធីសិក្សាត្រូវបានបង្កើត!');
     } catch (e: any) {
       toast.error(e.message || 'បរាជ័យក្នុងការបង្កើតកម្មវិធីសិក្សា');
     } finally {
-      setGeneratingSyllabus(false);
+      setState(prev => ({ ...prev, generatingSyllabus: false }));
     }
   };
 
@@ -130,19 +133,18 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
       toast.error('សូមបញ្ចូលចំណងជើងវគ្គសិក្សាមុននឹងបង្កើតរូបភាព');
       return;
     }
-    setGeneratingImage(true);
+    setState(prev => ({ ...prev, generatingImage: true }));
     try {
       const prompt = `High quality educational banner for a course about ${editingCourse.title}, 3D render style, vibrant colors, clean design, 16:9 aspect ratio.`;
       const base64 = await generateImage(prompt);
       if (base64) {
-        setCoverBase64(base64);
-        setCoverFile(null);
+        setState(prev => ({ ...prev, coverBase64: base64, coverFile: null }));
         toast.success('រូបភាពត្រូវបានបង្កើត!');
       }
     } catch (e) {
       toast.error('បរាជ័យក្នុងការបង្កើតរូបភាព');
     } finally {
-      setGeneratingImage(false);
+      setState(prev => ({ ...prev, generatingImage: false }));
     }
   };
 
@@ -155,7 +157,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
 
   const handleSaveCourse = async () => {
     if (!editingCourse?.title) return;
-    setSaving(true);
+    setState(prev => ({ ...prev, saving: true }));
     try {
       let finalCoverUrl = editingCourse.coverImage || '';
 
@@ -180,11 +182,11 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
 
       toast.success('វគ្គសិក្សាត្រូវបានរក្សាទុក!');
       onUpdate();
-      setView('list');
+      setState(prev => ({ ...prev, view: 'list' }));
     } catch (e) {
       toast.error('បរាជ័យក្នុងការរក្សាទុក');
     } finally {
-      setSaving(false);
+      setState(prev => ({ ...prev, saving: false }));
     }
   };
 
@@ -210,7 +212,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
       <div className="space-y-6 animate-fade-in">
         <div className="flex justify-between items-center">
           <h3 className="font-bold text-gray-900 text-lg">វគ្គសិក្សាជំនាញខ្លី (Short Courses)</h3>
-          <button
+          <button type="button"
             onClick={handleCreateNew}
             className="bg-primary text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center shadow-lg hover:scale-105 transition-transform"
           >
@@ -287,7 +289,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                         </div>
                       </td>
                       <td className="px-6 py-4 text-center">
-                        <button
+                        <button type="button"
                           onClick={() => handleToggleList(course)}
                           className={`p-2 rounded-xl transition-colors ${course.isListed ? 'text-green-600 hover:bg-green-50' : 'text-gray-400 hover:bg-gray-100'}`}
                           title={
@@ -303,14 +305,14 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                       </td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex justify-end gap-2">
-                          <button
+                          <button type="button"
                             onClick={() => handleEdit(course)}
                             className="p-2 text-gray-400 hover:text-blue-600 bg-gray-50 hover:bg-blue-50 rounded-xl transition-all"
                             title="Edit"
                           >
                             <Edit className="h-4 w-4" />
                           </button>
-                          <button
+                          <button type="button"
                             onClick={() => handleDelete(course.id)}
                             className="p-2 text-gray-400 hover:text-red-600 bg-gray-50 hover:bg-red-50 rounded-xl transition-all"
                             title="Delete"
@@ -335,7 +337,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
     <div className="animate-fade-in bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
       <div className="p-4 md:p-6 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-gray-50/50">
         <div className="flex items-center w-full md:w-auto">
-          <button
+          <button type="button"
             onClick={handleCancel}
             className="mr-3 p-2 hover:bg-gray-200 rounded-full transition-colors flex-shrink-0"
           >
@@ -348,9 +350,9 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
 
         <div className="flex flex-wrap gap-2 w-full md:w-auto justify-end">
           {/* Editor Visibility Toggle */}
-          <button
+          <button type="button"
             onClick={() =>
-              setEditingCourse((prev) => (prev ? { ...prev, isListed: !prev.isListed } : null))
+              setState((prev) => ({ ...prev, editingCourse: prev.editingCourse ? { ...prev.editingCourse, isListed: !prev.editingCourse.isListed } : null }))
             }
             className={`flex-1 md:flex-none justify-center px-4 py-2 rounded-lg text-sm font-bold flex items-center transition-colors ${editingCourse?.isListed ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-600'}`}
           >
@@ -362,13 +364,13 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
             {editingCourse?.isListed ? 'Visible' : 'Hidden'}
           </button>
 
-          <button
+          <button type="button"
             onClick={handleCancel}
             className="flex-1 md:flex-none px-4 py-2 text-gray-500 font-bold hover:bg-gray-100 rounded-lg text-sm"
           >
             បោះបង់
           </button>
-          <button
+          <button type="button"
             onClick={handleSaveCourse}
             disabled={saving}
             className="flex-1 md:flex-none justify-center bg-primary text-white px-6 py-2 rounded-lg font-bold shadow-lg flex items-center disabled:opacity-50 transition-all text-sm"
@@ -392,7 +394,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                 <label className="text-xs font-bold text-gray-400 uppercase">
                   រូបភាពគម្រប (Cover)
                 </label>
-                <button
+                <button type="button"
                   onClick={handleGenerateCourseImage}
                   disabled={generatingImage}
                   className="text-[10px] font-bold text-purple-600 bg-purple-50 px-2 py-1 rounded-lg flex items-center hover:bg-purple-100"
@@ -428,11 +430,11 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                 </div>
                 <input
                   type="file"
+                  aria-label="Cover Image"
                   className="absolute inset-0 opacity-0 cursor-pointer"
                   accept="image/*"
                   onChange={(e) => {
-                    setCoverFile(e.target.files?.[0] || null);
-                    setCoverBase64(null);
+                    setState(prev => ({ ...prev, coverFile: e.target.files?.[0] || null, coverBase64: null }));
                   }}
                 />
               </div>
@@ -440,25 +442,27 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
 
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1 flex items-center">
+                <label htmlFor="course-category" className="block text-xs font-bold text-gray-500 mb-1 flex items-center">
                   <Tag className="h-3 w-3 mr-1" /> ប្រភេទវគ្គសិក្សា
                 </label>
                 <input
+                  id="course-category"
                   className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
                   value={editingCourse?.category || ''}
-                  onChange={(e) => setEditingCourse({ ...editingCourse, category: e.target.value })}
+                  onChange={(e) => setState(prev => ({ ...prev, editingCourse: { ...prev.editingCourse, category: e.target.value } }))}
                   placeholder="ឧ. បច្ចេកវិទ្យា, ភាសា, អាជីវកម្ម..."
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1 flex items-center">
+                <label htmlFor="course-instructor" className="block text-xs font-bold text-gray-500 mb-1 flex items-center">
                   <User className="h-3 w-3 mr-1" /> គ្រូបង្រៀន (Instructor)
                 </label>
                 <input
+                  id="course-instructor"
                   className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
                   value={editingCourse?.instructorName || ''}
                   onChange={(e) =>
-                    setEditingCourse({ ...editingCourse, instructorName: e.target.value })
+                    setState(prev => ({ ...prev, editingCourse: { ...prev.editingCourse, instructorName: e.target.value } }))
                   }
                   placeholder="បញ្ចូលឈ្មោះគ្រូ..."
                 />
@@ -470,85 +474,92 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
           <div className="lg:col-span-2 space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2">
-                <label className="block text-xs font-bold text-gray-500 mb-1 flex items-center">
+                <label htmlFor="course-title" className="block text-xs font-bold text-gray-500 mb-1 flex items-center">
                   <Layout className="h-3 w-3 mr-1" /> ចំណងជើងវគ្គសិក្សា
                 </label>
                 <input
+                  id="course-title"
                   className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl font-bold focus:ring-2 focus:ring-primary/20 outline-none"
                   value={editingCourse?.title || ''}
-                  onChange={(e) => setEditingCourse({ ...editingCourse, title: e.target.value })}
+                  onChange={(e) => setState(prev => ({ ...prev, editingCourse: { ...prev.editingCourse, title: e.target.value } }))}
                   placeholder="ឧ. មូលដ្ឋានគ្រឹះ UX/UI Design"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1 flex items-center">
+                <label htmlFor="course-start" className="block text-xs font-bold text-gray-500 mb-1 flex items-center">
                   <Calendar className="h-3 w-3 mr-1" /> ថ្ងៃចាប់ផ្តើម
                 </label>
                 <input
+                  id="course-start"
                   type="date"
                   className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
                   value={editingCourse?.startDate || ''}
                   onChange={(e) =>
-                    setEditingCourse({ ...editingCourse, startDate: e.target.value })
+                    setState(prev => ({ ...prev, editingCourse: { ...prev.editingCourse, startDate: e.target.value } }))
                   }
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1 flex items-center">
+                <label htmlFor="course-deadline" className="block text-xs font-bold text-gray-500 mb-1 flex items-center">
                   <AlertCircle className="h-3 w-3 mr-1" /> ផុតកំណត់ទទួលពាក្យ
                 </label>
                 <input
+                  id="course-deadline"
                   type="date"
                   className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
                   value={editingCourse?.deadline || ''}
-                  onChange={(e) => setEditingCourse({ ...editingCourse, deadline: e.target.value })}
+                  onChange={(e) => setState(prev => ({ ...prev, editingCourse: { ...prev.editingCourse, deadline: e.target.value } }))}
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1 flex items-center">
+                <label htmlFor="course-duration" className="block text-xs font-bold text-gray-500 mb-1 flex items-center">
                   <Clock className="h-3 w-3 mr-1" /> រយៈពេល (ឧ. ៣ ខែ)
                 </label>
                 <input
+                  id="course-duration"
                   className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
                   value={editingCourse?.duration || ''}
-                  onChange={(e) => setEditingCourse({ ...editingCourse, duration: e.target.value })}
+                  onChange={(e) => setState(prev => ({ ...prev, editingCourse: { ...prev.editingCourse, duration: e.target.value } }))}
                   placeholder="ឧ. ៣ ខែ / ១២ សប្តាហ៍"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1 flex items-center">
+                <label htmlFor="course-schedule" className="block text-xs font-bold text-gray-500 mb-1 flex items-center">
                   <MapPin className="h-3 w-3 mr-1" /> កាលវិភាគសិក្សា
                 </label>
                 <input
+                  id="course-schedule"
                   className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
                   value={editingCourse?.schedule || ''}
-                  onChange={(e) => setEditingCourse({ ...editingCourse, schedule: e.target.value })}
+                  onChange={(e) => setState(prev => ({ ...prev, editingCourse: { ...prev.editingCourse, schedule: e.target.value } }))}
                   placeholder="ឧ. សៅរ៍-អាទិត្យ 8AM-11AM"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1 flex items-center">
+                <label htmlFor="course-price" className="block text-xs font-bold text-gray-500 mb-1 flex items-center">
                   <DollarSign className="h-3 w-3 mr-1" /> តម្លៃ (រៀល)
                 </label>
                 <input
+                  id="course-price"
                   type="number"
                   className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl font-bold focus:ring-2 focus:ring-primary/20 outline-none"
                   value={editingCourse?.price || 0}
                   onChange={(e) =>
-                    setEditingCourse({ ...editingCourse, price: parseInt(e.target.value) || 0 })
+                    setState(prev => ({ ...prev, editingCourse: { ...prev.editingCourse, price: parseInt(e.target.value) || 0 } }))
                   }
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1 flex items-center">
+                <label htmlFor="course-maxSeats" className="block text-xs font-bold text-gray-500 mb-1 flex items-center">
                   <Users className="h-3 w-3 mr-1" /> ចំនួនសិស្សអតិបរមា
                 </label>
                 <input
+                  id="course-maxSeats"
                   type="number"
                   className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
                   value={editingCourse?.maxSeats || 20}
                   onChange={(e) =>
-                    setEditingCourse({ ...editingCourse, maxSeats: parseInt(e.target.value) || 0 })
+                    setState(prev => ({ ...prev, editingCourse: { ...prev.editingCourse, maxSeats: parseInt(e.target.value) || 0 } }))
                   }
                 />
               </div>
@@ -557,15 +568,17 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                 <div className="flex gap-4">
                   {['Online', 'On-Campus', 'Hybrid'].map((fmt) => (
                     <label
+                      htmlFor={`fmt-${fmt}`}
                       key={fmt}
                       className="flex-1 flex items-center justify-center p-3 rounded-xl border border-gray-200 bg-gray-50 cursor-pointer hover:bg-gray-100 has-[:checked]:bg-primary/5 has-[:checked]:border-primary transition-all"
                     >
                       <input
+                        id={`fmt-${fmt}`}
                         type="radio"
                         className="hidden"
                         name="format"
                         checked={editingCourse?.format === fmt}
-                        onChange={() => setEditingCourse({ ...editingCourse, format: fmt as any })}
+                        onChange={() => setState(prev => ({ ...prev, editingCourse: { ...prev.editingCourse, format: fmt as any } }))}
                       />
                       <span
                         className={`text-xs font-bold ${editingCourse?.format === fmt ? 'text-primary' : 'text-gray-500'}`}
@@ -583,13 +596,14 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
         <hr className="border-gray-100" />
 
         <div>
-          <label className="block text-xs font-bold text-gray-500 mb-2 flex items-center">
+          <label htmlFor="course-desc" className="block text-xs font-bold text-gray-500 mb-2 flex items-center">
             <BookOpen className="h-3 w-3 mr-1" /> ការពិពណ៌នាវគ្គសិក្សា (Description)
           </label>
           <textarea
+            id="course-desc"
             className="w-full p-4 bg-gray-50 border border-gray-200 rounded-2xl h-32 text-sm focus:ring-2 focus:ring-primary/20 outline-none resize-none leading-relaxed"
             value={editingCourse?.description || ''}
-            onChange={(e) => setEditingCourse({ ...editingCourse, description: e.target.value })}
+            onChange={(e) => setState(prev => ({ ...prev, editingCourse: { ...prev.editingCourse, description: e.target.value } }))}
             placeholder="រៀបរាប់ពីអ្វីដែលសិស្សនឹងទទួលបាន..."
           />
           <CharCounter current={editingCourse?.description?.length || 0} limit={DESC_LIMIT} />
@@ -597,10 +611,10 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
 
         <div>
           <div className="flex justify-between items-center mb-2">
-            <label className="block text-xs font-bold text-gray-500 flex items-center">
+            <label htmlFor="course-syllabus" className="block text-xs font-bold text-gray-500 flex items-center">
               <Zap className="h-3 w-3 mr-1 text-purple-600" /> កម្មវិធីសិក្សា (Syllabus)
             </label>
-            <button
+            <button type="button"
               onClick={handleGenerateSyllabus}
               disabled={generatingSyllabus}
               className="text-[10px] font-bold text-purple-600 flex items-center bg-purple-50 px-3 py-1.5 rounded-lg hover:bg-purple-100 transition-colors"
@@ -614,9 +628,10 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
             </button>
           </div>
           <textarea
+            id="course-syllabus"
             className="w-full p-4 bg-gray-50 border border-gray-200 rounded-2xl h-56 text-sm focus:ring-2 focus:ring-primary/20 outline-none resize-none leading-relaxed font-mono"
             value={syllabusText}
-            onChange={(e) => setSyllabusText(e.target.value)}
+            onChange={(e) => setState(prev => ({ ...prev, syllabusText: e.target.value }))}
             placeholder="បញ្ចូលមេរៀនសង្ខេប ឬប្រើ AI ដើម្បីជួយរៀបចំ..."
           />
           <CharCounter current={syllabusText.length} limit={SYLLABUS_LIMIT} />

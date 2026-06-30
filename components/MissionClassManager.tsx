@@ -19,21 +19,19 @@ const MissionClassManager: React.FC<MissionClassManagerProps> = ({
   onSelectClass,
   onUpdate,
 }) => {
-  const [newClassTitle, setNewClassTitle] = useState('');
-  const [isCreating, setIsCreating] = useState(false);
+  const [state, setState] = useState({ title: '', isCreating: false });
 
   const handleCreateClass = async () => {
-    if (!newClassTitle.trim()) return;
-    setIsCreating(true);
+    if (!state.title.trim()) return;
+    setState(s => ({ ...s, isCreating: true }));
     try {
-      await createMissionClass(missionId, newClassTitle);
-      setNewClassTitle('');
+      await createMissionClass(missionId, state.title);
+      setState({ title: '', isCreating: false });
       onUpdate();
       toast.success('Class created successfully');
     } catch (e) {
       toast.error('Failed to create class');
-    } finally {
-      setIsCreating(false);
+      setState(s => ({ ...s, isCreating: false }));
     }
   };
 
@@ -69,17 +67,18 @@ const MissionClassManager: React.FC<MissionClassManagerProps> = ({
               key={c.id}
               className={`group flex items-center justify-between p-1 rounded-xl transition-all ${selectedClassId === c.id ? 'bg-primary/5 ring-1 ring-primary/20' : 'hover:bg-gray-50'}`}
             >
-              <button
+              <button type="button"
                 onClick={() => onSelectClass(c.id)}
                 className="flex-1 text-left px-3 py-2 text-sm font-medium text-gray-700 truncate flex items-center"
               >
                 <Users className="h-4 w-4 mr-2 text-gray-400" />
                 {c.title}
               </button>
-              <button
+              <button type="button"
                 onClick={() => handleDeleteClass(c.id)}
                 className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
                 title="Delete Class"
+                aria-label={`Delete Class ${c.title}`}
               >
                 <Trash2 className="h-4 w-4" />
               </button>
@@ -89,23 +88,26 @@ const MissionClassManager: React.FC<MissionClassManagerProps> = ({
       </div>
 
       <div className="p-4 border-t border-gray-100 bg-gray-50">
-        <label className="text-[10px] font-bold text-gray-500 uppercase mb-2 block">
+        <label htmlFor="newClassTitle" className="text-[10px] font-bold text-gray-500 uppercase mb-2 block">
           បង្កើតថ្នាក់ថ្មី
         </label>
         <div className="flex gap-2">
           <input
+            id="newClassTitle"
+            type="text"
             className="flex-1 p-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 bg-white shadow-sm"
             placeholder="ឈ្មោះថ្នាក់ (ឧ. ជំនាន់ទី ១)"
-            value={newClassTitle}
-            onChange={(e) => setNewClassTitle(e.target.value)}
+            value={state.title}
+            onChange={(e) => setState(s => ({ ...s, title: e.target.value }))}
             onKeyDown={(e) => e.key === 'Enter' && handleCreateClass()}
           />
-          <button
+          <button type="button"
             onClick={handleCreateClass}
-            disabled={isCreating || !newClassTitle.trim()}
+            disabled={state.isCreating || !state.title.trim()}
             className="bg-gray-900 text-white p-2.5 rounded-xl hover:bg-black transition-colors disabled:opacity-50 shadow-md flex items-center justify-center min-w-[44px]"
+            aria-label="Create Class"
           >
-            {isCreating ? (
+            {state.isCreating ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
               <Plus className="h-5 w-5" />

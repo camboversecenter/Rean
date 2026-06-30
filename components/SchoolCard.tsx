@@ -7,6 +7,21 @@ interface SchoolCardProps {
   school: School;
 }
 
+const getSchoolTypeKH = (type: string) => {
+  switch (type) {
+    case 'University':
+      return 'សាកលវិទ្យាល័យ';
+    case 'High School':
+      return 'វិទ្យាល័យ';
+    case 'Vocational':
+      return 'វិជ្ជាជីវៈ';
+    case 'Center':
+      return 'មជ្ឈមណ្ឌល';
+    default:
+      return type;
+  }
+};
+
 const SchoolCard: React.FC<SchoolCardProps> = ({ school }) => {
   // Determine overall status based on active admissions
   const activeAdmissions = school.admissions.filter(
@@ -21,21 +36,6 @@ const SchoolCard: React.FC<SchoolCardProps> = ({ school }) => {
 
   // Calculate total scholarships across all admissions
   const hasScholarships = school.admissions.some((a) => a.scholarships.length > 0);
-
-  const getSchoolTypeKH = (type: string) => {
-    switch (type) {
-      case 'University':
-        return 'សាកលវិទ្យាល័យ';
-      case 'High School':
-        return 'វិទ្យាល័យ';
-      case 'Vocational':
-        return 'វិជ្ជាជីវៈ';
-      case 'Center':
-        return 'មជ្ឈមណ្ឌល';
-      default:
-        return type;
-    }
-  };
 
   return (
     <Link
@@ -69,7 +69,7 @@ const SchoolCard: React.FC<SchoolCardProps> = ({ school }) => {
         <div className="absolute -top-10 left-4 bg-white p-1 rounded-xl shadow-md">
           <img
             src={school.logo || 'https://via.placeholder.com/150'}
-            alt="logo"
+            alt={`${school.name} logo`}
             className="w-16 h-16 rounded-lg object-contain bg-white"
           />
         </div>

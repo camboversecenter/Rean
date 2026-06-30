@@ -37,50 +37,57 @@ const base64ToBlob = (base64: string, mimeType: string = 'image/png') => {
 };
 
 const CreatorDashboard: React.FC = () => {
-  const [missions, setMissions] = useState<Mission[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [dashboardTab, setDashboardTab] = useState<'missions' | 'rewards'>('missions');
-  const [view, setView] = useState<'list' | 'editor' | 'manager'>('list');
-  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
-  const [currentMission, setCurrentMission] = useState<Partial<Mission>>({});
-  const [isSaving, setIsSaving] = useState(false);
+  const [state, setState] = useState({
+    missions: [] as Mission[],
+    loading: true,
+    dashboardTab: 'missions' as 'missions' | 'rewards',
+    view: 'list' as 'list' | 'editor' | 'manager',
+    currentUserId: null as string | null,
+    currentMission: {} as Partial<Mission>,
+    isSaving: false,
+  });
+
+  const loadData = React.useCallback(async () => {
+    setState((s) => ({ ...s, loading: true }));
+    const user = await getCurrentUser();
+    const missionsData = await getMyMissions();
+    
+    setState((s) => ({
+      ...s,
+      currentUserId: user ? user.id : s.currentUserId,
+      missions: missionsData,
+      loading: false,
+    }));
+  }, []);
 
   useEffect(() => {
     loadData();
-  }, []);
-
-  const loadData = async () => {
-    setLoading(true);
-    const user = await getCurrentUser();
-    if (user) setCurrentUserId(user.id);
-    const missionsData = await getMyMissions();
-    setMissions(missionsData);
-    setLoading(false);
-  };
+  }, [loadData]);
 
   const handleCreateNewMission = () => {
-    setCurrentMission({
-      title: '',
-      category: MissionCategory.TECH,
-      level: 'Beginner',
-      price: 0,
-      squadSize: 3,
-      squadCreation: 'auto',
-      enrollmentType: 'open',
-      description: '',
-      modules: [],
-    });
-    setView('editor');
+    setState((s) => ({
+      ...s,
+      currentMission: {
+        title: '',
+        category: MissionCategory.TECH,
+        level: 'Beginner',
+        price: 0,
+        squadSize: 3,
+        squadCreation: 'auto',
+        enrollmentType: 'open',
+        description: '',
+        modules: [],
+      },
+      view: 'editor',
+    }));
   };
 
   const handleEditMission = (mission: Mission) => {
-    setCurrentMission(mission);
-    setView('editor');
+    setState((s) => ({ ...s, currentMission: mission, view: 'editor' }));
   };
 
   const handleManageMission = (mission: Mission) => {
-    setCurrentMission(mission);
-    setView('manager');
+    setState((s) => ({ ...s, currentMission: mission, view: 'manager' }));
   };
 
   const handleSaveMission = async (
@@ -89,7 +96,7 @@ const CreatorDashboard: React.FC = () => {
     thumbBase64: string | null,
     qrFile: File | null
   ) => {
-    setIsSaving(true);
+    setState((s) => ({ ...s, isSaving: true }));
     try {
       let thumbUrl = payload.thumbnail || '';
       let qrUrl = payload.paymentQrUrl || '';
@@ -116,12 +123,12 @@ const CreatorDashboard: React.FC = () => {
       }
 
       await loadData();
-      setView('list');
+      setState((s) => ({ ...s, view: 'list' }));
     } catch (error) {
       console.error(error);
       toast.error('បរាជ័យក្នុងការរក្សាទុក។');
     } finally {
-      setIsSaving(false);
+      setState((s) => ({ ...s, isSaving: false }));
     }
   };
 
@@ -135,34 +142,34 @@ const CreatorDashboard: React.FC = () => {
     if (!window.confirm('តើអ្នកពិតជាចង់លុបបេសកកម្មនេះមែនទេ?')) return;
     try {
       await deleteMission(id);
-      setMissions((prev) => prev.filter((m) => m.id !== id));
+      setState((s) => ({ ...s, missions: s.missions.filter((m) => m.id !== id) }));
       toast.success('បានលុបបេសកកម្ម');
     } catch (e) {
       toast.error('បរាជ័យក្នុងការលុប');
     }
   };
 
-  if (view === 'editor') {
+  if (state.view === 'editor') {
     return (
       <div className="min-h-screen bg-gray-50 pb-24 pt-6 px-4">
         <MissionForm
-          initialMission={currentMission}
-          currentUserId={currentUserId}
-          isSaving={isSaving}
+          initialMission={state.currentMission}
+          currentUserId={state.currentUserId}
+          isSaving={state.isSaving}
           onSave={handleSaveMission}
-          onCancel={() => setView('list')}
+          onCancel={() => setState((s) => ({ ...s, view: 'list' }))}
         />
       </div>
     );
   }
 
-  if (view === 'manager') {
+  if (state.view === 'manager') {
     return (
       <MissionManager
-        mission={currentMission as Mission}
-        currentUserId={currentUserId}
-        onBack={() => setView('list')}
-        onEdit={() => setView('editor')}
+        mission={state.currentMission as Mission}
+        currentUserId={state.currentUserId}
+        onBack={() => setState((s) => ({ ...s, view: 'list' }))}
+        onEdit={() => setState((s) => ({ ...s, view: 'editor' }))}
       />
     );
   }
@@ -181,30 +188,30 @@ const CreatorDashboard: React.FC = () => {
         </div>
 
         <div className="flex space-x-4 mb-8 border-b border-gray-200">
-          <button
-            onClick={() => setDashboardTab('missions')}
-            className={`pb-3 px-2 text-sm font-bold border-b-2 transition-colors flex items-center ${dashboardTab === 'missions' ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+          <button type="button"
+            onClick={() => setState((s) => ({ ...s, dashboardTab: 'missions' }))}
+            className={`pb-3 px-2 text-sm font-bold border-b-2 transition-colors flex items-center ${state.dashboardTab === 'missions' ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
           >
             <Target className="h-4 w-4 mr-2" /> បេសកកម្ម
           </button>
-          <button
-            onClick={() => setDashboardTab('rewards')}
-            className={`pb-3 px-2 text-sm font-bold border-b-2 transition-colors flex items-center ${dashboardTab === 'rewards' ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+          <button type="button"
+            onClick={() => setState((s) => ({ ...s, dashboardTab: 'rewards' }))}
+            className={`pb-3 px-2 text-sm font-bold border-b-2 transition-colors flex items-center ${state.dashboardTab === 'rewards' ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
           >
             <Gift className="h-4 w-4 mr-2" /> រង្វាន់
           </button>
         </div>
 
-        {dashboardTab === 'rewards' ? (
+        {state.dashboardTab === 'rewards' ? (
           <MysteryBoxManager />
-        ) : loading ? (
+        ) : state.loading ? (
           <div className="flex justify-center py-12">
             <Loader2 className="animate-spin text-gray-300 h-8 w-8" />
           </div>
         ) : (
           <>
             <div className="flex justify-end mb-4">
-              <button
+              <button type="button"
                 onClick={handleCreateNewMission}
                 className="bg-gray-900 text-white px-5 py-2.5 rounded-xl font-bold shadow-lg flex items-center hover:scale-105 transition-transform text-sm"
               >
@@ -212,11 +219,11 @@ const CreatorDashboard: React.FC = () => {
               </button>
             </div>
 
-            {missions.length === 0 ? (
+            {state.missions.length === 0 ? (
               <div className="text-center py-16 bg-white rounded-3xl border border-dashed border-gray-300">
                 <Target className="h-16 w-16 mx-auto mb-4 text-gray-200" />
                 <h3 className="font-bold text-gray-900 text-lg">មិនទាន់មានបេសកកម្ម</h3>
-                <button
+                <button type="button"
                   onClick={handleCreateNewMission}
                   className="text-primary font-bold hover:underline"
                 >
@@ -225,9 +232,9 @@ const CreatorDashboard: React.FC = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {missions.map((m) => {
-                  const isOwner = m.ownerId === currentUserId;
-                  const isMentor = m.mentorId === currentUserId;
+                {state.missions.map((m) => {
+                  const isOwner = m.ownerId === state.currentUserId;
+                  const isMentor = m.mentorId === state.currentUserId;
                   const canEdit = isOwner || isMentor;
 
                   return (
@@ -248,7 +255,7 @@ const CreatorDashboard: React.FC = () => {
                         />
                         {canEdit && (
                           <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button
+                            <button type="button"
                               onClick={() => handleEditMission(m)}
                               className="bg-white p-2 rounded-full shadow-sm hover:text-blue-600"
                               title="Edit"
@@ -256,7 +263,7 @@ const CreatorDashboard: React.FC = () => {
                               <Edit className="h-4 w-4" />
                             </button>
                             {isOwner && (
-                              <button
+                              <button type="button"
                                 onClick={() => handleDeleteMission(m.id)}
                                 className="bg-white p-2 rounded-full shadow-sm hover:text-red-600"
                                 title="Delete"
@@ -281,7 +288,7 @@ const CreatorDashboard: React.FC = () => {
                           {m.description}
                         </p>
                         <div className="grid grid-cols-2 gap-2 mt-auto">
-                          <button
+                          <button type="button"
                             onClick={() => handleManageMission(m)}
                             className="bg-gray-100 text-gray-700 py-2 rounded-lg font-bold text-xs flex items-center justify-center hover:bg-gray-200 transition-colors"
                           >

@@ -21,54 +21,59 @@ const PublicProfilePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const [profile, setProfile] = useState<any>(null);
-  const [missions, setMissions] = useState<any[]>([]);
-  const [courses, setCourses] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'active' | 'completed'>('active');
+  const [state, setState] = useState({
+    profile: null as any,
+    missions: [] as any[],
+    courses: [] as any[],
+    loading: true,
+    activeTab: 'active' as 'active' | 'completed',
+  });
 
   useEffect(() => {
     const load = async () => {
       if (!id) return;
-      setLoading(true);
+      setState((s) => ({ ...s, loading: true }));
       try {
         const [userProfile, userMissions, userCourses] = await Promise.all([
           getUserProfileById(id),
           getStudentMissions(id),
           getStudentCourses(id),
         ]);
-        setProfile(userProfile);
-        setMissions(userMissions);
-        setCourses(userCourses);
+        setState((s) => ({
+          ...s,
+          profile: userProfile,
+          missions: userMissions,
+          courses: userCourses,
+        }));
       } catch (e) {
         console.error(e);
       } finally {
-        setLoading(false);
+        setState((s) => ({ ...s, loading: false }));
       }
     };
     load();
   }, [id]);
 
-  if (loading)
+  if (state.loading)
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="animate-spin h-8 w-8 text-primary" />
       </div>
     );
-  if (!profile) return <div className="p-10 text-center">User not found</div>;
+  if (!state.profile) return <div className="p-10 text-center">User not found</div>;
 
-  const level = calculateLevel(profile.lifetime_xp || 0);
+  const level = calculateLevel(state.profile.lifetime_xp || 0);
 
   // Filter Lists
-  const activeMissions = missions.filter(
+  const activeMissions = state.missions.filter(
     (m) => m.enrollmentStatus === 'In Progress' || m.enrollmentStatus === 'Pending'
   );
-  const completedMissions = missions.filter((m) => m.enrollmentStatus === 'Completed');
+  const completedMissions = state.missions.filter((m) => m.enrollmentStatus === 'Completed');
 
-  const activeCourses = courses.filter(
+  const activeCourses = state.courses.filter(
     (c) => c.enrollmentStatus === 'Pending' || c.enrollmentStatus === 'Approved'
   );
-  const completedCourses = courses.filter((c) => c.enrollmentStatus === 'Completed');
+  const completedCourses = state.courses.filter((c) => c.enrollmentStatus === 'Completed');
 
   // Combine for display based on tab
   const displayActive = [
@@ -91,8 +96,9 @@ const PublicProfilePage: React.FC = () => {
 
         {/* Cover Photo */}
         <div className="h-32 md:h-48 bg-gradient-to-r from-blue-500 to-teal-400 relative z-0">
-          <button
+          <button type="button"
             onClick={() => navigate(-1)}
+            aria-label="Go back"
             className="absolute top-4 left-4 p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/30 transition-colors z-30"
           >
             <ChevronLeft className="h-5 w-5" />
@@ -104,18 +110,18 @@ const PublicProfilePage: React.FC = () => {
           <div className="flex flex-col md:flex-row items-center md:items-end -mt-12 md:-mt-16 gap-4 md:gap-6">
             <div className="w-24 h-24 md:w-36 md:h-36 rounded-full border-4 border-white shadow-lg overflow-hidden bg-gray-200 flex-shrink-0">
               <img
-                src={profile.avatar_url || `https://ui-avatars.com/api/?name=${profile.full_name}`}
+                src={state.profile.avatar_url || `https://ui-avatars.com/api/?name=${state.profile.full_name}`}
                 className="w-full h-full object-cover"
                 alt="Profile"
               />
             </div>
             <div className="text-center md:text-left flex-1 mb-2 md:mb-4">
               <h1 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight mb-1">
-                {profile.full_name}
+                {state.profile.full_name}
               </h1>
               <div className="flex items-center justify-center md:justify-start gap-2">
                 <span className="bg-gray-100 text-gray-600 text-[10px] px-2 py-0.5 rounded uppercase font-bold border border-gray-200">
-                  {profile.role || 'Student'}
+                  {state.profile.role || 'Student'}
                 </span>
                 <span className="bg-yellow-100 text-yellow-700 text-[10px] px-2 py-0.5 rounded font-bold border border-yellow-200">
                   Lvl {level}
@@ -141,15 +147,15 @@ const PublicProfilePage: React.FC = () => {
       <div className="max-w-5xl mx-auto px-4 mt-6">
         {/* Tabs */}
         <div className="flex border-b border-gray-200 mb-6">
-          <button
-            onClick={() => setActiveTab('active')}
-            className={`flex-1 py-3 text-sm font-bold border-b-2 transition-colors flex items-center justify-center ${activeTab === 'active' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
+          <button type="button"
+            onClick={() => setState((s) => ({ ...s, activeTab: 'active' }))}
+            className={`flex-1 py-3 text-sm font-bold border-b-2 transition-colors flex items-center justify-center ${state.activeTab === 'active' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
           >
             <GraduationCap className="h-4 w-4 mr-2" /> កំពុងសិក្សា (Learning)
           </button>
-          <button
-            onClick={() => setActiveTab('completed')}
-            className={`flex-1 py-3 text-sm font-bold border-b-2 transition-colors flex items-center justify-center ${activeTab === 'completed' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
+          <button type="button"
+            onClick={() => setState((s) => ({ ...s, activeTab: 'completed' }))}
+            className={`flex-1 py-3 text-sm font-bold border-b-2 transition-colors flex items-center justify-center ${state.activeTab === 'completed' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
           >
             <Award className="h-4 w-4 mr-2" /> សមិទ្ធិផល (Achievements)
           </button>
@@ -157,22 +163,22 @@ const PublicProfilePage: React.FC = () => {
 
         {/* Content Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {activeTab === 'active' && displayActive.length === 0 && (
+          {state.activeTab === 'active' && displayActive.length === 0 && (
             <div className="col-span-full py-16 text-center text-gray-400 bg-white rounded-2xl border border-dashed border-gray-200">
               <BookOpen className="h-10 w-10 mx-auto mb-2 opacity-30" />
               <p>មិនទាន់មានការសិក្សាសកម្មទេ។</p>
             </div>
           )}
-          {activeTab === 'completed' && displayCompleted.length === 0 && (
+          {state.activeTab === 'completed' && displayCompleted.length === 0 && (
             <div className="col-span-full py-16 text-center text-gray-400 bg-white rounded-2xl border border-dashed border-gray-200">
               <Award className="h-10 w-10 mx-auto mb-2 opacity-30" />
               <p>មិនទាន់មានសមិទ្ធិផលនៅឡើយទេ។</p>
             </div>
           )}
 
-          {(activeTab === 'active' ? displayActive : displayCompleted).map((item: any, idx) => {
+          {(state.activeTab === 'active' ? displayActive : displayCompleted).map((item: any) => {
             if (item.type === 'mission') {
-              return <MissionCard key={`m-${idx}`} mission={item as Mission} />;
+              return <MissionCard key={`m-${item.id}`} mission={item as Mission} />;
             } else {
               // Map generic data back to ShortCourse structure for card
               const scProps = {
@@ -186,7 +192,7 @@ const PublicProfilePage: React.FC = () => {
                 format: item.format || 'Online',
               };
               return (
-                <div key={`c-${idx}`} className="relative">
+                <div key={`c-${item.id}`} className="relative">
                   <ShortCourseCard course={scProps as any} schoolName={item.schoolName} />
                   {/* Status Badge Overlay */}
                   <div className="absolute top-2 right-2">
