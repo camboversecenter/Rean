@@ -66,7 +66,7 @@ Users hold two balances: **XP** (reputation, never spent) and **Points** (spenda
 Create a `.env` file in the root directory:
 
 ```env
-# Google Gemini API Key (Get from aistudio.google.com)
+# Google Gemini API Key
 API_KEY=your_google_gemini_api_key
 
 # Supabase Configuration (Get from Supabase Dashboard)
