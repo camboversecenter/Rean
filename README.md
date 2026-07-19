@@ -2,6 +2,8 @@
 
 REAN (រៀន means "to learn" in Khmer) is a comprehensive educational platform for Cambodia, connecting students with schools, tutors, and AI-driven learning missions. It features a gamified community, real-time AI tutoring, and a marketplace for short courses.
 
+> **Incubated by CamboVerse Center, National University of Management (NUM).**
+
 ## Tech Stack
 
 - **Frontend**: React (v18+), TypeScript, Tailwind CSS, Lucide React.
@@ -155,3 +157,9 @@ community support, donations, grants, and training rather than by selling the so
 > to obtain its source. A common way to satisfy this is a visible "Source code" link in
 > the app footer pointing to this repository (or to your fork, if you run a modified
 > version).
+
+## 🙏 Acknowledgements
+
+REAN is incubated by the **CamboVerse Center** at the **National University of
+Management (NUM)**, Cambodia. The project is built for the Cambodian learning community
+and sustained through community support, donations, grants, and training.
