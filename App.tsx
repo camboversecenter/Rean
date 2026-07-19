@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { HashRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import BottomNav from './components/BottomNav';
+import Footer from './components/Footer';
 import LoginPage from './components/LoginPage';
 import RoleSelectionPage from './components/RoleSelectionPage';
 import AccountPage from './components/AccountPage';
@@ -188,6 +189,7 @@ const AppContent: React.FC = () => {
           <Route path="*" element={<HomePage />} />
         </Routes>
       </main>
+      <Footer />
       <BottomNav />
       <Toaster
         position="top-center"
