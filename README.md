@@ -148,9 +148,8 @@ Visit `http://localhost:5173` to start learning!
 This project uses **GitHub Actions** for Continuous Integration and Continuous Deployment (CI/CD), following professional DevOps best practices to ensure high code quality and reliable deployments.
 
 - **Automated Code Quality & Testing:** Every push and Pull Request triggers a pipeline that enforces formatting (`Prettier`), type safety (`TypeScript`), and runs unit tests (`Vitest`).
-- **Fail-Fast Strategy:** The `build` and `deploy` jobs are strictly dependent on the tests passing. If a test fails, the pipeline aborts to prevent broken code from being built.
-- **Preview Environments:** Pull requests automatically generate temporary, isolated Cloudflare Preview URLs. This allows for QA and stakeholder review before merging.
-- **Continuous Deployment:** Code merged into the `main` branch is automatically built and deployed to the live **Cloudflare Pages** production environment with zero human intervention.
+- **Fail-Fast Strategy:** The `build` job depends on the tests passing. If a test or type check fails, the pipeline aborts to prevent broken code from being built.
+- **Continuous Deployment:** Deployment is handled by **Cloudflare Pages' Git integration**, which builds and deploys every push to `main` to production and generates temporary preview URLs for other branches. (The GitHub Actions pipeline validates the code; Cloudflare performs the deploy.)
 
 ## 🤝 Contributing
 
