@@ -67,19 +67,27 @@ Users hold two balances: **XP** (reputation, never spent) and **Points** (spenda
 
 ### 1. Environment Variables
 
-Create a `.env` file in the root directory:
+Copy `.env.example` to `.env` and fill in your own values:
+
+```bash
+cp .env.example .env
+```
 
 ```env
-# Google Gemini API Key
-API_KEY=your_google_gemini_api_key
-
 # Supabase Configuration (Get from Supabase Dashboard)
 VITE_SUPABASE_URL=your_supabase_url
-# Use the Publishable Key (Recommended)
-VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_fbkyJlwt7bcGtiVexvq39w_m6n4_Vxf
+# Use the Publishable Key (Recommended, safe for the browser)
+VITE_SUPABASE_PUBLISHABLE_KEY=your_publishable_key
 # Legacy Support (Optional if Publishable Key is set)
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+
+# LOCAL DEV ONLY: direct Gemini fallback (never shipped to production)
+VITE_GEMINI_DEV_KEY=your_google_gemini_api_key
 ```
+
+> **Security note:** never commit `.env`. Production AI requests run through the
+> `ai-assistant` Supabase Edge Function; the Gemini key lives only in Supabase
+> secrets and is never exposed to the browser.
 
 ### 2. Supabase Database Setup
 
@@ -114,7 +122,7 @@ supabase functions deploy og-mission --no-verify-jwt
 ```bash
 supabase secrets set GOOGLE_API_KEY=your_gemini_key
 supabase secrets set SUPABASE_URL=your_supabase_url
-supabase secrets set APP_PUBLISHABLE_KEY=sb_publishable_fbkyJlwt7bcGtiVexvq39w_m6n4_Vxf
+supabase secrets set APP_PUBLISHABLE_KEY=your_publishable_key
 supabase secrets set APP_SECRET_KEY=your_service_role_key
 ```
 

@@ -83,49 +83,93 @@ const TutorDashboard: React.FC = () => {
   });
 
   const {
-    profile, bookings, requests, loading, saving, toggling, activeTab,
-    subjectsInput, gradesInput, coverFile, coverBase64, isGeneratingCover,
-    showApplyModal, selectedRequest, applyMessage, applying
+    profile,
+    bookings,
+    requests,
+    loading,
+    saving,
+    toggling,
+    activeTab,
+    subjectsInput,
+    gradesInput,
+    coverFile,
+    coverBase64,
+    isGeneratingCover,
+    showApplyModal,
+    selectedRequest,
+    applyMessage,
+    applying,
   } = state;
 
-  const setProfile = (val: any) => setState(s => ({ ...s, profile: typeof val === 'function' ? val(s.profile) : val }));
-  const setBookings = (val: any) => setState(s => ({ ...s, bookings: typeof val === 'function' ? val(s.bookings) : val }));
-  const setRequests = (val: any) => setState(s => ({ ...s, requests: typeof val === 'function' ? val(s.requests) : val }));
-  const setLoading = (val: any) => setState(s => ({ ...s, loading: typeof val === 'function' ? val(s.loading) : val }));
-  const setSaving = (val: any) => setState(s => ({ ...s, saving: typeof val === 'function' ? val(s.saving) : val }));
-  const setToggling = (val: any) => setState(s => ({ ...s, toggling: typeof val === 'function' ? val(s.toggling) : val }));
-  const setActiveTab = (val: any) => setState(s => ({ ...s, activeTab: typeof val === 'function' ? val(s.activeTab) : val }));
-  const setSubjectsInput = (val: any) => setState(s => ({ ...s, subjectsInput: typeof val === 'function' ? val(s.subjectsInput) : val }));
-  const setGradesInput = (val: any) => setState(s => ({ ...s, gradesInput: typeof val === 'function' ? val(s.gradesInput) : val }));
-  const setCoverFile = (val: any) => setState(s => ({ ...s, coverFile: typeof val === 'function' ? val(s.coverFile) : val }));
-  const setCoverBase64 = (val: any) => setState(s => ({ ...s, coverBase64: typeof val === 'function' ? val(s.coverBase64) : val }));
-  const setIsGeneratingCover = (val: any) => setState(s => ({ ...s, isGeneratingCover: typeof val === 'function' ? val(s.isGeneratingCover) : val }));
-  const setShowApplyModal = (val: any) => setState(s => ({ ...s, showApplyModal: typeof val === 'function' ? val(s.showApplyModal) : val }));
-  const setSelectedRequest = (val: any) => setState(s => ({ ...s, selectedRequest: typeof val === 'function' ? val(s.selectedRequest) : val }));
-  const setApplyMessage = (val: any) => setState(s => ({ ...s, applyMessage: typeof val === 'function' ? val(s.applyMessage) : val }));
-  const setApplying = (val: any) => setState(s => ({ ...s, applying: typeof val === 'function' ? val(s.applying) : val }));
+  const setProfile = (val: any) =>
+    setState((s) => ({ ...s, profile: typeof val === 'function' ? val(s.profile) : val }));
+  const setBookings = (val: any) =>
+    setState((s) => ({ ...s, bookings: typeof val === 'function' ? val(s.bookings) : val }));
+  const setRequests = (val: any) =>
+    setState((s) => ({ ...s, requests: typeof val === 'function' ? val(s.requests) : val }));
+  const setLoading = (val: any) =>
+    setState((s) => ({ ...s, loading: typeof val === 'function' ? val(s.loading) : val }));
+  const setSaving = (val: any) =>
+    setState((s) => ({ ...s, saving: typeof val === 'function' ? val(s.saving) : val }));
+  const setToggling = (val: any) =>
+    setState((s) => ({ ...s, toggling: typeof val === 'function' ? val(s.toggling) : val }));
+  const setActiveTab = (val: any) =>
+    setState((s) => ({ ...s, activeTab: typeof val === 'function' ? val(s.activeTab) : val }));
+  const setSubjectsInput = (val: any) =>
+    setState((s) => ({
+      ...s,
+      subjectsInput: typeof val === 'function' ? val(s.subjectsInput) : val,
+    }));
+  const setGradesInput = (val: any) =>
+    setState((s) => ({ ...s, gradesInput: typeof val === 'function' ? val(s.gradesInput) : val }));
+  const setCoverFile = (val: any) =>
+    setState((s) => ({ ...s, coverFile: typeof val === 'function' ? val(s.coverFile) : val }));
+  const setCoverBase64 = (val: any) =>
+    setState((s) => ({ ...s, coverBase64: typeof val === 'function' ? val(s.coverBase64) : val }));
+  const setIsGeneratingCover = (val: any) =>
+    setState((s) => ({
+      ...s,
+      isGeneratingCover: typeof val === 'function' ? val(s.isGeneratingCover) : val,
+    }));
+  const setShowApplyModal = (val: any) =>
+    setState((s) => ({
+      ...s,
+      showApplyModal: typeof val === 'function' ? val(s.showApplyModal) : val,
+    }));
+  const setSelectedRequest = (val: any) =>
+    setState((s) => ({
+      ...s,
+      selectedRequest: typeof val === 'function' ? val(s.selectedRequest) : val,
+    }));
+  const setApplyMessage = (val: any) =>
+    setState((s) => ({
+      ...s,
+      applyMessage: typeof val === 'function' ? val(s.applyMessage) : val,
+    }));
+  const setApplying = (val: any) =>
+    setState((s) => ({ ...s, applying: typeof val === 'function' ? val(s.applying) : val }));
 
   const loadData = React.useCallback(async () => {
-    setState(s => ({ ...s, loading: true }));
+    setState((s) => ({ ...s, loading: true }));
     try {
       const myProfile = await getMyTutorProfile();
       if (myProfile) {
-        setState(s => ({
+        setState((s) => ({
           ...s,
           profile: myProfile,
           subjectsInput: myProfile.subjects?.join(', ') || '',
-          gradesInput: myProfile.grades?.join(', ') || ''
+          gradesInput: myProfile.grades?.join(', ') || '',
         }));
 
         const myBookings = await getTutorBookings();
-        setState(s => ({ ...s, bookings: myBookings }));
+        setState((s) => ({ ...s, bookings: myBookings }));
       }
       const jobs = await fetchStudentRequests();
-      setState(s => ({ ...s, requests: jobs }));
+      setState((s) => ({ ...s, requests: jobs }));
     } catch (e) {
       console.error('Error loading dashboard', e);
     } finally {
-      setState(s => ({ ...s, loading: false }));
+      setState((s) => ({ ...s, loading: false }));
     }
   }, []);
 
@@ -201,14 +245,14 @@ const TutorDashboard: React.FC = () => {
     setToggling(true);
 
     // Optimistic Update
-    setProfile((prev) => ({ ...prev, is_listed: newStatus }));
+    setProfile((prev: any) => ({ ...prev, is_listed: newStatus }));
 
     try {
       await updateTutorProfile({ is_listed: newStatus });
       // toast.success(newStatus ? "ប្រវត្តិរូបកំពុងផ្សាយជាសាធារណៈ!" : "ប្រវត្តិរូបត្រូវបានលាក់!");
     } catch (e) {
       // Revert on failure
-      setProfile((prev) => ({ ...prev, is_listed: !newStatus }));
+      setProfile((prev: any) => ({ ...prev, is_listed: !newStatus }));
       toast.error('បរាជ័យក្នុងការប្តូរស្ថានភាព។');
     } finally {
       setToggling(false);
@@ -218,7 +262,9 @@ const TutorDashboard: React.FC = () => {
   const handleBookingAction = async (id: string, action: 'Accepted' | 'Rejected') => {
     try {
       await updateBookingStatus(id, action);
-      setBookings((prev) => prev.map((b) => (b.id === id ? { ...b, status: action } : b)));
+      setBookings((prev: any) =>
+        prev.map((b: any) => (b.id === id ? { ...b, status: action } : b))
+      );
       toast.success(`សំណើត្រូវបាន ${action === 'Accepted' ? 'ទទួល' : 'បដិសេធ'}`);
     } catch (e) {
       toast.error('មានបញ្ហាក្នុងការកែប្រែ។');
@@ -272,7 +318,8 @@ const TutorDashboard: React.FC = () => {
             <span>Tutor Dashboard</span>
           </h1>
           {activeTab === 'profile' && (
-            <button type="button"
+            <button
+              type="button"
               onClick={handleSaveProfile}
               disabled={saving || (profile.bio?.length || 0) > BIO_LIMIT}
               className="bg-primary text-white px-5 py-2 rounded-xl font-bold text-sm flex items-center shadow-lg hover:bg-primary/90 active:scale-95 transition-all disabled:opacity-50"
@@ -328,10 +375,11 @@ const TutorDashboard: React.FC = () => {
             >
               លាក់
             </span>
-            <button type="button"
+            <button
+              type="button"
               onClick={toggleListedStatus}
               disabled={toggling}
-              aria-label={profile.is_listed ? "Hide Profile" : "Publish Profile"}
+              aria-label={profile.is_listed ? 'Hide Profile' : 'Publish Profile'}
               className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors focus:outline-none ring-offset-2 focus:ring-2 focus:ring-primary/20 ${
                 profile.is_listed ? 'bg-green-50' : 'bg-gray-300'
               }`}
@@ -372,19 +420,22 @@ const TutorDashboard: React.FC = () => {
 
         {/* Tabs */}
         <div className="bg-gray-100/50 p-1.5 rounded-2xl flex gap-1 mb-8 w-full md:w-auto md:inline-flex border border-gray-200">
-          <button type="button"
+          <button
+            type="button"
             onClick={() => setActiveTab('profile')}
             className={`flex-1 md:flex-none px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center ${activeTab === 'profile' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
           >
             <User className="h-4 w-4 mr-2" /> ប្រវត្តិរូប
           </button>
-          <button type="button"
+          <button
+            type="button"
             onClick={() => setActiveTab('bookings')}
             className={`flex-1 md:flex-none px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center ${activeTab === 'bookings' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
           >
             <Calendar className="h-4 w-4 mr-2" /> ការកក់ ({pendingBookings.length})
           </button>
-          <button type="button"
+          <button
+            type="button"
             onClick={() => setActiveTab('jobs')}
             className={`flex-1 md:flex-none px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center ${activeTab === 'jobs' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
           >
@@ -419,7 +470,10 @@ const TutorDashboard: React.FC = () => {
 
                   <div className="space-y-4 text-left">
                     <div>
-                      <label htmlFor="hourlyRate" className="block text-xs font-bold text-gray-500 mb-1">
+                      <label
+                        htmlFor="hourlyRate"
+                        className="block text-xs font-bold text-gray-500 mb-1"
+                      >
                         តម្លៃម៉ោង (Riel)
                       </label>
                       <div className="relative">
@@ -436,7 +490,12 @@ const TutorDashboard: React.FC = () => {
                       </div>
                     </div>
                     <div>
-                      <label htmlFor="location" className="block text-xs font-bold text-gray-500 mb-1">ទីតាំង</label>
+                      <label
+                        htmlFor="location"
+                        className="block text-xs font-bold text-gray-500 mb-1"
+                      >
+                        ទីតាំង
+                      </label>
                       <div className="relative">
                         <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                         <input
@@ -448,7 +507,10 @@ const TutorDashboard: React.FC = () => {
                       </div>
                     </div>
                     <div>
-                      <label htmlFor="phoneContact" className="block text-xs font-bold text-gray-500 mb-1">
+                      <label
+                        htmlFor="phoneContact"
+                        className="block text-xs font-bold text-gray-500 mb-1"
+                      >
                         លេខទូរស័ព្ទ
                       </label>
                       <div className="relative">
@@ -472,7 +534,8 @@ const TutorDashboard: React.FC = () => {
                     <h3 className="font-bold text-gray-900 flex items-center">
                       <ImageIcon className="h-5 w-5 mr-2 text-primary" /> រូបភាពគម្រប (Cover Image)
                     </h3>
-                    <button type="button"
+                    <button
+                      type="button"
                       onClick={handleGenerateCover}
                       disabled={isGeneratingCover}
                       className="text-[10px] font-bold text-purple-600 bg-purple-50 px-3 py-1.5 rounded-lg flex items-center hover:bg-purple-100 transition-colors"
@@ -528,7 +591,10 @@ const TutorDashboard: React.FC = () => {
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
-                      <label htmlFor="subjectsInput" className="block text-xs font-bold text-gray-500 mb-1">
+                      <label
+                        htmlFor="subjectsInput"
+                        className="block text-xs font-bold text-gray-500 mb-1"
+                      >
                         មុខវិជ្ជា (Subjects)
                       </label>
                       <input
@@ -541,7 +607,10 @@ const TutorDashboard: React.FC = () => {
                       <p className="text-[10px] text-gray-400 mt-1">បំបែកដោយសញ្ញាក្បៀស (,)</p>
                     </div>
                     <div>
-                      <label htmlFor="gradesInput" className="block text-xs font-bold text-gray-500 mb-1">
+                      <label
+                        htmlFor="gradesInput"
+                        className="block text-xs font-bold text-gray-500 mb-1"
+                      >
                         កម្រិត (Grades)
                       </label>
                       <input
@@ -559,7 +628,11 @@ const TutorDashboard: React.FC = () => {
                     </legend>
                     <div className="flex gap-4">
                       {['Online', 'Home', 'Both'].map((mode) => (
-                        <label key={mode} htmlFor={`mode-${mode}`} className="flex items-center cursor-pointer">
+                        <label
+                          key={mode}
+                          htmlFor={`mode-${mode}`}
+                          className="flex items-center cursor-pointer"
+                        >
                           <input
                             id={`mode-${mode}`}
                             type="radio"
@@ -576,7 +649,10 @@ const TutorDashboard: React.FC = () => {
                     </div>
                   </fieldset>
                   <div>
-                    <label htmlFor="experience" className="block text-xs font-bold text-gray-500 mb-1">
+                    <label
+                      htmlFor="experience"
+                      className="block text-xs font-bold text-gray-500 mb-1"
+                    >
                       បទពិសោធន៍ (Experience)
                     </label>
                     <input
@@ -591,7 +667,8 @@ const TutorDashboard: React.FC = () => {
 
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                   <h3 className="font-bold text-gray-900 mb-4 flex items-center">
-                    <FileText className="h-5 w-5 mr-2 text-primary" /> <label htmlFor="bio">អំពីខ្ញុំ (Bio)</label>
+                    <FileText className="h-5 w-5 mr-2 text-primary" />{' '}
+                    <label htmlFor="bio">អំពីខ្ញុំ (Bio)</label>
                   </h3>
                   <textarea
                     id="bio"
@@ -664,13 +741,15 @@ const TutorDashboard: React.FC = () => {
                         </div>
 
                         <div className="flex gap-2">
-                          <button type="button"
+                          <button
+                            type="button"
                             onClick={() => handleBookingAction(b.id, 'Accepted')}
                             className="flex-1 bg-green-600 text-white font-bold py-2 rounded-lg text-xs hover:bg-green-700 transition-colors shadow-sm"
                           >
                             ទទួល (Accept)
                           </button>
-                          <button type="button"
+                          <button
+                            type="button"
                             onClick={() => handleBookingAction(b.id, 'Rejected')}
                             className="flex-1 bg-white border border-gray-200 text-red-600 font-bold py-2 rounded-lg text-xs hover:bg-red-50 transition-colors"
                           >
@@ -754,7 +833,10 @@ const TutorDashboard: React.FC = () => {
                 <h3 className="font-bold text-gray-900 flex items-center">
                   <Briefcase className="h-5 w-5 mr-2 text-primary" /> សំណើសិស្សថ្មីៗ (New Requests)
                 </h3>
-                <button type="button" className="bg-white p-2 rounded-lg border border-gray-200 shadow-sm text-gray-600 hover:text-primary">
+                <button
+                  type="button"
+                  className="bg-white p-2 rounded-lg border border-gray-200 shadow-sm text-gray-600 hover:text-primary"
+                >
                   <Filter className="h-4 w-4" />
                 </button>
               </div>
@@ -801,7 +883,10 @@ const TutorDashboard: React.FC = () => {
 
             <div className="space-y-4">
               <div>
-                <label htmlFor="applyMessage" className="block text-xs font-bold text-gray-500 mb-1">
+                <label
+                  htmlFor="applyMessage"
+                  className="block text-xs font-bold text-gray-500 mb-1"
+                >
                   សារខ្លីៗ (Message)
                 </label>
                 <textarea
@@ -813,7 +898,8 @@ const TutorDashboard: React.FC = () => {
                 />
               </div>
 
-              <button type="button"
+              <button
+                type="button"
                 onClick={handleSubmitApplication}
                 disabled={applying || !applyMessage.trim()}
                 className="w-full bg-gray-900 text-white font-bold py-3 rounded-xl shadow-lg flex items-center justify-center hover:bg-black transition-colors disabled:opacity-50"

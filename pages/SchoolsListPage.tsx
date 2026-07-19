@@ -17,35 +17,48 @@ const SchoolsListPage: React.FC = () => {
     loadingMore: false,
   });
 
-  const loadData = React.useCallback(async (pageToLoad: number, isReset: boolean = false, currentSearchQuery: string, currentFilterType: string) => {
-    if (!isReset) setState(s => ({ ...s, loadingMore: true }));
-    else setState(s => ({ ...s, loading: true }));
+  const loadData = React.useCallback(
+    async (
+      pageToLoad: number,
+      isReset: boolean = false,
+      currentSearchQuery: string,
+      currentFilterType: string
+    ) => {
+      if (!isReset) setState((s) => ({ ...s, loadingMore: true }));
+      else setState((s) => ({ ...s, loading: true }));
 
-    try {
-      const data = await fetchAllSchools(pageToLoad, LIMIT, currentSearchQuery, currentFilterType);
+      try {
+        const data = await fetchAllSchools(
+          pageToLoad,
+          LIMIT,
+          currentSearchQuery,
+          currentFilterType
+        );
 
-      setState(s => ({
-        ...s,
-        hasMore: data.length >= LIMIT,
-        schools: isReset ? data : [...s.schools, ...data],
-        loading: false,
-        loadingMore: false,
-      }));
-    } catch (e) {
-      console.error(e);
-      setState(s => ({ ...s, loading: false, loadingMore: false }));
-    }
-  }, []);
+        setState((s) => ({
+          ...s,
+          hasMore: data.length >= LIMIT,
+          schools: isReset ? data : [...s.schools, ...data],
+          loading: false,
+          loadingMore: false,
+        }));
+      } catch (e) {
+        console.error(e);
+        setState((s) => ({ ...s, loading: false, loadingMore: false }));
+      }
+    },
+    []
+  );
 
   useEffect(() => {
     // Reset list when filters change
-    setState(s => ({ ...s, page: 1, schools: [], hasMore: true }));
+    setState((s) => ({ ...s, page: 1, schools: [], hasMore: true }));
     loadData(1, true, state.searchQuery, state.filterType);
   }, [state.searchQuery, state.filterType, loadData]);
 
   const handleLoadMore = () => {
     const nextPage = state.page + 1;
-    setState(s => ({ ...s, page: nextPage }));
+    setState((s) => ({ ...s, page: nextPage }));
     loadData(nextPage, false, state.searchQuery, state.filterType);
   };
 
@@ -68,27 +81,28 @@ const SchoolsListPage: React.FC = () => {
 
           {/* Search */}
           <div className="relative mb-4">
-              <input
-                id="searchSchools"
-                type="text"
-                aria-label="Search schools"
-                value={state.searchQuery}
-                onChange={(e) => setState(s => ({ ...s, searchQuery: e.target.value }))}
-                placeholder="ស្វែងរកតាមឈ្មោះសាលា..."
-                className="w-full bg-white border border-gray-200 rounded-xl py-3 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-sm"
-              />
-              <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-            </div>
+            <input
+              id="searchSchools"
+              type="text"
+              aria-label="Search schools"
+              value={state.searchQuery}
+              onChange={(e) => setState((s) => ({ ...s, searchQuery: e.target.value }))}
+              placeholder="ស្វែងរកតាមឈ្មោះសាលា..."
+              className="w-full bg-white border border-gray-200 rounded-xl py-3 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-sm"
+            />
+            <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+          </div>
 
-            {/* Filter Chips */}
-            <div className="flex overflow-x-auto space-x-2 pb-2 scrollbar-hide">
-              {types.map((t) => (
-                <button type="button"
-                  key={t}
-                  onClick={() => setState(s => ({ ...s, filterType: t }))}
-                  className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold transition-colors ${state.filterType === t ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
-                >
-                  {typeMapping[t]}
+          {/* Filter Chips */}
+          <div className="flex overflow-x-auto space-x-2 pb-2 scrollbar-hide">
+            {types.map((t) => (
+              <button
+                type="button"
+                key={t}
+                onClick={() => setState((s) => ({ ...s, filterType: t }))}
+                className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold transition-colors ${state.filterType === t ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+              >
+                {typeMapping[t]}
               </button>
             ))}
           </div>
@@ -111,7 +125,8 @@ const SchoolsListPage: React.FC = () => {
               {/* Load More Button */}
               {state.hasMore && (
                 <div className="pt-8 pb-8 flex justify-center">
-                  <button type="button"
+                  <button
+                    type="button"
                     onClick={handleLoadMore}
                     disabled={state.loadingMore}
                     className="bg-white border border-gray-200 text-gray-600 font-bold py-2 px-6 rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-50 flex items-center text-sm"

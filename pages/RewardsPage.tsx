@@ -55,14 +55,26 @@ const RewardsPage: React.FC = () => {
   const setMyClaims = React.useCallback((v: any) => setState((s) => ({ ...s, myClaims: v })), []);
   const setLoading = React.useCallback((v: any) => setState((s) => ({ ...s, loading: v })), []);
   const setOpening = React.useCallback((v: any) => setState((s) => ({ ...s, opening: v })), []);
-  const setPointHistory = React.useCallback((v: any) =>
-    setState((s) => ({
-      ...s,
-      pointHistory: typeof v === 'function' ? v(s.pointHistory) : v,
-    })), []);
-  const setpointHistoryPage = React.useCallback((v: any) => setState((s) => ({ ...s, pointHistoryPage: v })), []);
-  const setpointHistoryHasMore = React.useCallback((v: any) => setState((s) => ({ ...s, pointHistoryHasMore: v })), []);
-  const setPointHistoryLoading = React.useCallback((v: any) => setState((s) => ({ ...s, historyLoading: v })), []);
+  const setPointHistory = React.useCallback(
+    (v: any) =>
+      setState((s) => ({
+        ...s,
+        pointHistory: typeof v === 'function' ? v(s.pointHistory) : v,
+      })),
+    []
+  );
+  const setpointHistoryPage = React.useCallback(
+    (v: any) => setState((s) => ({ ...s, pointHistoryPage: v })),
+    []
+  );
+  const setpointHistoryHasMore = React.useCallback(
+    (v: any) => setState((s) => ({ ...s, pointHistoryHasMore: v })),
+    []
+  );
+  const setPointHistoryLoading = React.useCallback(
+    (v: any) => setState((s) => ({ ...s, historyLoading: v })),
+    []
+  );
 
   const loadData = React.useCallback(async () => {
     const p = await getCurrentUserProfile();
@@ -72,16 +84,19 @@ const RewardsPage: React.FC = () => {
     setLoading(false);
   }, []);
 
-  const loadHistory = React.useCallback(async (page: number) => {
-    setPointHistoryLoading(true);
-    const data = await fetchPointHistory(page, 20);
-    if (data.length < 20) setpointHistoryHasMore(false);
+  const loadHistory = React.useCallback(
+    async (page: number) => {
+      setPointHistoryLoading(true);
+      const data = await fetchPointHistory(page, 20);
+      if (data.length < 20) setpointHistoryHasMore(false);
 
-    if (page === 1) setPointHistory(data);
-    else setPointHistory((prev: any) => [...prev, ...data]);
+      if (page === 1) setPointHistory(data);
+      else setPointHistory((prev: any) => [...prev, ...data]);
 
-    setPointHistoryLoading(false);
-  }, [setPointHistoryLoading, setpointHistoryHasMore, setPointHistory]);
+      setPointHistoryLoading(false);
+    },
+    [setPointHistoryLoading, setpointHistoryHasMore, setPointHistory]
+  );
 
   useEffect(() => {
     loadData();
@@ -219,19 +234,22 @@ const RewardsPage: React.FC = () => {
 
         {/* Tabs */}
         <div className="flex bg-white rounded-xl p-1 shadow-sm border border-gray-100 mb-6">
-          <button type="button"
+          <button
+            type="button"
             onClick={() => setActiveTab('shop')}
             className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'shop' ? 'bg-gray-900 text-white shadow' : 'text-gray-500 hover:text-gray-900'}`}
           >
             ហាង (Shop)
           </button>
-          <button type="button"
+          <button
+            type="button"
             onClick={() => setActiveTab('inventory')}
             className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'inventory' ? 'bg-gray-900 text-white shadow' : 'text-gray-500 hover:text-gray-900'}`}
           >
             របស់ខ្ញុំ (My)
           </button>
-          <button type="button"
+          <button
+            type="button"
             onClick={() => setActiveTab('history')}
             className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'history' ? 'bg-gray-900 text-white shadow' : 'text-gray-500 hover:text-gray-900'}`}
           >
@@ -264,7 +282,11 @@ const RewardsPage: React.FC = () => {
                   >
                     <div className="w-16 h-16 rounded-xl flex items-center justify-center text-3xl shadow-inner bg-purple-50 text-purple-600 overflow-hidden">
                       {item.cover_image ? (
-                        <img src={item.cover_image} className="w-full h-full object-cover" alt="Cover Image" />
+                        <img
+                          src={item.cover_image}
+                          className="w-full h-full object-cover"
+                          alt="Cover Image"
+                        />
                       ) : (
                         '🎁'
                       )}
@@ -278,7 +300,8 @@ const RewardsPage: React.FC = () => {
                         </p>
                       )}
                     </div>
-                    <button type="button"
+                    <button
+                      type="button"
                       onClick={() => handlePurchase(item)}
                       disabled={opening !== null}
                       className={`px-4 py-2 rounded-xl font-bold text-sm shadow-sm transition-transform active:scale-95 ${
@@ -387,7 +410,8 @@ const RewardsPage: React.FC = () => {
 
             {pointHistoryHasMore && (
               <div className="text-center mt-4">
-                <button type="button"
+                <button
+                  type="button"
                   onClick={handleHistoryLoadMore}
                   disabled={historyLoading}
                   className="bg-white border border-gray-200 text-gray-600 text-xs font-bold py-2 px-4 rounded-lg shadow-sm hover:bg-gray-50 disabled:opacity-50 flex items-center justify-center mx-auto"

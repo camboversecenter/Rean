@@ -48,7 +48,7 @@ const TutorDetailPage: React.FC = () => {
   useEffect(() => {
     if (id) {
       Promise.all([getTutorById(id), getCurrentUser()]).then(([data, user]) => {
-        setState(s => ({ ...s, tutor: data, currentUser: user, loading: false }));
+        setState((s) => ({ ...s, tutor: data, currentUser: user, loading: false }));
       });
     }
   }, [id]);
@@ -62,18 +62,25 @@ const TutorDetailPage: React.FC = () => {
       toast.error('អ្នកមិនអាចកក់ខ្លួនឯងបានទេ។');
       return;
     }
-    setState(s => ({ ...s, showBooking: true }));
+    setState((s) => ({ ...s, showBooking: true }));
   };
 
   const handleBooking = async () => {
-    if (!state.bookingForm.subject || !state.bookingForm.date || !state.bookingForm.time || !state.tutor) {
+    if (
+      !state.bookingForm.subject ||
+      !state.bookingForm.date ||
+      !state.bookingForm.time ||
+      !state.tutor
+    ) {
       toast.error('សូមបំពេញព័ត៌មានឱ្យបានគ្រប់គ្រាន់។');
       return;
     }
 
-    setState(s => ({ ...s, bookingSubmitting: true }));
+    setState((s) => ({ ...s, bookingSubmitting: true }));
     try {
-      const scheduledTime = new Date(`${state.bookingForm.date}T${state.bookingForm.time}`).toISOString();
+      const scheduledTime = new Date(
+        `${state.bookingForm.date}T${state.bookingForm.time}`
+      ).toISOString();
       await createBooking({
         tutorId: state.tutor.id,
         subject: state.bookingForm.subject,
@@ -81,7 +88,7 @@ const TutorDetailPage: React.FC = () => {
         notes: state.bookingForm.notes,
       });
       toast.success('បានផ្ញើសំណើកក់! សូមរង់ចាំការឆ្លើយតប។', { duration: 4000 });
-      setState(s => ({
+      setState((s) => ({
         ...s,
         showBooking: false,
         bookingForm: { subject: '', date: '', time: '', notes: '' },
@@ -89,7 +96,7 @@ const TutorDetailPage: React.FC = () => {
     } catch (e: any) {
       toast.error(e.message || 'បរាជ័យក្នុងការកក់។');
     } finally {
-      setState(s => ({ ...s, bookingSubmitting: false }));
+      setState((s) => ({ ...s, bookingSubmitting: false }));
     }
   };
 
@@ -137,13 +144,15 @@ const TutorDetailPage: React.FC = () => {
         )}
 
         <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-10">
-          <button type="button"
+          <button
+            type="button"
             onClick={() => navigate(-1)}
             className="p-2 bg-white/20 rounded-full hover:bg-white/30 backdrop-blur-md transition-colors"
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
-          <button type="button"
+          <button
+            type="button"
             onClick={handleShare}
             className="p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/30 transition-colors"
             title="ចែករំលែក (Share)"
@@ -155,14 +164,18 @@ const TutorDetailPage: React.FC = () => {
         <div className="max-w-5xl mx-auto flex flex-col items-center text-center relative z-10">
           <div className="w-24 h-24 rounded-full border-4 border-white shadow-lg overflow-hidden mb-4 bg-gray-200">
             <img
-              src={state.tutor.avatarUrl || `https://ui-avatars.com/api/?name=${state.tutor.fullName}`}
+              src={
+                state.tutor.avatarUrl || `https://ui-avatars.com/api/?name=${state.tutor.fullName}`
+              }
               className="w-full h-full object-cover"
               alt="Tutor Avatar"
             />
           </div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
             {state.tutor.fullName}{' '}
-            {state.tutor.isVerified && <CheckCircle className="h-5 w-5 text-blue-300 fill-blue-500" />}
+            {state.tutor.isVerified && (
+              <CheckCircle className="h-5 w-5 text-blue-300 fill-blue-500" />
+            )}
           </h1>
           <p className="opacity-90 text-sm mt-1">{state.tutor.experience}</p>
           <div className="flex gap-2 mt-4">
@@ -201,10 +214,13 @@ const TutorDetailPage: React.FC = () => {
                 </div>
                 <div className="text-right">
                   <p className="text-xs text-gray-500 uppercase font-bold">មុខវិជ្ជា</p>
-                  <p className="text-xl font-bold text-gray-900">{state.tutor.subjects?.length || 0}</p>
+                  <p className="text-xl font-bold text-gray-900">
+                    {state.tutor.subjects?.length || 0}
+                  </p>
                 </div>
               </div>
-              <button type="button"
+              <button
+                type="button"
                 onClick={handleOpenBooking}
                 className="w-full bg-gray-900 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-black transition-transform active:scale-95"
               >
@@ -250,7 +266,8 @@ const TutorDetailPage: React.FC = () => {
 
       {/* Bottom Bar - Mobile Only */}
       <div className="fixed bottom-0 left-0 right-0 bg-white p-4 border-t border-gray-200 md:hidden z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
-        <button type="button"
+        <button
+          type="button"
           onClick={handleOpenBooking}
           className="w-full bg-primary text-white font-bold py-3.5 rounded-xl shadow-lg shadow-primary/20 active:scale-95 transition-transform"
         >
@@ -264,8 +281,9 @@ const TutorDetailPage: React.FC = () => {
           <div className="bg-white rounded-2xl w-full max-w-sm p-6 animate-scale-in shadow-2xl">
             <div className="flex justify-between items-center mb-6">
               <h3 className="font-bold text-lg text-gray-900">កក់ម៉ោងសិក្សា</h3>
-              <button type="button"
-                onClick={() => setState(s => ({ ...s, showBooking: false }))}
+              <button
+                type="button"
+                onClick={() => setState((s) => ({ ...s, showBooking: false }))}
                 className="p-1 hover:bg-gray-100 rounded-full"
               >
                 <X className="h-6 w-6 text-gray-400" />
@@ -274,12 +292,22 @@ const TutorDetailPage: React.FC = () => {
 
             <div className="space-y-4">
               <div>
-                <label htmlFor="booking-subject" className="block text-xs font-bold text-gray-500 mb-1">មុខវិជ្ជា</label>
+                <label
+                  htmlFor="booking-subject"
+                  className="block text-xs font-bold text-gray-500 mb-1"
+                >
+                  មុខវិជ្ជា
+                </label>
                 <select
                   id="booking-subject"
                   value={state.bookingForm.subject}
                   className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20"
-                  onChange={(e) => setState(s => ({ ...s, bookingForm: { ...s.bookingForm, subject: e.target.value } }))}
+                  onChange={(e) =>
+                    setState((s) => ({
+                      ...s,
+                      bookingForm: { ...s.bookingForm, subject: e.target.value },
+                    }))
+                  }
                 >
                   <option value="">ជ្រើសរើសមុខវិជ្ជា</option>
                   {state.tutor.subjects?.map((s) => (
@@ -291,43 +319,78 @@ const TutorDetailPage: React.FC = () => {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label htmlFor="booking-date" className="block text-xs font-bold text-gray-500 mb-1">កាលបរិច្ឆេទ</label>
+                  <label
+                    htmlFor="booking-date"
+                    className="block text-xs font-bold text-gray-500 mb-1"
+                  >
+                    កាលបរិច្ឆេទ
+                  </label>
                   <input
                     id="booking-date"
                     type="date"
                     value={state.bookingForm.date}
                     className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20"
-                    onChange={(e) => setState(s => ({ ...s, bookingForm: { ...s.bookingForm, date: e.target.value } }))}
+                    onChange={(e) =>
+                      setState((s) => ({
+                        ...s,
+                        bookingForm: { ...s.bookingForm, date: e.target.value },
+                      }))
+                    }
                   />
                 </div>
                 <div>
-                  <label htmlFor="booking-time" className="block text-xs font-bold text-gray-500 mb-1">ម៉ោង</label>
+                  <label
+                    htmlFor="booking-time"
+                    className="block text-xs font-bold text-gray-500 mb-1"
+                  >
+                    ម៉ោង
+                  </label>
                   <input
                     id="booking-time"
                     type="time"
                     value={state.bookingForm.time}
                     className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20"
-                    onChange={(e) => setState(s => ({ ...s, bookingForm: { ...s.bookingForm, time: e.target.value } }))}
+                    onChange={(e) =>
+                      setState((s) => ({
+                        ...s,
+                        bookingForm: { ...s.bookingForm, time: e.target.value },
+                      }))
+                    }
                   />
                 </div>
               </div>
               <div>
-                <label htmlFor="booking-notes" className="block text-xs font-bold text-gray-500 mb-1">ចំណាំ (Notes)</label>
+                <label
+                  htmlFor="booking-notes"
+                  className="block text-xs font-bold text-gray-500 mb-1"
+                >
+                  ចំណាំ (Notes)
+                </label>
                 <textarea
                   id="booking-notes"
                   value={state.bookingForm.notes}
                   className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm h-24 outline-none focus:ring-2 focus:ring-primary/20 resize-none"
                   placeholder="តើអ្នកចង់រៀនអំពីអ្វី?"
-                  onChange={(e) => setState(s => ({ ...s, bookingForm: { ...s.bookingForm, notes: e.target.value } }))}
+                  onChange={(e) =>
+                    setState((s) => ({
+                      ...s,
+                      bookingForm: { ...s.bookingForm, notes: e.target.value },
+                    }))
+                  }
                 />
               </div>
 
-              <button type="button"
+              <button
+                type="button"
                 onClick={handleBooking}
                 disabled={state.bookingSubmitting}
                 className="w-full bg-primary text-white font-bold py-3.5 rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-colors flex items-center justify-center"
               >
-                {state.bookingSubmitting ? <Loader2 className="h-5 w-5 animate-spin" /> : 'បញ្ជាក់ការកក់'}
+                {state.bookingSubmitting ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  'បញ្ជាក់ការកក់'
+                )}
               </button>
             </div>
           </div>

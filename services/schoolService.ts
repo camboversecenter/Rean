@@ -231,19 +231,17 @@ export const addAdmission = async (
   schoolId: string,
   admission: Omit<Admission, 'id' | 'scholarships'>
 ) => {
-  const { error } = await supabase
-    .from('admissions')
-    .insert([
-      {
-        school_id: schoolId,
-        title: admission.title,
-        description: admission.description,
-        majors: admission.majors,
-        start_date: admission.startDate,
-        end_date: admission.endDate,
-        status: admission.status,
-      },
-    ]);
+  const { error } = await supabase.from('admissions').insert([
+    {
+      school_id: schoolId,
+      title: admission.title,
+      description: admission.description,
+      majors: admission.majors,
+      start_date: admission.startDate,
+      end_date: admission.endDate,
+      status: admission.status,
+    },
+  ]);
   if (error) throw error;
 };
 
@@ -326,17 +324,15 @@ export const addScholarship = async (
   admissionId: string | undefined,
   scholarship: Omit<Scholarship, 'id'>
 ) => {
-  const { error } = await supabase
-    .from('scholarships')
-    .insert([
-      {
-        school_id: schoolId,
-        admission_id: admissionId || null,
-        title: scholarship.title,
-        deadline: scholarship.deadline,
-        discount: scholarship.discount,
-      },
-    ]);
+  const { error } = await supabase.from('scholarships').insert([
+    {
+      school_id: schoolId,
+      admission_id: admissionId || null,
+      title: scholarship.title,
+      deadline: scholarship.deadline,
+      discount: scholarship.discount,
+    },
+  ]);
   if (error) throw error;
 };
 
@@ -358,19 +354,17 @@ export const createStudentInquiry = async (inquiry: {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) throw new Error('Must be logged in');
-  const { error } = await supabase
-    .from('school_inquiries')
-    .insert([
-      {
-        school_id: inquiry.schoolId,
-        admission_id: inquiry.admissionId || null,
-        student_id: user.id,
-        student_name: inquiry.studentName,
-        student_phone: inquiry.studentPhone,
-        message: inquiry.message,
-        status: 'Pending',
-      },
-    ]);
+  const { error } = await supabase.from('school_inquiries').insert([
+    {
+      school_id: inquiry.schoolId,
+      admission_id: inquiry.admissionId || null,
+      student_id: user.id,
+      student_name: inquiry.studentName,
+      student_phone: inquiry.studentPhone,
+      message: inquiry.message,
+      status: 'Pending',
+    },
+  ]);
   if (error) throw error;
 };
 

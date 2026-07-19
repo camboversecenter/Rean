@@ -75,7 +75,7 @@ export const getCurrentUserProfile = async () => {
         amount: INITIAL_POINTS,
         type: 'earn',
         reason: 'Welcome Bonus (កាដូស្វាគមន៍)',
-        user_id: user.id
+        user_id: user.id,
       };
       // Log the Welcome Bonus Transaction so it shows in history
       await supabase.from('point_transactions').insert([logData]);
@@ -113,26 +113,19 @@ export const updateUserRole = async (newRole: UserRole) => {
   } = await supabase.auth.getSession();
   if (!session?.user) throw new Error('No user logged in');
 
-  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-  const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-  
-  if (!supabaseUrl || !anonKey) {
-     throw new Error('Supabase credentials missing');
-  }
+  // Use the shared Supabase client so this works with either the
+  // publishable key or the legacy anon key (the old raw-fetch version
+  // required VITE_SUPABASE_ANON_KEY specifically and broke onboarding
+  // for deployments that only set the publishable key).
+  const { data, error } = await supabase
+    .from('profiles')
+    .update({ role: newRole })
+    .eq('id', session.user.id)
+    .select()
+    .maybeSingle();
 
-  const response = await fetch(`${supabaseUrl}/rest/v1/profiles?id=eq.${session.user.id}`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${session.access_token}`,
-      'apikey': anonKey
-    },
-    body: JSON.stringify({ role: newRole })
-  });
-
-  if (!response.ok) throw new Error('Failed to update role');
-  const result = await response.json();
-  return result && result.length > 0 ? result[0] : null;
+  if (error) throw new Error(`Failed to update role: ${error.message}`);
+  return data;
 };
 
 export const hasRole = (profile: { role?: string } | null | unknown): boolean => {

@@ -30,7 +30,12 @@ const MysteryBoxManager: React.FC = () => {
     claims: [] as RewardClaim[],
     loading: true,
     rewardSubTab: 'boxes' as 'boxes' | 'claims',
-    currentBox: { title: '', description: '', price_points: 100, cover_image: '' } as Partial<MysteryBox>,
+    currentBox: {
+      title: '',
+      description: '',
+      price_points: 100,
+      cover_image: '',
+    } as Partial<MysteryBox>,
     boxItems: [] as (Partial<MysteryBoxItem> & { id: string })[],
     newItemName: '',
     newItemProb: 10,
@@ -42,15 +47,15 @@ const MysteryBoxManager: React.FC = () => {
   });
 
   const loadData = React.useCallback(async () => {
-    setState(s => ({ ...s, loading: true }));
+    setState((s) => ({ ...s, loading: true }));
     try {
       const boxesData = await getMyMysteryBoxes();
       const claimsData = await fetchCreatorClaims();
-      setState(s => ({ ...s, mysteryBoxes: boxesData, claims: claimsData }));
+      setState((s) => ({ ...s, mysteryBoxes: boxesData, claims: claimsData }));
     } catch (e) {
       console.error('Failed to load reward data', e);
     } finally {
-      setState(s => ({ ...s, loading: false }));
+      setState((s) => ({ ...s, loading: false }));
     }
   }, []);
 
@@ -59,13 +64,13 @@ const MysteryBoxManager: React.FC = () => {
   }, [loadData]);
 
   const handleCreateBox = () => {
-    setState(s => ({
+    setState((s) => ({
       ...s,
       currentBox: { title: '', description: '', price_points: 100, cover_image: '' },
       boxItems: [],
       boxImageFile: null,
       boxImageBase64: null,
-      showBoxModal: true
+      showBoxModal: true,
     }));
   };
 
@@ -75,15 +80,20 @@ const MysteryBoxManager: React.FC = () => {
       ...prev,
       boxItems: [
         ...prev.boxItems,
-        { id: Date.now().toString() + Math.random(), name: prev.newItemName, probability: prev.newItemProb, type: 'coupon' },
+        {
+          id: Date.now().toString() + Math.random(),
+          name: prev.newItemName,
+          probability: prev.newItemProb,
+          type: 'coupon',
+        },
       ],
       newItemName: '',
-      newItemProb: 10
+      newItemProb: 10,
     }));
   };
 
   const handleRemoveItem = (idx: number) => {
-    setState(s => ({ ...s, boxItems: s.boxItems.filter((_, i) => i !== idx) }));
+    setState((s) => ({ ...s, boxItems: s.boxItems.filter((_, i) => i !== idx) }));
   };
 
   const handleSaveBox = async () => {
@@ -94,7 +104,7 @@ const MysteryBoxManager: React.FC = () => {
         return;
     }
 
-    setState(s => ({ ...s, isSaving: true }));
+    setState((s) => ({ ...s, isSaving: true }));
     try {
       let coverUrl = state.currentBox.cover_image || '';
 
@@ -113,13 +123,13 @@ const MysteryBoxManager: React.FC = () => {
       }
 
       toast.success('បានបង្កើតប្រអប់រង្វាន់!');
-      setState(s => ({ ...s, showBoxModal: false }));
+      setState((s) => ({ ...s, showBoxModal: false }));
       loadData();
     } catch (e) {
       console.error(e);
       toast.error('បរាជ័យក្នុងការបង្កើត');
     } finally {
-      setState(s => ({ ...s, isSaving: false }));
+      setState((s) => ({ ...s, isSaving: false }));
     }
   };
 
@@ -138,9 +148,9 @@ const MysteryBoxManager: React.FC = () => {
     if (!window.confirm('Mark as fulfilled? (Sent item to student)')) return;
     try {
       await markClaimFulfilled(id);
-      setState(s => ({
+      setState((s) => ({
         ...s,
-        claims: s.claims.map((c) => (c.id === id ? { ...c, status: 'Fulfilled' } : c))
+        claims: s.claims.map((c) => (c.id === id ? { ...c, status: 'Fulfilled' } : c)),
       }));
       toast.success('Marked as fulfilled!');
     } catch (e) {
@@ -153,18 +163,18 @@ const MysteryBoxManager: React.FC = () => {
       toast.error('សូមបញ្ចូលចំណងជើងជាមុនសិន');
       return;
     }
-    setState(s => ({ ...s, isGenerating: true }));
+    setState((s) => ({ ...s, isGenerating: true }));
     try {
       const prompt = `A mysterious and exciting reward box icon or illustration for "${state.currentBox.title}". 3D render style, colorful, floating item.`;
       const base64 = await generateImage(prompt);
       if (base64) {
-        setState(s => ({ ...s, boxImageBase64: base64, boxImageFile: null }));
+        setState((s) => ({ ...s, boxImageBase64: base64, boxImageFile: null }));
         toast.success('រូបភាពរង្វាន់ត្រូវបានបង្កើត!');
       }
     } catch (e) {
       toast.error('ការបង្កើតរូបភាពបរាជ័យ');
     } finally {
-      setState(s => ({ ...s, isGenerating: false }));
+      setState((s) => ({ ...s, isGenerating: false }));
     }
   };
 
@@ -180,14 +190,16 @@ const MysteryBoxManager: React.FC = () => {
     <div className="animate-fade-in">
       <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
         <div className="flex bg-gray-100 p-1 rounded-xl">
-          <button type="button"
-            onClick={() => setState(s => ({ ...s, rewardSubTab: 'boxes' }))}
+          <button
+            type="button"
+            onClick={() => setState((s) => ({ ...s, rewardSubTab: 'boxes' }))}
             className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${state.rewardSubTab === 'boxes' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
           >
             ប្រអប់រង្វាន់ (Boxes)
           </button>
-          <button type="button"
-            onClick={() => setState(s => ({ ...s, rewardSubTab: 'claims' }))}
+          <button
+            type="button"
+            onClick={() => setState((s) => ({ ...s, rewardSubTab: 'claims' }))}
             className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${state.rewardSubTab === 'claims' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
           >
             អ្នកឈ្នះ (Claims)
@@ -195,7 +207,8 @@ const MysteryBoxManager: React.FC = () => {
         </div>
 
         {state.rewardSubTab === 'boxes' && (
-          <button type="button"
+          <button
+            type="button"
             onClick={handleCreateBox}
             className="bg-gray-900 text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center shadow-lg shadow-gray-200 hover:scale-105 transition-transform"
           >
@@ -211,7 +224,11 @@ const MysteryBoxManager: React.FC = () => {
               <Gift className="h-16 w-16 mx-auto mb-4 text-gray-200" />
               <h3 className="font-bold text-gray-900 text-lg">មិនទាន់មានរង្វាន់</h3>
               <p className="text-gray-500 mb-6">បង្កើតប្រអប់សំណាងដំបូងរបស់អ្នក។</p>
-              <button type="button" onClick={handleCreateBox} className="text-primary font-bold hover:underline">
+              <button
+                type="button"
+                onClick={handleCreateBox}
+                className="text-primary font-bold hover:underline"
+              >
                 បង្កើតឥឡូវនេះ
               </button>
             </div>
@@ -223,12 +240,17 @@ const MysteryBoxManager: React.FC = () => {
             >
               <div className="relative h-40 bg-purple-50 flex items-center justify-center overflow-hidden">
                 {box.cover_image ? (
-                  <img src={box.cover_image} className="w-full h-full object-cover" alt="Box Cover" />
+                  <img
+                    src={box.cover_image}
+                    className="w-full h-full object-cover"
+                    alt="Box Cover"
+                  />
                 ) : (
                   <span className="text-4xl">🎁</span>
                 )}
                 <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button type="button"
+                  <button
+                    type="button"
                     onClick={() => handleDeleteBox(box.id)}
                     className="bg-white p-2 rounded-full text-red-500 shadow-sm hover:bg-red-50"
                   >
@@ -303,7 +325,8 @@ const MysteryBoxManager: React.FC = () => {
                     <td className="px-6 py-4 text-xs text-gray-400">{claim.created_at}</td>
                     <td className="px-6 py-4 text-right">
                       {claim.status === 'Pending' ? (
-                        <button type="button"
+                        <button
+                          type="button"
                           onClick={() => handleFulfillClaim(claim.id)}
                           className="bg-primary text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm hover:bg-primary/90 transition-colors"
                         >
@@ -331,7 +354,10 @@ const MysteryBoxManager: React.FC = () => {
               <h3 className="font-bold text-lg text-gray-900 flex items-center">
                 <Gift className="h-5 w-5 mr-2 text-purple-500" /> បង្កើតប្រអប់រង្វាន់
               </h3>
-              <button type="button" onClick={() => setState(s => ({ ...s, showBoxModal: false }))}>
+              <button
+                type="button"
+                onClick={() => setState((s) => ({ ...s, showBoxModal: false }))}
+              >
                 <X className="h-5 w-5 text-gray-400" />
               </button>
             </div>
@@ -339,25 +365,42 @@ const MysteryBoxManager: React.FC = () => {
             <div className="p-6 overflow-y-auto space-y-5">
               {/* 1. Details */}
               <div className="space-y-3">
-                <label htmlFor="boxTitle" className="text-xs font-bold text-gray-500 uppercase">ព័ត៌មានប្រអប់</label>
+                <label htmlFor="boxTitle" className="text-xs font-bold text-gray-500 uppercase">
+                  ព័ត៌មានប្រអប់
+                </label>
                 <input
                   id="boxTitle"
                   className="w-full p-3 border border-gray-200 rounded-xl text-sm"
                   placeholder="ឈ្មោះប្រអប់ (Box Title)"
                   value={state.currentBox.title}
-                  onChange={(e) => setState(s => ({ ...s, currentBox: { ...s.currentBox, title: e.target.value } }))}
+                  onChange={(e) =>
+                    setState((s) => ({
+                      ...s,
+                      currentBox: { ...s.currentBox, title: e.target.value },
+                    }))
+                  }
                 />
-                <label htmlFor="boxDescription" className="sr-only">ការពិពណ៌នា</label>
+                <label htmlFor="boxDescription" className="sr-only">
+                  ការពិពណ៌នា
+                </label>
                 <textarea
                   id="boxDescription"
                   className="w-full p-3 border border-gray-200 rounded-xl text-sm h-20"
                   placeholder="ការពិពណ៌នា..."
                   value={state.currentBox.description}
-                  onChange={(e) => setState(s => ({ ...s, currentBox: { ...s.currentBox, description: e.target.value } }))}
+                  onChange={(e) =>
+                    setState((s) => ({
+                      ...s,
+                      currentBox: { ...s.currentBox, description: e.target.value },
+                    }))
+                  }
                 />
                 <div className="flex items-center gap-3">
                   <div className="flex-1">
-                    <label htmlFor="boxPoints" className="text-xs font-bold text-gray-500 uppercase mb-1 block">
+                    <label
+                      htmlFor="boxPoints"
+                      className="text-xs font-bold text-gray-500 uppercase mb-1 block"
+                    >
                       តម្លៃ (Points)
                     </label>
                     <input
@@ -367,7 +410,10 @@ const MysteryBoxManager: React.FC = () => {
                       placeholder="100"
                       value={state.currentBox.price_points}
                       onChange={(e) =>
-                        setState(s => ({ ...s, currentBox: { ...s.currentBox, price_points: parseInt(e.target.value) } }))
+                        setState((s) => ({
+                          ...s,
+                          currentBox: { ...s.currentBox, price_points: parseInt(e.target.value) },
+                        }))
                       }
                     />
                   </div>
@@ -377,8 +423,11 @@ const MysteryBoxManager: React.FC = () => {
               {/* 2. Image */}
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <label htmlFor="boxImage" className="text-xs font-bold text-gray-500 uppercase">រូបភាព</label>
-                  <button type="button"
+                  <label htmlFor="boxImage" className="text-xs font-bold text-gray-500 uppercase">
+                    រូបភាព
+                  </label>
+                  <button
+                    type="button"
                     onClick={handleGenerateRewardImage}
                     disabled={state.isGenerating}
                     className="text-[10px] bg-indigo-50 text-indigo-600 font-bold px-2 py-1 rounded flex items-center hover:bg-indigo-100"
@@ -413,7 +462,11 @@ const MysteryBoxManager: React.FC = () => {
                     type="file"
                     className="absolute inset-0 opacity-0 cursor-pointer"
                     onChange={(e) => {
-                      setState(s => ({ ...s, boxImageFile: e.target.files?.[0] || null, boxImageBase64: null }));
+                      setState((s) => ({
+                        ...s,
+                        boxImageFile: e.target.files?.[0] || null,
+                        boxImageBase64: null,
+                      }));
                     }}
                     accept="image/*"
                   />
@@ -431,19 +484,24 @@ const MysteryBoxManager: React.FC = () => {
                     className="flex-1 p-2 border border-gray-200 rounded-lg text-sm"
                     placeholder="ឈ្មោះរង្វាន់ (ឧ. អាវយឺត, Coupon 50%)"
                     value={state.newItemName}
-                    onChange={(e) => setState(s => ({ ...s, newItemName: e.target.value }))}
+                    onChange={(e) => setState((s) => ({ ...s, newItemName: e.target.value }))}
                   />
-                  <label htmlFor="boxItemProb" className="sr-only">Probability Weight</label>
+                  <label htmlFor="boxItemProb" className="sr-only">
+                    Probability Weight
+                  </label>
                   <input
                     id="boxItemProb"
                     type="number"
                     className="w-20 p-2 border border-gray-200 rounded-lg text-sm"
                     placeholder="Weight"
                     value={state.newItemProb}
-                    onChange={(e) => setState(s => ({ ...s, newItemProb: parseInt(e.target.value) }))}
+                    onChange={(e) =>
+                      setState((s) => ({ ...s, newItemProb: parseInt(e.target.value) }))
+                    }
                     title="Probability Weight"
                   />
-                  <button type="button"
+                  <button
+                    type="button"
                     onClick={handleAddItem}
                     className="bg-gray-900 text-white px-3 rounded-lg hover:bg-black"
                   >
@@ -467,7 +525,8 @@ const MysteryBoxManager: React.FC = () => {
                         <span className="text-xs text-gray-400 bg-gray-100 px-1.5 rounded">
                           W: {item.probability}
                         </span>
-                        <button type="button"
+                        <button
+                          type="button"
                           onClick={() => handleRemoveItem(idx)}
                           className="text-red-400 hover:text-red-600"
                         >
@@ -481,13 +540,15 @@ const MysteryBoxManager: React.FC = () => {
             </div>
 
             <div className="p-4 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">
-              <button type="button"
-                onClick={() => setState(s => ({ ...s, showBoxModal: false }))}
+              <button
+                type="button"
+                onClick={() => setState((s) => ({ ...s, showBoxModal: false }))}
                 className="px-4 py-2 text-gray-600 font-bold text-sm hover:bg-gray-200 rounded-lg"
               >
                 បោះបង់
               </button>
-              <button type="button"
+              <button
+                type="button"
                 onClick={handleSaveBox}
                 disabled={state.isSaving}
                 className="px-6 py-2 bg-primary text-white rounded-lg font-bold text-sm shadow-lg flex items-center"

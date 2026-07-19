@@ -55,42 +55,49 @@ const ExplorePage: React.FC = () => {
     analyzing,
   } = state;
 
+  const loadData = React.useCallback(
+    async (pageToLoad: number, isReset: boolean = false) => {
+      if (!isReset) setState((prev) => ({ ...prev, loadingMore: true }));
+      else setState((prev) => ({ ...prev, loading: true }));
 
-  const loadData = React.useCallback(async (pageToLoad: number, isReset: boolean = false) => {
-    if (!isReset) setState(prev => ({ ...prev, loadingMore: true }));
-    else setState(prev => ({ ...prev, loading: true }));
+      try {
+        if (viewType === 'mission') {
+          const data = await fetchAllMissions(pageToLoad, LIMIT, selectedCategory);
+          if (data.length < LIMIT) setState((prev) => ({ ...prev, hasMore: false }));
 
-    try {
-      if (viewType === 'mission') {
-        const data = await fetchAllMissions(pageToLoad, LIMIT, selectedCategory);
-        if (data.length < LIMIT) setState(prev => ({ ...prev, hasMore: false }));
+          if (isReset) setState((prev) => ({ ...prev, missions: data }));
+          else setState((prev) => ({ ...prev, missions: [...prev.missions, ...data] }));
+        } else {
+          // Fetch Courses
+          const data = await fetchAllShortCourses(
+            pageToLoad,
+            LIMIT,
+            selectedCategory,
+            formatFilter
+          );
+          if (data.length < LIMIT) setState((prev) => ({ ...prev, hasMore: false }));
 
-        if (isReset) setState(prev => ({ ...prev, missions: data }));
-        else setState(prev => ({ ...prev, missions: [...prev.missions, ...data] }));
-      } else {
-        // Fetch Courses
-        const data = await fetchAllShortCourses(pageToLoad, LIMIT, selectedCategory, formatFilter);
-        if (data.length < LIMIT) setState(prev => ({ ...prev, hasMore: false }));
-
-        if (isReset) setState(prev => ({ ...prev, courses: data }));
-        else setState(prev => ({ ...prev, courses: [...prev.courses, ...data] }));
+          if (isReset) setState((prev) => ({ ...prev, courses: data }));
+          else setState((prev) => ({ ...prev, courses: [...prev.courses, ...data] }));
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setState((prev) => ({ ...prev, loading: false, loadingMore: false }));
       }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setState(prev => ({ ...prev, loading: false, loadingMore: false }));
-    }
-  }, [viewType, selectedCategory, formatFilter]);
+    },
+    [viewType, selectedCategory, formatFilter]
+  );
 
   // --- EFFECT: Reset on Filter Change ---
   useEffect(() => {
-    setState(prev => ({ ...prev, page: 1, courses: [], missions: [], hasMore: true }));
+    setState((prev) => ({ ...prev, page: 1, courses: [], missions: [], hasMore: true }));
     loadData(1, true);
   }, [loadData]);
 
   const handleLoadMore = () => {
     const nextPage = page + 1;
-    setState(prev => ({ ...prev, page: nextPage }));
+    setState((prev) => ({ ...prev, page: nextPage }));
     loadData(nextPage);
   };
 
@@ -112,7 +119,12 @@ const ExplorePage: React.FC = () => {
   const handleAnalyzeComparison = async () => {
     if (compareList.length < 2) return;
 
-    setState(prev => ({ ...prev, analyzing: true, showCompareModal: true, comparisonResult: '' }));
+    setState((prev) => ({
+      ...prev,
+      analyzing: true,
+      showCompareModal: true,
+      comparisonResult: '',
+    }));
 
     try {
       const c1 = compareList[0];
@@ -145,12 +157,15 @@ const ExplorePage: React.FC = () => {
           `;
 
       const result = await chatWithAI(prompt);
-      setState(prev => ({ ...prev, comparisonResult: result }));
+      setState((prev) => ({ ...prev, comparisonResult: result }));
     } catch (error) {
       console.error(error);
-      setState(prev => ({ ...prev, comparisonResult: 'បរាជ័យក្នុងការវិភាគ។ សូមព្យាយាមម្តងទៀត។' }));
+      setState((prev) => ({
+        ...prev,
+        comparisonResult: 'បរាជ័យក្នុងការវិភាគ។ សូមព្យាយាមម្តងទៀត។',
+      }));
     } finally {
-      setState(prev => ({ ...prev, analyzing: false }));
+      setState((prev) => ({ ...prev, analyzing: false }));
     }
   };
 
@@ -164,8 +179,9 @@ const ExplorePage: React.FC = () => {
 
         {/* Type Toggle */}
         <div className="flex p-1 bg-gray-200 rounded-xl mb-6 shadow-inner">
-          <button type="button"
-            onClick={() => setState(prev => ({ ...prev, viewType: 'mission' }))}
+          <button
+            type="button"
+            onClick={() => setState((prev) => ({ ...prev, viewType: 'mission' }))}
             className={`flex-1 py-3 text-xs font-bold rounded-lg transition-all ${viewType === 'mission' ? 'bg-white shadow-sm text-primary' : 'text-gray-500'}`}
           >
             <div className="flex items-center justify-center">
@@ -173,8 +189,9 @@ const ExplorePage: React.FC = () => {
               Missions (បេសកកម្ម)
             </div>
           </button>
-          <button type="button"
-            onClick={() => setState(prev => ({ ...prev, viewType: 'short-course' }))}
+          <button
+            type="button"
+            onClick={() => setState((prev) => ({ ...prev, viewType: 'short-course' }))}
             className={`flex-1 py-3 text-xs font-bold rounded-lg transition-all ${viewType === 'short-course' ? 'bg-white shadow-sm text-primary' : 'text-gray-500'}`}
           >
             <div className="flex items-center justify-center">
@@ -186,8 +203,9 @@ const ExplorePage: React.FC = () => {
 
         {/* Category Filter (Common) */}
         <div className="flex overflow-x-auto space-x-2 mb-4 pb-2 scrollbar-hide">
-          <button type="button"
-            onClick={() => setState(prev => ({ ...prev, selectedCategory: 'All' }))}
+          <button
+            type="button"
+            onClick={() => setState((prev) => ({ ...prev, selectedCategory: 'All' }))}
             className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold transition-all ${
               selectedCategory === 'All'
                 ? 'bg-gray-800 text-white'
@@ -197,9 +215,10 @@ const ExplorePage: React.FC = () => {
             ទាំងអស់
           </button>
           {CATEGORIES_LIST.map((cat) => (
-            <button type="button"
+            <button
+              type="button"
               key={cat}
-              onClick={() => setState(prev => ({ ...prev, selectedCategory: cat }))}
+              onClick={() => setState((prev) => ({ ...prev, selectedCategory: cat }))}
               className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold transition-all ${
                 selectedCategory === cat
                   ? 'bg-gray-800 text-white'
@@ -220,11 +239,15 @@ const ExplorePage: React.FC = () => {
             <div className="flex flex-wrap gap-4">
               {/* Format Filter */}
               <div className="flex items-center space-x-2">
-                <label htmlFor="format-filter" className="text-xs font-bold text-gray-700">ទម្រង់៖</label>
+                <label htmlFor="format-filter" className="text-xs font-bold text-gray-700">
+                  ទម្រង់៖
+                </label>
                 <select
                   id="format-filter"
                   value={formatFilter}
-                  onChange={(e) => setState(prev => ({ ...prev, formatFilter: e.target.value as any }))}
+                  onChange={(e) =>
+                    setState((prev) => ({ ...prev, formatFilter: e.target.value as any }))
+                  }
                   className="bg-gray-50 border border-gray-200 text-gray-700 text-xs rounded-lg focus:ring-primary focus:border-primary block p-2 outline-none"
                 >
                   <option value="All">ទាំងអស់</option>
@@ -281,7 +304,8 @@ const ExplorePage: React.FC = () => {
             {/* Load More */}
             {hasMore && (
               <div className="pt-8 pb-4 flex justify-center">
-                <button type="button"
+                <button
+                  type="button"
                   onClick={handleLoadMore}
                   disabled={loadingMore}
                   className="bg-white border border-gray-200 text-gray-600 font-bold py-2 px-6 rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-50 flex items-center text-sm"
@@ -323,7 +347,8 @@ const ExplorePage: React.FC = () => {
             </div>
 
             {compareList.length === 2 ? (
-              <button type="button"
+              <button
+                type="button"
                 onClick={handleAnalyzeComparison}
                 className="bg-primary text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors flex items-center animate-pulse"
               >
@@ -333,8 +358,9 @@ const ExplorePage: React.FC = () => {
               <span className="text-xs text-gray-400">ជ្រើសរើស 1 ទៀត</span>
             )}
 
-            <button type="button"
-              onClick={() => setState(prev => ({ ...prev, compareList: [] }))}
+            <button
+              type="button"
+              onClick={() => setState((prev) => ({ ...prev, compareList: [] }))}
               className="absolute -top-2 -right-2 bg-gray-700 rounded-full p-1 text-gray-300"
             >
               <X className="h-3 w-3" />
@@ -352,7 +378,10 @@ const ExplorePage: React.FC = () => {
                 <Zap className="h-5 w-5 text-secondary fill-secondary" />
                 <h3 className="font-bold text-gray-900">ការប្រៀបធៀបដោយ AI</h3>
               </div>
-              <button type="button" onClick={() => setState(prev => ({ ...prev, showCompareModal: false }))}>
+              <button
+                type="button"
+                onClick={() => setState((prev) => ({ ...prev, showCompareModal: false }))}
+              >
                 <X className="h-5 w-5 text-gray-400" />
               </button>
             </div>
@@ -389,8 +418,9 @@ const ExplorePage: React.FC = () => {
             </div>
 
             <div className="p-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
-              <button type="button"
-                onClick={() => setState(prev => ({ ...prev, showCompareModal: false }))}
+              <button
+                type="button"
+                onClick={() => setState((prev) => ({ ...prev, showCompareModal: false }))}
                 className="w-full bg-gray-900 text-white font-bold py-3 rounded-xl"
               >
                 បិទ (Close)

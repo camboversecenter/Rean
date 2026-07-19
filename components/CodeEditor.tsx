@@ -34,7 +34,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   const [state, setState] = useState({
     code: initialCode,
     prevInitialCode: initialCode,
-    output: [] as {id: number, text: string}[],
+    output: [] as { id: number; text: string }[],
     isRunning: false,
     isPyodideLoading: false,
   });
@@ -42,19 +42,19 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   const nextId = useRef(0);
 
   const addLog = (msg: string) => {
-    setState(s => ({ ...s, output: [...s.output, { id: nextId.current++, text: msg }] }));
+    setState((s) => ({ ...s, output: [...s.output, { id: nextId.current++, text: msg }] }));
   };
   const setLogs = (msgs: string[]) => {
-    setState(s => ({ ...s, output: msgs.map(text => ({ id: nextId.current++, text })) }));
+    setState((s) => ({ ...s, output: msgs.map((text) => ({ id: nextId.current++, text })) }));
   };
-  const clearLogs = () => setState(s => ({ ...s, output: [] }));
+  const clearLogs = () => setState((s) => ({ ...s, output: [] }));
 
   // Pyodide State
   const pyodideRef = useRef<any>(null);
 
   // Sync local state when initialCode changes
   if (initialCode !== state.prevInitialCode) {
-    setState(s => ({ ...s, prevInitialCode: initialCode, code: initialCode }));
+    setState((s) => ({ ...s, prevInitialCode: initialCode, code: initialCode }));
   }
 
   // Determine extension based on language
@@ -71,7 +71,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
 
   const handleChange = useCallback(
     (val: string) => {
-      setState(s => ({ ...s, code: val }));
+      setState((s) => ({ ...s, code: val }));
       if (onChange) onChange(val);
     },
     [onChange]
@@ -81,7 +81,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   const initPyodide = async () => {
     if (pyodideRef.current) return pyodideRef.current;
 
-    setState(s => ({ ...s, isPyodideLoading: true }));
+    setState((s) => ({ ...s, isPyodideLoading: true }));
     addLog('> Initializing Python Engine...');
 
     try {
@@ -115,7 +115,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
       addLog(`> Failed to load Python: ${e.message}`);
       return null;
     } finally {
-      setState(s => ({ ...s, isPyodideLoading: false }));
+      setState((s) => ({ ...s, isPyodideLoading: false }));
     }
   };
 
@@ -146,7 +146,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
 
   const runCode = async () => {
     clearLogs(); // Clear previous run
-    setState(s => ({ ...s, isRunning: true }));
+    setState((s) => ({ ...s, isRunning: true }));
 
     try {
       if (language === 'javascript') {
@@ -183,7 +183,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     } catch (e: any) {
       addLog(`System Error: ${e.message}`);
     } finally {
-      setState(s => ({ ...s, isRunning: false }));
+      setState((s) => ({ ...s, isRunning: false }));
     }
   };
 
@@ -205,7 +205,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
           <span className="ml-3 text-xs text-gray-400 font-mono">{language}</span>
         </div>
         <div className="flex items-center gap-2">
-          <button type="button"
+          <button
+            type="button"
             onClick={copyCode}
             className="p-1.5 text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-white/10"
             title="Copy Code"
@@ -213,7 +214,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
             <Copy className="h-4 w-4" />
           </button>
           {language !== 'html' && (
-            <button type="button"
+            <button
+              type="button"
               onClick={runCode}
               disabled={state.isRunning || state.isPyodideLoading}
               className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
@@ -253,7 +255,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
             <span className="text-[10px] uppercase font-bold text-gray-500 flex items-center gap-1">
               <Terminal className="h-3 w-3" /> Console
             </span>
-            <button type="button"
+            <button
+              type="button"
               onClick={clearLogs}
               className="text-[10px] text-gray-500 hover:text-red-400 flex items-center gap-1"
             >

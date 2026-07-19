@@ -216,20 +216,23 @@ const MissionForm: React.FC<MissionFormProps> = ({
   return (
     <div className="max-w-4xl mx-auto animate-fade-in">
       <div className="flex justify-between items-center mb-6">
-        <button type="button"
+        <button
+          type="button"
           onClick={onCancel}
           className="text-gray-500 font-bold flex items-center hover:text-gray-900 text-sm"
         >
           <ChevronLeft className="h-4 w-4 mr-1" /> ត្រឡប់ក្រោយ
         </button>
         <div className="flex gap-2">
-          <button type="button"
-            onClick={() => setState(prev => ({ ...prev, showAiModal: true }))}
+          <button
+            type="button"
+            onClick={() => setState((prev) => ({ ...prev, showAiModal: true }))}
             className="bg-purple-100 text-purple-700 px-4 py-2 rounded-lg font-bold flex items-center hover:bg-purple-200 transition-colors text-sm"
           >
             <Brain className="h-4 w-4 mr-2" /> AI បង្កើត
           </button>
-          <button type="button"
+          <button
+            type="button"
             onClick={() => onSave(currentMission, thumbnailFile, thumbnailBase64, qrFile)}
             disabled={isSaving || (currentMission.description?.length || 0) > DESC_LIMIT}
             className="bg-primary text-white px-6 py-2 rounded-lg font-bold shadow-lg flex items-center hover:scale-105 transition-transform text-sm disabled:opacity-50"
@@ -269,7 +272,10 @@ const MissionForm: React.FC<MissionFormProps> = ({
                 </div>
               )}
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
-                <label htmlFor="thumbnail-upload" className="bg-white text-gray-800 px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer hover:bg-gray-100">
+                <label
+                  htmlFor="thumbnail-upload"
+                  className="bg-white text-gray-800 px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer hover:bg-gray-100"
+                >
                   Upload
                   <input
                     id="thumbnail-upload"
@@ -277,11 +283,16 @@ const MissionForm: React.FC<MissionFormProps> = ({
                     className="hidden"
                     accept="image/*"
                     onChange={(e) => {
-                      setState(prev => ({ ...prev, thumbnailFile: e.target.files?.[0] || null, thumbnailBase64: null }));
+                      setState((prev) => ({
+                        ...prev,
+                        thumbnailFile: e.target.files?.[0] || null,
+                        thumbnailBase64: null,
+                      }));
                     }}
                   />
                 </label>
-                <button type="button"
+                <button
+                  type="button"
                   onClick={handleGenerateThumbnail}
                   className="bg-purple-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-purple-700 flex items-center"
                 >
@@ -305,15 +316,16 @@ const MissionForm: React.FC<MissionFormProps> = ({
                       <p className="text-xs text-green-700 font-bold uppercase mb-1">បានចាត់តាំង</p>
                       <p className="font-bold text-gray-900 text-sm">{currentMission.mentor}</p>
                     </div>
-                    <button type="button"
+                    <button
+                      type="button"
                       onClick={() =>
-                        setState(prev => ({
+                        setState((prev) => ({
                           ...prev,
                           currentMission: {
                             ...prev.currentMission,
                             mentorId: undefined,
                             mentor: 'សុភាទន្សាយ',
-                          }
+                          },
                         }))
                       }
                       className="text-red-400 hover:text-red-600 p-1"
@@ -323,15 +335,20 @@ const MissionForm: React.FC<MissionFormProps> = ({
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    <label htmlFor="teacherEmail" className="sr-only">អ៊ីមែលគ្រូ</label>
+                    <label htmlFor="teacherEmail" className="sr-only">
+                      អ៊ីមែលគ្រូ
+                    </label>
                     <input
                       id="teacherEmail"
                       className="w-full p-2 border border-gray-200 rounded-lg text-sm"
                       placeholder="អ៊ីមែលគ្រូ"
                       value={teacherEmail}
-                      onChange={(e) => setState(prev => ({ ...prev, teacherEmail: e.target.value }))}
+                      onChange={(e) =>
+                        setState((prev) => ({ ...prev, teacherEmail: e.target.value }))
+                      }
                     />
-                    <button type="button"
+                    <button
+                      type="button"
                       onClick={handleAssignTeacher}
                       disabled={assigningTeacher || !teacherEmail.trim()}
                       className="w-full bg-gray-900 text-white py-2 rounded-lg text-xs font-bold hover:bg-black transition-colors disabled:opacity-50"
@@ -371,12 +388,12 @@ const MissionForm: React.FC<MissionFormProps> = ({
                 className="w-full p-2 border border-gray-200 rounded-lg text-sm"
                 value={currentMission.category}
                 onChange={(e) =>
-                  setState(prev => ({
+                  setState((prev) => ({
                     ...prev,
                     currentMission: {
                       ...prev.currentMission,
                       category: e.target.value as MissionCategory,
-                    }
+                    },
                   }))
                 }
               >
@@ -398,13 +415,22 @@ const MissionForm: React.FC<MissionFormProps> = ({
                   className="w-full p-2 border border-gray-200 rounded-lg text-sm"
                   value={currentMission.squadSize}
                   onChange={(e) =>
-                    setState(prev => ({ ...prev, currentMission: { ...prev.currentMission, squadSize: parseInt(e.target.value) } }))
+                    setState((prev) => ({
+                      ...prev,
+                      currentMission: {
+                        ...prev.currentMission,
+                        squadSize: parseInt(e.target.value),
+                      },
+                    }))
                   }
                   min={1}
                 />
               </div>
               <div>
-                <label htmlFor="squadCreation" className="block text-xs font-bold text-gray-500 mb-1">
+                <label
+                  htmlFor="squadCreation"
+                  className="block text-xs font-bold text-gray-500 mb-1"
+                >
                   របៀបបង្កើតក្រុម
                 </label>
                 <select
@@ -412,7 +438,13 @@ const MissionForm: React.FC<MissionFormProps> = ({
                   className="w-full p-2 border border-gray-200 rounded-lg text-sm"
                   value={currentMission.squadCreation}
                   onChange={(e) =>
-                    setState(prev => ({ ...prev, currentMission: { ...prev.currentMission, squadCreation: e.target.value as any } }))
+                    setState((prev) => ({
+                      ...prev,
+                      currentMission: {
+                        ...prev.currentMission,
+                        squadCreation: e.target.value as any,
+                      },
+                    }))
                   }
                 >
                   <option value="auto">Auto (ស្វ័យប្រវត្តិ)</option>
@@ -421,7 +453,10 @@ const MissionForm: React.FC<MissionFormProps> = ({
               </div>
             </div>
             <div>
-              <label htmlFor="enrollmentType" className="block text-xs font-bold text-gray-500 mb-1">
+              <label
+                htmlFor="enrollmentType"
+                className="block text-xs font-bold text-gray-500 mb-1"
+              >
                 ប្រភេទការចុះឈ្មោះ
               </label>
               <select
@@ -429,7 +464,13 @@ const MissionForm: React.FC<MissionFormProps> = ({
                 className="w-full p-2 border border-gray-200 rounded-lg text-sm"
                 value={currentMission.enrollmentType}
                 onChange={(e) =>
-                  setState(prev => ({ ...prev, currentMission: { ...prev.currentMission, enrollmentType: e.target.value as any } }))
+                  setState((prev) => ({
+                    ...prev,
+                    currentMission: {
+                      ...prev.currentMission,
+                      enrollmentType: e.target.value as any,
+                    },
+                  }))
                 }
               >
                 <option value="open">Open (សាធារណៈ)</option>
@@ -438,19 +479,22 @@ const MissionForm: React.FC<MissionFormProps> = ({
             </div>
             {/* Enable Plagiarism Check Toggle */}
             <div className="pt-2 border-t border-gray-100">
-              <label htmlFor="plagiarismCheck" className="flex items-center space-x-2 cursor-pointer">
+              <label
+                htmlFor="plagiarismCheck"
+                className="flex items-center space-x-2 cursor-pointer"
+              >
                 <input
                   id="plagiarismCheck"
                   type="checkbox"
                   className="form-checkbox text-primary rounded h-4 w-4"
                   checked={currentMission.enablePlagiarismCheck || false}
                   onChange={(e) =>
-                    setState(prev => ({
+                    setState((prev) => ({
                       ...prev,
                       currentMission: {
                         ...prev.currentMission,
                         enablePlagiarismCheck: e.target.checked,
-                      }
+                      },
                     }))
                   }
                 />
@@ -482,9 +526,13 @@ const MissionForm: React.FC<MissionFormProps> = ({
                       className="w-full h-full object-cover rounded-lg border border-gray-200"
                       alt="QR"
                     />
-                    <button type="button"
+                    <button
+                      type="button"
                       onClick={() =>
-                        setState(prev => ({ ...prev, currentMission: { ...prev.currentMission, paymentQrUrl: undefined } }))
+                        setState((prev) => ({
+                          ...prev,
+                          currentMission: { ...prev.currentMission, paymentQrUrl: undefined },
+                        }))
                       }
                       className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
                     >
@@ -496,25 +544,41 @@ const MissionForm: React.FC<MissionFormProps> = ({
                     id="khqrUpload"
                     type="file"
                     accept="image/*"
-                    onChange={(e) => setState(prev => ({ ...prev, qrFile: e.target.files?.[0] || null }))}
+                    onChange={(e) =>
+                      setState((prev) => ({ ...prev, qrFile: e.target.files?.[0] || null }))
+                    }
                     className="block w-full text-xs text-gray-500 file:mr-2 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
                   />
                 )}
               </div>
               <div>
-                <label htmlFor="paymentInstruction" className="block text-xs font-bold text-gray-500 mb-1">ណែនាំបង់ប្រាក់</label>
+                <label
+                  htmlFor="paymentInstruction"
+                  className="block text-xs font-bold text-gray-500 mb-1"
+                >
+                  ណែនាំបង់ប្រាក់
+                </label>
                 <input
                   id="paymentInstruction"
                   className="w-full p-2 border border-gray-200 rounded-lg text-sm"
                   value={currentMission.paymentInstruction || ''}
                   onChange={(e) =>
-                    setState(prev => ({ ...prev, currentMission: { ...prev.currentMission, paymentInstruction: e.target.value } }))
+                    setState((prev) => ({
+                      ...prev,
+                      currentMission: {
+                        ...prev.currentMission,
+                        paymentInstruction: e.target.value,
+                      },
+                    }))
                   }
                   placeholder="Ex: ABA 001 234 567"
                 />
               </div>
               <div>
-                <label htmlFor="telegramLink" className="block text-xs font-bold text-gray-500 mb-1">
+                <label
+                  htmlFor="telegramLink"
+                  className="block text-xs font-bold text-gray-500 mb-1"
+                >
                   Telegram Group Link
                 </label>
                 <input
@@ -522,7 +586,10 @@ const MissionForm: React.FC<MissionFormProps> = ({
                   className="w-full p-2 border border-gray-200 rounded-lg text-sm text-blue-600"
                   value={currentMission.telegramGroupLink || ''}
                   onChange={(e) =>
-                    setState(prev => ({ ...prev, currentMission: { ...prev.currentMission, telegramGroupLink: e.target.value } }))
+                    setState((prev) => ({
+                      ...prev,
+                      currentMission: { ...prev.currentMission, telegramGroupLink: e.target.value },
+                    }))
                   }
                   placeholder="https://t.me/+AbCdEfGh"
                 />
@@ -539,24 +606,39 @@ const MissionForm: React.FC<MissionFormProps> = ({
               ព័ត៌មានលម្អិត
             </h3>
             <div>
-              <label htmlFor="missionTitle" className="block text-xs font-bold text-gray-500 mb-1">ចំណងជើងបេសកកម្ម</label>
+              <label htmlFor="missionTitle" className="block text-xs font-bold text-gray-500 mb-1">
+                ចំណងជើងបេសកកម្ម
+              </label>
               <input
                 id="missionTitle"
                 className="w-full p-3 border border-gray-200 rounded-xl text-base font-bold focus:ring-2 focus:ring-primary/20 outline-none"
                 value={currentMission.title}
-                onChange={(e) => setState(prev => ({ ...prev, currentMission: { ...prev.currentMission, title: e.target.value } }))}
+                onChange={(e) =>
+                  setState((prev) => ({
+                    ...prev,
+                    currentMission: { ...prev.currentMission, title: e.target.value },
+                  }))
+                }
                 placeholder="Enter mission title..."
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label htmlFor="missionLevel" className="block text-xs font-bold text-gray-500 mb-1">កម្រិតជំនាញ</label>
+                <label
+                  htmlFor="missionLevel"
+                  className="block text-xs font-bold text-gray-500 mb-1"
+                >
+                  កម្រិតជំនាញ
+                </label>
                 <select
                   id="missionLevel"
                   className="w-full p-3 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20"
                   value={currentMission.level}
                   onChange={(e) =>
-                    setState(prev => ({ ...prev, currentMission: { ...prev.currentMission, level: e.target.value as any } }))
+                    setState((prev) => ({
+                      ...prev,
+                      currentMission: { ...prev.currentMission, level: e.target.value as any },
+                    }))
                   }
                 >
                   <option value="Beginner">Beginner (ដំបូង)</option>
@@ -565,21 +647,32 @@ const MissionForm: React.FC<MissionFormProps> = ({
                 </select>
               </div>
               <div>
-                <label htmlFor="missionPrice" className="block text-xs font-bold text-gray-500 mb-1">តម្លៃ (រៀល)</label>
+                <label
+                  htmlFor="missionPrice"
+                  className="block text-xs font-bold text-gray-500 mb-1"
+                >
+                  តម្លៃ (រៀល)
+                </label>
                 <input
                   id="missionPrice"
                   type="number"
                   className="w-full p-3 border border-gray-200 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20"
                   value={currentMission.price}
                   onChange={(e) =>
-                    setState(prev => ({ ...prev, currentMission: { ...prev.currentMission, price: parseFloat(e.target.value) } }))
+                    setState((prev) => ({
+                      ...prev,
+                      currentMission: { ...prev.currentMission, price: parseFloat(e.target.value) },
+                    }))
                   }
                   min={0}
                 />
               </div>
             </div>
             <div>
-              <label htmlFor="missionDescription" className="block text-xs font-bold text-gray-500 mb-1">
+              <label
+                htmlFor="missionDescription"
+                className="block text-xs font-bold text-gray-500 mb-1"
+              >
                 បរិយាយ (Description)
               </label>
               <textarea
@@ -587,7 +680,10 @@ const MissionForm: React.FC<MissionFormProps> = ({
                 className="w-full p-3 border border-gray-200 rounded-xl text-sm h-32 resize-none focus:ring-2 focus:ring-primary/20 outline-none"
                 value={currentMission.description}
                 onChange={(e) =>
-                  setState(prev => ({ ...prev, currentMission: { ...prev.currentMission, description: e.target.value } }))
+                  setState((prev) => ({
+                    ...prev,
+                    currentMission: { ...prev.currentMission, description: e.target.value },
+                  }))
                 }
                 placeholder="Describe the mission goal and outcome..."
               />
@@ -599,7 +695,8 @@ const MissionForm: React.FC<MissionFormProps> = ({
           <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200">
             <div className="flex justify-between items-center mb-4">
               <h3 className="font-bold text-gray-900">កម្មវិធីសិក្សា (Modules)</h3>
-              <button type="button"
+              <button
+                type="button"
                 onClick={addModule}
                 className="bg-white text-gray-700 px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-bold hover:bg-gray-100 flex items-center"
               >
@@ -642,16 +739,18 @@ const MissionForm: React.FC<MissionFormProps> = ({
               className="w-full p-3 border border-gray-200 rounded-xl text-sm h-24 mb-4 focus:ring-2 focus:ring-purple-200 outline-none"
               placeholder="e.g. A comprehensive guide to Python for Data Science..."
               value={aiPrompt}
-              onChange={(e) => setState(prev => ({ ...prev, aiPrompt: e.target.value }))}
+              onChange={(e) => setState((prev) => ({ ...prev, aiPrompt: e.target.value }))}
             />
             <div className="flex justify-end gap-2">
-              <button type="button"
-                onClick={() => setState(prev => ({ ...prev, showAiModal: false }))}
+              <button
+                type="button"
+                onClick={() => setState((prev) => ({ ...prev, showAiModal: false }))}
                 className="px-4 py-2 text-gray-500 font-bold text-sm"
               >
                 Cancel
               </button>
-              <button type="button"
+              <button
+                type="button"
                 onClick={handleAiGenerateStructure}
                 disabled={isGenerating || !aiPrompt.trim()}
                 className="px-4 py-2 bg-purple-600 text-white rounded-lg font-bold text-sm shadow-lg disabled:opacity-50"
@@ -805,7 +904,8 @@ const ModuleEditor: React.FC<{
         <div className="flex items-center gap-2">
           {/* Magic Wand for generating content */}
           {isExpanded && (
-            <button type="button"
+            <button
+              type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 handleAutoGenerate();
@@ -822,7 +922,8 @@ const ModuleEditor: React.FC<{
               <span className="hidden sm:inline">Magic Fill</span>
             </button>
           )}
-          <button type="button"
+          <button
+            type="button"
             onClick={(e) => {
               e.stopPropagation();
               onDelete(index);
@@ -838,7 +939,12 @@ const ModuleEditor: React.FC<{
       {isExpanded && (
         <div className="space-y-4 mt-4 pt-4 border-t border-gray-100 animate-fade-in">
           <div>
-            <label htmlFor={`mod-title-${index}`} className="block text-xs font-bold text-gray-400 mb-1 uppercase">Title</label>
+            <label
+              htmlFor={`mod-title-${index}`}
+              className="block text-xs font-bold text-gray-400 mb-1 uppercase"
+            >
+              Title
+            </label>
             <input
               id={`mod-title-${index}`}
               className="w-full p-3 border border-gray-200 rounded-lg text-sm font-bold focus:ring-2 focus:ring-primary/20 outline-none"
@@ -850,7 +956,12 @@ const ModuleEditor: React.FC<{
           </div>
           <div>
             <div className="flex justify-between items-center mb-1">
-              <label htmlFor={`mod-task-${index}`} className="block text-xs font-bold text-gray-400 uppercase">Task</label>
+              <label
+                htmlFor={`mod-task-${index}`}
+                className="block text-xs font-bold text-gray-400 uppercase"
+              >
+                Task
+              </label>
             </div>
             <textarea
               id={`mod-task-${index}`}
@@ -863,7 +974,10 @@ const ModuleEditor: React.FC<{
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor={`mod-persona-${index}`} className="block text-xs font-bold text-gray-400 mb-1 uppercase">
+              <label
+                htmlFor={`mod-persona-${index}`}
+                className="block text-xs font-bold text-gray-400 mb-1 uppercase"
+              >
                 AI Persona
               </label>
               <textarea
@@ -876,7 +990,10 @@ const ModuleEditor: React.FC<{
               <CharCounter current={module.aiPersona.length} limit={PERSONA_LIMIT} />
             </div>
             <div>
-              <label htmlFor={`mod-prompt-${index}`} className="block text-xs font-bold text-gray-400 mb-1 uppercase">
+              <label
+                htmlFor={`mod-prompt-${index}`}
+                className="block text-xs font-bold text-gray-400 mb-1 uppercase"
+              >
                 Initial Greeting
               </label>
               <textarea
@@ -890,7 +1007,10 @@ const ModuleEditor: React.FC<{
             </div>
           </div>
           <div>
-            <label htmlFor={`mod-theory-${index}`} className="block text-xs font-bold text-gray-400 mb-1 uppercase">
+            <label
+              htmlFor={`mod-theory-${index}`}
+              className="block text-xs font-bold text-gray-400 mb-1 uppercase"
+            >
               Theory Prompt
             </label>
             <textarea
@@ -904,7 +1024,10 @@ const ModuleEditor: React.FC<{
           </div>
 
           <div className="mt-4 border-t border-gray-100 pt-4">
-            <label htmlFor={`mod-sim-${index}`} className="block text-xs font-bold text-gray-400 mb-1 uppercase flex items-center gap-1">
+            <label
+              htmlFor={`mod-sim-${index}`}
+              className="block text-xs font-bold text-gray-400 mb-1 uppercase flex items-center gap-1"
+            >
               <Experiment className="h-3 w-3" /> Simulation Configuration
             </label>
             <div className="flex gap-2">
@@ -918,7 +1041,9 @@ const ModuleEditor: React.FC<{
                 <option value="wokwi">Wokwi (IoT/Arduino)</option>
                 <option value="other">Other (Embed)</option>
               </select>
-              <label htmlFor={`mod-sim-url-${index}`} className="sr-only">Simulation URL</label>
+              <label htmlFor={`mod-sim-url-${index}`} className="sr-only">
+                Simulation URL
+              </label>
               <input
                 id={`mod-sim-url-${index}`}
                 className="flex-1 p-3 border border-gray-200 rounded-lg text-xs font-mono text-blue-600 focus:ring-2 focus:ring-primary/20 outline-none"

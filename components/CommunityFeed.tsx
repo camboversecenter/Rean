@@ -66,14 +66,30 @@ const CommunityFeed: React.FC = () => {
   );
 
   const {
-    activeTab, sortBy, posts, newPostContent, bountyAmount,
-    isAnonymous, isPosting, isLoading, page, hasMore,
-    loadingMore, searchQuery, currentUser, userProfile, bookmarkedPosts
+    activeTab,
+    sortBy,
+    posts,
+    newPostContent,
+    bountyAmount,
+    isAnonymous,
+    isPosting,
+    isLoading,
+    page,
+    hasMore,
+    loadingMore,
+    searchQuery,
+    currentUser,
+    userProfile,
+    bookmarkedPosts,
   } = feedState;
 
   const setActiveTab = React.useCallback((v: any) => setFeedState({ activeTab: v }), []);
   const setSortBy = React.useCallback((v: any) => setFeedState({ sortBy: v }), []);
-  const setPosts = React.useCallback((v: any) => setFeedState((prev: any) => ({ posts: typeof v === 'function' ? v(prev.posts) : v })), []);
+  const setPosts = React.useCallback(
+    (v: any) =>
+      setFeedState((prev: any) => ({ posts: typeof v === 'function' ? v(prev.posts) : v })),
+    []
+  );
   const setNewPostContent = React.useCallback((v: any) => setFeedState({ newPostContent: v }), []);
   const setBountyAmount = React.useCallback((v: any) => setFeedState({ bountyAmount: v }), []);
   const setIsAnonymous = React.useCallback((v: any) => setFeedState({ isAnonymous: v }), []);
@@ -85,7 +101,13 @@ const CommunityFeed: React.FC = () => {
   const setSearchQuery = React.useCallback((v: any) => setFeedState({ searchQuery: v }), []);
   const setCurrentUser = React.useCallback((v: any) => setFeedState({ currentUser: v }), []);
   const setUserProfile = React.useCallback((v: any) => setFeedState({ userProfile: v }), []);
-  const setBookmarkedPosts = React.useCallback((v: any) => setFeedState((prev: any) => ({ bookmarkedPosts: typeof v === 'function' ? v(prev.bookmarkedPosts) : v })), []);
+  const setBookmarkedPosts = React.useCallback(
+    (v: any) =>
+      setFeedState((prev: any) => ({
+        bookmarkedPosts: typeof v === 'function' ? v(prev.bookmarkedPosts) : v,
+      })),
+    []
+  );
 
   const LIMIT = 10;
 
@@ -104,30 +126,33 @@ const CommunityFeed: React.FC = () => {
     loadUser();
   }, []);
 
-  const loadData = React.useCallback(async (pageToLoad: number, isReset: boolean = false) => {
-    if (!isReset) setLoadingMore(true);
-    else setIsLoading(true);
+  const loadData = React.useCallback(
+    async (pageToLoad: number, isReset: boolean = false) => {
+      if (!isReset) setLoadingMore(true);
+      else setIsLoading(true);
 
-    try {
-      let data: StudentPost[] = [];
+      try {
+        let data: StudentPost[] = [];
 
-      if (activeTab === 'all') {
-        data = await fetchCommunityFeed(pageToLoad, LIMIT, searchQuery, sortBy);
-      } else {
-        data = await fetchSavedPosts(pageToLoad, LIMIT);
+        if (activeTab === 'all') {
+          data = await fetchCommunityFeed(pageToLoad, LIMIT, searchQuery, sortBy);
+        } else {
+          data = await fetchSavedPosts(pageToLoad, LIMIT);
+        }
+
+        if (data.length < LIMIT) setHasMore(false);
+
+        if (isReset) setPosts(data);
+        else setPosts((prev: StudentPost[]) => [...prev, ...data]);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setIsLoading(false);
+        setLoadingMore(false);
       }
-
-      if (data.length < LIMIT) setHasMore(false);
-
-      if (isReset) setPosts(data);
-      else setPosts((prev: StudentPost[]) => [...prev, ...data]);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setIsLoading(false);
-      setLoadingMore(false);
-    }
-  }, [activeTab, searchQuery, sortBy, LIMIT, setLoadingMore, setIsLoading, setHasMore, setPosts]);
+    },
+    [activeTab, searchQuery, sortBy, LIMIT, setLoadingMore, setIsLoading, setHasMore, setPosts]
+  );
 
   // Search/Load Effect
   useEffect(() => {
@@ -182,7 +207,7 @@ const CommunityFeed: React.FC = () => {
       // If we are sorted by 'latest', prepend. Else, we might need to reload to keep sort order correct
       // but prepending is better UX for immediate feedback.
       if (sortBy === 'latest') {
-        setPosts((prev) => [newPost, ...prev]);
+        setPosts((prev: any) => [newPost, ...prev]);
       } else {
         // Just notify and let user refresh if they want to see it in 'trending'
         toast("Posted! Switch to 'Latest' to see it now.", { icon: 'ℹ️' });
@@ -212,8 +237,10 @@ const CommunityFeed: React.FC = () => {
       const aiReply = await createCommunityReply(newPost.id, aiResponseText, true, []);
 
       if (sortBy === 'latest') {
-        setPosts((prev) =>
-          prev.map((p) => (p.id === newPost.id ? { ...p, replies: [aiReply, ...p.replies] } : p))
+        setPosts((prev: any) =>
+          prev.map((p: any) =>
+            p.id === newPost.id ? { ...p, replies: [aiReply, ...p.replies] } : p
+          )
         );
       }
 
@@ -233,8 +260,8 @@ const CommunityFeed: React.FC = () => {
     }
 
     // Optimistic UI Update
-    setPosts((prev) =>
-      prev.map((p) => {
+    setPosts((prev: any) =>
+      prev.map((p: any) => {
         if (p.id !== post.id) return p;
 
         const currentReaction = p.userReaction;
@@ -271,7 +298,7 @@ const CommunityFeed: React.FC = () => {
 
     const isBookmarked = bookmarkedPosts.has(post.id);
 
-    setBookmarkedPosts((prev) => {
+    setBookmarkedPosts((prev: any) => {
       const newSet = new Set(prev);
       if (isBookmarked) newSet.delete(post.id);
       else newSet.add(post.id);
@@ -279,7 +306,7 @@ const CommunityFeed: React.FC = () => {
     });
 
     if (activeTab === 'saved' && isBookmarked) {
-      setPosts((prev) => prev.filter((p) => p.id !== post.id));
+      setPosts((prev: any) => prev.filter((p: any) => p.id !== post.id));
     }
 
     try {
@@ -288,7 +315,7 @@ const CommunityFeed: React.FC = () => {
     } catch (e) {
       console.error(e);
       toast.error('ប្រតិបត្តិការបរាជ័យ។');
-      setBookmarkedPosts((prev) => {
+      setBookmarkedPosts((prev: any) => {
         const newSet = new Set(prev);
         if (isBookmarked) newSet.add(post.id);
         else newSet.delete(post.id);
@@ -370,7 +397,8 @@ const CommunityFeed: React.FC = () => {
                   <Award className="absolute right-2 top-2 h-4 w-4 text-gray-400 pointer-events-none" />
                 </div>
 
-                <button type="button"
+                <button
+                  type="button"
                   onClick={() => setIsAnonymous(!isAnonymous)}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${
                     isAnonymous
@@ -390,7 +418,8 @@ const CommunityFeed: React.FC = () => {
                 </button>
               </div>
 
-              <button type="button"
+              <button
+                type="button"
                 onClick={handlePost}
                 disabled={!newPostContent.trim() || isPosting || newPostContent.length > POST_LIMIT}
                 className="bg-primary text-white text-sm font-bold px-5 py-2 rounded-full flex items-center shadow-lg shadow-primary/30 disabled:opacity-50 disabled:shadow-none hover:scale-105 transition-transform"
@@ -410,13 +439,15 @@ const CommunityFeed: React.FC = () => {
         <div className="px-4 mb-4 flex flex-col gap-4">
           {/* View Tabs (All vs Saved) */}
           <div className="flex p-1 bg-gray-200 rounded-xl shadow-inner">
-            <button type="button"
+            <button
+              type="button"
               onClick={() => setActiveTab('all')}
               className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${activeTab === 'all' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
             >
               សំណួរទាំងអស់ (All)
             </button>
-            <button type="button"
+            <button
+              type="button"
               onClick={() => setActiveTab('saved')}
               className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1 ${activeTab === 'saved' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
             >
@@ -427,7 +458,8 @@ const CommunityFeed: React.FC = () => {
           {/* Sorting Filters (Only for 'All' tab) */}
           {activeTab === 'all' && (
             <div className="flex items-center space-x-2 overflow-x-auto scrollbar-hide pb-2">
-              <button type="button"
+              <button
+                type="button"
                 onClick={() => setSortBy('latest')}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${
                   sortBy === 'latest'
@@ -437,7 +469,8 @@ const CommunityFeed: React.FC = () => {
               >
                 <Clock className="h-3.5 w-3.5" /> ថ្មីៗ (Newest)
               </button>
-              <button type="button"
+              <button
+                type="button"
                 onClick={() => setSortBy('trending')}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${
                   sortBy === 'trending'
@@ -448,7 +481,8 @@ const CommunityFeed: React.FC = () => {
                 <Zap className={`h-3.5 w-3.5 ${sortBy === 'trending' ? 'fill-orange-600' : ''}`} />{' '}
                 កំពុងពេញនិយម (Trending)
               </button>
-              <button type="button"
+              <button
+                type="button"
                 onClick={() => setSortBy('bounty')}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${
                   sortBy === 'bounty'
@@ -473,7 +507,8 @@ const CommunityFeed: React.FC = () => {
                 aria-label="Search community"
               />
               {searchQuery && (
-                <button type="button"
+                <button
+                  type="button"
                   onClick={() => setSearchQuery('')}
                   className="absolute right-3 top-1/2 -translate-y-1/2 p-1 bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200"
                   aria-label="Clear search"
@@ -501,17 +536,17 @@ const CommunityFeed: React.FC = () => {
           ) : (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {posts.map((post) => {
+                {posts.map((post: any) => {
                   const isPostAnonymous = post.isAnonymous;
                   const displayAuthor = isPostAnonymous
                     ? 'សិស្សអនាមិក (Anonymous Student)'
                     : post.authorName;
 
-                  const acceptedReply = post.replies.find((r) => r.accepted);
+                  const acceptedReply = post.replies.find((r: any) => r.accepted);
                   const isSolved = !!acceptedReply;
 
-                  const aiReply = post.replies.find((r) => r.isAI && !r.accepted);
-                  const latestHumanReply = post.replies.find((r) => !r.isAI && !r.accepted);
+                  const aiReply = post.replies.find((r: any) => r.isAI && !r.accepted);
+                  const latestHumanReply = post.replies.find((r: any) => !r.isAI && !r.accepted);
 
                   const highlights: CommunityReply[] = [];
                   if (acceptedReply) highlights.push(acceptedReply);
@@ -632,7 +667,8 @@ const CommunityFeed: React.FC = () => {
                         </div>
 
                         <div className="ml-auto flex items-center gap-3">
-                          <button type="button"
+                          <button
+                            type="button"
                             onClick={(e) => {
                               e.stopPropagation();
                               handleBookmark(post);
@@ -658,7 +694,8 @@ const CommunityFeed: React.FC = () => {
 
               {hasMore && (
                 <div className="pt-4 pb-8 flex justify-center">
-                  <button type="button"
+                  <button
+                    type="button"
                     onClick={handleLoadMore}
                     disabled={loadingMore}
                     className="bg-white border border-gray-200 text-gray-600 font-bold py-2 px-6 rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-50 flex items-center text-sm"

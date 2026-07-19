@@ -3,7 +3,10 @@ import { TutorProfile, TutorBooking, TutorRequest } from '../types';
 
 // --- MAPPERS ---
 
-const mapTutorProfileFromDB = (data: Record<string, any>, profileMap?: Record<string, any>): TutorProfile => {
+const mapTutorProfileFromDB = (
+  data: Record<string, any>,
+  profileMap?: Record<string, any>
+): TutorProfile => {
   // Try to find profile in the joined data OR the lookup map
   let profile = null;
 
@@ -31,7 +34,10 @@ const mapTutorProfileFromDB = (data: Record<string, any>, profileMap?: Record<st
   };
 };
 
-const mapBookingFromDB = (data: Record<string, any>, profileMap?: Record<string, any>): TutorBooking => {
+const mapBookingFromDB = (
+  data: Record<string, any>,
+  profileMap?: Record<string, any>
+): TutorBooking => {
   // Handle joins or manual map
   let tutorName = 'Tutor';
   let studentName = 'Unknown Student';
@@ -71,7 +77,10 @@ const mapBookingFromDB = (data: Record<string, any>, profileMap?: Record<string,
   };
 };
 
-const mapRequestFromDB = (data: Record<string, any>, profileMap?: Record<string, any>): TutorRequest => {
+const mapRequestFromDB = (
+  data: Record<string, any>,
+  profileMap?: Record<string, any>
+): TutorRequest => {
   let profile = null;
   if (data.profiles) {
     profile = Array.isArray(data.profiles) ? data.profiles[0] : data.profiles;

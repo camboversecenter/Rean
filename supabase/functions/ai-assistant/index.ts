@@ -9,12 +9,14 @@ declare const Deno: any;
 const COSTS = {
   chat: 1,
   evaluate: 5,
+  'evaluate-image': 10, // Vision grading (matches client AI_COSTS.EVALUATION + 5)
   structure: 10,
   'generate-image': 25,
   'live-init': 10,
   'award-bounty': 0, // System action, no cost
   embed: 1, // Cheap cost for checking plagiarism
   'tag-reply': 10, // Cost for tagging @tonsay in community
+  quality: 0, // Free: reply quality moderation for the community feed
 };
 
 const corsHeaders = {
@@ -107,185 +109,246 @@ serve(async (req: Request) => {
         .then();
     }
 
+    // Refund helper: if the AI call fails AFTER deduction, give the points back
+    // so users are never charged for a failed request.
+    const refundPoints = async () => {
+      if (cost <= 0) return;
+      try {
+        const { data: current } = await supabaseAdmin
+          .from('profiles')
+          .select('spendable_points')
+          .eq('id', user.id)
+          .single();
+        if (current) {
+          await supabaseAdmin
+            .from('profiles')
+            .update({ spendable_points: (current.spendable_points || 0) + cost })
+            .eq('id', user.id);
+          await supabaseAdmin.from('point_transactions').insert({
+            user_id: user.id,
+            amount: cost,
+            type: 'earn',
+            reason: `Refund: ${action} failed`,
+          });
+        }
+      } catch (refundError) {
+        console.error('Refund failed:', refundError);
+      }
+    };
+
     // 6. EXECUTE AI LOGIC
     let result: any = {};
 
-    switch (action) {
-      case 'chat': {
-        const { message, history, systemInstruction, useSearch } = payload;
-        const modelName = 'gemini-3-flash-preview'; // gemini-3-pro-preview is discontinued
+    try {
+      switch (action) {
+        case 'chat': {
+          const { message, history, systemInstruction, useSearch } = payload;
+          const modelName = 'gemini-3-flash-preview'; // gemini-3-pro-preview is discontinued
 
-        const chat = ai.chats.create({
-          model: modelName,
-          history: history || [],
-          config: {
-            systemInstruction,
-            tools: useSearch ? [{ googleSearch: {} }] : undefined,
-          },
-        });
+          const chat = ai.chats.create({
+            model: modelName,
+            history: history || [],
+            config: {
+              systemInstruction,
+              tools: useSearch ? [{ googleSearch: {} }] : undefined,
+            },
+          });
 
-        const response = await chat.sendMessage({ message });
-        const text = response.text;
-        result = { text };
-        break;
-      }
+          const response = await chat.sendMessage({ message });
+          const text = response.text;
+          result = { text };
+          break;
+        }
 
-      case 'tag-reply': {
-        const { message, systemInstruction } = payload;
+        case 'tag-reply': {
+          const { message, systemInstruction } = payload;
 
-        // Use standard flash model for community replies
-        const chat = ai.chats.create({
-          model: 'gemini-3-flash-preview',
-          config: { systemInstruction },
-          history: [], // No history for single-shot tag replies usually, or pass if needed
-        });
+          // Use standard flash model for community replies
+          const chat = ai.chats.create({
+            model: 'gemini-3-flash-preview',
+            config: { systemInstruction },
+            history: [], // No history for single-shot tag replies usually, or pass if needed
+          });
 
-        const response = await chat.sendMessage({ message });
-        const text = response.text;
-        result = { text };
-        break;
-      }
+          const response = await chat.sendMessage({ message });
+          const text = response.text;
+          result = { text };
+          break;
+        }
 
-      case 'evaluate': {
-        const { prompt } = payload;
-        const response = await ai.models.generateContent({
-          model: 'gemini-3-flash-preview',
-          contents: prompt,
-        });
-        const text = response.text;
-        result = { text };
-        break;
-      }
+        case 'evaluate': {
+          const { prompt } = payload;
+          const response = await ai.models.generateContent({
+            model: 'gemini-3-flash-preview',
+            contents: prompt,
+          });
+          const text = response.text;
+          result = { text };
+          break;
+        }
 
-      case 'structure': {
-        const { prompt } = payload;
-        const response = await ai.models.generateContent({
-          model: 'gemini-3-flash-preview',
-          contents: prompt,
-          config: { responseMimeType: 'application/json' },
-        });
-        const text = response.text;
-        result = { text };
-        break;
-      }
+        case 'structure': {
+          const { prompt } = payload;
+          const response = await ai.models.generateContent({
+            model: 'gemini-3-flash-preview',
+            contents: prompt,
+            config: { responseMimeType: 'application/json' },
+          });
+          const text = response.text;
+          result = { text };
+          break;
+        }
 
-      case 'generate-image': {
-        const { prompt } = payload;
-        const response = await ai.models.generateContent({
-          model: 'gemini-2.5-flash-image',
-          contents: prompt,
-        });
+        case 'generate-image': {
+          const { prompt } = payload;
+          const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash-image',
+            contents: prompt,
+          });
 
-        let imageBase64 = null;
-        if (response.candidates?.[0]?.content?.parts) {
-          for (const part of response.candidates[0].content.parts) {
-            if (part.inlineData) {
-              imageBase64 = part.inlineData.data;
-              break;
+          let imageBase64 = null;
+          if (response.candidates?.[0]?.content?.parts) {
+            for (const part of response.candidates[0].content.parts) {
+              if (part.inlineData) {
+                imageBase64 = part.inlineData.data;
+                break;
+              }
             }
           }
+
+          if (imageBase64) {
+            result = { image: imageBase64 };
+          } else {
+            // Throw so the refund path returns the 25 points to the user.
+            throw new Error('Failed to generate image.');
+          }
+          break;
         }
 
-        if (imageBase64) {
-          result = { image: imageBase64 };
-        } else {
-          result = { error: 'Failed to generate image.', details: response.text };
+        case 'embed': {
+          const { text } = payload;
+          if (!text) throw new Error('Text is required for embedding');
+
+          const response = await ai.models.embedContent({
+            model: 'text-embedding-004',
+            contents: { parts: [{ text }] },
+          });
+          result = { embedding: response.embeddings?.[0]?.values };
+          break;
         }
-        break;
-      }
 
-      case 'embed': {
-        const { text } = payload;
-        if (!text) throw new Error('Text is required for embedding');
+        case 'award-bounty': {
+          const { postId, replyId } = payload;
 
-        const response = await ai.models.embedContent({
-          model: 'text-embedding-004',
-          content: { parts: [{ text }] },
-        });
-        result = { embedding: response.embedding.values };
-        break;
-      }
-
-      case 'award-bounty': {
-        const { postId, replyId } = payload;
-
-        // 1. Verify Post Ownership (Security Check)
-        const { data: post, error: postError } = await supabaseAdmin
-          .from('student_posts')
-          .select('author_id, bounty_points')
-          .eq('id', postId)
-          .single();
-
-        if (postError || !post) throw new Error('Post not found');
-        if (post.author_id !== user.id)
-          throw new Error('Unauthorized: Only the question author can accept an answer.');
-
-        // 2. Verify Reply Validity
-        const { data: reply, error: replyError } = await supabaseAdmin
-          .from('community_replies')
-          .select('author_id, is_accepted')
-          .eq('id', replyId)
-          .single();
-
-        if (replyError || !reply) throw new Error('Reply not found');
-        if (reply.is_accepted) throw new Error('Reply already accepted');
-
-        // 3. Mark Reply as Accepted
-        const { error: updateError } = await supabaseAdmin
-          .from('community_replies')
-          .update({ is_accepted: true })
-          .eq('id', replyId);
-
-        if (updateError) throw new Error('Failed to update reply status');
-
-        // 4. Transfer Points if Bounty Exists
-        const recipientId = reply.author_id;
-        // Only transfer if recipient exists and is not AI (author_id would be null for AI usually, or check logic)
-        if (recipientId) {
-          const bounty = post.bounty_points || 0;
-          const xpReward = 20; // Fixed XP for accepted answer
-
-          const { data: recipient } = await supabaseAdmin
-            .from('profiles')
-            .select('spendable_points, lifetime_xp')
-            .eq('id', recipientId)
+          // 1. Verify Post Ownership (Security Check)
+          const { data: post, error: postError } = await supabaseAdmin
+            .from('student_posts')
+            .select('author_id, bounty_points')
+            .eq('id', postId)
             .single();
 
-          if (recipient) {
-            // Update Recipient Balance
-            await supabaseAdmin
-              .from('profiles')
-              .update({
-                spendable_points: (recipient.spendable_points || 0) + bounty,
-                lifetime_xp: (recipient.lifetime_xp || 0) + xpReward,
-              })
-              .eq('id', recipientId);
+          if (postError || !post) throw new Error('Post not found');
+          if (post.author_id !== user.id)
+            throw new Error('Unauthorized: Only the question author can accept an answer.');
 
-            // Log Bounty Transaction (Money)
-            if (bounty > 0) {
+          // 2. Verify Reply Validity
+          const { data: reply, error: replyError } = await supabaseAdmin
+            .from('community_replies')
+            .select('author_id, is_accepted')
+            .eq('id', replyId)
+            .single();
+
+          if (replyError || !reply) throw new Error('Reply not found');
+          if (reply.is_accepted) throw new Error('Reply already accepted');
+
+          // 3. Mark Reply as Accepted
+          const { error: updateError } = await supabaseAdmin
+            .from('community_replies')
+            .update({ is_accepted: true })
+            .eq('id', replyId);
+
+          if (updateError) throw new Error('Failed to update reply status');
+
+          // 4. Transfer Points if Bounty Exists
+          const recipientId = reply.author_id;
+          // Only transfer if recipient exists and is not AI (author_id would be null for AI usually, or check logic)
+          if (recipientId) {
+            const bounty = post.bounty_points || 0;
+            const xpReward = 20; // Fixed XP for accepted answer
+
+            const { data: recipient } = await supabaseAdmin
+              .from('profiles')
+              .select('spendable_points, lifetime_xp')
+              .eq('id', recipientId)
+              .single();
+
+            if (recipient) {
+              // Update Recipient Balance
+              await supabaseAdmin
+                .from('profiles')
+                .update({
+                  spendable_points: (recipient.spendable_points || 0) + bounty,
+                  lifetime_xp: (recipient.lifetime_xp || 0) + xpReward,
+                })
+                .eq('id', recipientId);
+
+              // Log Bounty Transaction (Money)
+              if (bounty > 0) {
+                await supabaseAdmin.from('point_transactions').insert({
+                  user_id: recipientId,
+                  amount: bounty,
+                  type: 'earn',
+                  reason: 'Bounty Reward (រង្វាន់ពីចម្លើយ)',
+                });
+              }
+
+              // Log XP Transaction (Reputation)
               await supabaseAdmin.from('point_transactions').insert({
                 user_id: recipientId,
-                amount: bounty,
+                amount: 0,
                 type: 'earn',
-                reason: 'Bounty Reward (រង្វាន់ពីចម្លើយ)',
+                reason: 'Solution Accepted (ចម្លើយត្រឹមត្រូវ)',
               });
             }
-
-            // Log XP Transaction (Reputation)
-            await supabaseAdmin.from('point_transactions').insert({
-              user_id: recipientId,
-              amount: 0,
-              type: 'earn',
-              reason: 'Solution Accepted (ចម្លើយត្រឹមត្រូវ)',
-            });
           }
+          result = { success: true };
+          break;
         }
-        result = { success: true };
-        break;
-      }
 
-      default:
-        throw new Error(`Unknown action: ${action}`);
+        case 'evaluate-image': {
+          const { prompt, imageBase64 } = payload;
+          if (!imageBase64) throw new Error('Image is required for vision evaluation');
+
+          const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash-image',
+            contents: {
+              parts: [
+                { inlineData: { mimeType: 'image/png', data: imageBase64 } },
+                { text: prompt },
+              ],
+            },
+          });
+          result = { text: response.text };
+          break;
+        }
+
+        case 'quality': {
+          const { prompt } = payload;
+          const response = await ai.models.generateContent({
+            model: 'gemini-3-flash-preview',
+            contents: prompt,
+          });
+          result = { text: response.text };
+          break;
+        }
+
+        default:
+          throw new Error(`Unknown action: ${action}`);
+      }
+    } catch (aiError) {
+      // AI execution failed after the deduction: refund, then surface the error.
+      await refundPoints();
+      throw aiError;
     }
 
     return new Response(JSON.stringify(result), {

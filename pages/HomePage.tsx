@@ -32,7 +32,7 @@ const HomePage: React.FC = () => {
     missions: [] as Mission[],
     tutors: [] as TutorProfile[],
     loading: true,
-    profile: null as any
+    profile: null as any,
   });
   const navigate = useNavigate();
 
@@ -46,7 +46,14 @@ const HomePage: React.FC = () => {
         getCurrentUserProfile(),
       ]);
 
-      setState(s => ({ ...s, schools: schoolData, missions: missionData, tutors: tutorData, profile: userProfile, loading: false }));
+      setState((s) => ({
+        ...s,
+        schools: schoolData,
+        missions: missionData,
+        tutors: tutorData,
+        profile: userProfile,
+        loading: false,
+      }));
     };
     loadData();
   }, []);
@@ -82,22 +89,25 @@ const HomePage: React.FC = () => {
           <div className="flex flex-col md:flex-row gap-4 items-center">
             {/* Search Tabs */}
             <div className="flex justify-center space-x-1 p-1 bg-gray-100 md:bg-white rounded-xl w-fit md:w-auto shrink-0 transition-all md:shadow-sm md:border md:border-gray-200">
-              <button type="button"
-                onClick={() => setState(s => ({ ...s, searchTab: 'school' }))}
+              <button
+                type="button"
+                onClick={() => setState((s) => ({ ...s, searchTab: 'school' }))}
                 className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center ${state.searchTab === 'school' ? 'bg-white text-primary shadow-sm md:bg-gray-100' : 'text-gray-500 hover:text-gray-700'}`}
               >
                 <Building2 className="h-3.5 w-3.5 mr-2" />
                 សាលារៀន
               </button>
-              <button type="button"
-                onClick={() => setState(s => ({ ...s, searchTab: 'mission' }))}
+              <button
+                type="button"
+                onClick={() => setState((s) => ({ ...s, searchTab: 'mission' }))}
                 className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center ${state.searchTab === 'mission' ? 'bg-white text-primary shadow-sm md:bg-gray-100' : 'text-gray-500 hover:text-gray-700'}`}
               >
                 <Target className="h-3.5 w-3.5 mr-2" />
                 បេសកកម្ម
               </button>
-              <button type="button"
-                onClick={() => setState(s => ({ ...s, searchTab: 'tutor' }))}
+              <button
+                type="button"
+                onClick={() => setState((s) => ({ ...s, searchTab: 'tutor' }))}
                 className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center ${state.searchTab === 'tutor' ? 'bg-white text-primary shadow-sm md:bg-gray-100' : 'text-gray-500 hover:text-gray-700'}`}
               >
                 <Users className="h-3.5 w-3.5 mr-2" />
@@ -111,7 +121,7 @@ const HomePage: React.FC = () => {
                 aria-label="Search"
                 type="text"
                 value={state.searchQuery}
-                onChange={(e) => setState(s => ({ ...s, searchQuery: e.target.value }))}
+                onChange={(e) => setState((s) => ({ ...s, searchQuery: e.target.value }))}
                 placeholder={
                   state.searchTab === 'school'
                     ? 'ស្វែងរកសាកលវិទ្យាល័យ ឬជំនាញសិក្សា...'
@@ -125,15 +135,19 @@ const HomePage: React.FC = () => {
                 <Search className="w-5 h-5 text-gray-400" />
               </div>
               {state.searchQuery ? (
-                <button type="button"
-                  onClick={() => setState(s => ({ ...s, searchQuery: '' }))}
+                <button
+                  type="button"
+                  onClick={() => setState((s) => ({ ...s, searchQuery: '' }))}
                   aria-label="Clear Search"
                   className="absolute right-3 top-2.5 p-1.5 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100"
                 >
                   <X className="h-4 w-4" />
                 </button>
               ) : (
-                <button type="button" className="absolute right-2 top-2 bg-primary text-white font-medium rounded-lg text-xs px-4 py-1.5 hover:bg-primary/90 transition-colors">
+                <button
+                  type="button"
+                  className="absolute right-2 top-2 bg-primary text-white font-medium rounded-lg text-xs px-4 py-1.5 hover:bg-primary/90 transition-colors"
+                >
                   ស្វែងរក
                 </button>
               )}
@@ -334,7 +348,9 @@ const HomePage: React.FC = () => {
                     <Loader2 className="animate-spin text-gray-300" />
                   </div>
                 ) : state.tutors.length > 0 ? (
-                  state.tutors.slice(0, 4).map((tutor) => <TutorCard key={tutor.id} tutor={tutor} />)
+                  state.tutors
+                    .slice(0, 4)
+                    .map((tutor) => <TutorCard key={tutor.id} tutor={tutor} />)
                 ) : (
                   <div className="col-span-2 text-center py-8 text-gray-400 bg-gray-50 rounded-xl border border-dashed border-gray-200">
                     <Users className="h-8 w-8 mx-auto mb-2 opacity-50" />

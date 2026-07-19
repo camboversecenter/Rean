@@ -41,7 +41,7 @@ const SchoolDetailPage: React.FC = () => {
     school: null as School | null,
     loading: true,
     activeTab: 'admissions' as 'admissions' | 'courses' | 'about',
-    userProfile: null as any
+    userProfile: null as any,
   });
 
   // Modal State
@@ -49,7 +49,7 @@ const SchoolDetailPage: React.FC = () => {
     show: false,
     targetAdmission: null as { id: string; title: string } | null,
     inquiryForm: { phone: '', message: '' },
-    submitting: false
+    submitting: false,
   });
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const SchoolDetailPage: React.FC = () => {
       if (!id) return;
       const data = await fetchSchoolById(id);
       const user = await getCurrentUserProfile();
-      setState(s => ({ ...s, school: data, userProfile: user, loading: false }));
+      setState((s) => ({ ...s, school: data, userProfile: user, loading: false }));
     };
     load();
   }, [id]);
@@ -68,7 +68,7 @@ const SchoolDetailPage: React.FC = () => {
       return;
     }
 
-    setModalState(s => ({
+    setModalState((s) => ({
       ...s,
       targetAdmission: admission ? { id: admission.id, title: admission.title } : null,
       inquiryForm: {
@@ -77,7 +77,7 @@ const SchoolDetailPage: React.FC = () => {
           ? `ខ្ញុំចាប់អារម្មណ៍លើ "${admission?.title || 'សាលារបស់អ្នក'}". សូមទាក់ទងមកខ្ញុំវិញផង។`
           : '',
       },
-      show: true
+      show: true,
     }));
   };
 
@@ -86,7 +86,7 @@ const SchoolDetailPage: React.FC = () => {
       toast.error('សូមបញ្ចូលលេខទូរស័ព្ទរបស់អ្នក។');
       return;
     }
-    setModalState(s => ({ ...s, submitting: true }));
+    setModalState((s) => ({ ...s, submitting: true }));
     try {
       await createStudentInquiry({
         schoolId: state.school.id,
@@ -96,12 +96,12 @@ const SchoolDetailPage: React.FC = () => {
         message: modalState.inquiryForm.message,
       });
       toast.success('បានផ្ញើសំណួររួចរាល់!');
-      setModalState(s => ({ ...s, show: false }));
+      setModalState((s) => ({ ...s, show: false }));
     } catch (error) {
       console.error(error);
       toast.error('បរាជ័យក្នុងការផ្ញើ។');
     } finally {
-      setModalState(s => ({ ...s, submitting: false }));
+      setModalState((s) => ({ ...s, submitting: false }));
     }
   };
 
@@ -161,14 +161,16 @@ const SchoolDetailPage: React.FC = () => {
 
         {/* Navigation Buttons */}
         <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-10">
-          <button type="button"
+          <button
+            type="button"
             onClick={() => navigate(-1)}
             aria-label="Go back"
             className="p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/30 transition-colors"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
-          <button type="button"
+          <button
+            type="button"
             onClick={handleShare}
             className="p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/30 transition-colors"
             title="ចែករំលែក (Share)"
@@ -191,7 +193,9 @@ const SchoolDetailPage: React.FC = () => {
           <div className="flex-1">
             <div className="flex flex-wrap items-center gap-2 mb-1">
               <h1 className="text-xl md:text-2xl font-bold text-gray-900">{state.school.name}</h1>
-              {state.school.verified && <CheckCircle className="h-5 w-5 text-blue-500 fill-white" />}
+              {state.school.verified && (
+                <CheckCircle className="h-5 w-5 text-blue-500 fill-white" />
+              )}
             </div>
             <div className="flex flex-col md:flex-row gap-2 md:gap-4 text-sm text-gray-500 mb-2">
               <span className="flex items-center">
@@ -203,7 +207,8 @@ const SchoolDetailPage: React.FC = () => {
             </div>
           </div>
           <div className="w-full md:w-auto flex gap-2">
-            <button type="button"
+            <button
+              type="button"
               onClick={() => openInquiryModal()}
               className="flex-1 md:flex-none bg-primary text-white font-bold py-2.5 px-6 rounded-xl shadow-lg shadow-primary/30 active:scale-95 transition-transform flex items-center justify-center"
             >
@@ -216,20 +221,23 @@ const SchoolDetailPage: React.FC = () => {
       {/* --- TABS --- */}
       <div className="max-w-5xl mx-auto px-4 mt-6">
         <div className="flex border-b border-gray-200 overflow-x-auto scrollbar-hide">
-          <button type="button"
-            onClick={() => setState(s => ({ ...s, activeTab: 'admissions' }))}
+          <button
+            type="button"
+            onClick={() => setState((s) => ({ ...s, activeTab: 'admissions' }))}
             className={`px-6 py-3 text-sm font-bold whitespace-nowrap border-b-2 transition-colors ${state.activeTab === 'admissions' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
           >
             ការជ្រើសរើស ({activeAdmissions.length})
           </button>
-          <button type="button"
-            onClick={() => setState(s => ({ ...s, activeTab: 'courses' }))}
+          <button
+            type="button"
+            onClick={() => setState((s) => ({ ...s, activeTab: 'courses' }))}
             className={`px-6 py-3 text-sm font-bold whitespace-nowrap border-b-2 transition-colors ${state.activeTab === 'courses' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
           >
             វគ្គសិក្សាខ្លី ({state.school.shortCourses.length})
           </button>
-          <button type="button"
-            onClick={() => setState(s => ({ ...s, activeTab: 'about' }))}
+          <button
+            type="button"
+            onClick={() => setState((s) => ({ ...s, activeTab: 'about' }))}
             className={`px-6 py-3 text-sm font-bold whitespace-nowrap border-b-2 transition-colors ${state.activeTab === 'about' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
           >
             អំពី & ជំនាញ
@@ -319,13 +327,15 @@ const SchoolDetailPage: React.FC = () => {
                   )}
                 </div>
                 <div className="bg-gray-50 p-3 flex gap-3">
-                  <button type="button"
+                  <button
+                    type="button"
                     onClick={() => openInquiryModal(adm, false)}
                     className="flex-1 bg-white border border-gray-200 text-gray-700 font-bold py-2.5 rounded-xl hover:bg-gray-100 transition-colors text-sm"
                   >
                     សួរព័ត៌មាន (Ask Info)
                   </button>
-                  <button type="button"
+                  <button
+                    type="button"
                     onClick={() => openInquiryModal(adm, true)}
                     className="flex-1 bg-primary text-white font-bold py-2.5 rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-colors text-sm"
                   >
@@ -412,8 +422,9 @@ const SchoolDetailPage: React.FC = () => {
                 <h3 className="font-bold text-gray-900">ផ្ញើសំណួរ (Send Inquiry)</h3>
                 <p className="text-xs text-gray-500">ទៅកាន់៖ {state.school.name}</p>
               </div>
-              <button type="button"
-                onClick={() => setModalState(s => ({ ...s, show: false }))}
+              <button
+                type="button"
+                onClick={() => setModalState((s) => ({ ...s, show: false }))}
                 aria-label="Close modal"
                 className="text-gray-400 hover:text-gray-600"
               >
@@ -429,36 +440,59 @@ const SchoolDetailPage: React.FC = () => {
               )}
 
               <div>
-                <label htmlFor="inquiry-phone" className="block text-xs font-bold text-gray-500 mb-1">
+                <label
+                  htmlFor="inquiry-phone"
+                  className="block text-xs font-bold text-gray-500 mb-1"
+                >
                   លេខទូរស័ព្ទរបស់អ្នក <span className="text-red-500">*</span>
                 </label>
                 <input
                   id="inquiry-phone"
                   type="tel"
                   value={modalState.inquiryForm.phone}
-                  onChange={(e) => setModalState(s => ({ ...s, inquiryForm: { ...s.inquiryForm, phone: e.target.value } }))}
+                  onChange={(e) =>
+                    setModalState((s) => ({
+                      ...s,
+                      inquiryForm: { ...s.inquiryForm, phone: e.target.value },
+                    }))
+                  }
                   placeholder="012 345 678"
                   className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20"
                 />
               </div>
 
               <div>
-                <label htmlFor="inquiry-message" className="block text-xs font-bold text-gray-500 mb-1">សារ (Message)</label>
+                <label
+                  htmlFor="inquiry-message"
+                  className="block text-xs font-bold text-gray-500 mb-1"
+                >
+                  សារ (Message)
+                </label>
                 <textarea
                   id="inquiry-message"
                   value={modalState.inquiryForm.message}
-                  onChange={(e) => setModalState(s => ({ ...s, inquiryForm: { ...s.inquiryForm, message: e.target.value } }))}
+                  onChange={(e) =>
+                    setModalState((s) => ({
+                      ...s,
+                      inquiryForm: { ...s.inquiryForm, message: e.target.value },
+                    }))
+                  }
                   placeholder="តើអ្នកចង់ដឹងអ្វីខ្លះ?"
                   className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl h-24 resize-none focus:outline-none focus:ring-2 focus:ring-primary/20"
                 />
               </div>
 
-              <button type="button"
+              <button
+                type="button"
                 onClick={handleSubmitInquiry}
                 disabled={modalState.submitting || !modalState.inquiryForm.phone}
                 className="w-full bg-primary text-white font-bold py-3 rounded-xl shadow-lg shadow-primary/20 disabled:opacity-50 disabled:shadow-none flex items-center justify-center"
               >
-                {modalState.submitting ? <Loader2 className="h-5 w-5 animate-spin" /> : 'ផ្ញើទៅសាលា'}
+                {modalState.submitting ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  'ផ្ញើទៅសាលា'
+                )}
               </button>
             </div>
           </div>

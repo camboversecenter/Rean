@@ -54,8 +54,16 @@ const AccountPage: React.FC = () => {
   );
 
   const {
-    profile, fullName, loading, saving, avatarFile, previewUrl,
-    activeMissions, achievements, bookings, levelStats
+    profile,
+    fullName,
+    loading,
+    saving,
+    avatarFile,
+    previewUrl,
+    activeMissions,
+    achievements,
+    bookings,
+    levelStats,
   } = state;
 
   const setProfile = (v: any) => setState({ profile: v });
@@ -66,7 +74,8 @@ const AccountPage: React.FC = () => {
   const setPreviewUrl = (v: any) => setState({ previewUrl: v });
   const setActiveMissions = (v: any) => setState({ activeMissions: v });
   const setAchievements = (v: any) => setState({ achievements: v });
-  const setBookings = (v: any) => setState((prev: any) => ({ bookings: typeof v === 'function' ? v(prev.bookings) : v }));
+  const setBookings = (v: any) =>
+    setState((prev: any) => ({ bookings: typeof v === 'function' ? v(prev.bookings) : v }));
   const setLevelStats = (v: any) => setState({ levelStats: v });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -154,7 +163,9 @@ const AccountPage: React.FC = () => {
   const handleStudentBookingAction = async (bookingId: string, action: 'Accepted' | 'Rejected') => {
     try {
       await updateBookingStatus(bookingId, action);
-      setBookings((prev) => prev.map((b) => (b.id === bookingId ? { ...b, status: action } : b)));
+      setBookings((prev: any) =>
+        prev.map((b: any) => (b.id === bookingId ? { ...b, status: action } : b))
+      );
       if (action === 'Accepted') {
         toast.success('បានទទួលយកគ្រូ! អ្នកអាចចូលថ្នាក់រៀនបានហើយ។', { icon: '🤝' });
       } else {
@@ -192,15 +203,15 @@ const AccountPage: React.FC = () => {
 
   // --- FILTER BOOKINGS LOGIC ---
   const incomingApplications = bookings.filter(
-    (b) => b.status === 'Pending' && b.locationNotes?.includes('[Job Application]')
+    (b: any) => b.status === 'Pending' && b.locationNotes?.includes('[Job Application]')
   );
 
   const myPendingRequests = bookings.filter(
-    (b) => b.status === 'Pending' && !b.locationNotes?.includes('[Job Application]')
+    (b: any) => b.status === 'Pending' && !b.locationNotes?.includes('[Job Application]')
   );
 
   const activeBookings = bookings.filter(
-    (b) => b.status === 'Accepted' || b.status === 'Completed' || b.status === 'Rejected'
+    (b: any) => b.status === 'Accepted' || b.status === 'Completed' || b.status === 'Rejected'
   );
 
   return (
@@ -236,7 +247,8 @@ const AccountPage: React.FC = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <button type="button"
+              <button
+                type="button"
                 onClick={() => fileInputRef.current?.click()}
                 className="absolute bottom-1 right-1 bg-gray-900 text-white p-2 rounded-full shadow-lg hover:scale-105 transition-transform border-2 border-white"
                 title="Change Photo"
@@ -244,7 +256,9 @@ const AccountPage: React.FC = () => {
               >
                 <Camera className="h-4 w-4" />
               </button>
-              <label htmlFor="avatar-upload" className="sr-only">Upload Avatar</label>
+              <label htmlFor="avatar-upload" className="sr-only">
+                Upload Avatar
+              </label>
               <input
                 id="avatar-upload"
                 type="file"
@@ -379,7 +393,7 @@ const AccountPage: React.FC = () => {
                   Applications)
                 </h2>
                 <div className="space-y-4">
-                  {incomingApplications.map((booking) => (
+                  {incomingApplications.map((booking: any) => (
                     <div
                       key={booking.id}
                       className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:border-primary/30 transition-colors"
@@ -404,13 +418,15 @@ const AccountPage: React.FC = () => {
                           )}
                         </div>
                         <div className="flex flex-row sm:flex-col gap-2 shrink-0">
-                          <button type="button"
+                          <button
+                            type="button"
                             onClick={() => handleStudentBookingAction(booking.id, 'Accepted')}
                             className="flex-1 bg-green-600 text-white font-bold py-2 px-4 rounded-xl text-xs hover:bg-green-700 shadow-sm transition-colors"
                           >
                             ទទួល (Accept)
                           </button>
-                          <button type="button"
+                          <button
+                            type="button"
                             onClick={() => handleStudentBookingAction(booking.id, 'Rejected')}
                             className="flex-1 bg-white border border-gray-200 text-gray-600 font-bold py-2 px-4 rounded-xl text-xs hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors"
                           >
@@ -431,7 +447,7 @@ const AccountPage: React.FC = () => {
                   <Clock className="h-5 w-5 mr-2 text-gray-400" /> រង់ចាំការឆ្លើយតប (Pending)
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {myPendingRequests.map((booking) => (
+                  {myPendingRequests.map((booking: any) => (
                     <div
                       key={booking.id}
                       className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 opacity-75 hover:opacity-100 transition-opacity"
@@ -464,7 +480,7 @@ const AccountPage: React.FC = () => {
                   Classes)
                 </h2>
                 <div className="space-y-3">
-                  {activeBookings.map((booking) => (
+                  {activeBookings.map((booking: any) => (
                     <div
                       key={booking.id}
                       className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex items-center justify-between hover:shadow-md transition-shadow"
@@ -501,7 +517,7 @@ const AccountPage: React.FC = () => {
                   <Target className="h-5 w-5 mr-2 text-red-500" /> បេសកកម្ម (Active Missions)
                 </h2>
                 <div className="space-y-3">
-                  {activeMissions.map((m) => (
+                  {activeMissions.map((m: any) => (
                     <div
                       key={m.enrollmentId}
                       className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex items-center justify-between hover:border-primary/30 transition-colors"
@@ -545,7 +561,7 @@ const AccountPage: React.FC = () => {
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {achievements.map((item) => (
+                  {achievements.map((item: any) => (
                     <div
                       key={item.id}
                       className="bg-gradient-to-r from-yellow-50 to-white rounded-xl border border-yellow-100 p-3 flex items-center gap-3"
@@ -576,7 +592,9 @@ const AccountPage: React.FC = () => {
               </div>
 
               <div className="space-y-3">
-                <label htmlFor="fullName" className="sr-only">Full Name</label>
+                <label htmlFor="fullName" className="sr-only">
+                  Full Name
+                </label>
                 <input
                   id="fullName"
                   type="text"
@@ -587,7 +605,8 @@ const AccountPage: React.FC = () => {
                   aria-label="Full Name"
                 />
 
-                <button type="button"
+                <button
+                  type="button"
                   onClick={handleSave}
                   disabled={saving}
                   className="w-full bg-gray-900 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center text-sm"
@@ -606,7 +625,8 @@ const AccountPage: React.FC = () => {
                 <HelpCircle className="h-4 w-4 mr-2" /> មជ្ឈមណ្ឌលជំនួយ
               </Link>
 
-              <button type="button"
+              <button
+                type="button"
                 onClick={handleLogout}
                 className="w-full bg-white border border-red-100 text-red-500 font-bold py-3 rounded-xl hover:bg-red-50 transition-colors flex items-center justify-center text-sm"
               >

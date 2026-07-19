@@ -21,7 +21,11 @@ import { supabase } from '../services/supabaseClient';
 const Header: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [state, setState] = useState({ profile: null as any, activity: [] as any[], showActivity: false });
+  const [state, setState] = useState({
+    profile: null as any,
+    activity: [] as any[],
+    showActivity: false,
+  });
 
   const isHome = location.pathname === '/';
   const isExplore = location.pathname === '/explore';
@@ -44,9 +48,9 @@ const Header: React.FC = () => {
   useEffect(() => {
     const loadProfileData = () => {
       getCurrentUserProfile().then((p) => {
-        if (p) setState(prev => ({ ...prev, profile: p }));
+        if (p) setState((prev) => ({ ...prev, profile: p }));
       });
-      fetchRecentActivity().then(a => setState(prev => ({ ...prev, activity: a })));
+      fetchRecentActivity().then((a) => setState((prev) => ({ ...prev, activity: a })));
     };
 
     // Load initially
@@ -59,7 +63,7 @@ const Header: React.FC = () => {
       if (session) {
         loadProfileData();
       } else {
-        setState(prev => ({ ...prev, profile: null, activity: [] }));
+        setState((prev) => ({ ...prev, profile: null, activity: [] }));
       }
     });
 
@@ -82,8 +86,10 @@ const Header: React.FC = () => {
       state.profile.role === 'school' ||
       state.profile.role === 'admin' ||
       state.profile.role === 'tutor');
-  const isTutor = state.profile && (state.profile.role === 'tutor' || state.profile.role === 'admin');
-  const isSchool = state.profile && (state.profile.role === 'school' || state.profile.role === 'admin');
+  const isTutor =
+    state.profile && (state.profile.role === 'tutor' || state.profile.role === 'admin');
+  const isSchool =
+    state.profile && (state.profile.role === 'school' || state.profile.role === 'admin');
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
@@ -99,7 +105,8 @@ const Header: React.FC = () => {
             isLeaderboard ||
             isRewards ||
             isDocs ? (
-              <button type="button"
+              <button
+                type="button"
                 onClick={() => navigate(-1)}
                 aria-label="Go back"
                 className="p-2 -ml-2 text-gray-600 hover:text-primary rounded-full hover:bg-gray-100"
@@ -177,8 +184,11 @@ const Header: React.FC = () => {
 
                 {/* Notifications */}
                 <div className="relative">
-                  <button type="button"
-                    onClick={() => setState(prev => ({ ...prev, showActivity: !prev.showActivity }))}
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setState((prev) => ({ ...prev, showActivity: !prev.showActivity }))
+                    }
                     aria-label="Notifications"
                     className="p-2 text-gray-400 hover:text-primary relative"
                   >
@@ -192,7 +202,7 @@ const Header: React.FC = () => {
                     <>
                       <div
                         className="fixed inset-0 z-40"
-                        onClick={() => setState(prev => ({ ...prev, showActivity: false }))}
+                        onClick={() => setState((prev) => ({ ...prev, showActivity: false }))}
                       ></div>
                       <div className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden animate-fade-in">
                         <div className="p-3 border-b border-gray-50 flex justify-between items-center bg-gray-50">
@@ -239,7 +249,7 @@ const Header: React.FC = () => {
                         <Link
                           to="/leaderboard"
                           className="block p-2 text-center text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors"
-                          onClick={() => setState(prev => ({ ...prev, showActivity: false }))}
+                          onClick={() => setState((prev) => ({ ...prev, showActivity: false }))}
                         >
                           មើលតារាងពិន្ទុ (Leaderboard)
                         </Link>

@@ -10,17 +10,17 @@ const LuckyDropManager: React.FC = () => {
   const location = useLocation();
   const [state, setState] = useState({
     isVisible: false,
-    userId: null as string | null
+    userId: null as string | null,
   });
 
   useEffect(() => {
-    getCurrentUser().then((u) => setState(s => ({ ...s, userId: u?.id || null })));
+    getCurrentUser().then((u) => setState((s) => ({ ...s, userId: u?.id || null })));
   }, []);
 
   useEffect(() => {
     // Reset state on every navigation
-    setState(s => ({ ...s, isVisible: false }));
-    let timeoutId: NodeJS.Timeout;
+    setState((s) => ({ ...s, isVisible: false }));
+    let timeoutId: ReturnType<typeof setTimeout>;
 
     const tryTriggerLuck = async () => {
       if (!state.userId) return;
@@ -34,7 +34,7 @@ const LuckyDropManager: React.FC = () => {
         const canEarn = await checkCanEarn(state.userId, 'LUCKY_DROP');
         if (canEarn) {
           // Delay slightly (1.5s) so it doesn't clutter the UI immediately upon load
-          timeoutId = setTimeout(() => setState(s => ({ ...s, isVisible: true })), 1500);
+          timeoutId = setTimeout(() => setState((s) => ({ ...s, isVisible: true })), 1500);
         }
       }
     };
@@ -42,7 +42,7 @@ const LuckyDropManager: React.FC = () => {
     if (state.userId) {
       tryTriggerLuck();
     }
-    
+
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
     };
@@ -54,7 +54,7 @@ const LuckyDropManager: React.FC = () => {
     // Calculate random points (Between 5 and 20)
     const points = Math.floor(Math.random() * (20 - 5 + 1)) + 5;
 
-    setState(s => ({ ...s, isVisible: false })); // Hide immediately to prevent double clicks
+    setState((s) => ({ ...s, isVisible: false })); // Hide immediately to prevent double clicks
 
     try {
       await awardAction(state.userId, 'LUCKY_DROP', points);
@@ -97,7 +97,8 @@ const LuckyDropManager: React.FC = () => {
 
   return (
     <div className="fixed bottom-24 right-4 z-[90] animate-bounce-in">
-      <button type="button"
+      <button
+        type="button"
         className="relative group cursor-pointer transition-transform hover:scale-110 active:scale-95 border-none bg-transparent p-0 m-0 text-left"
         onClick={handleClaim}
         title="ចុចដើម្បីទទួលរង្វាន់ (Click to Claim)"

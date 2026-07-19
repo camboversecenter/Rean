@@ -60,7 +60,7 @@ const RoleSelectionPage: React.FC = () => {
 
   const handleConfirm = async () => {
     if (!selectedRole) return;
-    setState(s => ({ ...s, loading: true, errorMsg: null }));
+    setState((s) => ({ ...s, loading: true, errorMsg: null }));
 
     try {
       await updateUserRole(selectedRole);
@@ -68,7 +68,11 @@ const RoleSelectionPage: React.FC = () => {
       window.location.reload();
     } catch (error: any) {
       console.error('Error updating role:', error);
-      setState(s => ({ ...s, loading: false, errorMsg: error.message || 'An unexpected error occurred. Please try again.' }));
+      setState((s) => ({
+        ...s,
+        loading: false,
+        errorMsg: error.message || 'An unexpected error occurred. Please try again.',
+      }));
     }
   };
 
@@ -83,7 +87,10 @@ const RoleSelectionPage: React.FC = () => {
         </div>
 
         {errorMsg && (
-          <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-2xl flex items-start mx-2" role="alert">
+          <div
+            className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-2xl flex items-start mx-2"
+            role="alert"
+          >
             <AlertCircle className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" aria-hidden="true" />
             <span className="text-sm">{errorMsg}</span>
           </div>
@@ -92,9 +99,10 @@ const RoleSelectionPage: React.FC = () => {
         {/* Mobile First Grid: 1 col on mobile, 2 on tablet+ */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-24 md:mb-8 px-2">
           {ROLES.map((role) => (
-            <button type="button"
+            <button
+              type="button"
               key={role.id}
-              onClick={() => setState(s => ({ ...s, selectedRole: role.id }))}
+              onClick={() => setState((s) => ({ ...s, selectedRole: role.id }))}
               aria-pressed={selectedRole === role.id}
               aria-label={`ជ្រើសរើសតួនាទី ${role.title}`}
               className={`relative cursor-pointer bg-white p-5 rounded-2xl border-2 transition-all active:scale-[0.98] text-left w-full ${
@@ -127,7 +135,8 @@ const RoleSelectionPage: React.FC = () => {
         {/* Floating Bottom Button for Mobile, Static for Desktop */}
         <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 md:static md:bg-transparent md:border-none md:p-2 z-10">
           <div className="max-w-2xl mx-auto">
-            <button type="button"
+            <button
+              type="button"
               onClick={handleConfirm}
               disabled={!selectedRole || loading}
               aria-label="បន្តទៅមុខ (Continue)"
@@ -135,7 +144,10 @@ const RoleSelectionPage: React.FC = () => {
             >
               {loading ? (
                 <>
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" aria-hidden="true"></div>
+                  <div
+                    className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"
+                    aria-hidden="true"
+                  ></div>
                   កំពុងដំណើរការ...
                 </>
               ) : (

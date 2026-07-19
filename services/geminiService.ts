@@ -1,6 +1,6 @@
 import { supabase } from './supabaseClient';
 import { GoogleGenAI } from '@google/genai';
-import { spendPoints, canAfford } from './gamificationService';
+import { canAfford } from './gamificationService';
 
 // --- ECONOMY CONFIGURATION ---
 export const AI_COSTS = {
@@ -14,29 +14,33 @@ export const AI_COSTS = {
   TAG_REPLY: 10, // Tagging @tonsay
 };
 
-/* Updated GenAI initialization to use process.env.API_KEY directly as per guidelines */
-// Ensure we handle the case where the key might be missing during dev/build gracefully
-export const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+// DEV-ONLY direct Gemini access. In production this is always an empty
+// string: the import.meta.env.DEV guard is statically false in a production
+// build, so the key can never end up in the shipped bundle. All production
+// AI calls go through the ai-assistant Edge Function, which holds the real
+// key in Supabase secrets and deducts points server-side.
+const DEV_GEMINI_KEY: string = import.meta.env.DEV
+  ? (import.meta.env.VITE_GEMINI_DEV_KEY as string) || ''
+  : '';
 
-// --- HELPER: POINT DEDUCTION GATEKEEPER ---
-const processPayment = async (cost: number, featureName: string): Promise<void> => {
-  // 1. Check Affordability
+export const hasDevAiKey = (): boolean => Boolean(DEV_GEMINI_KEY);
+
+export const ai = new GoogleGenAI({ apiKey: DEV_GEMINI_KEY });
+
+// --- HELPER: AFFORDABILITY GATE (UX ONLY) ---
+// The authoritative balance check and deduction happen inside the
+// ai-assistant Edge Function. Charging here as well double-bills the user,
+// so this only pre-checks the balance to fail fast with a clear message.
+const ensureAffordable = async (cost: number): Promise<void> => {
   const affordable = await canAfford(cost);
   if (!affordable) {
     throw new Error(`មិនមានពិន្ទុគ្រប់គ្រាន់! (Insufficient Points). ត្រូវការ ${cost} ពិន្ទុ។`);
-  }
-
-  // 2. Deduct Points
-  const success = await spendPoints(cost, `Used AI: ${featureName}`);
-  if (!success) {
-    throw new Error('បរាជ័យក្នុងការទូទាត់ពិន្ទុ។');
   }
 };
 
 // --- HELPER: DIRECT FALLBACK (DEV MODE) ---
 const tryDirectFallback = async (taskName: string, operation: () => Promise<any>) => {
-  /* Using process.env.API_KEY directly for check */
-  if (process.env.API_KEY) {
+  if (DEV_GEMINI_KEY) {
     console.warn(`Edge Function failed for ${taskName}. Attempting direct client-side fallback...`);
     try {
       return await operation();
@@ -51,7 +55,7 @@ const tryDirectFallback = async (taskName: string, operation: () => Promise<any>
     }
   } else {
     console.warn(
-      `Edge Function failed for ${taskName}. No local API_KEY found for fallback. Make sure API_KEY is set in your environment variables.`
+      `Edge Function failed for ${taskName}. No dev fallback key found. For local development set VITE_GEMINI_DEV_KEY in .env.`
     );
   }
   return null;
@@ -85,7 +89,7 @@ const parseEvaluationResponse = (
  * Cost: 1 Point (Plagiarism Check)
  */
 export const generateEmbedding = async (text: string): Promise<number[] | null> => {
-  await processPayment(AI_COSTS.EMBEDDING, 'Similarity Check');
+  await ensureAffordable(AI_COSTS.EMBEDDING);
 
   try {
     const { data, error } = await supabase.functions.invoke('ai-assistant', {
@@ -106,9 +110,9 @@ export const generateEmbedding = async (text: string): Promise<number[] | null> 
     const fallback = await tryDirectFallback('Embedding', async () => {
       const res = await ai.models.embedContent({
         model: 'text-embedding-004',
-        content: { parts: [{ text }] },
+        contents: { parts: [{ text }] },
       });
-      return res.embedding.values;
+      return res.embeddings?.[0]?.values;
     });
 
     return fallback || null;
@@ -127,15 +131,28 @@ export const checkContentQuality = async (content: string): Promise<number> => {
         Return ONLY the integer number.
     `;
 
-  try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
-      contents: prompt,
-    });
-    const text = response.text || '0';
+  const parseScore = (text: string): number => {
     const score = parseInt(text.match(/\d+/)?.[0] || '0');
     return isNaN(score) ? 0 : score;
+  };
+
+  try {
+    // Free action (cost 0): runs on the Edge Function so it works in
+    // production, where the browser has no Gemini key.
+    const { data, error } = await supabase.functions.invoke('ai-assistant', {
+      body: { action: 'quality', payload: { prompt } },
+    });
+    if (error || data?.error) throw new Error(data?.error || 'Quality Check Failed');
+    return parseScore(data.text || '0');
   } catch (e) {
+    const fallbackText = await tryDirectFallback('Quality Check', async () => {
+      const response = await ai.models.generateContent({
+        model: 'gemini-3-flash-preview',
+        contents: prompt,
+      });
+      return response.text;
+    });
+    if (fallbackText) return parseScore(fallbackText);
     return 50;
   }
 };
@@ -146,7 +163,7 @@ export const chatWithAI = async (
   customSystemInstruction?: string,
   useSearch: boolean = false
 ) => {
-  await processPayment(AI_COSTS.CHAT, 'Chat');
+  await ensureAffordable(AI_COSTS.CHAT);
 
   try {
     const { data, error } = await supabase.functions.invoke('ai-assistant', {
@@ -208,7 +225,7 @@ export const chatWithAiTag = async (message: string, systemInstruction: string) 
     console.error('Secure Tag Chat Failed:', error);
     // Fallback allowed for DEV, but in prod this would bypass payment if we use direct gemini
     // So we enforce server-side only for this paid feature unless in full dev mode
-    if (process.env.API_KEY) {
+    if (DEV_GEMINI_KEY) {
       const chat = ai.chats.create({
         model: 'gemini-3-flash-preview',
         config: { systemInstruction },
@@ -221,7 +238,7 @@ export const chatWithAiTag = async (message: string, systemInstruction: string) 
 };
 
 export const generateImage = async (prompt: string): Promise<string | null> => {
-  await processPayment(AI_COSTS.IMAGE, 'Image Generation');
+  await ensureAffordable(AI_COSTS.IMAGE);
 
   try {
     const { data, error } = await supabase.functions.invoke('ai-assistant', {
@@ -244,7 +261,7 @@ export const evaluateImageSubmission = async (
   optionalText: string = ''
 ): Promise<{ passed: boolean; score: number; feedback: string }> => {
   // Uses higher cost for vision
-  await processPayment(AI_COSTS.EVALUATION + 5, 'Vision Grading');
+  await ensureAffordable(AI_COSTS.EVALUATION + 5);
 
   const prompt = `
         [SYSTEM: GRADING MODE - VISION]
@@ -267,17 +284,26 @@ export const evaluateImageSubmission = async (
       `;
 
   try {
-    // Direct Client Fallback used as primary here for Vision until Edge Function supports it
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash-image', // Correct model for image input
-      contents: {
-        parts: [{ inlineData: { mimeType: 'image/png', data: imageBase64 } }, { text: prompt }],
-      },
+    const { data, error } = await supabase.functions.invoke('ai-assistant', {
+      body: { action: 'evaluate-image', payload: { prompt, imageBase64 } },
     });
 
-    return parseEvaluationResponse(response.text || '');
+    if (error || data?.error) throw new Error(data?.error || 'Vision Eval Failed');
+    return parseEvaluationResponse(data.text || '');
   } catch (error: any) {
     console.error('Vision Evaluation Error:', error);
+
+    const fallbackText = await tryDirectFallback('Vision Evaluate', async () => {
+      const response = await ai.models.generateContent({
+        model: 'gemini-2.5-flash-image', // Correct model for image input
+        contents: {
+          parts: [{ inlineData: { mimeType: 'image/png', data: imageBase64 } }, { text: prompt }],
+        },
+      });
+      return response.text;
+    });
+    if (fallbackText) return parseEvaluationResponse(fallbackText);
+
     return {
       passed: false,
       score: 0,
@@ -291,7 +317,7 @@ export const evaluateSubmission = async (
   persona: string,
   submission: string
 ): Promise<{ passed: boolean; score: number; feedback: string }> => {
-  await processPayment(AI_COSTS.EVALUATION, 'Smart Grading');
+  await ensureAffordable(AI_COSTS.EVALUATION);
 
   const prompt = `
       [SYSTEM: GRADING MODE]
@@ -331,7 +357,7 @@ export const evaluateSubmission = async (
 };
 
 export const generateMissionStructure = async (topic: string): Promise<Partial<any>> => {
-  await processPayment(AI_COSTS.STRUCTURE, 'Mission Generation');
+  await ensureAffordable(AI_COSTS.STRUCTURE);
 
   const prompt = `
         Act as an expert curriculum designer. 

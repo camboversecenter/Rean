@@ -61,13 +61,17 @@ const LoginPage: React.FC = () => {
         </p>
 
         {errorMessage && (
-          <div className="mb-6 bg-red-50 border border-red-100 text-red-600 px-4 py-4 rounded-2xl flex items-center text-left animate-pulse-once" role="alert">
+          <div
+            className="mb-6 bg-red-50 border border-red-100 text-red-600 px-4 py-4 rounded-2xl flex items-center text-left animate-pulse-once"
+            role="alert"
+          >
             <AlertCircle className="h-5 w-5 mr-3 flex-shrink-0" aria-hidden="true" />
             <span className="text-sm font-medium">{errorMessage}</span>
           </div>
         )}
 
-        <button type="button"
+        <button
+          type="button"
           onClick={handleLogin}
           aria-label="បន្តជាមួយ Google"
           className="w-full flex items-center justify-center gap-3 bg-white border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-800 font-bold py-4 px-6 rounded-2xl transition-all transform active:scale-[0.98] group"
@@ -89,7 +93,10 @@ const LoginPage: React.FC = () => {
               aria-label="Telegram Community"
               className="inline-flex items-center justify-center px-4 py-2 bg-blue-50 rounded-full text-[10px] text-blue-600 font-bold hover:bg-blue-100 transition-colors border border-blue-100"
             >
-              <Send className="h-3 w-3 mr-1.5 rotate-45 transform -translate-y-[1px]" aria-hidden="true" />
+              <Send
+                className="h-3 w-3 mr-1.5 rotate-45 transform -translate-y-[1px]"
+                aria-hidden="true"
+              />
               តេឡេក្រាមសហគមន៍ (Telegram)
             </a>
             <Link

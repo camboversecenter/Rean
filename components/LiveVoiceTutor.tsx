@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { ai, AI_COSTS } from '../services/geminiService';
+import { ai, AI_COSTS, hasDevAiKey } from '../services/geminiService';
 import { canAfford, spendPoints } from '../services/gamificationService';
 import { LiveServerMessage, Modality } from '@google/genai';
 import { Mic, X, Radio, Loader2, AlertCircle } from './Icons';
@@ -71,21 +71,30 @@ const LiveVoiceTutor: React.FC<LiveVoiceTutorProps> = ({ onClose }) => {
   useEffect(() => {
     // Initial Check
     const init = async () => {
-      if (!process.env.API_KEY) {
-        setState(prev => ({ ...prev, status: 'error', errorMessage: 'API Key missing. Live features require a local API Key.' }));
+      if (!hasDevAiKey()) {
+        setState((prev) => ({
+          ...prev,
+          status: 'error',
+          errorMessage:
+            'Live voice is only available in local development (set VITE_GEMINI_DEV_KEY). No points were charged.',
+        }));
         return;
       }
 
       const affordable = await canAfford(AI_COSTS.LIVE_SESSION);
       if (!affordable) {
-        setState(prev => ({ ...prev, status: 'error', errorMessage: `Not enough points. Need ${AI_COSTS.LIVE_SESSION} points to start.` }));
+        setState((prev) => ({
+          ...prev,
+          status: 'error',
+          errorMessage: `Not enough points. Need ${AI_COSTS.LIVE_SESSION} points to start.`,
+        }));
         return;
       }
 
       // Deduct Entry Fee
       const success = await spendPoints(AI_COSTS.LIVE_SESSION, 'Started Live Tutor Session');
       if (!success) {
-        setState(prev => ({ ...prev, status: 'error', errorMessage: 'Payment failed.' }));
+        setState((prev) => ({ ...prev, status: 'error', errorMessage: 'Payment failed.' }));
         return;
       }
 
@@ -98,7 +107,12 @@ const LiveVoiceTutor: React.FC<LiveVoiceTutorProps> = ({ onClose }) => {
     return () => {
       cleanup();
     };
-  }, [cleanup, startSession]);
+    // Mount-only: referencing cleanup/startSession in the deps array reads
+    // them before their const declarations below (temporal dead zone) and
+    // crashed the component on open. They are stable useCallbacks, so an
+    // empty deps array is equivalent.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const cleanup = useCallback(() => {
     streamRef.current?.getTracks().forEach((t) => t.stop());
@@ -138,10 +152,16 @@ const LiveVoiceTutor: React.FC<LiveVoiceTutorProps> = ({ onClose }) => {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       streamRef.current = stream;
 
-      inputContextRef.current = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)({
+      inputContextRef.current = new (
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+      )({
         sampleRate: 16000,
       });
-      outputContextRef.current = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)({
+      outputContextRef.current = new (
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+      )({
         sampleRate: 24000,
       });
 
@@ -153,7 +173,7 @@ const LiveVoiceTutor: React.FC<LiveVoiceTutorProps> = ({ onClose }) => {
         model: 'gemini-2.5-flash-native-audio-preview-12-2025',
         callbacks: {
           onopen: () => {
-            setState(prev => ({ ...prev, status: 'connected' }));
+            setState((prev) => ({ ...prev, status: 'connected' }));
             console.log('Gemini Live Connected');
 
             // Start Mic Streaming
@@ -166,7 +186,7 @@ const LiveVoiceTutor: React.FC<LiveVoiceTutorProps> = ({ onClose }) => {
               // Simple volume meter
               let sum = 0;
               for (let i = 0; i < inputData.length; i++) sum += inputData[i] * inputData[i];
-              setState(prev => ({ ...prev, volume: Math.sqrt(sum / inputData.length) }));
+              setState((prev) => ({ ...prev, volume: Math.sqrt(sum / inputData.length) }));
 
               // Create Blob and Send
               const pcmBlob = createPcmBlob(inputData);
@@ -182,7 +202,7 @@ const LiveVoiceTutor: React.FC<LiveVoiceTutorProps> = ({ onClose }) => {
             processorRef.current = processor;
           },
           onmessage: async (msg: LiveServerMessage) => {
-            const audioData = msg.serverContent?.modelTurn?.parts[0]?.inlineData?.data;
+            const audioData = msg.serverContent?.modelTurn?.parts?.[0]?.inlineData?.data;
             if (audioData && outputCtx) {
               playAudioChunk(audioData, outputCtx);
             }
@@ -195,11 +215,15 @@ const LiveVoiceTutor: React.FC<LiveVoiceTutorProps> = ({ onClose }) => {
             }
           },
           onclose: () => {
-            setState(prev => ({ ...prev, status: 'closed' }));
+            setState((prev) => ({ ...prev, status: 'closed' }));
           },
           onerror: (e) => {
             console.error('Live Error', e);
-            setState(prev => ({ ...prev, status: 'error', errorMessage: 'Connection failed. Please try again.' }));
+            setState((prev) => ({
+              ...prev,
+              status: 'error',
+              errorMessage: 'Connection failed. Please try again.',
+            }));
           },
         },
         config: {
@@ -207,8 +231,13 @@ const LiveVoiceTutor: React.FC<LiveVoiceTutorProps> = ({ onClose }) => {
           speechConfig: {
             voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Kore' } },
           },
-          systemInstruction:
-            'You are Sophea Tonsay (The Wise Rabbit), a helpful and friendly English tutor for Cambodian students. Speak clearly and slowly. Correct grammar mistakes gently. Keep responses concise.',
+          systemInstruction: {
+            parts: [
+              {
+                text: 'You are Sophea Tonsay (The Wise Rabbit), a helpful and friendly English tutor for Cambodian students. Speak clearly and slowly. Correct grammar mistakes gently. Keep responses concise.',
+              },
+            ],
+          },
         },
       });
 
@@ -216,15 +245,14 @@ const LiveVoiceTutor: React.FC<LiveVoiceTutorProps> = ({ onClose }) => {
     } catch (e: unknown) {
       console.error('Setup Failed', e);
       const msg = e instanceof Error ? e.message : 'Failed to initialize microphone or connection.';
-      setState(prev => ({ ...prev, status: 'error', errorMessage: msg }));
+      setState((prev) => ({ ...prev, status: 'error', errorMessage: msg }));
     }
   }, [playAudioChunk]);
 
-
-
   return (
     <div className="fixed inset-0 z-[100] bg-gray-900 flex flex-col items-center justify-center text-white p-6 animate-in fade-in zoom-in duration-300">
-      <button type="button"
+      <button
+        type="button"
         onClick={onClose}
         aria-label="Close"
         className="absolute top-6 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
@@ -298,7 +326,8 @@ const LiveVoiceTutor: React.FC<LiveVoiceTutorProps> = ({ onClose }) => {
           </div>
         )}
 
-        <button type="button"
+        <button
+          type="button"
           onClick={onClose}
           className="mt-8 bg-red-500/20 text-red-400 border border-red-500/50 px-8 py-3 rounded-full font-bold text-sm hover:bg-red-500 hover:text-white transition-all flex items-center"
         >

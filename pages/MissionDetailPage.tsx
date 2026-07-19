@@ -109,7 +109,7 @@ const MissionDetailPage: React.FC = () => {
     }
 
     if (mission.price > 0) {
-      setPaymentState(prev => ({ ...prev, showModal: true }));
+      setPaymentState((prev) => ({ ...prev, showModal: true }));
     } else {
       // Direct join for free
       processEnrollment(null);
@@ -120,10 +120,10 @@ const MissionDetailPage: React.FC = () => {
     if (!mission) return;
     if (!currentUser) return; // Guard
 
-    setPaymentState(prev => ({ ...prev, joining: true }));
+    setPaymentState((prev) => ({ ...prev, joining: true }));
     try {
       const newEnrollment = await enrollInMission(mission.id, receipt);
-      
+
       let started = false;
       let pending = false;
 
@@ -134,14 +134,14 @@ const MissionDetailPage: React.FC = () => {
         pending = true;
         toast.success('សំណើត្រូវបានផ្ញើ! កំពុងរង់ចាំការត្រួតពិនិត្យ។', { icon: '⏳' });
       }
-      
+
       setMissionState({ enrollment: newEnrollment, started, pending });
-      setPaymentState(prev => ({ ...prev, showModal: false }));
+      setPaymentState((prev) => ({ ...prev, showModal: false }));
     } catch (error: any) {
       console.error('Enrollment error:', error);
       toast.error(error.message || 'មិនអាចចាប់ផ្តើមបេសកកម្មបានទេ។');
     } finally {
-      setPaymentState(prev => ({ ...prev, joining: false }));
+      setPaymentState((prev) => ({ ...prev, joining: false }));
     }
   };
 
@@ -176,7 +176,8 @@ const MissionDetailPage: React.FC = () => {
     return (
       <>
         <div className="fixed bottom-4 left-4 z-50 md:hidden">
-          <button type="button"
+          <button
+            type="button"
             onClick={() => navigate(-1)}
             aria-label="Go back"
             className="bg-black/50 text-white p-2 rounded-full backdrop-blur-md"
@@ -207,14 +208,16 @@ const MissionDetailPage: React.FC = () => {
           className="w-full h-full object-cover opacity-60"
         />
         <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-10">
-          <button type="button"
+          <button
+            type="button"
             onClick={() => navigate(-1)}
             aria-label="Go back"
             className="p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/30 transition-colors"
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
-          <button type="button"
+          <button
+            type="button"
             onClick={handleShare}
             className="p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/30 transition-colors"
             title="ចែករំលែក (Share)"
@@ -312,7 +315,8 @@ const MissionDetailPage: React.FC = () => {
                   <p className="text-xs">បេសកកម្មនេះជាឯកជន។ សូមទាក់ទងអ្នកបង្កើតដើម្បីចូលរៀន។</p>
                 </div>
               ) : (
-                <button type="button"
+                <button
+                  type="button"
                   onClick={handleJoinClick}
                   disabled={paymentState.joining}
                   className={`w-full text-white font-bold py-4 rounded-xl shadow-xl hover:scale-105 transition-transform flex items-center justify-center mb-4 group ${
@@ -355,7 +359,11 @@ const MissionDetailPage: React.FC = () => {
               <h3 className="font-bold text-gray-900 flex items-center">
                 <DollarSign className="h-5 w-5 mr-1 text-green-600" /> ការទូទាត់ប្រាក់
               </h3>
-              <button type="button" onClick={() => setPaymentState(prev => ({ ...prev, showModal: false }))} aria-label="Close modal">
+              <button
+                type="button"
+                onClick={() => setPaymentState((prev) => ({ ...prev, showModal: false }))}
+                aria-label="Close modal"
+              >
                 <X className="h-5 w-5 text-gray-400" />
               </button>
             </div>
@@ -392,7 +400,10 @@ const MissionDetailPage: React.FC = () => {
 
               {/* Upload Receipt */}
               <div>
-                <label htmlFor="receiptUpload" className="block text-xs font-bold text-gray-500 mb-2 uppercase">
+                <label
+                  htmlFor="receiptUpload"
+                  className="block text-xs font-bold text-gray-500 mb-2 uppercase"
+                >
                   បញ្ចូលវិក្កយបត្រ (Upload Receipt)
                 </label>
                 <div className="relative group cursor-pointer">
@@ -401,7 +412,9 @@ const MissionDetailPage: React.FC = () => {
                     type="file"
                     accept="image/*"
                     className="absolute inset-0 opacity-0 cursor-pointer z-10 w-full h-full"
-                    onChange={(e) => setPaymentState(prev => ({ ...prev, receipt: e.target.files?.[0] || null }))}
+                    onChange={(e) =>
+                      setPaymentState((prev) => ({ ...prev, receipt: e.target.files?.[0] || null }))
+                    }
                   />
                   <div
                     className={`border-2 border-dashed rounded-xl p-4 flex flex-col items-center justify-center transition-colors ${paymentState.receipt ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:bg-gray-50'}`}
@@ -409,7 +422,9 @@ const MissionDetailPage: React.FC = () => {
                     {paymentState.receipt ? (
                       <>
                         <CheckCircle className="h-8 w-8 text-green-500 mb-2" />
-                        <p className="text-xs font-bold text-green-700">{paymentState.receipt.name}</p>
+                        <p className="text-xs font-bold text-green-700">
+                          {paymentState.receipt.name}
+                        </p>
                       </>
                     ) : (
                       <>
@@ -421,12 +436,17 @@ const MissionDetailPage: React.FC = () => {
                 </div>
               </div>
 
-              <button type="button"
+              <button
+                type="button"
                 onClick={() => processEnrollment(paymentState.receipt)}
                 disabled={paymentState.joining || !paymentState.receipt}
                 className="w-full bg-primary text-white font-bold py-3 rounded-xl shadow-lg disabled:opacity-50 disabled:shadow-none flex items-center justify-center"
               >
-                {paymentState.joining ? <Loader2 className="h-5 w-5 animate-spin" /> : 'បញ្ជាក់ការបង់ប្រាក់'}
+                {paymentState.joining ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  'បញ្ជាក់ការបង់ប្រាក់'
+                )}
               </button>
             </div>
           </div>

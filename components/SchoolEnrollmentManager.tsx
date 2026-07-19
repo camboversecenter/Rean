@@ -56,7 +56,9 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
   };
 
   const filteredEnrollments = enrollments.filter((e) => {
-    const matchesSearch = (e.studentName || '').toLowerCase().includes(state.searchStudent.toLowerCase());
+    const matchesSearch = (e.studentName || '')
+      .toLowerCase()
+      .includes(state.searchStudent.toLowerCase());
     const matchesCourse = state.selectedCourse === 'All' || e.courseTitle === state.selectedCourse;
     return matchesSearch && matchesCourse;
   });
@@ -182,7 +184,8 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
           <div className="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl animate-scale-in">
             <div className="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
               <h3 className="font-bold text-gray-900 text-lg">ព័ត៌មានលម្អិត (Details)</h3>
-              <button type="button"
+              <button
+                type="button"
                 aria-label="Close"
                 onClick={() => setState((prev) => ({ ...prev, selectedEnrollment: null }))}
                 className="text-gray-400 hover:text-gray-600"
@@ -244,7 +247,8 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
               {/* Actions */}
               {state.selectedEnrollment.status === 'Pending' ? (
                 <div className="grid grid-cols-2 gap-3 pt-2">
-                  <button type="button"
+                  <button
+                    type="button"
                     onClick={() => handleAction(state.selectedEnrollment!.id, 'Approved')}
                     disabled={!!state.processingId}
                     className="bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-blue-700 transition-all active:scale-95 flex items-center justify-center"
@@ -256,7 +260,8 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
                     )}
                     អនុម័ត (Approve)
                   </button>
-                  <button type="button"
+                  <button
+                    type="button"
                     onClick={() => handleAction(state.selectedEnrollment!.id, 'Rejected')}
                     disabled={!!state.processingId}
                     className="bg-white border border-red-200 text-red-600 font-bold py-3 rounded-xl hover:bg-red-50 transition-all active:scale-95 flex items-center justify-center"
@@ -267,7 +272,8 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
                 </div>
               ) : state.selectedEnrollment.status === 'Approved' ? (
                 <div className="pt-2">
-                  <button type="button"
+                  <button
+                    type="button"
                     onClick={() => handleAction(state.selectedEnrollment!.id, 'Completed')}
                     disabled={!!state.processingId}
                     className="w-full bg-green-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-green-700 transition-all active:scale-95 flex items-center justify-center"

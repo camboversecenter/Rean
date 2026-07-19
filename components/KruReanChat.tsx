@@ -190,7 +190,8 @@ const KruReanChat: React.FC = () => {
             </div>
           </div>
 
-          <button type="button"
+          <button
+            type="button"
             onClick={handleSend}
             aria-label="Send message"
             disabled={!state.input.trim() || state.isLoading}

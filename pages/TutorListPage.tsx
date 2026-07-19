@@ -43,63 +43,66 @@ const TutorListPage: React.FC = () => {
     showApplyModal: false,
     selectedRequest: null as TutorRequest | null,
     applyMessage: '',
-    applying: false
+    applying: false,
   });
 
   useEffect(() => {
     // Initial Load user
     getCurrentUserProfile().then((user) => {
-      if (user) setState(s => ({ ...s, currentUser: user }));
+      if (user) setState((s) => ({ ...s, currentUser: user }));
     });
   }, []);
 
-  const loadData = React.useCallback(async (pageToLoad: number, isReset: boolean = false, tab: string, filter: string) => {
-    if (!isReset) setState(s => ({ ...s, loadingMore: true }));
-    else setState(s => ({ ...s, loading: true }));
+  const loadData = React.useCallback(
+    async (pageToLoad: number, isReset: boolean = false, tab: string, filter: string) => {
+      if (!isReset) setState((s) => ({ ...s, loadingMore: true }));
+      else setState((s) => ({ ...s, loading: true }));
 
-    try {
-      if (tab === 'tutors') {
-        const data = await fetchAllTutors(pageToLoad, LIMIT, filter);
-        setState(s => ({
-          ...s,
-          hasMore: data.length >= LIMIT,
-          tutors: isReset ? data : [...s.tutors, ...data],
-          loading: false,
-          loadingMore: false,
-          refreshing: false
-        }));
-      } else {
-        const data = await fetchStudentRequests(pageToLoad, LIMIT);
-        setState(s => ({
-          ...s,
-          hasMore: data.length >= LIMIT,
-          requests: isReset ? data : [...s.requests, ...data],
-          loading: false,
-          loadingMore: false,
-          refreshing: false
-        }));
+      try {
+        if (tab === 'tutors') {
+          const data = await fetchAllTutors(pageToLoad, LIMIT, filter);
+          setState((s) => ({
+            ...s,
+            hasMore: data.length >= LIMIT,
+            tutors: isReset ? data : [...s.tutors, ...data],
+            loading: false,
+            loadingMore: false,
+            refreshing: false,
+          }));
+        } else {
+          const data = await fetchStudentRequests(pageToLoad, LIMIT);
+          setState((s) => ({
+            ...s,
+            hasMore: data.length >= LIMIT,
+            requests: isReset ? data : [...s.requests, ...data],
+            loading: false,
+            loadingMore: false,
+            refreshing: false,
+          }));
+        }
+      } catch (e) {
+        console.error('Failed to load data', e);
+        toast.error('បរាជ័យក្នុងការផ្ទុកទិន្នន័យ។');
+        setState((s) => ({ ...s, loading: false, loadingMore: false, refreshing: false }));
       }
-    } catch (e) {
-      console.error('Failed to load data', e);
-      toast.error('បរាជ័យក្នុងការផ្ទុកទិន្នន័យ។');
-      setState(s => ({ ...s, loading: false, loadingMore: false, refreshing: false }));
-    }
-  }, []);
+    },
+    []
+  );
 
   // Effect to handle tab/filter changes = Reset List
   useEffect(() => {
-    setState(s => ({ ...s, page: 1, tutors: [], requests: [], hasMore: true }));
+    setState((s) => ({ ...s, page: 1, tutors: [], requests: [], hasMore: true }));
     loadData(1, true, state.activeTab, state.subjectFilter);
   }, [state.activeTab, state.subjectFilter, loadData]);
 
   const handleRefresh = () => {
-    setState(s => ({ ...s, refreshing: true, page: 1, hasMore: true }));
+    setState((s) => ({ ...s, refreshing: true, page: 1, hasMore: true }));
     loadData(1, true, state.activeTab, state.subjectFilter);
   };
 
   const handleLoadMore = () => {
     const nextPage = state.page + 1;
-    setState(s => ({ ...s, page: nextPage }));
+    setState((s) => ({ ...s, page: nextPage }));
     loadData(nextPage, false, state.activeTab, state.subjectFilter);
   };
 
@@ -107,16 +110,16 @@ const TutorListPage: React.FC = () => {
 
   const handleCreateRequest = async () => {
     if (!state.newRequest.subject || !state.newRequest.budget) return;
-    setState(s => ({ ...s, submitting: true }));
+    setState((s) => ({ ...s, submitting: true }));
     try {
       await createStudentRequest(state.newRequest);
       toast.success('សំណើត្រូវបានបង្កើត!');
-      setState(s => ({ ...s, showRequestModal: false, newRequest: {} }));
+      setState((s) => ({ ...s, showRequestModal: false, newRequest: {} }));
       handleRefresh();
     } catch (e) {
       toast.error('បរាជ័យក្នុងការបង្កើតសំណើ។');
     } finally {
-      setState(s => ({ ...s, submitting: false }));
+      setState((s) => ({ ...s, submitting: false }));
     }
   };
 
@@ -124,7 +127,7 @@ const TutorListPage: React.FC = () => {
     if (!window.confirm('តើអ្នកចង់លុបសំណើនេះមែនទេ?')) return;
     try {
       await deleteStudentRequest(id);
-      setState(s => ({ ...s, requests: s.requests.filter((r) => r.id !== id) }));
+      setState((s) => ({ ...s, requests: s.requests.filter((r) => r.id !== id) }));
       toast.success('បានលុបសំណើ។');
     } catch (e) {
       toast.error('បរាជ័យក្នុងការលុប។');
@@ -142,25 +145,25 @@ const TutorListPage: React.FC = () => {
       toast.error('អ្នកមិនអាចដាក់ពាក្យលើសំណើខ្លួនឯងបានទេ។');
       return;
     }
-    setState(s => ({
+    setState((s) => ({
       ...s,
       selectedRequest: req,
       applyMessage: `សួស្តី ${req.name}! ខ្ញុំចាប់អារម្មណ៍បង្រៀនមុខវិជ្ជា ${req.subject}។`,
-      showApplyModal: true
+      showApplyModal: true,
     }));
   };
 
   const handleSubmitApplication = async () => {
     if (!state.selectedRequest || !state.applyMessage.trim()) return;
-    setState(s => ({ ...s, applying: true }));
+    setState((s) => ({ ...s, applying: true }));
     try {
       await applyToRequest(state.selectedRequest, state.applyMessage);
       toast.success('បានផ្ញើសារទៅសិស្ស!', { icon: '📨' });
-      setState(s => ({ ...s, showApplyModal: false, applyMessage: '' }));
+      setState((s) => ({ ...s, showApplyModal: false, applyMessage: '' }));
     } catch (e: any) {
       toast.error(e.message || 'បរាជ័យក្នុងការផ្ញើ។');
     } finally {
-      setState(s => ({ ...s, applying: false }));
+      setState((s) => ({ ...s, applying: false }));
     }
   };
 
@@ -182,7 +185,8 @@ const TutorListPage: React.FC = () => {
               ស្វែងរកគ្រូ ឬប្រកាសពីតម្រូវការសិក្សារបស់អ្នក
             </p>
           </div>
-          <button type="button"
+          <button
+            type="button"
             onClick={handleRefresh}
             className={`p-2 bg-white rounded-full shadow-sm border border-gray-100 text-gray-500 hover:text-primary transition-colors ${state.refreshing ? 'animate-spin' : ''}`}
           >
@@ -192,14 +196,16 @@ const TutorListPage: React.FC = () => {
 
         {/* Top Toggle Switch */}
         <div className="bg-white p-1 rounded-xl shadow-sm border border-gray-200 mb-6 flex max-w-md mx-auto">
-          <button type="button"
-            onClick={() => setState(s => ({ ...s, activeTab: 'tutors' }))}
+          <button
+            type="button"
+            onClick={() => setState((s) => ({ ...s, activeTab: 'tutors' }))}
             className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all flex items-center justify-center ${state.activeTab === 'tutors' ? 'bg-primary text-white shadow-md' : 'text-gray-500 hover:bg-gray-50'}`}
           >
             ស្វែងរកគ្រូ (Browse Tutors)
           </button>
-          <button type="button"
-            onClick={() => setState(s => ({ ...s, activeTab: 'requests' }))}
+          <button
+            type="button"
+            onClick={() => setState((s) => ({ ...s, activeTab: 'requests' }))}
             className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all flex items-center justify-center ${state.activeTab === 'requests' ? 'bg-primary text-white shadow-md' : 'text-gray-500 hover:bg-gray-50'}`}
           >
             សំណើសិស្ស (Requests)
@@ -213,9 +219,10 @@ const TutorListPage: React.FC = () => {
                 <Filter className="h-4 w-4 text-gray-500" />
               </div>
               {subjects.map((s) => (
-                <button type="button"
+                <button
+                  type="button"
                   key={s}
-                  onClick={() => setState(st => ({ ...st, subjectFilter: s }))}
+                  onClick={() => setState((st) => ({ ...st, subjectFilter: s }))}
                   className={`whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all border ${
                     state.subjectFilter === s
                       ? 'bg-gray-900 text-white border-gray-900'
@@ -262,8 +269,9 @@ const TutorListPage: React.FC = () => {
                     ប្រកាសពីតម្រូវការរបស់អ្នក ដើម្បីឱ្យគ្រូទាក់ទងមក។
                   </p>
                 </div>
-                <button type="button"
-                  onClick={() => setState(s => ({ ...s, showRequestModal: true }))}
+                <button
+                  type="button"
+                  onClick={() => setState((s) => ({ ...s, showRequestModal: true }))}
                   className="relative z-10 bg-primary text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center shadow-lg shadow-primary/20 active:scale-95 transition-transform"
                 >
                   <Plus className="h-3.5 w-3.5 mr-1.5" /> ប្រកាសសំណើ
@@ -301,7 +309,8 @@ const TutorListPage: React.FC = () => {
         {/* Load More Button */}
         {state.hasMore && !state.loading && (
           <div className="pt-8 pb-4 flex justify-center">
-            <button type="button"
+            <button
+              type="button"
               onClick={handleLoadMore}
               disabled={state.loadingMore}
               className="bg-white border border-gray-200 text-gray-600 font-bold py-2 px-6 rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-50 flex items-center text-sm"
@@ -323,7 +332,10 @@ const TutorListPage: React.FC = () => {
           <div className="bg-white rounded-2xl p-6 w-full max-w-sm animate-scale-in shadow-2xl">
             <div className="flex justify-between items-center mb-4">
               <h3 className="font-bold text-lg text-gray-900">ទាក់ទងសិស្ស (Contact)</h3>
-              <button type="button" onClick={() => setState(s => ({ ...s, showApplyModal: false }))}>
+              <button
+                type="button"
+                onClick={() => setState((s) => ({ ...s, showApplyModal: false }))}
+              >
                 <X className="h-5 w-5 text-gray-400" />
               </button>
             </div>
@@ -336,7 +348,10 @@ const TutorListPage: React.FC = () => {
 
             <div className="space-y-4">
               <div>
-                <label htmlFor="applyMessage" className="block text-xs font-bold text-gray-500 mb-1">
+                <label
+                  htmlFor="applyMessage"
+                  className="block text-xs font-bold text-gray-500 mb-1"
+                >
                   សារខ្លីៗទៅកាន់សិស្ស
                 </label>
                 <textarea
@@ -344,11 +359,12 @@ const TutorListPage: React.FC = () => {
                   className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm h-24 focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none"
                   placeholder="ណែនាំខ្លួនអ្នក និងបទពិសោធន៍..."
                   value={state.applyMessage}
-                  onChange={(e) => setState(s => ({ ...s, applyMessage: e.target.value }))}
+                  onChange={(e) => setState((s) => ({ ...s, applyMessage: e.target.value }))}
                 />
               </div>
 
-              <button type="button"
+              <button
+                type="button"
                 onClick={handleSubmitApplication}
                 disabled={state.applying || !state.applyMessage.trim()}
                 className="w-full bg-gray-900 text-white font-bold py-3 rounded-xl shadow-lg flex items-center justify-center hover:bg-black transition-colors disabled:opacity-50"
@@ -375,8 +391,9 @@ const TutorListPage: React.FC = () => {
                 <h3 className="font-bold text-lg text-gray-900">ប្រកាសសំណើសិក្សា</h3>
                 <p className="text-xs text-gray-500">ស្វែងរកគ្រូដែលសាកសមនឹងអ្នក</p>
               </div>
-              <button type="button"
-                onClick={() => setState(s => ({ ...s, showRequestModal: false }))}
+              <button
+                type="button"
+                onClick={() => setState((s) => ({ ...s, showRequestModal: false }))}
                 className="p-2 hover:bg-gray-100 rounded-full transition-colors"
               >
                 <X className="h-5 w-5 text-gray-400" />
@@ -384,54 +401,90 @@ const TutorListPage: React.FC = () => {
             </div>
             <div className="space-y-4">
               <div>
-                <label htmlFor="subject" className="block text-xs font-bold text-gray-500 mb-1">មុខវិជ្ជា</label>
+                <label htmlFor="subject" className="block text-xs font-bold text-gray-500 mb-1">
+                  មុខវិជ្ជា
+                </label>
                 <input
                   id="subject"
                   placeholder="ឧ. គណិតវិទ្យា, រូបវិទ្យា..."
                   className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none"
-                  onChange={(e) => setState(s => ({ ...s, newRequest: { ...s.newRequest, subject: e.target.value } }))}
+                  onChange={(e) =>
+                    setState((s) => ({
+                      ...s,
+                      newRequest: { ...s.newRequest, subject: e.target.value },
+                    }))
+                  }
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label htmlFor="grade" className="block text-xs font-bold text-gray-500 mb-1">កម្រិត</label>
+                  <label htmlFor="grade" className="block text-xs font-bold text-gray-500 mb-1">
+                    កម្រិត
+                  </label>
                   <input
                     id="grade"
                     placeholder="ឧ. ថ្នាក់ទី១២"
                     className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none"
-                    onChange={(e) => setState(s => ({ ...s, newRequest: { ...s.newRequest, grade: e.target.value } }))}
+                    onChange={(e) =>
+                      setState((s) => ({
+                        ...s,
+                        newRequest: { ...s.newRequest, grade: e.target.value },
+                      }))
+                    }
                   />
                 </div>
                 <div>
-                  <label htmlFor="budget" className="block text-xs font-bold text-gray-500 mb-1">ថវិកា (រៀល)</label>
+                  <label htmlFor="budget" className="block text-xs font-bold text-gray-500 mb-1">
+                    ថវិកា (រៀល)
+                  </label>
                   <input
                     id="budget"
                     type="number"
                     placeholder="ឧ. 20000"
                     className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none"
-                    onChange={(e) => setState(s => ({ ...s, newRequest: { ...s.newRequest, budget: e.target.value } }))}
+                    onChange={(e) =>
+                      setState((s) => ({
+                        ...s,
+                        newRequest: { ...s.newRequest, budget: e.target.value },
+                      }))
+                    }
                   />
                 </div>
               </div>
               <div>
-                <label htmlFor="location" className="block text-xs font-bold text-gray-500 mb-1">ទីតាំង</label>
+                <label htmlFor="location" className="block text-xs font-bold text-gray-500 mb-1">
+                  ទីតាំង
+                </label>
                 <input
                   id="location"
                   placeholder="ទីតាំង ឬ អនឡាញ"
                   className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none"
-                  onChange={(e) => setState(s => ({ ...s, newRequest: { ...s.newRequest, location: e.target.value } }))}
+                  onChange={(e) =>
+                    setState((s) => ({
+                      ...s,
+                      newRequest: { ...s.newRequest, location: e.target.value },
+                    }))
+                  }
                 />
               </div>
               <div>
-                <label htmlFor="description" className="block text-xs font-bold text-gray-500 mb-1">ព័ត៌មានលម្អិត</label>
+                <label htmlFor="description" className="block text-xs font-bold text-gray-500 mb-1">
+                  ព័ត៌មានលម្អិត
+                </label>
                 <textarea
                   id="description"
                   placeholder="ពណ៌នាអំពីតម្រូវការរបស់អ្នក..."
                   className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm h-24 focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none resize-none"
-                  onChange={(e) => setState(s => ({ ...s, newRequest: { ...s.newRequest, description: e.target.value } }))}
+                  onChange={(e) =>
+                    setState((s) => ({
+                      ...s,
+                      newRequest: { ...s.newRequest, description: e.target.value },
+                    }))
+                  }
                 />
               </div>
-              <button type="button"
+              <button
+                type="button"
                 onClick={handleCreateRequest}
                 disabled={state.submitting}
                 className="w-full bg-primary text-white font-bold py-3.5 rounded-xl shadow-lg shadow-primary/20 active:scale-95 transition-all flex items-center justify-center"

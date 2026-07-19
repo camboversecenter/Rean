@@ -4,21 +4,11 @@ import { createClient } from '@supabase/supabase-js';
 // In a real production build, these keys MUST come from environment variables.
 // Do not commit hardcoded keys to public GitHub repositories.
 
-// Safe environment variable retrieval
-const getEnv = (key: string) => {
-  // Check import.meta.env (Vite)
-  if ((import.meta as any).env && (import.meta as any).env[key]) {
-    return (import.meta as any).env[key];
-  }
-  // Check process.env (Node/Polyfilled) safely
-  try {
-    if (typeof process !== 'undefined' && process.env && process.env[key]) {
-      return process.env[key];
-    }
-  } catch (e) {
-    // Ignore errors if process is not defined
-  }
-  return '';
+// Safe environment variable retrieval (Vite injects import.meta.env in the
+// browser, in tests, and at build time; no process.env polyfill is shipped).
+const getEnv = (key: string): string => {
+  const env = import.meta.env as Record<string, string | undefined>;
+  return env?.[key] || '';
 };
 
 // Updated to custom domain

@@ -80,6 +80,20 @@ export const spendPoints = async (amount: number, reason: string): Promise<boole
   const user = await getCurrentUser();
   if (!user) return false;
 
+  // Preferred path: atomic server-side RPC (created by SUPABASE_HARDENING.sql).
+  // It checks and deducts in a single UPDATE, so concurrent spends cannot
+  // overdraw and clients cannot forge balances.
+  const { data: rpcResult, error: rpcError } = await supabase.rpc('spend_points', {
+    p_amount: amount,
+    p_reason: reason,
+  });
+  if (!rpcError) {
+    if (rpcResult === true) notifyPointsUpdate();
+    return rpcResult === true;
+  }
+
+  // Legacy fallback for databases where SUPABASE_HARDENING.sql has not been
+  // applied yet (RPC missing). Non-atomic; remove once the SQL is applied.
   const { data: profile, error: fetchError } = await supabase
     .from('profiles')
     .select('spendable_points')
@@ -105,10 +119,10 @@ export const spendPoints = async (amount: number, reason: string): Promise<boole
   }
 
   const spendLog = {
-      amount: -amount,
-      type: 'spend',
-      reason: reason,
-      user_id: user.id
+    amount: -amount,
+    type: 'spend',
+    reason: reason,
+    user_id: user.id,
   };
 
   await supabase.from('point_transactions').insert([spendLog]);
@@ -121,6 +135,21 @@ export const awardAction = async (targetId: string, action: GameAction, customPo
   const rule = GAME_RULES[action];
   if (!rule) return;
 
+  // Preferred path: atomic server-side RPC (created by SUPABASE_HARDENING.sql).
+  // The daily limit and the wallet update run inside one database function,
+  // so clients cannot bypass limits or write arbitrary balances.
+  const { error: rpcError } = await supabase.rpc('award_action', {
+    p_target: targetId,
+    p_action: action,
+    p_custom_points: customPoints ?? null,
+  });
+  if (!rpcError) {
+    notifyPointsUpdate();
+    return;
+  }
+
+  // Legacy fallback for databases where SUPABASE_HARDENING.sql has not been
+  // applied yet (RPC missing). Remove once the SQL is applied.
   if (rule.dailyLimit !== -1) {
     const startOfDay = getStartOfDay();
     const { count, error } = await supabase
@@ -154,10 +183,10 @@ export const awardAction = async (targetId: string, action: GameAction, customPo
   }
 
   const earnLog = {
-      amount: pointsToAdd,
-      type: 'earn',
-      reason: rule.label,
-      user_id: targetId
+    amount: pointsToAdd,
+    type: 'earn',
+    reason: rule.label,
+    user_id: targetId,
   };
 
   // Only log transaction if points are involved or for XP tracking purposes if needed
@@ -179,10 +208,10 @@ export const transferBountyReward = async (recipientId: string, amount: number) 
       .update({ spendable_points: (profile.spendable_points || 0) + amount })
       .eq('id', recipientId);
     const bountyLog = {
-        amount: amount,
-        type: 'earn',
-        reason: 'Bounty Reward Claimed',
-        user_id: recipientId
+      amount: amount,
+      type: 'earn',
+      reason: 'Bounty Reward Claimed',
+      user_id: recipientId,
     };
     await supabase.from('point_transactions').insert([bountyLog]);
     notifyPointsUpdate();
@@ -243,18 +272,14 @@ export const createMysteryBox = async (box: Partial<MysteryBox>) => {
   if (!user) throw new Error('Not authenticated');
 
   const newBox = {
-        title: box.title,
-        description: box.description,
-        price_points: box.price_points,
-        cover_image: box.cover_image,
-        owner_id: user.id
+    title: box.title,
+    description: box.description,
+    price_points: box.price_points,
+    cover_image: box.cover_image,
+    owner_id: user.id,
   };
 
-  const { data, error } = await supabase
-    .from('mystery_boxes')
-    .insert([newBox])
-    .select()
-    .single();
+  const { data, error } = await supabase.from('mystery_boxes').insert([newBox]).select().single();
 
   if (error) throw error;
   return data;
@@ -301,10 +326,10 @@ export const recordRewardClaim = async (boxId: string, rewardDetail: string) => 
   if (!user) return;
 
   const newClaim = {
-      box_id: boxId,
-      reward_detail: rewardDetail,
-      status: 'Pending',
-      user_id: user.id
+    box_id: boxId,
+    reward_detail: rewardDetail,
+    status: 'Pending',
+    user_id: user.id,
   };
 
   // Record the win
@@ -355,27 +380,42 @@ export const fetchCreatorClaims = async (): Promise<RewardClaim[]> => {
     .select('id, full_name, avatar_url, email')
     .in('id', userIds);
 
-  const profileMap = (profiles || []).reduce((acc: Record<string, { id: string; full_name?: string; avatar_url?: string; email?: string }>, p: { id: string; full_name?: string; avatar_url?: string; email?: string }) => {
-    acc[p.id] = p;
-    return acc;
-  }, {});
+  const profileMap = (profiles || []).reduce(
+    (
+      acc: Record<string, { id: string; full_name?: string; avatar_url?: string; email?: string }>,
+      p: { id: string; full_name?: string; avatar_url?: string; email?: string }
+    ) => {
+      acc[p.id] = p;
+      return acc;
+    },
+    {}
+  );
 
   // 4. Map everything together
-  return claims.map((row: { id: string; box_id: string; user_id: string; reward_detail: string; status: string; created_at: string }) => {
-    const profile = profileMap[row.user_id];
-    return {
-      id: row.id,
-      box_id: row.box_id,
-      user_id: row.user_id,
-      reward_detail: row.reward_detail,
-      status: row.status,
-      created_at: new Date(row.created_at).toLocaleString(),
-      user_name: profile?.full_name || 'Unknown User',
-      user_avatar: profile?.avatar_url,
-      user_email: profile?.email,
-      box_title: boxMap[row.box_id] || 'Unknown Box',
-    };
-  });
+  return claims.map(
+    (row: {
+      id: string;
+      box_id: string;
+      user_id: string;
+      reward_detail: string;
+      status: string;
+      created_at: string;
+    }) => {
+      const profile = profileMap[row.user_id];
+      return {
+        id: row.id,
+        box_id: row.box_id,
+        user_id: row.user_id,
+        reward_detail: row.reward_detail,
+        status: row.status as 'Pending' | 'Fulfilled',
+        created_at: new Date(row.created_at).toLocaleString(),
+        user_name: profile?.full_name || 'Unknown User',
+        user_avatar: profile?.avatar_url,
+        user_email: profile?.email,
+        box_title: boxMap[row.box_id] || 'Unknown Box',
+      };
+    }
+  );
 };
 
 // For Users to see what they won
@@ -406,21 +446,33 @@ export const getMyRewardClaims = async (): Promise<RewardClaim[]> => {
       .from('mystery_boxes')
       .select('id, title')
       .in('id', boxIds);
-    boxMap = (boxes || []).reduce((acc: Record<string, { id: string; title: string }>, b: { id: string; title: string }) => {
-      acc[b.id] = b;
-      return acc;
-    }, {});
+    boxMap = (boxes || []).reduce(
+      (acc: Record<string, { id: string; title: string }>, b: { id: string; title: string }) => {
+        acc[b.id] = b;
+        return acc;
+      },
+      {}
+    );
   }
 
-  return claims.map((row: { id: string; box_id: string; user_id: string; reward_detail: string; status: string; created_at: string }) => ({
-    id: row.id,
-    box_id: row.box_id,
-    user_id: row.user_id,
-    reward_detail: row.reward_detail,
-    status: row.status,
-    created_at: new Date(row.created_at).toLocaleDateString(),
-    box_title: boxMap[row.box_id]?.title || 'Unknown Box',
-  }));
+  return claims.map(
+    (row: {
+      id: string;
+      box_id: string;
+      user_id: string;
+      reward_detail: string;
+      status: string;
+      created_at: string;
+    }) => ({
+      id: row.id,
+      box_id: row.box_id,
+      user_id: row.user_id,
+      reward_detail: row.reward_detail,
+      status: row.status as 'Pending' | 'Fulfilled',
+      created_at: new Date(row.created_at).toLocaleDateString(),
+      box_title: boxMap[row.box_id]?.title || 'Unknown Box',
+    })
+  );
 };
 
 export const markClaimFulfilled = async (claimId: string) => {

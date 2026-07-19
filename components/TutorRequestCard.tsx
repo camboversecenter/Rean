@@ -58,14 +58,16 @@ const TutorRequestCard: React.FC<TutorRequestCardProps> = ({
       </div>
 
       {isOwner ? (
-        <button type="button"
+        <button
+          type="button"
           onClick={() => onDelete && onDelete(request.id)}
           className="w-full mt-3 py-2 bg-red-50 text-red-600 font-bold text-xs rounded-lg hover:bg-red-100 transition-colors flex items-center justify-center"
         >
           <Trash2 className="h-3.5 w-3.5 mr-2" /> លុបសំណើ (Delete)
         </button>
       ) : showApply ? (
-        <button type="button"
+        <button
+          type="button"
           onClick={() => onApply && onApply(request)}
           className="w-full mt-3 py-2 bg-gray-900 text-white font-bold text-xs rounded-lg hover:bg-black transition-colors flex items-center justify-center shadow-lg shadow-gray-200"
         >

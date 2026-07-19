@@ -200,7 +200,8 @@ const ClassroomPage: React.FC = () => {
       <div className="bg-white border-b border-gray-200 px-4 py-3 shadow-sm sticky top-0 z-20">
         <div className="max-w-3xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <button type="button"
+            <button
+              type="button"
               onClick={() => navigate('/account')}
               className="p-2 hover:bg-gray-100 rounded-full"
             >
@@ -227,13 +228,15 @@ const ClassroomPage: React.FC = () => {
           </div>
           {isTutor && booking.status !== 'Completed' && (
             <div className="flex gap-2">
-              <button type="button"
+              <button
+                type="button"
                 onClick={() => handleLogSession('Session Start')}
                 className="bg-green-600 text-white px-3 py-2 rounded-lg text-xs font-bold flex items-center shadow-md hover:bg-green-700 transition-colors"
               >
                 <Video className="h-3 w-3 mr-1.5" /> ចាប់ផ្តើម
               </button>
-              <button type="button"
+              <button
+                type="button"
                 onClick={handleOpenReportModal}
                 className="bg-red-500 text-white px-3 py-2 rounded-lg text-xs font-bold flex items-center shadow-md hover:bg-red-600 transition-colors"
               >
@@ -247,13 +250,15 @@ const ClassroomPage: React.FC = () => {
       <div className="max-w-3xl mx-auto w-full flex-1 p-4 flex flex-col">
         {/* Tabs */}
         <div className="flex bg-white rounded-xl p-1 shadow-sm border border-gray-100 mb-4">
-          <button type="button"
+          <button
+            type="button"
             onClick={() => setActiveTab('timeline')}
             className={`flex-1 py-2 text-xs font-bold rounded-lg ${activeTab === 'timeline' ? 'bg-gray-100 text-gray-900' : 'text-gray-500'}`}
           >
             សកម្មភាព (Timeline)
           </button>
-          <button type="button"
+          <button
+            type="button"
             onClick={() => setActiveTab('homework')}
             className={`flex-1 py-2 text-xs font-bold rounded-lg ${activeTab === 'homework' ? 'bg-gray-100 text-gray-900' : 'text-gray-500'}`}
           >
@@ -359,7 +364,8 @@ const ClassroomPage: React.FC = () => {
                 placeholder="កត់ត្រាសកម្មភាព..."
                 className="flex-1 bg-gray-50 rounded-lg px-3 text-sm focus:outline-none"
               />
-              <button type="button"
+              <button
+                type="button"
                 onClick={() => handleLogSession('Note')}
                 className="p-2 bg-gray-900 text-white rounded-lg"
               >
@@ -373,7 +379,8 @@ const ClassroomPage: React.FC = () => {
         {activeTab === 'homework' && (
           <div className="space-y-4">
             {isTutor && (
-              <button type="button"
+              <button
+                type="button"
                 onClick={() => setShowHomeworkModal(true)}
                 className="w-full py-3 border-2 border-dashed border-gray-300 rounded-xl text-gray-500 font-bold text-sm hover:border-primary hover:text-primary transition-colors flex items-center justify-center"
               >
@@ -409,13 +416,15 @@ const ClassroomPage: React.FC = () => {
                           onChange={(e) => setSubmitText(e.target.value)}
                         />
                         <div className="flex justify-end gap-2">
-                          <button type="button"
+                          <button
+                            type="button"
                             onClick={() => setSubmittingHwId(null)}
                             className="text-xs font-bold text-gray-500"
                           >
                             បោះបង់
                           </button>
-                          <button type="button"
+                          <button
+                            type="button"
                             onClick={() => handleSubmitHomework(hw.id)}
                             className="text-xs bg-primary text-white px-3 py-1.5 rounded font-bold"
                           >
@@ -424,7 +433,8 @@ const ClassroomPage: React.FC = () => {
                         </div>
                       </div>
                     ) : (
-                      <button type="button"
+                      <button
+                        type="button"
                         onClick={() => setSubmittingHwId(hw.id)}
                         className="text-xs bg-gray-900 text-white px-3 py-2 rounded-lg font-bold w-full"
                       >
@@ -454,7 +464,8 @@ const ClassroomPage: React.FC = () => {
               <p className="text-xs text-gray-500 font-bold uppercase">រង់ចាំការបង់ប្រាក់</p>
               <p className="text-sm text-gray-700">សូមពិនិត្យរបាយការណ៍ខាងលើ។</p>
             </div>
-            <button type="button"
+            <button
+              type="button"
               onClick={handlePayment}
               className="bg-green-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-green-200 hover:bg-green-700 transition-colors flex items-center animate-pulse"
             >
@@ -476,7 +487,10 @@ const ClassroomPage: React.FC = () => {
             </div>
             <div className="p-4 space-y-4">
               <div>
-                <label htmlFor="report-summary" className="block text-xs font-bold text-gray-500 mb-1">
+                <label
+                  htmlFor="report-summary"
+                  className="block text-xs font-bold text-gray-500 mb-1"
+                >
                   សេចក្តីសង្ខេបមេរៀន (Lesson Summary)
                 </label>
                 <textarea
@@ -489,7 +503,10 @@ const ClassroomPage: React.FC = () => {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label htmlFor="report-duration" className="block text-xs font-bold text-gray-500 mb-1">
+                  <label
+                    htmlFor="report-duration"
+                    className="block text-xs font-bold text-gray-500 mb-1"
+                  >
                     រយៈពេល (នាទី)
                   </label>
                   <input
@@ -501,7 +518,12 @@ const ClassroomPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="report-performance" className="block text-xs font-bold text-gray-500 mb-1">ការវាយតម្លៃ</label>
+                  <label
+                    htmlFor="report-performance"
+                    className="block text-xs font-bold text-gray-500 mb-1"
+                  >
+                    ការវាយតម្លៃ
+                  </label>
                   <select
                     id="report-performance"
                     className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm"
@@ -516,7 +538,10 @@ const ClassroomPage: React.FC = () => {
                 </div>
               </div>
               <div>
-                <label htmlFor="report-nextsteps" className="block text-xs font-bold text-gray-500 mb-1">
+                <label
+                  htmlFor="report-nextsteps"
+                  className="block text-xs font-bold text-gray-500 mb-1"
+                >
                   ជំហានបន្ទាប់ / កិច្ចការផ្ទះ
                 </label>
                 <input
@@ -527,7 +552,8 @@ const ClassroomPage: React.FC = () => {
                   onChange={(e) => setReportForm({ ...reportForm, nextSteps: e.target.value })}
                 />
               </div>
-              <button type="button"
+              <button
+                type="button"
                 onClick={handleSubmitReport}
                 disabled={submittingReport}
                 className="w-full bg-primary text-white font-bold py-3 rounded-xl shadow-lg flex items-center justify-center hover:bg-primary/90 transition-colors"
@@ -563,13 +589,15 @@ const ClassroomPage: React.FC = () => {
               onChange={(e) => setHwForm({ ...hwForm, description: e.target.value })}
             />
             <div className="flex justify-end gap-2">
-              <button type="button"
+              <button
+                type="button"
                 onClick={() => setShowHomeworkModal(false)}
                 className="px-4 py-2 text-gray-500 font-bold text-sm"
               >
                 បោះបង់
               </button>
-              <button type="button"
+              <button
+                type="button"
                 onClick={handleAssignHomework}
                 className="px-4 py-2 bg-primary text-white rounded-lg font-bold text-sm"
               >

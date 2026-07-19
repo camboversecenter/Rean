@@ -94,7 +94,8 @@ const SchoolInquiryManager: React.FC<SchoolInquiryManagerProps> = ({ inquiries, 
                 </span>
 
                 {item.status === 'Pending' && (
-                  <button type="button"
+                  <button
+                    type="button"
                     onClick={() => handleMarkContacted(item.id)}
                     disabled={updatingId === item.id}
                     className="w-full md:w-auto bg-gray-900 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center justify-center shadow-lg active:scale-95 transition-all disabled:opacity-50"

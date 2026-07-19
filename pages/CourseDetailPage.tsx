@@ -34,13 +34,23 @@ const CourseDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [courseData, setCourseData] = useState<{
-    course: (ShortCourse & { school: { id: string; name: string; logo: string; description?: string; location?: string } }) | null;
+    course:
+      | (ShortCourse & {
+          school: {
+            id: string;
+            name: string;
+            logo: string;
+            description?: string;
+            location?: string;
+          };
+        })
+      | null;
     relatedCourses: (ShortCourse & { schoolName: string })[];
     loading: boolean;
   }>({ course: null, relatedCourses: [], loading: true });
-  
+
   const [activeTab, setActiveTab] = useState<'overview' | 'syllabus' | 'school'>('overview');
-  
+
   const [enrollState, setEnrollState] = useState({
     showModal: false,
     form: { name: '', phone: '' },
@@ -85,15 +95,15 @@ const CourseDetailPage: React.FC = () => {
       toast.error('សូមបញ្ចូលលេខទូរស័ព្ទរបស់អ្នក');
       return;
     }
-    setEnrollState(prev => ({ ...prev, submitting: true }));
+    setEnrollState((prev) => ({ ...prev, submitting: true }));
     try {
       await enrollInCourse(courseData.course.id, enrollState.form.name, enrollState.form.phone);
-      setEnrollState(prev => ({ ...prev, showModal: false }));
+      setEnrollState((prev) => ({ ...prev, showModal: false }));
       toast.success('សំណើចុះឈ្មោះត្រូវបានផ្ញើ! សាលានឹងទាក់ទងទៅអ្នក។');
     } catch (error: any) {
       toast.error(error.message || 'បរាជ័យក្នុងការចុះឈ្មោះ');
     } finally {
-      setEnrollState(prev => ({ ...prev, submitting: false }));
+      setEnrollState((prev) => ({ ...prev, submitting: false }));
     }
   };
 
@@ -144,14 +154,16 @@ const CourseDetailPage: React.FC = () => {
 
         {/* Navigation Buttons */}
         <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-10">
-          <button type="button"
+          <button
+            type="button"
             onClick={() => navigate(-1)}
             aria-label="Go back"
             className="p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/30 transition-colors"
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
-          <button type="button"
+          <button
+            type="button"
             onClick={handleShare}
             className="p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/30 transition-colors"
             title="ចែករំលែក (Share)"
@@ -241,8 +253,11 @@ const CourseDetailPage: React.FC = () => {
                   នៅសល់ {remainingSeats} កន្លែង!
                 </span>
               )}
-              <button type="button"
-                onClick={() => !isExpired && setEnrollState(prev => ({ ...prev, showModal: true }))}
+              <button
+                type="button"
+                onClick={() =>
+                  !isExpired && setEnrollState((prev) => ({ ...prev, showModal: true }))
+                }
                 disabled={isExpired}
                 className={`px-8 py-3 rounded-xl font-bold shadow-lg transition-all flex items-center ${
                   isExpired
@@ -282,8 +297,9 @@ const CourseDetailPage: React.FC = () => {
 
       {/* --- MOBILE ENROLL BUTTON (Moved here) --- */}
       <div className="max-w-5xl mx-auto px-4 mt-6 md:hidden">
-        <button type="button"
-          onClick={() => !isExpired && setEnrollState(prev => ({ ...prev, showModal: true }))}
+        <button
+          type="button"
+          onClick={() => !isExpired && setEnrollState((prev) => ({ ...prev, showModal: true }))}
           disabled={isExpired}
           className={`w-full font-bold py-3.5 rounded-xl shadow-lg flex items-center justify-center transition-transform ${
             isExpired
@@ -306,19 +322,22 @@ const CourseDetailPage: React.FC = () => {
       {/* --- TABS --- */}
       <div className="max-w-5xl mx-auto px-4 mt-8">
         <div className="flex border-b border-gray-200 overflow-x-auto scrollbar-hide">
-          <button type="button"
+          <button
+            type="button"
             onClick={() => setActiveTab('overview')}
             className={`flex-1 min-w-[100px] py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'overview' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
           >
             សង្ខេប (Overview)
           </button>
-          <button type="button"
+          <button
+            type="button"
             onClick={() => setActiveTab('syllabus')}
             className={`flex-1 min-w-[100px] py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'syllabus' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
           >
             កម្មវិធីសិក្សា (Syllabus)
           </button>
-          <button type="button"
+          <button
+            type="button"
             onClick={() => setActiveTab('school')}
             className={`flex-1 min-w-[100px] py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'school' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
           >
@@ -441,8 +460,9 @@ const CourseDetailPage: React.FC = () => {
           <div className="bg-white rounded-2xl w-full max-w-sm overflow-hidden animate-scale-in shadow-2xl">
             <div className="bg-primary/5 p-5 border-b border-gray-100 flex justify-between items-center">
               <h3 className="font-bold text-gray-900 text-lg">ចុះឈ្មោះចូលរៀន</h3>
-              <button type="button"
-                onClick={() => setEnrollState(prev => ({ ...prev, showModal: false }))}
+              <button
+                type="button"
+                onClick={() => setEnrollState((prev) => ({ ...prev, showModal: false }))}
                 className="text-gray-400 hover:text-gray-600"
                 aria-label="Close Enroll Modal"
               >
@@ -456,37 +476,58 @@ const CourseDetailPage: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="enroll-name" className="block text-xs font-bold text-gray-500 mb-1.5 uppercase">
+                <label
+                  htmlFor="enroll-name"
+                  className="block text-xs font-bold text-gray-500 mb-1.5 uppercase"
+                >
                   ឈ្មោះរបស់អ្នក
                 </label>
                 <input
                   id="enroll-name"
                   type="text"
                   value={enrollState.form.name}
-                  onChange={(e) => setEnrollState(prev => ({ ...prev, form: { ...prev.form, name: e.target.value } }))}
+                  onChange={(e) =>
+                    setEnrollState((prev) => ({
+                      ...prev,
+                      form: { ...prev.form, name: e.target.value },
+                    }))
+                  }
                   className="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
               <div>
-                <label htmlFor="enroll-phone" className="block text-xs font-bold text-gray-500 mb-1.5 uppercase">
+                <label
+                  htmlFor="enroll-phone"
+                  className="block text-xs font-bold text-gray-500 mb-1.5 uppercase"
+                >
                   លេខទូរស័ព្ទ <span className="text-red-500">*</span>
                 </label>
                 <input
                   id="enroll-phone"
                   type="tel"
                   value={enrollState.form.phone}
-                  onChange={(e) => setEnrollState(prev => ({ ...prev, form: { ...prev.form, phone: e.target.value } }))}
+                  onChange={(e) =>
+                    setEnrollState((prev) => ({
+                      ...prev,
+                      form: { ...prev.form, phone: e.target.value },
+                    }))
+                  }
                   placeholder="012 345 678"
                   className="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
-              <button type="button"
+              <button
+                type="button"
                 onClick={handleEnroll}
                 disabled={enrollState.submitting}
                 className="w-full bg-primary text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 flex justify-center items-center hover:bg-primary/90 transition-colors"
               >
-                {enrollState.submitting ? <Loader2 className="h-5 w-5 animate-spin" /> : 'បញ្ជាក់ការចុះឈ្មោះ'}
+                {enrollState.submitting ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  'បញ្ជាក់ការចុះឈ្មោះ'
+                )}
               </button>
             </div>
           </div>

@@ -101,7 +101,11 @@ const SchoolDashboard: React.FC = () => {
         coverUrl = (await uploadFile(files.cover, 'school-covers')) || coverUrl;
       }
 
-      await updateSchoolProfile(state.school.id, { ...updates, logo: logoUrl, coverImage: coverUrl });
+      await updateSchoolProfile(state.school.id, {
+        ...updates,
+        logo: logoUrl,
+        coverImage: coverUrl,
+      });
       toast.success('រក្សាទុកជោគជ័យ!');
       await loadData();
     } catch (e) {
@@ -125,7 +129,8 @@ const SchoolDashboard: React.FC = () => {
           <Building2 className="h-16 w-16 mx-auto text-gray-200 mb-4" />
           <h2 className="text-xl font-bold text-gray-900 mb-2">មិនទាន់មានព័ត៌មានសាលារៀន</h2>
           <p className="text-gray-500 text-sm mb-6">អ្នកមិនទាន់បានបង្កើតទំព័រសាលារៀននៅឡើយទេ។</p>
-          <button type="button"
+          <button
+            type="button"
             onClick={handleCreateSchool}
             disabled={state.saving}
             className="w-full bg-primary text-white py-3 rounded-xl font-bold flex items-center justify-center shadow-lg active:scale-95 disabled:opacity-50 transition-all"
@@ -164,7 +169,8 @@ const SchoolDashboard: React.FC = () => {
             { id: 'leads', icon: MessageCircle, label: 'សំណួរ' },
             { id: 'enrollments', icon: CheckCircle, label: 'ការចុះឈ្មោះ' },
           ].map((tab) => (
-            <button type="button"
+            <button
+              type="button"
               key={tab.id}
               onClick={() => setState((s) => ({ ...s, activeTab: tab.id as any }))}
               className={`flex items-center px-5 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap transition-all ${state.activeTab === tab.id ? 'bg-primary text-white shadow-lg' : 'bg-white text-gray-500 border border-gray-100 hover:bg-gray-50'}`}

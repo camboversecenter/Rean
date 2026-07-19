@@ -96,7 +96,8 @@ const PublicProfilePage: React.FC = () => {
 
         {/* Cover Photo */}
         <div className="h-32 md:h-48 bg-gradient-to-r from-blue-500 to-teal-400 relative z-0">
-          <button type="button"
+          <button
+            type="button"
             onClick={() => navigate(-1)}
             aria-label="Go back"
             className="absolute top-4 left-4 p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/30 transition-colors z-30"
@@ -110,7 +111,10 @@ const PublicProfilePage: React.FC = () => {
           <div className="flex flex-col md:flex-row items-center md:items-end -mt-12 md:-mt-16 gap-4 md:gap-6">
             <div className="w-24 h-24 md:w-36 md:h-36 rounded-full border-4 border-white shadow-lg overflow-hidden bg-gray-200 flex-shrink-0">
               <img
-                src={state.profile.avatar_url || `https://ui-avatars.com/api/?name=${state.profile.full_name}`}
+                src={
+                  state.profile.avatar_url ||
+                  `https://ui-avatars.com/api/?name=${state.profile.full_name}`
+                }
                 className="w-full h-full object-cover"
                 alt="Profile"
               />
@@ -147,13 +151,15 @@ const PublicProfilePage: React.FC = () => {
       <div className="max-w-5xl mx-auto px-4 mt-6">
         {/* Tabs */}
         <div className="flex border-b border-gray-200 mb-6">
-          <button type="button"
+          <button
+            type="button"
             onClick={() => setState((s) => ({ ...s, activeTab: 'active' }))}
             className={`flex-1 py-3 text-sm font-bold border-b-2 transition-colors flex items-center justify-center ${state.activeTab === 'active' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
           >
             <GraduationCap className="h-4 w-4 mr-2" /> កំពុងសិក្សា (Learning)
           </button>
-          <button type="button"
+          <button
+            type="button"
             onClick={() => setState((s) => ({ ...s, activeTab: 'completed' }))}
             className={`flex-1 py-3 text-sm font-bold border-b-2 transition-colors flex items-center justify-center ${state.activeTab === 'completed' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
           >

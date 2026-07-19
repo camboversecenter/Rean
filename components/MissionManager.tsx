@@ -88,21 +88,25 @@ const MissionManager: React.FC<MissionManagerProps> = ({
     isAddingStudent,
   } = state;
 
-  const setViewState = (newViewState: any) => setState(prev => ({ ...prev, viewState: typeof newViewState === 'function' ? newViewState(prev.viewState) : newViewState }));
+  const setViewState = (newViewState: any) =>
+    setState((prev) => ({
+      ...prev,
+      viewState: typeof newViewState === 'function' ? newViewState(prev.viewState) : newViewState,
+    }));
 
   const loadManagerData = React.useCallback(async () => {
-    setState(prev => ({ ...prev, loading: true }));
+    setState((prev) => ({ ...prev, loading: true }));
     try {
       // Load ALL enrollments initially for client-side filtering (optimization: fetch by tab later if list huge)
       const [enrollmentRes, classesRes] = await Promise.all([
         getMissionEnrollments(mission.id, 1, 500, null), // Fetching larger batch
         getMissionClasses(mission.id),
       ]);
-      setState(prev => ({ ...prev, enrollments: enrollmentRes.data, classes: classesRes }));
+      setState((prev) => ({ ...prev, enrollments: enrollmentRes.data, classes: classesRes }));
     } catch (e) {
       toast.error('Failed to load management data');
     } finally {
-      setState(prev => ({ ...prev, loading: false }));
+      setState((prev) => ({ ...prev, loading: false }));
     }
   }, [mission.id]);
 
@@ -115,7 +119,10 @@ const MissionManager: React.FC<MissionManagerProps> = ({
   const handleUpdateStatus = async (eid: string, status: any) => {
     try {
       await updateEnrollmentStatus(eid, status);
-      setState(prev => ({ ...prev, enrollments: prev.enrollments.map((e) => (e.id === eid ? { ...e, status } : e)) }));
+      setState((prev) => ({
+        ...prev,
+        enrollments: prev.enrollments.map((e) => (e.id === eid ? { ...e, status } : e)),
+      }));
       toast.success('Status updated');
     } catch (e) {
       toast.error('Update failed');
@@ -148,7 +155,12 @@ const MissionManager: React.FC<MissionManagerProps> = ({
   const handleUpdateSquad = async (eid: string, squadId: number | null) => {
     try {
       await updateStudentSquad(eid, squadId);
-      setState(prev => ({ ...prev, enrollments: prev.enrollments.map((e) => (e.id === eid ? { ...e, squadId: squadId || undefined } : e)) }));
+      setState((prev) => ({
+        ...prev,
+        enrollments: prev.enrollments.map((e) =>
+          e.id === eid ? { ...e, squadId: squadId || undefined } : e
+        ),
+      }));
       toast.success('Squad updated');
     } catch (e) {
       toast.error('Failed to update squad');
@@ -168,7 +180,7 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                 className: prev.classes.find((c) => c.id === classId)?.title,
               }
             : e
-        )
+        ),
       }));
       toast.success('Class updated');
     } catch (e) {
@@ -180,10 +192,10 @@ const MissionManager: React.FC<MissionManagerProps> = ({
     if (!window.confirm('Remove this student from the mission? This cannot be undone.')) return;
     try {
       await removeStudentFromMission(eid);
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         enrollments: prev.enrollments.filter((e) => e.id !== eid),
-        selectedStudentId: prev.selectedStudentId === eid ? null : prev.selectedStudentId
+        selectedStudentId: prev.selectedStudentId === eid ? null : prev.selectedStudentId,
       }));
       toast.success('Student removed');
     } catch (e) {
@@ -194,7 +206,10 @@ const MissionManager: React.FC<MissionManagerProps> = ({
   const handleViewReceipt = async (url: string) => {
     const signedUrl = await getReceiptSignedUrl(url);
     if (signedUrl) {
-      setState(prev => ({ ...prev, viewState: { ...prev.viewState, viewingReceipt: signedUrl } }));
+      setState((prev) => ({
+        ...prev,
+        viewState: { ...prev.viewState, viewingReceipt: signedUrl },
+      }));
     } else {
       toast.error('Could not load receipt');
     }
@@ -203,7 +218,7 @@ const MissionManager: React.FC<MissionManagerProps> = ({
   const handleOpenReview = (enrollment: MissionEnrollment, moduleId: string) => {
     const module = mission.modules.find((m) => m.id === moduleId);
     const detail = enrollment.progressDetails[moduleId];
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       submissionToReview: {
         enrollmentId: enrollment.id,
@@ -212,13 +227,13 @@ const MissionManager: React.FC<MissionManagerProps> = ({
         content: detail?.submission || 'No content',
         feedback: detail?.feedback || '',
       },
-      reviewFeedback: detail?.feedback || ''
+      reviewFeedback: detail?.feedback || '',
     }));
   };
 
   const handleSubmitReview = async (status: 'completed' | 'active') => {
     if (!submissionToReview) return;
-    setState(prev => ({ ...prev, isSubmittingReview: true }));
+    setState((prev) => ({ ...prev, isSubmittingReview: true }));
     try {
       await reviewSubmission(
         submissionToReview.enrollmentId,
@@ -229,7 +244,7 @@ const MissionManager: React.FC<MissionManagerProps> = ({
       toast.success(status === 'completed' ? 'Marked as Completed!' : 'Returned for revision.');
 
       // Update local state
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         enrollments: prev.enrollments.map((e) => {
           if (e.id === submissionToReview.enrollmentId) {
@@ -246,27 +261,27 @@ const MissionManager: React.FC<MissionManagerProps> = ({
           }
           return e;
         }),
-        submissionToReview: null
+        submissionToReview: null,
       }));
     } catch (e) {
       toast.error('Review failed');
     } finally {
-      setState(prev => ({ ...prev, isSubmittingReview: false }));
+      setState((prev) => ({ ...prev, isSubmittingReview: false }));
     }
   };
 
   const handleAddStudent = async () => {
     if (!newStudentEmail.trim()) return;
-    setState(prev => ({ ...prev, isAddingStudent: true }));
+    setState((prev) => ({ ...prev, isAddingStudent: true }));
     try {
       await addStudentByEmail(mission.id, newStudentEmail);
       toast.success(`Student ${newStudentEmail} added successfully`);
-      setState(prev => ({ ...prev, showAddStudentModal: false, newStudentEmail: '' }));
+      setState((prev) => ({ ...prev, showAddStudentModal: false, newStudentEmail: '' }));
       loadManagerData();
     } catch (e: any) {
       toast.error(e.message || 'Failed to add student');
     } finally {
-      setState(prev => ({ ...prev, isAddingStudent: false }));
+      setState((prev) => ({ ...prev, isAddingStudent: false }));
     }
   };
 
@@ -276,8 +291,8 @@ const MissionManager: React.FC<MissionManagerProps> = ({
     let filtered = enrollments;
 
     // 1. Search Filter
-    if (searchStudent) {
-      const lower = searchStudent.toLowerCase();
+    if (viewState.searchStudent) {
+      const lower = viewState.searchStudent.toLowerCase();
       filtered = filtered.filter(
         (e) =>
           e.student?.full_name?.toLowerCase().includes(lower) ||
@@ -286,12 +301,12 @@ const MissionManager: React.FC<MissionManagerProps> = ({
     }
 
     // 2. Tab Filter
-    if (activeTab === 'unassigned') {
+    if (viewState.activeTab === 'unassigned') {
       return filtered.filter((e) => !e.classId);
-    } else if (activeTab === 'classes') {
-      if (!selectedClassId) return []; // Don't show students until class selected
-      return filtered.filter((e) => e.classId === selectedClassId);
-    } else if (activeTab === 'grading') {
+    } else if (viewState.activeTab === 'classes') {
+      if (!viewState.selectedClassId) return []; // Don't show students until class selected
+      return filtered.filter((e) => e.classId === viewState.selectedClassId);
+    } else if (viewState.activeTab === 'grading') {
       // Show any enrollment that has activity (In Progress)
       return filtered.filter((e) => e.status === 'In Progress');
     }
@@ -312,7 +327,8 @@ const MissionManager: React.FC<MissionManagerProps> = ({
         key={e.id}
         className="hover:bg-gray-50 transition-colors group border-b border-gray-50 cursor-pointer"
         onClick={() => {
-          if (viewState.activeTab === 'grading') setState(prev => ({ ...prev, selectedStudentId: e.id }));
+          if (viewState.activeTab === 'grading')
+            setState((prev) => ({ ...prev, selectedStudentId: e.id }));
         }}
       >
         <td className="px-6 py-4">
@@ -362,7 +378,8 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                 </span>
                 <div className="flex gap-1">
                   {e.paymentReceiptUrl && (
-                    <button type="button"
+                    <button
+                      type="button"
                       onClick={() => handleViewReceipt(e.paymentReceiptUrl!)}
                       className="p-1 bg-blue-50 text-blue-600 rounded hover:bg-blue-100"
                       title="View Receipt"
@@ -370,14 +387,16 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                       <Eye className="h-3 w-3" />
                     </button>
                   )}
-                  <button type="button"
+                  <button
+                    type="button"
                     onClick={() => handleApprovePayment(e.id)}
                     className="p-1 bg-green-50 text-green-600 rounded hover:bg-green-100"
                     title="Approve"
                   >
                     <CheckCircle className="h-3 w-3" />
                   </button>
-                  <button type="button"
+                  <button
+                    type="button"
                     onClick={() => handleRejectPayment(e.id)}
                     className="p-1 bg-red-50 text-red-600 rounded hover:bg-red-100"
                     title="Reject"
@@ -429,10 +448,11 @@ const MissionManager: React.FC<MissionManagerProps> = ({
         {viewState.activeTab === 'grading' && (
           <td className="px-6 py-4">
             <div className="flex items-center gap-2">
-              <button type="button"
+              <button
+                type="button"
                 onClick={(ev) => {
                   ev.stopPropagation();
-                  setState(prev => ({ ...prev, selectedStudentId: e.id }));
+                  setState((prev) => ({ ...prev, selectedStudentId: e.id }));
                 }}
                 className="flex items-center text-xs font-bold text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-colors"
               >
@@ -446,7 +466,8 @@ const MissionManager: React.FC<MissionManagerProps> = ({
           </td>
         )}
         <td className="px-6 py-4 text-right" onClick={(ev) => ev.stopPropagation()}>
-          <button type="button"
+          <button
+            type="button"
             onClick={() => handleRemove(e.id)}
             className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
             title="Remove Student"
@@ -464,7 +485,8 @@ const MissionManager: React.FC<MissionManagerProps> = ({
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
           <div className="flex items-center gap-4">
-            <button type="button"
+            <button
+              type="button"
               onClick={onBack}
               className="bg-white p-2.5 hover:bg-gray-100 rounded-xl border border-gray-200 shadow-sm transition-colors text-gray-600"
             >
@@ -487,21 +509,24 @@ const MissionManager: React.FC<MissionManagerProps> = ({
 
         {/* Navigation Tabs */}
         <div className="flex gap-2 mb-6 bg-white p-1 rounded-xl border border-gray-200 w-fit">
-          <button type="button"
-            onClick={() => setViewState(prev => ({ ...prev, activeTab: 'unassigned' }))}
-          className={`px-4 py-2 text-sm font-bold border-b-2 transition-colors ${viewState.activeTab === 'unassigned' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+          <button
+            type="button"
+            onClick={() => setViewState((prev: any) => ({ ...prev, activeTab: 'unassigned' }))}
+            className={`px-4 py-2 text-sm font-bold border-b-2 transition-colors ${viewState.activeTab === 'unassigned' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
           >
             <Users className="h-4 w-4 mr-2" /> សិស្សថ្មី (Unassigned)
           </button>
-          <button type="button"
-            onClick={() => setViewState(prev => ({ ...prev, activeTab: 'classes' }))}
-          className={`px-4 py-2 text-sm font-bold border-b-2 transition-colors ${viewState.activeTab === 'classes' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+          <button
+            type="button"
+            onClick={() => setViewState((prev: any) => ({ ...prev, activeTab: 'classes' }))}
+            className={`px-4 py-2 text-sm font-bold border-b-2 transition-colors ${viewState.activeTab === 'classes' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
           >
             <BookOpen className="h-4 w-4 mr-2" /> ថ្នាក់រៀន (Classes)
           </button>
-          <button type="button"
-            onClick={() => setViewState(prev => ({ ...prev, activeTab: 'grading' }))}
-          className={`px-4 py-2 text-sm font-bold border-b-2 transition-colors flex items-center ${viewState.activeTab === 'grading' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+          <button
+            type="button"
+            onClick={() => setViewState((prev: any) => ({ ...prev, activeTab: 'grading' }))}
+            className={`px-4 py-2 text-sm font-bold border-b-2 transition-colors flex items-center ${viewState.activeTab === 'grading' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
           >
             <CheckSquare className="h-4 w-4 mr-2" /> ដាក់ពិន្ទុ (Grading)
           </button>
@@ -516,7 +541,9 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                 missionId={mission.id}
                 classes={classes}
                 selectedClassId={viewState.selectedClassId}
-                onSelectClass={(classId) => setViewState(prev => ({ ...prev, selectedClassId: classId }))}
+                onSelectClass={(classId) =>
+                  setViewState((prev: any) => ({ ...prev, selectedClassId: classId }))
+                }
                 onUpdate={loadManagerData}
               />
             </div>
@@ -541,22 +568,27 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                 </h3>
                 <div className="flex gap-2 w-full sm:w-auto">
                   {/* Add Student Button */}
-                  <button type="button"
-                    onClick={() => setState(prev => ({ ...prev, showAddStudentModal: true }))}
+                  <button
+                    type="button"
+                    onClick={() => setState((prev) => ({ ...prev, showAddStudentModal: true }))}
                     className="bg-primary text-white px-3 py-2 rounded-xl text-sm font-bold flex items-center shadow-sm hover:bg-primary/90 transition-colors whitespace-nowrap"
                   >
                     <Plus className="h-4 w-4 mr-2" /> Add Student
                   </button>
                   <div className="relative flex-1 sm:w-64">
                     <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-                    <label htmlFor="searchStudent" className="sr-only">ស្វែងរកសិស្ស</label>
+                    <label htmlFor="searchStudent" className="sr-only">
+                      ស្វែងរកសិស្ស
+                    </label>
                     <input
                       id="searchStudent"
                       type="text"
                       placeholder="ស្វែងរកសិស្ស..."
                       className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 bg-white"
                       value={viewState.searchStudent}
-                      onChange={(e) => setViewState(prev => ({ ...prev, searchStudent: e.target.value }))}
+                      onChange={(e) =>
+                        setViewState((prev: any) => ({ ...prev, searchStudent: e.target.value }))
+                      }
                     />
                   </div>
                 </div>
@@ -575,10 +607,14 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                       <tr>
                         <th className="px-6 py-4">Student</th>
                         <th className="px-6 py-4">Status</th>
-                        {viewState.activeTab === 'unassigned' && <th className="px-6 py-4">Payment</th>}
+                        {viewState.activeTab === 'unassigned' && (
+                          <th className="px-6 py-4">Payment</th>
+                        )}
                         <th className="px-6 py-4">Squad</th>
                         {viewState.activeTab !== 'grading' && <th className="px-6 py-4">Class</th>}
-                        {viewState.activeTab === 'grading' && <th className="px-6 py-4">Actions</th>}
+                        {viewState.activeTab === 'grading' && (
+                          <th className="px-6 py-4">Actions</th>
+                        )}
                         <th className="px-6 py-4 text-right">Delete</th>
                       </tr>
                     </thead>
@@ -609,11 +645,19 @@ const MissionManager: React.FC<MissionManagerProps> = ({
 
       {/* Receipt Modal (Quick View) */}
       {viewState.viewingReceipt && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm" onClick={() => setViewState(prev => ({ ...prev, viewingReceipt: null }))}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+          onClick={() => setViewState((prev: any) => ({ ...prev, viewingReceipt: null }))}
+        >
           <div className="relative max-w-2xl w-full">
-            <img src={viewState.viewingReceipt} className="w-full h-auto rounded-xl shadow-2xl" alt="Receipt" />
-            <button type="button"
-              onClick={() => setViewState(prev => ({ ...prev, viewingReceipt: null }))}
+            <img
+              src={viewState.viewingReceipt}
+              className="w-full h-auto rounded-xl shadow-2xl"
+              alt="Receipt"
+            />
+            <button
+              type="button"
+              onClick={() => setViewState((prev: any) => ({ ...prev, viewingReceipt: null }))}
               className="absolute -top-12 right-0 text-white flex items-center hover:text-gray-300 transition-colors"
             >
               <X className="h-8 w-8" />
@@ -656,8 +700,9 @@ const MissionManager: React.FC<MissionManagerProps> = ({
               </div>
 
               <div className="flex flex-col items-end gap-2">
-                <button type="button"
-                  onClick={() => setState(prev => ({ ...prev, selectedStudentId: null }))}
+                <button
+                  type="button"
+                  onClick={() => setState((prev) => ({ ...prev, selectedStudentId: null }))}
                   className="text-gray-400 hover:text-gray-600 p-1"
                 >
                   <X className="h-6 w-6" />
@@ -666,7 +711,8 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                 {/* Payment Status in Gradebook */}
                 <div className="flex items-center gap-2">
                   {selectedStudent.paymentReceiptUrl && (
-                    <button type="button"
+                    <button
+                      type="button"
                       onClick={() => handleViewReceipt(selectedStudent.paymentReceiptUrl!)}
                       className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded flex items-center hover:bg-blue-100 transition-colors"
                     >
@@ -723,7 +769,8 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                       </div>
 
                       {hasSubmission ? (
-                        <button type="button"
+                        <button
+                          type="button"
                           onClick={() => handleOpenReview(selectedStudent, m.id)}
                           className={`px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition-all flex items-center ${
                             isPassed
@@ -768,7 +815,10 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                   Student: {selectedStudent.student?.full_name}
                 </p>
               </div>
-              <button type="button" onClick={() => setState(prev => ({ ...prev, submissionToReview: null }))}>
+              <button
+                type="button"
+                onClick={() => setState((prev) => ({ ...prev, submissionToReview: null }))}
+              >
                 <X className="h-6 w-6 text-gray-400" />
               </button>
             </div>
@@ -789,20 +839,24 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                   className="w-full p-4 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none min-h-[150px]"
                   placeholder="Write your feedback here..."
                   value={reviewFeedback}
-                  onChange={(e) => setState(prev => ({ ...prev, reviewFeedback: e.target.value }))}
+                  onChange={(e) =>
+                    setState((prev) => ({ ...prev, reviewFeedback: e.target.value }))
+                  }
                 />
               </div>
             </div>
 
             <div className="p-4 border-t border-gray-100 bg-gray-50 flex justify-end gap-3 rounded-b-2xl">
-              <button type="button"
+              <button
+                type="button"
                 onClick={() => handleSubmitReview('active')}
                 disabled={isSubmittingReview}
                 className="px-5 py-2.5 bg-yellow-100 text-yellow-800 font-bold rounded-xl hover:bg-yellow-200 disabled:opacity-50"
               >
                 Request Changes
               </button>
-              <button type="button"
+              <button
+                type="button"
                 onClick={() => handleSubmitReview('completed')}
                 disabled={isSubmittingReview}
                 className="px-5 py-2.5 bg-green-600 text-white font-bold rounded-xl shadow-lg hover:bg-green-700 disabled:opacity-50 flex items-center"
@@ -825,29 +879,36 @@ const MissionManager: React.FC<MissionManagerProps> = ({
           <div className="bg-white rounded-2xl w-full max-w-sm p-6 shadow-2xl animate-scale-in">
             <div className="flex justify-between items-center mb-4">
               <h3 className="font-bold text-lg">Add Student Manually</h3>
-              <button type="button" onClick={() => setState(prev => ({ ...prev, showAddStudentModal: false }))}>
+              <button
+                type="button"
+                onClick={() => setState((prev) => ({ ...prev, showAddStudentModal: false }))}
+              >
                 <X className="h-5 w-5 text-gray-400" />
               </button>
             </div>
             <p className="text-sm text-gray-500 mb-4">
               Enter the email of the student you want to enroll. They must have a REAN account.
             </p>
-            <label htmlFor="newStudentEmailInput" className="sr-only">Student Email</label>
+            <label htmlFor="newStudentEmailInput" className="sr-only">
+              Student Email
+            </label>
             <input
               id="newStudentEmailInput"
               className="w-full p-3 border border-gray-200 rounded-xl text-sm mb-4 focus:ring-2 focus:ring-primary/20 outline-none"
               placeholder="student@example.com"
               value={newStudentEmail}
-              onChange={(e) => setState(prev => ({ ...prev, newStudentEmail: e.target.value }))}
+              onChange={(e) => setState((prev) => ({ ...prev, newStudentEmail: e.target.value }))}
             />
             <div className="flex justify-end gap-2">
-              <button type="button"
-                onClick={() => setState(prev => ({ ...prev, showAddStudentModal: false }))}
+              <button
+                type="button"
+                onClick={() => setState((prev) => ({ ...prev, showAddStudentModal: false }))}
                 className="px-4 py-2 text-gray-500 font-bold text-sm"
               >
                 Cancel
               </button>
-              <button type="button"
+              <button
+                type="button"
                 onClick={handleAddStudent}
                 disabled={isAddingStudent || !newStudentEmail.trim()}
                 className="bg-primary text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center disabled:opacity-50"

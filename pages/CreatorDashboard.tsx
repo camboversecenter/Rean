@@ -51,7 +51,7 @@ const CreatorDashboard: React.FC = () => {
     setState((s) => ({ ...s, loading: true }));
     const user = await getCurrentUser();
     const missionsData = await getMyMissions();
-    
+
     setState((s) => ({
       ...s,
       currentUserId: user ? user.id : s.currentUserId,
@@ -188,13 +188,15 @@ const CreatorDashboard: React.FC = () => {
         </div>
 
         <div className="flex space-x-4 mb-8 border-b border-gray-200">
-          <button type="button"
+          <button
+            type="button"
             onClick={() => setState((s) => ({ ...s, dashboardTab: 'missions' }))}
             className={`pb-3 px-2 text-sm font-bold border-b-2 transition-colors flex items-center ${state.dashboardTab === 'missions' ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
           >
             <Target className="h-4 w-4 mr-2" /> បេសកកម្ម
           </button>
-          <button type="button"
+          <button
+            type="button"
             onClick={() => setState((s) => ({ ...s, dashboardTab: 'rewards' }))}
             className={`pb-3 px-2 text-sm font-bold border-b-2 transition-colors flex items-center ${state.dashboardTab === 'rewards' ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
           >
@@ -211,7 +213,8 @@ const CreatorDashboard: React.FC = () => {
         ) : (
           <>
             <div className="flex justify-end mb-4">
-              <button type="button"
+              <button
+                type="button"
                 onClick={handleCreateNewMission}
                 className="bg-gray-900 text-white px-5 py-2.5 rounded-xl font-bold shadow-lg flex items-center hover:scale-105 transition-transform text-sm"
               >
@@ -223,7 +226,8 @@ const CreatorDashboard: React.FC = () => {
               <div className="text-center py-16 bg-white rounded-3xl border border-dashed border-gray-300">
                 <Target className="h-16 w-16 mx-auto mb-4 text-gray-200" />
                 <h3 className="font-bold text-gray-900 text-lg">មិនទាន់មានបេសកកម្ម</h3>
-                <button type="button"
+                <button
+                  type="button"
                   onClick={handleCreateNewMission}
                   className="text-primary font-bold hover:underline"
                 >
@@ -255,7 +259,8 @@ const CreatorDashboard: React.FC = () => {
                         />
                         {canEdit && (
                           <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button type="button"
+                            <button
+                              type="button"
                               onClick={() => handleEditMission(m)}
                               className="bg-white p-2 rounded-full shadow-sm hover:text-blue-600"
                               title="Edit"
@@ -263,7 +268,8 @@ const CreatorDashboard: React.FC = () => {
                               <Edit className="h-4 w-4" />
                             </button>
                             {isOwner && (
-                              <button type="button"
+                              <button
+                                type="button"
                                 onClick={() => handleDeleteMission(m.id)}
                                 className="bg-white p-2 rounded-full shadow-sm hover:text-red-600"
                                 title="Delete"
@@ -288,7 +294,8 @@ const CreatorDashboard: React.FC = () => {
                           {m.description}
                         </p>
                         <div className="grid grid-cols-2 gap-2 mt-auto">
-                          <button type="button"
+                          <button
+                            type="button"
                             onClick={() => handleManageMission(m)}
                             className="bg-gray-100 text-gray-700 py-2 rounded-lg font-bold text-xs flex items-center justify-center hover:bg-gray-200 transition-colors"
                           >

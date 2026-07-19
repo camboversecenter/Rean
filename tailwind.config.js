@@ -1,12 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    "./index.html",
-    "./App.tsx",
-    "./index.tsx",
-    "./components/**/*.{js,ts,jsx,tsx}",
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./documents/**/*.{js,ts,jsx,tsx}",
+    './index.html',
+    './App.tsx',
+    './index.tsx',
+    './components/**/*.{js,ts,jsx,tsx}',
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './documents/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {
@@ -22,7 +22,7 @@ export default {
         'fade-in': 'fadeIn 0.5s ease-out',
         'scale-in': 'scaleIn 0.3s ease-out',
         'bounce-in': 'bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
-        'pulse-once': 'pulse 0.5s ease-in-out 1'
+        'pulse-once': 'pulse 0.5s ease-in-out 1',
       },
       keyframes: {
         fadeIn: {
@@ -38,11 +38,9 @@ export default {
           '50%': { transform: 'scale(1.05)', opacity: '1' },
           '70%': { transform: 'scale(0.9)' },
           '100%': { transform: 'scale(1)' },
-        }
-      }
+        },
+      },
     },
   },
-  plugins: [
-    require('@tailwindcss/typography'),
-  ],
-}
+  plugins: [require('@tailwindcss/typography')],
+};
