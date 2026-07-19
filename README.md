@@ -1,6 +1,6 @@
 # REAN - Educational Marketplace (Cambodia)
 
-REAN (រៀន — "to learn" in Khmer) is a comprehensive educational platform for Cambodia, connecting students with schools, tutors, and AI-driven learning missions. It features a gamified community, real-time AI tutoring, and a marketplace for short courses.
+REAN (រៀន means "to learn" in Khmer) is a comprehensive educational platform for Cambodia, connecting students with schools, tutors, and AI-driven learning missions. It features a gamified community, real-time AI tutoring, and a marketplace for short courses.
 
 ## Tech Stack
 
@@ -16,26 +16,26 @@ REAN (រៀន — "to learn" in Khmer) is a comprehensive educational platform
 
 ### Core Feature Areas
 
-1. **Missions (project-based learning)** — The core learning product. A Mission is a project-based course made of modules; each module defines a task, an AI persona, a theory prompt, and an initial prompt so the AI can teach the topic and then evaluate the student's submission (scored out of 100, pass at ≥ 70). Missions support:
+1. **Missions (project-based learning)**: The core learning product. A Mission is a project-based course made of modules. Each module defines a task, an AI persona, a theory prompt, and an initial prompt so the AI can teach the topic and then evaluate the student's submission (scored out of 100, pass at 70 or above). Missions support:
    - **Squads**: small student teams, formed automatically or manually.
    - **Classes / cohorts**: groups with start/end dates and join codes.
    - Optional **plagiarism checking** via AI embeddings.
    - Payment QR codes, payment instructions, and Telegram group links.
    - Embedded **simulations** (PhET, Wokwi) inside the classroom workspace.
 
-2. **Schools** — School profiles with admissions, enrollment management, inquiries, scholarships, and a dedicated `SchoolDashboard` for administrators.
+2. **Schools**: School profiles with admissions, enrollment management, inquiries, scholarships, and a dedicated `SchoolDashboard` for administrators.
 
-3. **Tutors** — Tutor profiles, bookings, and student tutor-requests, with listing/detail pages and a `TutorDashboard`.
+3. **Tutors**: Tutor profiles, bookings, and student tutor-requests, with listing/detail pages and a `TutorDashboard`.
 
-4. **Short Courses** — A simpler marketplace product alongside Missions, managed from the `CreatorDashboard`.
+4. **Short Courses**: A simpler marketplace product alongside Missions, managed from the `CreatorDashboard`.
 
-5. **AI Tutor "Kru Rean"** — A Gemini-powered chat assistant (`KruReanChat`) plus a `LiveVoiceTutor` for real-time voice sessions. AI usage is metered by the points economy (see below) and processed server-side through the `ai-assistant` Edge Function, which verifies affordability and deducts points using the service-role key so the economy cannot be bypassed from the client. A direct client-side fallback exists for local development.
+5. **AI Tutor "Kru Rean"**: A Gemini-powered chat assistant (`KruReanChat`) plus a `LiveVoiceTutor` for real-time voice sessions. AI usage is metered by the points economy (see below) and processed server-side through the `ai-assistant` Edge Function, which verifies affordability and deducts points using the service-role key so the economy cannot be bypassed from the client. A direct client-side fallback exists for local development.
 
-6. **Gamified Community ("Lazy Learning")** — A Q&A-style community feed with reactions, accepted answers, and bounties. Includes leaderboards, achievements, Lucky Drops (random rewards, limited per day), Mystery Boxes, and a rewards page for redeeming points.
+6. **Gamified Community ("Lazy Learning")**: A Q&A-style community feed with reactions, accepted answers, and bounties. Includes leaderboards, achievements, Lucky Drops (random rewards, limited per day), Mystery Boxes, and a rewards page for redeeming points.
 
-7. **Roles & Auth** — After signup, users must select a role (student / school / tutor / creator) before using the app. Routing is gated by session and role, with role-specific dashboards behind `ProtectedRoute`.
+7. **Roles & Auth**: After signup, users must select a role (student / school / tutor / creator) before using the app. Routing is gated by session and role, with role-specific dashboards behind `ProtectedRoute`.
 
-8. **Social Sharing (OG functions)** — The `og`, `og-school`, `og-mission`, `og-tutor`, and `og-short-course` Edge Functions generate Open Graph pages so shared links render rich previews.
+8. **Social Sharing (OG functions)**: The `og`, `og-school`, `og-mission`, `og-tutor`, and `og-short-course` Edge Functions generate Open Graph pages so shared links render rich previews.
 
 ### The Points Economy
 
