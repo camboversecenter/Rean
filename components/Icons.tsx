@@ -1,4 +1,3 @@
-
 import {
   BookOpen,
   Search,
@@ -75,6 +74,8 @@ import {
   Tag,
   Sparkles,
   FlaskConical,
+  Github,
+  Code2,
 } from 'lucide-react';
 
 // Export icons directly
@@ -154,4 +155,6 @@ export {
   Tag,
   Sparkles,
   FlaskConical as Experiment,
+  Github,
+  Code2,
 };
