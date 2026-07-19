@@ -42,3 +42,10 @@ screens involved, and the key rules that govern it.
 - **AI:** Google Gemini via `@google/genai`.
 - **Hosting:** Cloudflare Pages.
 - **Languages in the UI:** Khmer and English (mixed throughout).
+
+## License
+
+The documentation in this folder is licensed under
+**Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0)**. The REAN application
+code is licensed separately under **AGPL-3.0-or-later** (see the
+[LICENSE](../LICENSE) file at the repository root).
