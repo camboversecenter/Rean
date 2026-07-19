@@ -18,6 +18,7 @@ import { Toaster } from 'react-hot-toast';
 
 // Pages Imports
 import HomePage from './pages/HomePage';
+import LandingPage from './pages/LandingPage';
 import SchoolsListPage from './pages/SchoolsListPage';
 import TutorListPage from './pages/TutorListPage';
 import ExplorePage from './pages/ExplorePage';
@@ -145,7 +146,8 @@ const AppContent: React.FC = () => {
           <Route path="/mission/:id" element={<MissionDetailPage />} />
 
           {/* Other Public Pages */}
-          <Route path="/" element={<HomePage />} />
+          {/* Logged-out visitors see the marketing landing page; logged-in users get the marketplace home. */}
+          <Route path="/" element={session ? <HomePage /> : <LandingPage />} />
           <Route path="/schools" element={<SchoolsListPage />} />
           <Route path="/school/:id" element={<SchoolDetailPage />} />
           <Route path="/course/:id" element={<CourseDetailPage />} />

@@ -1,0 +1,39 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0F766E"/>
+      <stop offset="1" stop-color="#0B4F49"/>
+    </linearGradient>
+    <linearGradient id="amber" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FBBF24"/>
+      <stop offset="1" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- soft decorative circles -->
+  <circle cx="1050" cy="120" r="240" fill="#ffffff" opacity="0.06"/>
+  <circle cx="1120" cy="560" r="180" fill="#F59E0B" opacity="0.10"/>
+  <circle cx="120" cy="560" r="160" fill="#ffffff" opacity="0.05"/>
+
+  <!-- graduation cap mark -->
+  <g transform="translate(96,150)" fill="#ffffff">
+    <path d="M0 40 L70 12 L140 40 L70 68 Z"/>
+    <path d="M30 54 L30 92 C30 104 110 104 110 92 L110 54 L70 70 Z" opacity="0.92"/>
+    <rect x="136" y="40" width="6" height="40" rx="3"/>
+    <circle cx="139" cy="86" r="9" fill="url(#amber)"/>
+  </g>
+
+  <!-- wordmark -->
+  <text x="96" y="360" font-size="150" font-weight="800" fill="#ffffff" letter-spacing="2">REAN</text>
+  <rect x="100" y="386" width="200" height="10" rx="5" fill="url(#amber)"/>
+
+  <!-- tagline -->
+  <text x="100" y="452" font-size="42" font-weight="700" fill="#ffffff">Learn by doing.</text>
+  <text x="100" y="506" font-size="30" font-weight="400" fill="#D7EFEC">Educational marketplace for Cambodia: schools, tutors,</text>
+  <text x="100" y="546" font-size="30" font-weight="400" fill="#D7EFEC">and AI-driven learning missions. Free to use.</text>
+
+  <!-- footer strip -->
+  <text x="100" y="596" font-size="22" font-weight="600" fill="#9FD8D2">Incubated by CamboVerse Center, National University of Management</text>
+</svg>
