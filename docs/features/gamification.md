@@ -30,7 +30,10 @@ Defined in `gamificationService.ts` → `GAME_RULES`. Daily limits prevent farmi
 | Lucky Drop        | 0   | dynamic | 3           | Lucky Drop           |
 
 Earning is applied through `awardAction`, gated by `checkCanEarn` (which enforces the
-daily limits).
+daily limits). With `SUPABASE_HARDENING.sql` applied, `awardAction` and `spendPoints`
+run through atomic server-side RPCs (`award_action`, `spend_points`) that enforce the
+rules and limits on the server clock, and direct wallet writes from the browser are
+blocked at the database level.
 
 ## Spending
 

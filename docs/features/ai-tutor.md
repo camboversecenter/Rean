@@ -22,11 +22,14 @@ All AI requests are routed through the `ai-assistant` Deno **edge function**, wh
 2. Checks the user can **afford** the action's point cost.
 3. **Deducts** the points using the Supabase service-role key (server-side, trusted).
 4. Calls Google Gemini and returns the result.
+5. **Refunds** the points automatically if the Gemini call fails after deduction, so
+   users are never charged for a failed request.
 
 Because point deduction happens on the server with the service-role key, users cannot
-cheat the economy from the browser. A **direct client-side fallback** exists for local
-development only (when a local `API_KEY` is set), used when the edge function is
-unavailable.
+cheat the economy from the browser. The client only pre-checks affordability
+(`canAfford`) for a fast, friendly error; it never deducts points itself. A **direct
+client-side fallback** exists for local development only (when `VITE_GEMINI_DEV_KEY`
+is set in `.env`; it is stripped from production builds).
 
 ## AI feature costs
 
@@ -36,12 +39,14 @@ Defined in `AI_COSTS` (client) and `COSTS` (edge function):
 | ------------------------------- | ------------- | -------------------------- |
 | Chat (simple text)              | 1             | `chatWithAI`               |
 | Answer evaluation / grading     | 5             | `evaluateSubmission`       |
+| Vision grading (image uploads)  | 10            | `evaluateImageSubmission`  |
 | Lesson / large-context teaching | 10            | (lesson generation)        |
 | Structured / JSON generation    | 10            | `generateMissionStructure` |
 | Image generation                | 25            | `generateImage`            |
 | Live voice session (entry fee)  | 10            | `LiveVoiceTutor`           |
 | Plagiarism embedding check      | 1             | `generateEmbedding`        |
 | Tagging the AI in community     | 10            | `chatWithAiTag`            |
+| Reply quality moderation        | 0 (free)      | `checkContentQuality`      |
 
 ## Capabilities
 

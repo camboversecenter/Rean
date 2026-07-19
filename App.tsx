@@ -187,8 +187,8 @@ const AppContent: React.FC = () => {
             <Route path="/rewards" element={<RewardsPage />} />
           </Route>
 
-          {/* Catch all redirect to home */}
-          <Route path="*" element={<HomePage />} />
+          {/* Catch all: same split as the root route */}
+          <Route path="*" element={session ? <HomePage /> : <LandingPage />} />
         </Routes>
       </main>
       <Footer />

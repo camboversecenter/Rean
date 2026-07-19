@@ -42,13 +42,14 @@ wrapped in a gamified community and a points-based economy.
 ## Commands
 
 ```bash
-npm install       # install dependencies
-npm run dev        # start the Vite dev server (http://localhost:5173)
-npm run build      # production build
-npm run format     # Prettier (writes changes) over **/*.{ts,tsx,css,md}
-npm run lint       # TypeScript type check (tsc --noEmit)
-npm run test       # Vitest (run once)
-npm run deploy     # build + deploy to Cloudflare Pages
+npm install            # install dependencies
+npm run dev            # start the Vite dev server (http://localhost:5173)
+npm run build          # production build
+npm run format         # Prettier (writes changes) over **/*.{ts,tsx,css,md}
+npm run format:check   # Prettier check only (what CI runs)
+npm run lint           # TypeScript type check (tsc --noEmit)
+npm run test           # Vitest (run once)
+npm run deploy         # build + deploy to Cloudflare Pages
 ```
 
 **Always run `npm run format` before committing.** CI runs Prettier and Vitest on every
@@ -111,9 +112,13 @@ push and PR (`.github/workflows/ci.yml`).
 
 ## Known gotchas
 
-- `npm run lint` (`tsc --noEmit`) currently surfaces pre-existing TypeScript errors, so
-  the lint step is commented out in CI. Do not introduce new type errors; fixing existing
-  ones is welcome but should be a focused change.
+- CI enforces `npm run lint` (`tsc --noEmit`, currently zero errors) and
+  `npm run format:check`. Run both locally before pushing; a single unformatted file or
+  type error fails the pipeline.
 - Routing uses `HashRouter` (URLs contain `#/`) to suit static hosting. Keep new routes
   consistent with the public vs. protected split declared in `App.tsx`.
 - Supabase Storage uses a single public bucket named `Rean`.
+- The AI economy deducts points ONLY in the `ai-assistant` edge function, which refunds
+  on failure. Client services call `canAfford` for UX and never `spendPoints` for AI.
+- Wallet writes go through the `spend_points` / `award_action` RPCs (see
+  `SUPABASE_HARDENING.sql`); the direct-write code paths are legacy fallbacks only.

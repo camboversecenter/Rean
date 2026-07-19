@@ -91,9 +91,15 @@ VITE_GEMINI_DEV_KEY=your_google_gemini_api_key
 
 ### 2. Supabase Database Setup
 
-Run the following SQL scripts in the **Supabase SQL Editor** to set up the schema, security, and functions.
+Run the SQL scripts in the **Supabase SQL Editor** to set up the schema, security, and functions:
 
-### 4. Storage Buckets
+1. `SUPABASE_SETUP.sql` (schema, feed algorithm)
+2. `FIX_COMMENTS_RLS.sql` and `UPDATE_POINTS_TRIGGER.sql`
+3. `SUPABASE_HARDENING.sql` (**required**: locks wallet columns and adds the atomic
+   `spend_points` / `award_action` RPCs the app prefers)
+4. `SCALABILITY_PARTITIONING.sql` (optional, for large datasets)
+
+### 3. Storage Buckets
 
 In Supabase Storage, create a public bucket named **`Rean`**.
 Create the following folders inside: `avatars`, `school-logos`, `school-covers`, `course-covers`, `missions`, `rewards`.
@@ -103,9 +109,9 @@ Create the following folders inside: `avatars`, `school-logos`, `school-covers`,
 - **Select**: Public (give access to `anon` role).
 - **Insert/Update/Delete**: Authenticated users only.
 
-### 5. Edge Functions
+### 4. Edge Functions
 
-To enable the server-side AI processing and secure point deduction:
+To enable the server-side AI processing, secure point deduction, and social previews:
 
 1.  Make sure you have the Supabase CLI installed.
 2.  Deploy the functions:
@@ -115,6 +121,8 @@ supabase functions deploy ai-assistant --no-verify-jwt
 supabase functions deploy og --no-verify-jwt
 supabase functions deploy og-school --no-verify-jwt
 supabase functions deploy og-mission --no-verify-jwt
+supabase functions deploy og-tutor --no-verify-jwt
+supabase functions deploy og-short-course --no-verify-jwt
 ```
 
 3.  Set the secrets for the function:
@@ -126,7 +134,7 @@ supabase secrets set APP_PUBLISHABLE_KEY=your_publishable_key
 supabase secrets set APP_SECRET_KEY=your_service_role_key
 ```
 
-### 6. Run the Application
+### 5. Run the Application
 
 ```bash
 npm install
