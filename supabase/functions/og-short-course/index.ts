@@ -30,7 +30,7 @@ serve(async (req: Request) => {
     }
 
     // 2. Initialize Supabase Client
-    const supabaseUrl = Deno.env.get('SUPABASE_URL') || 'https://apirean.e-khmer.com';
+    const supabaseUrl = Deno.env.get('SUPABASE_URL') || 'https://oficlnrazfeswkdrpzjh.supabase.co';
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
     const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -58,7 +58,7 @@ serve(async (req: Request) => {
       .replace(/"/g, '&quot;');
     const image =
       course.cover_image ||
-      'https://apirean.e-khmer.com/storage/v1/object/public/Rean/course-covers/default-course.png';
+      'https://oficlnrazfeswkdrpzjh.supabase.co/storage/v1/object/public/Rean/course-covers/default-course.png';
     const redirectUrl = `${frontendUrl}/#/course/${courseId}`;
     const schoolName = course.schools?.name || 'REAN';
 

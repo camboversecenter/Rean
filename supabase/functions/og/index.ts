@@ -25,7 +25,7 @@ serve(async (req: Request) => {
     }
 
     // Initialize Supabase Client with custom domain
-    const supabaseUrl = Deno.env.get('SUPABASE_URL') || 'https://apirean.e-khmer.com';
+    const supabaseUrl = Deno.env.get('SUPABASE_URL') || 'https://oficlnrazfeswkdrpzjh.supabase.co';
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
     const supabase = createClient(supabaseUrl, supabaseKey);
 

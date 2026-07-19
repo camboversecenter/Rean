@@ -11,8 +11,11 @@ const getEnv = (key: string): string => {
   return env?.[key] || '';
 };
 
-// Updated to custom domain
-export const SUPABASE_URL = getEnv('VITE_SUPABASE_URL') || 'https://apirean.e-khmer.com';
+// Preferred: set VITE_SUPABASE_URL at build time. The fallback points at the
+// project's default supabase.co URL (the old e-khmer.com custom domain was
+// retired).
+export const SUPABASE_URL =
+  getEnv('VITE_SUPABASE_URL') || 'https://oficlnrazfeswkdrpzjh.supabase.co';
 
 // Support both VITE_SUPABASE_PUBLISHABLE_KEY (New Standard) and VITE_SUPABASE_ANON_KEY (Legacy)
 const SUPABASE_KEY =
@@ -20,7 +23,19 @@ const SUPABASE_KEY =
   getEnv('VITE_SUPABASE_ANON_KEY') ||
   'sb_publishable_fbkyJlwt7bcGtiVexvq39w_m6n4_Vxf';
 
-export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: {
+    // PKCE returns the OAuth result as a ?code= query param instead of a
+    // #access_token hash fragment. The app uses HashRouter, which owns the
+    // URL hash for routing; with the implicit (hash) flow the two collide and
+    // the session is lost on redirect, bouncing the user back to the landing
+    // page. PKCE avoids that collision.
+    flowType: 'pkce',
+    detectSessionInUrl: true,
+    persistSession: true,
+    autoRefreshToken: true,
+  },
+});
 
 // Bucket name provided by user
 export const STORAGE_BUCKET = 'Rean';
