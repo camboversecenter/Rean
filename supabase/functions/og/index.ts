@@ -18,7 +18,7 @@ serve(async (req: Request) => {
   try {
     const url = new URL(req.url);
     const missionId = url.searchParams.get('id');
-    const frontendUrl = Deno.env.get('FRONTEND_URL') || 'http://localhost:5173';
+    const frontendUrl = Deno.env.get('FRONTEND_URL') || 'https://rean.camboverse.world';
 
     if (!missionId) {
       return new Response('Missing ID', { status: 400 });

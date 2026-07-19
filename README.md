@@ -3,6 +3,8 @@
 REAN (រៀន means "to learn" in Khmer) is a comprehensive educational platform for Cambodia, connecting students with schools, tutors, and AI-driven learning missions. It features a gamified community, real-time AI tutoring, and a marketplace for short courses.
 
 > **Incubated by CamboVerse Center, National University of Management (NUM).**
+>
+> 🌐 Live at **[rean.camboverse.world](https://rean.camboverse.world)**
 
 ## Tech Stack
 

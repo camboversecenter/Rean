@@ -20,7 +20,7 @@ serve(async (req: Request) => {
     const schoolId = url.searchParams.get('id');
 
     // The web application URL (frontend)
-    const frontendUrl = Deno.env.get('FRONTEND_URL') || 'http://localhost:5173';
+    const frontendUrl = Deno.env.get('FRONTEND_URL') || 'https://rean.camboverse.world';
 
     if (!schoolId) {
       return new Response('Missing ID', {
