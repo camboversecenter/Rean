@@ -131,3 +131,27 @@ This project uses **GitHub Actions** for Continuous Integration and Continuous D
 - **Fail-Fast Strategy:** The `build` and `deploy` jobs are strictly dependent on the tests passing. If a test fails, the pipeline aborts to prevent broken code from being built.
 - **Preview Environments:** Pull requests automatically generate temporary, isolated Cloudflare Preview URLs. This allows for QA and stakeholder review before merging.
 - **Continuous Deployment:** Code merged into the `main` branch is automatically built and deployed to the live **Cloudflare Pages** production environment with zero human intervention.
+
+## 🤝 Contributing
+
+REAN is a community project. Contributions of code, documentation, translations, and
+ideas are welcome. Please read [CONTRIBUTING.md](./CONTRIBUTING.md), which explains the
+workflow and the Developer Certificate of Origin (DCO) sign-off we use (`git commit -s`).
+
+## 📄 License
+
+- **Application code** is licensed under the **GNU Affero General Public License v3.0 or
+  later (AGPL-3.0-or-later)**. See [LICENSE](./LICENSE) for the full text.
+- **Documentation and written content** (the `docs/` folder and other prose) are
+  licensed under **Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0)**.
+- The **REAN name and logo** are trademarks and are not covered by the code license. See
+  [TRADEMARK.md](./TRADEMARK.md).
+
+REAN is free for everyone in Cambodia to use. The project sustains itself through
+community support, donations, grants, and training rather than by selling the software.
+
+> **Note on AGPL and network use:** Because REAN is delivered as a web service, AGPL
+> section 13 asks that users interacting with a modified version over a network be able
+> to obtain its source. A common way to satisfy this is a visible "Source code" link in
+> the app footer pointing to this repository (or to your fork, if you run a modified
+> version).
