@@ -1,6 +1,6 @@
 # REAN - Educational Marketplace (Cambodia)
 
-REAN is a comprehensive educational platform connecting students with schools, tutors, and AI-driven learning missions. It features a gamified community, real-time AI tutoring, and a marketplace for short courses.
+REAN (រៀន — "to learn" in Khmer) is a comprehensive educational platform for Cambodia, connecting students with schools, tutors, and AI-driven learning missions. It features a gamified community, real-time AI tutoring, and a marketplace for short courses.
 
 ## Tech Stack
 
@@ -8,6 +8,54 @@ REAN is a comprehensive educational platform connecting students with schools, t
 - **Backend / Database**: Supabase (PostgreSQL, Auth, Storage, Edge Functions).
 - **AI**: Google Gemini API (@google/genai).
 - **Build Tool**: Vite.
+- **Hosting**: Cloudflare Pages (deployed via Wrangler / GitHub Actions).
+
+---
+
+## 📖 Project Overview
+
+### Core Feature Areas
+
+1. **Missions (project-based learning)** — The core learning product. A Mission is a project-based course made of modules; each module defines a task, an AI persona, a theory prompt, and an initial prompt so the AI can teach the topic and then evaluate the student's submission (scored out of 100, pass at ≥ 70). Missions support:
+   - **Squads**: small student teams, formed automatically or manually.
+   - **Classes / cohorts**: groups with start/end dates and join codes.
+   - Optional **plagiarism checking** via AI embeddings.
+   - Payment QR codes, payment instructions, and Telegram group links.
+   - Embedded **simulations** (PhET, Wokwi) inside the classroom workspace.
+
+2. **Schools** — School profiles with admissions, enrollment management, inquiries, scholarships, and a dedicated `SchoolDashboard` for administrators.
+
+3. **Tutors** — Tutor profiles, bookings, and student tutor-requests, with listing/detail pages and a `TutorDashboard`.
+
+4. **Short Courses** — A simpler marketplace product alongside Missions, managed from the `CreatorDashboard`.
+
+5. **AI Tutor "Kru Rean"** — A Gemini-powered chat assistant (`KruReanChat`) plus a `LiveVoiceTutor` for real-time voice sessions. AI usage is metered by the points economy (see below) and processed server-side through the `ai-assistant` Edge Function, which verifies affordability and deducts points using the service-role key so the economy cannot be bypassed from the client. A direct client-side fallback exists for local development.
+
+6. **Gamified Community ("Lazy Learning")** — A Q&A-style community feed with reactions, accepted answers, and bounties. Includes leaderboards, achievements, Lucky Drops (random rewards, limited per day), Mystery Boxes, and a rewards page for redeeming points.
+
+7. **Roles & Auth** — After signup, users must select a role (student / school / tutor / creator) before using the app. Routing is gated by session and role, with role-specific dashboards behind `ProtectedRoute`.
+
+8. **Social Sharing (OG functions)** — The `og`, `og-school`, `og-mission`, `og-tutor`, and `og-short-course` Edge Functions generate Open Graph pages so shared links render rich previews.
+
+### The Points Economy
+
+Users hold two balances: **XP** (reputation, never spent) and **Points** (spendable currency).
+
+- **Earning** (with daily limits to prevent farming): posting questions (5 XP), helpful replies (2 XP + 1 point), receiving likes (1 XP), accepted solutions (20 XP), Lucky Drops (max 3/day).
+- **Spending on AI features**: chat (1 pt), answer evaluation (5 pts), lesson generation (10 pts), structured/JSON generation (10 pts), image generation (25 pts), live voice session entry (10 pts), plagiarism embedding check (1 pt), tagging the AI in community posts (10 pts).
+
+### Codebase Structure
+
+| Path                  | Purpose                                                                                                                                                                       |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `App.tsx`             | All routing (HashRouter) and top-level auth/session state.                                                                                                                    |
+| `pages/`              | Route-level pages (Home, Explore, Schools, Tutors, Classroom, Leaderboard, dashboards, etc.).                                                                                 |
+| `components/`         | Reusable UI plus feature managers (mission/school/tutor forms, community feed, chat, mystery boxes).                                                                          |
+| `services/`           | All Supabase and Gemini access: `missionService`, `missionProgressService`, `schoolService`, `tutorService`, `communityService`, `gamificationService`, `geminiService`, etc. |
+| `types.ts`            | The domain model (~25 interfaces: Mission, School, Tutor, ShortCourse, UserProfile, …).                                                                                       |
+| `documents/`          | In-app documentation pages rendered at `/docs/*`.                                                                                                                             |
+| `supabase/functions/` | Deno Edge Functions (`ai-assistant` + the `og-*` social preview functions).                                                                                                   |
+| `*.sql` (root)        | Supabase setup scripts: schema, RLS policies, point triggers, and table partitioning for scalability.                                                                         |
 
 ---
 
@@ -79,7 +127,7 @@ Visit `http://localhost:5173` to start learning!
 
 This project uses **GitHub Actions** for Continuous Integration and Continuous Deployment (CI/CD), following professional DevOps best practices to ensure high code quality and reliable deployments.
 
-*   **Automated Code Quality & Testing:** Every push and Pull Request triggers a pipeline that enforces formatting (`Prettier`), type safety (`TypeScript`), and runs unit tests (`Vitest`).
-*   **Fail-Fast Strategy:** The `build` and `deploy` jobs are strictly dependent on the tests passing. If a test fails, the pipeline aborts to prevent broken code from being built.
-*   **Preview Environments:** Pull requests automatically generate temporary, isolated Cloudflare Preview URLs. This allows for QA and stakeholder review before merging.
-*   **Continuous Deployment:** Code merged into the `main` branch is automatically built and deployed to the live **Cloudflare Pages** production environment with zero human intervention.
+- **Automated Code Quality & Testing:** Every push and Pull Request triggers a pipeline that enforces formatting (`Prettier`), type safety (`TypeScript`), and runs unit tests (`Vitest`).
+- **Fail-Fast Strategy:** The `build` and `deploy` jobs are strictly dependent on the tests passing. If a test fails, the pipeline aborts to prevent broken code from being built.
+- **Preview Environments:** Pull requests automatically generate temporary, isolated Cloudflare Preview URLs. This allows for QA and stakeholder review before merging.
+- **Continuous Deployment:** Code merged into the `main` branch is automatically built and deployed to the live **Cloudflare Pages** production environment with zero human intervention.
