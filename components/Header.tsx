@@ -2,29 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   BookOpen,
-  Search,
   User as UserIcon,
-  Bell,
   ChevronLeft,
-  LogOut,
   Zap,
-  Award,
   Gift,
   GraduationCap,
   Users,
   Building2,
 } from './Icons';
-import { signOut, getCurrentUserProfile } from '../services/authService';
-import { fetchRecentActivity } from '../services/leaderboardService';
+import { getCurrentUserProfile } from '../services/authService';
 import { supabase } from '../services/supabaseClient';
+import NotificationBell from './NotificationBell';
 
 const Header: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [state, setState] = useState({
     profile: null as any,
-    activity: [] as any[],
-    showActivity: false,
   });
 
   const isHome = location.pathname === '/';
@@ -50,7 +44,6 @@ const Header: React.FC = () => {
       getCurrentUserProfile().then((p) => {
         if (p) setState((prev) => ({ ...prev, profile: p }));
       });
-      fetchRecentActivity().then((a) => setState((prev) => ({ ...prev, activity: a })));
     };
 
     // Load initially
@@ -63,7 +56,7 @@ const Header: React.FC = () => {
       if (session) {
         loadProfileData();
       } else {
-        setState((prev) => ({ ...prev, profile: null, activity: [] }));
+        setState((prev) => ({ ...prev, profile: null }));
       }
     });
 
@@ -182,81 +175,8 @@ const Header: React.FC = () => {
                   <Gift className="h-5 w-5 fill-current" />
                 </Link>
 
-                {/* Notifications */}
-                <div className="relative">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setState((prev) => ({ ...prev, showActivity: !prev.showActivity }))
-                    }
-                    aria-label="Notifications"
-                    className="p-2 text-gray-400 hover:text-primary relative"
-                  >
-                    <Bell className="h-5 w-5" />
-                    {state.activity.length > 0 && (
-                      <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
-                    )}
-                  </button>
-
-                  {state.showActivity && (
-                    <>
-                      <div
-                        className="fixed inset-0 z-40"
-                        onClick={() => setState((prev) => ({ ...prev, showActivity: false }))}
-                      ></div>
-                      <div className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden animate-fade-in">
-                        <div className="p-3 border-b border-gray-50 flex justify-between items-center bg-gray-50">
-                          <span className="text-xs font-bold text-gray-500 uppercase">
-                            សកម្មភាពថ្មីៗ
-                          </span>
-                          <span className="text-xs text-primary font-bold">
-                            {state.profile?.spendable_points || 0} PTS
-                          </span>
-                        </div>
-                        <div className="max-h-64 overflow-y-auto">
-                          {state.activity.length === 0 ? (
-                            <div className="p-4 text-center text-xs text-gray-400">
-                              មិនទាន់មានសកម្មភាពទេ។
-                            </div>
-                          ) : (
-                            state.activity.map((act) => (
-                              <div
-                                key={act.id}
-                                className="p-3 border-b border-gray-50 hover:bg-gray-50 flex items-start gap-3"
-                              >
-                                <div
-                                  className={`mt-0.5 p-1 rounded-full ${act.amount > 0 ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}
-                                >
-                                  {act.amount > 0 ? (
-                                    <Zap className="h-3 w-3" />
-                                  ) : (
-                                    <Gift className="h-3 w-3" />
-                                  )}
-                                </div>
-                                <div>
-                                  <p className="text-xs text-gray-800 font-medium">{act.reason}</p>
-                                  <p
-                                    className={`text-[10px] font-bold ${act.amount > 0 ? 'text-green-600' : 'text-red-500'}`}
-                                  >
-                                    {act.amount > 0 ? '+' : ''}
-                                    {act.amount} ពិន្ទុ
-                                  </p>
-                                </div>
-                              </div>
-                            ))
-                          )}
-                        </div>
-                        <Link
-                          to="/leaderboard"
-                          className="block p-2 text-center text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors"
-                          onClick={() => setState((prev) => ({ ...prev, showActivity: false }))}
-                        >
-                          មើលតារាងពិន្ទុ (Leaderboard)
-                        </Link>
-                      </div>
-                    </>
-                  )}
-                </div>
+                {/* Notifications (live) + point activity */}
+                <NotificationBell profile={state.profile} />
 
                 {/* School Management Link */}
                 {isSchool && (

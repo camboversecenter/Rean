@@ -41,6 +41,10 @@ REAN (រៀន means "to learn" in Khmer) is a comprehensive educational platfo
 
 8. **Social Sharing (OG functions)**: The `og`, `og-school`, `og-mission`, `og-tutor`, and `og-short-course` Edge Functions generate Open Graph pages so shared links render rich previews.
 
+9. **Notifications**: A live in-app notification center (header bell) fed by database triggers — new replies, accepted answers, reactions, enrollment/payment status changes, and tutor bookings — delivered over Supabase Realtime. See `SUPABASE_NOTIFICATIONS.sql` and [docs/features/notifications.md](./docs/features/notifications.md).
+
+10. **PWA**: REAN is installable as a Progressive Web App. A conservative service worker (`public/sw.js`) caches the app shell and hashed build assets for fast loads and an offline fallback; it only handles same-origin GET requests, so API traffic is never intercepted.
+
 ### The Points Economy
 
 Users hold two balances: **XP** (reputation, never spent) and **Points** (spendable currency).
@@ -94,9 +98,11 @@ VITE_GEMINI_DEV_KEY=your_google_gemini_api_key
 Run the SQL scripts in the **Supabase SQL Editor** to set up the schema, security, and functions:
 
 1. `SUPABASE_SETUP.sql` (schema, feed algorithm)
-2. `FIX_COMMENTS_RLS.sql` and `UPDATE_POINTS_TRIGGER.sql`
-3. `SUPABASE_HARDENING.sql` (**required**: locks wallet columns and adds the atomic
+2. `SUPABASE_HARDENING.sql` (**required**: locks wallet columns and adds the atomic
    `spend_points` / `award_action` RPCs the app prefers)
+3. `SUPABASE_NOTIFICATIONS.sql` (notification center: table, RLS, and the triggers
+   that create notifications for replies, accepted answers, reactions, enrollments,
+   and bookings)
 4. `SCALABILITY_PARTITIONING.sql` (optional, for large datasets)
 
 ### 3. Storage Buckets

@@ -29,6 +29,7 @@ screens involved, and the key rules that govern it.
 | [Community (Lazy Learning)](./features/community.md)   | Q&A feed, replies, reactions, accepted answers, bounties     |
 | [Gamification & Economy](./features/gamification.md)   | XP, points, levels, rewards, mystery boxes, achievements     |
 | [Authentication & Roles](./features/authentication.md) | Google sign-in, role selection, protected routes             |
+| [Notifications](./features/notifications.md)           | Live in-app notification center (replies, bookings, status)  |
 
 ## Architecture
 

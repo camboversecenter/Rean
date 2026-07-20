@@ -326,6 +326,21 @@ export interface RewardClaim {
   user_email?: string;
 }
 
+// --- NOTIFICATION CENTER ---
+export type NotificationType = 'reply' | 'accepted' | 'reaction' | 'enrollment' | 'booking';
+
+export interface AppNotification {
+  id: string;
+  user_id: string;
+  actor_id?: string | null;
+  type: NotificationType;
+  title: string;
+  body?: string | null;
+  link?: string | null; // In-app route, e.g. /community/question/<id>
+  is_read: boolean;
+  created_at: string;
+}
+
 // --- ACHIEVEMENT TYPE ---
 export interface Achievement {
   id: string;
