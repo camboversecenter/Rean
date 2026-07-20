@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { HashRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import BottomNav from './components/BottomNav';
 import Footer from './components/Footer';
 import LoginPage from './components/LoginPage';
 import RoleSelectionPage from './components/RoleSelectionPage';
-import AccountPage from './components/AccountPage';
-import KruReanChat from './components/KruReanChat';
-import CommunityFeed from './components/CommunityFeed';
 import LuckyDropManager from './components/LuckyDropManager';
 import ScrollToTop from './components/ScrollToTop';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -16,31 +13,42 @@ import { supabase } from './services/supabaseClient';
 import { getCurrentUserProfile } from './services/authService';
 import { Toaster } from 'react-hot-toast';
 
-// Pages Imports
-import HomePage from './pages/HomePage';
-import LandingPage from './pages/LandingPage';
-import SchoolsListPage from './pages/SchoolsListPage';
-import TutorListPage from './pages/TutorListPage';
-import ExplorePage from './pages/ExplorePage';
-import MissionDetailPage from './pages/MissionDetailPage';
-import SchoolDashboard from './pages/SchoolDashboard';
-import SchoolDetailPage from './pages/SchoolDetailPage';
-import CourseDetailPage from './pages/CourseDetailPage';
-import CreatorDashboard from './pages/CreatorDashboard';
-import LeaderboardPage from './pages/LeaderboardPage';
-import RewardsPage from './pages/RewardsPage';
-import TutorDashboard from './pages/TutorDashboard';
-import TutorDetailPage from './pages/TutorDetailPage';
-import ClassroomPage from './pages/ClassroomPage';
-import QuestionDetailPage from './pages/QuestionDetailPage';
-import DocumentationPage from './documents/DocumentationPage';
-import AdmissionsDoc from './documents/AdmissionsDoc';
-import ShortCoursesDoc from './documents/ShortCoursesDoc';
-import TutorDoc from './documents/TutorDoc';
-import MissionsDoc from './documents/MissionsDoc';
-import LazyLearningDoc from './documents/LazyLearningDoc';
-import CommunityLicensePage from './pages/CommunityLicensePage';
-import PublicProfilePage from './pages/PublicProfilePage';
+// Route-level code splitting: each page loads on demand instead of shipping in
+// the initial bundle (dashboards, classroom, and the AI chat are the heavy ones).
+const AccountPage = lazy(() => import('./components/AccountPage'));
+const KruReanChat = lazy(() => import('./components/KruReanChat'));
+const CommunityFeed = lazy(() => import('./components/CommunityFeed'));
+const HomePage = lazy(() => import('./pages/HomePage'));
+const LandingPage = lazy(() => import('./pages/LandingPage'));
+const SchoolsListPage = lazy(() => import('./pages/SchoolsListPage'));
+const TutorListPage = lazy(() => import('./pages/TutorListPage'));
+const ExplorePage = lazy(() => import('./pages/ExplorePage'));
+const MissionDetailPage = lazy(() => import('./pages/MissionDetailPage'));
+const SchoolDashboard = lazy(() => import('./pages/SchoolDashboard'));
+const SchoolDetailPage = lazy(() => import('./pages/SchoolDetailPage'));
+const CourseDetailPage = lazy(() => import('./pages/CourseDetailPage'));
+const CreatorDashboard = lazy(() => import('./pages/CreatorDashboard'));
+const LeaderboardPage = lazy(() => import('./pages/LeaderboardPage'));
+const RewardsPage = lazy(() => import('./pages/RewardsPage'));
+const TutorDashboard = lazy(() => import('./pages/TutorDashboard'));
+const TutorDetailPage = lazy(() => import('./pages/TutorDetailPage'));
+const ClassroomPage = lazy(() => import('./pages/ClassroomPage'));
+const QuestionDetailPage = lazy(() => import('./pages/QuestionDetailPage'));
+const DocumentationPage = lazy(() => import('./documents/DocumentationPage'));
+const AdmissionsDoc = lazy(() => import('./documents/AdmissionsDoc'));
+const ShortCoursesDoc = lazy(() => import('./documents/ShortCoursesDoc'));
+const TutorDoc = lazy(() => import('./documents/TutorDoc'));
+const MissionsDoc = lazy(() => import('./documents/MissionsDoc'));
+const LazyLearningDoc = lazy(() => import('./documents/LazyLearningDoc'));
+const CommunityLicensePage = lazy(() => import('./pages/CommunityLicensePage'));
+const PublicProfilePage = lazy(() => import('./pages/PublicProfilePage'));
+
+// Shown while a lazy page chunk downloads
+const PageLoader = () => (
+  <div className="flex items-center justify-center py-24">
+    <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+  </div>
+);
 
 // Helper to update document title based on route
 const PageTitleUpdater = () => {
@@ -123,10 +131,12 @@ const AppContent: React.FC = () => {
   if (session && !userRole && window.location.hash !== '#/license') {
     return (
       <div className="min-h-screen bg-gray-50 font-sans">
-        <Routes>
-          <Route path="/license" element={<CommunityLicensePage />} />
-          <Route path="*" element={<RoleSelectionPage />} />
-        </Routes>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/license" element={<CommunityLicensePage />} />
+            <Route path="*" element={<RoleSelectionPage />} />
+          </Routes>
+        </Suspense>
         <Toaster position="top-center" />
       </div>
     );
@@ -140,56 +150,58 @@ const AppContent: React.FC = () => {
       <Header />
       <LuckyDropManager />
       <main className="flex-grow">
-        <Routes>
-          {/* --- PUBLIC ROUTES --- */}
-          {/* The Mission Detail Page is now PUBLIC as requested */}
-          <Route path="/mission/:id" element={<MissionDetailPage />} />
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            {/* --- PUBLIC ROUTES --- */}
+            {/* The Mission Detail Page is now PUBLIC as requested */}
+            <Route path="/mission/:id" element={<MissionDetailPage />} />
 
-          {/* Other Public Pages */}
-          {/* Logged-out visitors see the marketing landing page; logged-in users get the marketplace home. */}
-          <Route path="/" element={session ? <HomePage /> : <LandingPage />} />
-          <Route path="/schools" element={<SchoolsListPage />} />
-          <Route path="/school/:id" element={<SchoolDetailPage />} />
-          <Route path="/course/:id" element={<CourseDetailPage />} />
-          <Route path="/tutors" element={<TutorListPage />} />
-          <Route path="/tutor/:id" element={<TutorDetailPage />} />
-          <Route path="/explore" element={<ExplorePage />} />
-          <Route path="/profile/:id" element={<PublicProfilePage />} />
+            {/* Other Public Pages */}
+            {/* Logged-out visitors see the marketing landing page; logged-in users get the marketplace home. */}
+            <Route path="/" element={session ? <HomePage /> : <LandingPage />} />
+            <Route path="/schools" element={<SchoolsListPage />} />
+            <Route path="/school/:id" element={<SchoolDetailPage />} />
+            <Route path="/course/:id" element={<CourseDetailPage />} />
+            <Route path="/tutors" element={<TutorListPage />} />
+            <Route path="/tutor/:id" element={<TutorDetailPage />} />
+            <Route path="/explore" element={<ExplorePage />} />
+            <Route path="/profile/:id" element={<PublicProfilePage />} />
 
-          {/* Docs are Public */}
-          <Route path="/docs" element={<DocumentationPage />} />
-          <Route path="/docs/admissions" element={<AdmissionsDoc />} />
-          <Route path="/docs/short-courses" element={<ShortCoursesDoc />} />
-          <Route path="/docs/tutor" element={<TutorDoc />} />
-          <Route path="/docs/missions" element={<MissionsDoc />} />
-          <Route path="/docs/lazy-learning" element={<LazyLearningDoc />} />
-          <Route path="/license" element={<CommunityLicensePage />} />
+            {/* Docs are Public */}
+            <Route path="/docs" element={<DocumentationPage />} />
+            <Route path="/docs/admissions" element={<AdmissionsDoc />} />
+            <Route path="/docs/short-courses" element={<ShortCoursesDoc />} />
+            <Route path="/docs/tutor" element={<TutorDoc />} />
+            <Route path="/docs/missions" element={<MissionsDoc />} />
+            <Route path="/docs/lazy-learning" element={<LazyLearningDoc />} />
+            <Route path="/license" element={<CommunityLicensePage />} />
 
-          {/* Authentication Route */}
-          {/* If already logged in, /login redirects to home */}
-          <Route path="/login" element={session ? <Navigate to="/" /> : <LoginPage />} />
+            {/* Authentication Route */}
+            {/* If already logged in, /login redirects to home */}
+            <Route path="/login" element={session ? <Navigate to="/" /> : <LoginPage />} />
 
-          {/* --- PROTECTED ROUTES --- */}
-          <Route element={<ProtectedRoute session={session} />}>
-            <Route path="/account" element={<AccountPage />} />
-            <Route path="/chat" element={<KruReanChat />} />
+            {/* --- PROTECTED ROUTES --- */}
+            <Route element={<ProtectedRoute session={session} />}>
+              <Route path="/account" element={<AccountPage />} />
+              <Route path="/chat" element={<KruReanChat />} />
 
-            {/* Community Feed: Could be public, but let's keep it protected for posting/interaction focus for now, or move to public if read-only needed */}
-            <Route path="/community" element={<CommunityFeed />} />
-            <Route path="/community/question/:id" element={<QuestionDetailPage />} />
+              {/* Community Feed: Could be public, but let's keep it protected for posting/interaction focus for now, or move to public if read-only needed */}
+              <Route path="/community" element={<CommunityFeed />} />
+              <Route path="/community/question/:id" element={<QuestionDetailPage />} />
 
-            {/* Dashboards & Tools */}
-            <Route path="/school/dashboard" element={<SchoolDashboard />} />
-            <Route path="/creator" element={<CreatorDashboard />} />
-            <Route path="/tutor/dashboard" element={<TutorDashboard />} />
-            <Route path="/classroom/:id" element={<ClassroomPage />} />
-            <Route path="/leaderboard" element={<LeaderboardPage />} />
-            <Route path="/rewards" element={<RewardsPage />} />
-          </Route>
+              {/* Dashboards & Tools */}
+              <Route path="/school/dashboard" element={<SchoolDashboard />} />
+              <Route path="/creator" element={<CreatorDashboard />} />
+              <Route path="/tutor/dashboard" element={<TutorDashboard />} />
+              <Route path="/classroom/:id" element={<ClassroomPage />} />
+              <Route path="/leaderboard" element={<LeaderboardPage />} />
+              <Route path="/rewards" element={<RewardsPage />} />
+            </Route>
 
-          {/* Catch all: same split as the root route */}
-          <Route path="*" element={session ? <HomePage /> : <LandingPage />} />
-        </Routes>
+            {/* Catch all: same split as the root route */}
+            <Route path="*" element={session ? <HomePage /> : <LandingPage />} />
+          </Routes>
+        </Suspense>
       </main>
       <Footer />
       <BottomNav />
