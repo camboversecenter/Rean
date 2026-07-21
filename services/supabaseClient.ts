@@ -15,13 +15,13 @@ const getEnv = (key: string): string => {
 // project's default supabase.co URL (the old e-khmer.com custom domain was
 // retired).
 export const SUPABASE_URL =
-  getEnv('VITE_SUPABASE_URL') || 'https://oficlnrazfeswkdrpzjh.supabase.co';
+  getEnv('VITE_SUPABASE_URL') || 'https://sjlduyivbwpvgkeiqysr.supabase.co';
 
 // Support both VITE_SUPABASE_PUBLISHABLE_KEY (New Standard) and VITE_SUPABASE_ANON_KEY (Legacy)
 const SUPABASE_KEY =
   getEnv('VITE_SUPABASE_PUBLISHABLE_KEY') ||
   getEnv('VITE_SUPABASE_ANON_KEY') ||
-  'sb_publishable_fbkyJlwt7bcGtiVexvq39w_m6n4_Vxf';
+  'sb_publishable_T1vB15fvoAiPpDrlDvO1nA_rvgSpo4u';
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth: {
