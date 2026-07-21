@@ -14,7 +14,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import ProtectedRoute from './components/ProtectedRoute'; // New component
 import { supabase } from './services/supabaseClient';
 import { getCurrentUserProfile } from './services/authService';
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 // Pages Imports
 import HomePage from './pages/HomePage';
@@ -79,6 +79,30 @@ const AppContent: React.FC = () => {
     }
     setIsLoading(false);
   };
+
+  // Surface OAuth redirect errors. When Google/Supabase sign-in fails, the
+  // provider redirects back with ?error=...&error_description=... (or in the
+  // hash). Without this, a failed login silently drops the user on the landing
+  // page with no message. Show the real reason and clean the URL.
+  useEffect(() => {
+    const collect = (qs: string) => new URLSearchParams(qs);
+    const search = collect(window.location.search);
+    const rawHash = window.location.hash.startsWith('#') ? window.location.hash.slice(1) : '';
+    const hashQuery = collect(rawHash.includes('?') ? rawHash.split('?')[1] : rawHash);
+    const errorDesc =
+      search.get('error_description') ||
+      search.get('error') ||
+      hashQuery.get('error_description') ||
+      hashQuery.get('error');
+
+    if (errorDesc) {
+      const msg = decodeURIComponent(errorDesc).replace(/\+/g, ' ');
+      toast.error(`Sign-in failed: ${msg}`, { duration: 9000 });
+      // Remove the error params so a refresh does not repeat the toast.
+      const cleanHash = window.location.hash.split('?')[0];
+      window.history.replaceState({}, document.title, window.location.pathname + cleanHash);
+    }
+  }, []);
 
   useEffect(() => {
     // 1. Check current session
