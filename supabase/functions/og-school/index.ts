@@ -30,7 +30,7 @@ serve(async (req: Request) => {
     }
 
     // 2. Initialize Supabase Client with CUSTOM DOMAIN
-    const supabaseUrl = Deno.env.get('SUPABASE_URL') || 'https://sjlduyivbwpvgkeiqysr.supabase.co';
+    const supabaseUrl = Deno.env.get('SUPABASE_URL') || 'https://oficlnrazfeswkdrpzjh.supabase.co';
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
     const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -61,7 +61,7 @@ serve(async (req: Request) => {
     const image =
       school.cover_image ||
       school.logo ||
-      'https://sjlduyivbwpvgkeiqysr.supabase.co/storage/v1/object/public/Rean/school-covers/default-school.png';
+      'https://oficlnrazfeswkdrpzjh.supabase.co/storage/v1/object/public/Rean/school-covers/default-school.png';
     const redirectUrl = `${frontendUrl}/#/school/${schoolId}`;
 
     // 5. Construct HTML Template with Open Graph Tags
