@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { placeholderImage } from '../utils/placeholder';
 import {
   Target,
   BookOpen,
@@ -332,7 +333,7 @@ const ExplorePage: React.FC = () => {
                 {compareList.map((c) => (
                   <img
                     key={c.id}
-                    src={c.coverImage || 'https://via.placeholder.com/50'}
+                    src={c.coverImage || placeholderImage(50, 50)}
                     className="w-8 h-8 rounded-full border border-gray-800 object-cover"
                     alt="cover"
                   />
@@ -401,7 +402,7 @@ const ExplorePage: React.FC = () => {
                     {compareList.map((c) => (
                       <div key={c.id} className="flex-1">
                         <img
-                          src={c.coverImage || 'https://via.placeholder.com/300x200'}
+                          src={c.coverImage || placeholderImage(300, 200, 'Course')}
                           className="w-full h-24 object-cover rounded-lg mb-2 bg-gray-100"
                           alt="Cover"
                         />

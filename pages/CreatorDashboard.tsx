@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { placeholderImage } from '../utils/placeholder';
 import {
   Target,
   Plus,
@@ -253,7 +254,7 @@ const CreatorDashboard: React.FC = () => {
                       </div>
                       <div className="relative h-40 bg-gray-100">
                         <img
-                          src={m.thumbnail || 'https://via.placeholder.com/400x200'}
+                          src={m.thumbnail || placeholderImage(400, 200, 'Mission')}
                           alt={m.title}
                           className="w-full h-full object-cover"
                         />

@@ -13,6 +13,7 @@ import {
 } from './Icons';
 import { ShortCourse } from '../types';
 import { formatRiel } from '../utils/formatHelper';
+import { placeholderImage } from '../utils/placeholder';
 import { Link } from 'react-router-dom';
 
 interface ShortCourseCardProps {
@@ -47,7 +48,7 @@ const ShortCourseCard: React.FC<ShortCourseCardProps> = ({
         {/* Big Cover Photo */}
         <div className="relative aspect-[16/9] bg-gray-200 overflow-hidden">
           <img
-            src={course.coverImage || 'https://via.placeholder.com/640x360?text=Course'}
+            src={course.coverImage || placeholderImage(640, 360, 'Course')}
             alt={course.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />

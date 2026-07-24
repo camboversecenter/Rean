@@ -18,6 +18,7 @@ import {
   ChevronLeft,
 } from '../components/Icons';
 import { formatRiel } from '../utils/formatHelper';
+import { placeholderImage } from '../utils/placeholder';
 import ShortCourseCard from '../components/ShortCourseCard';
 import MarkdownText from '../components/MarkdownText';
 import { SUPABASE_URL } from '../services/supabaseClient';
@@ -147,7 +148,7 @@ const CourseDetailPage: React.FC = () => {
       {/* --- HERO IMAGE --- */}
       <div className="relative h-64 md:h-80 bg-gray-900">
         <img
-          src={course.coverImage || 'https://via.placeholder.com/1200x600?text=Course'}
+          src={course.coverImage || placeholderImage(1200, 600, 'Course')}
           alt="Course Cover"
           className="w-full h-full object-cover opacity-60"
         />

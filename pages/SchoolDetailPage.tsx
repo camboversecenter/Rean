@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { placeholderImage } from '../utils/placeholder';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchSchoolById, createStudentInquiry } from '../services/schoolService';
 import { getCurrentUserProfile } from '../services/authService';
@@ -153,7 +154,7 @@ const SchoolDetailPage: React.FC = () => {
       {/* --- HERO SECTION --- */}
       <div className="relative h-48 md:h-64 bg-gray-200">
         <img
-          src={state.school.coverImage || 'https://via.placeholder.com/1200x400'}
+          src={state.school.coverImage || placeholderImage(1200, 400, 'School')}
           alt="Cover"
           className="w-full h-full object-cover"
         />
@@ -185,7 +186,7 @@ const SchoolDetailPage: React.FC = () => {
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 md:p-6 flex flex-col md:flex-row items-start md:items-center gap-4">
           <div className="bg-white p-1 rounded-2xl shadow-md -mt-16 md:mt-0">
             <img
-              src={state.school.logo || 'https://via.placeholder.com/150'}
+              src={state.school.logo || placeholderImage(150, 150, 'Logo')}
               alt="Logo"
               className="w-24 h-24 rounded-xl object-contain bg-white"
             />

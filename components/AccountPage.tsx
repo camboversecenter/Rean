@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { placeholderImage } from '../utils/placeholder';
 import { getCurrentUserProfile } from '../services/authService';
 import { uploadFile, deleteFileFromUrl } from '../services/storageService';
 import { getMyActiveMissions } from '../services/missionProgressService';
@@ -524,7 +525,7 @@ const AccountPage: React.FC = () => {
                     >
                       <div className="flex items-center gap-4 overflow-hidden">
                         <img
-                          src={m.thumbnail || 'https://via.placeholder.com/80'}
+                          src={m.thumbnail || placeholderImage(80, 80, 'Mission')}
                           alt={m.title}
                           className="w-12 h-12 rounded-xl object-cover flex-shrink-0 bg-gray-100"
                         />

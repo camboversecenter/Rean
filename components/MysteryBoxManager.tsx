@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { placeholderImage } from '../utils/placeholder';
 import { Gift, Plus, Trash2, Loader2, Image as ImageIcon, X, CheckCircle, Zap } from './Icons';
 import {
   getMyMysteryBoxes,
@@ -310,7 +311,7 @@ const MysteryBoxManager: React.FC = () => {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <img
-                          src={claim.user_avatar || 'https://via.placeholder.com/30'}
+                          src={claim.user_avatar || placeholderImage(30, 30)}
                           className="w-8 h-8 rounded-full bg-gray-200"
                           alt="User Avatar"
                         />

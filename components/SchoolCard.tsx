@@ -1,4 +1,5 @@
 import React from 'react';
+import { placeholderImage } from '../utils/placeholder';
 import { MapPin, Building2, CheckCircle, Award, Calendar, AlertCircle } from './Icons';
 import { School } from '../types';
 import { Link } from 'react-router-dom';
@@ -44,7 +45,7 @@ const SchoolCard: React.FC<SchoolCardProps> = ({ school }) => {
     >
       <div className="relative h-32 bg-gray-200">
         <img
-          src={school.coverImage || 'https://via.placeholder.com/800x400'}
+          src={school.coverImage || placeholderImage(800, 400, 'School')}
           alt={school.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
@@ -68,7 +69,7 @@ const SchoolCard: React.FC<SchoolCardProps> = ({ school }) => {
         {/* Logo overlapping cover */}
         <div className="absolute -top-10 left-4 bg-white p-1 rounded-xl shadow-md">
           <img
-            src={school.logo || 'https://via.placeholder.com/150'}
+            src={school.logo || placeholderImage(150, 150, 'Logo')}
             alt={`${school.name} logo`}
             className="w-16 h-16 rounded-lg object-contain bg-white"
           />

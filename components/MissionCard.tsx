@@ -3,6 +3,7 @@ import { Target, Users2, Brain, ChevronRight, User } from './Icons';
 import { Mission } from '../types';
 import { Link } from 'react-router-dom';
 import { formatRiel } from '../utils/formatHelper';
+import { placeholderImage } from '../utils/placeholder';
 
 interface MissionCardProps {
   mission: Mission;
@@ -19,7 +20,7 @@ const MissionCard: React.FC<MissionCardProps> = ({ mission, compact = false }) =
         <div className="flex h-32">
           <div className="w-1/3 relative overflow-hidden">
             <img
-              src={mission.thumbnail || 'https://via.placeholder.com/400x300'}
+              src={mission.thumbnail || placeholderImage(400, 300, 'Mission')}
               alt={mission.title}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
@@ -76,7 +77,7 @@ const MissionCard: React.FC<MissionCardProps> = ({ mission, compact = false }) =
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden h-full flex flex-col hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
         <div className="relative aspect-[16/10] overflow-hidden">
           <img
-            src={mission.thumbnail || 'https://via.placeholder.com/600x400'}
+            src={mission.thumbnail || placeholderImage(600, 400, 'Mission')}
             alt={mission.title}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           />

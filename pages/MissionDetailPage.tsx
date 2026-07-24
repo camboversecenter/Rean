@@ -21,6 +21,7 @@ import {
   Share2,
 } from '../components/Icons';
 import { formatRiel } from '../utils/formatHelper';
+import { placeholderImage } from '../utils/placeholder';
 import { SUPABASE_URL } from '../services/supabaseClient';
 import toast from 'react-hot-toast';
 
@@ -203,7 +204,7 @@ const MissionDetailPage: React.FC = () => {
       {/* Hero */}
       <div className="relative h-64 md:h-80 bg-gray-900">
         <img
-          src={mission.thumbnail || 'https://via.placeholder.com/1200x600'}
+          src={mission.thumbnail || placeholderImage(1200, 600, 'Mission')}
           alt={mission.title}
           className="w-full h-full object-cover opacity-60"
         />
