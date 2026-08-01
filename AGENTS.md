@@ -104,7 +104,7 @@ push and PR (`.github/workflows/ci.yml`).
 
 ## Licensing
 
-- Application code: **AGPL-3.0-or-later** (see [LICENSE](./LICENSE)).
+- Application code: **Apache-2.0** (see [LICENSE](./LICENSE)).
 - Documentation and prose: **CC BY-SA 4.0**.
 - The REAN name and logo are trademarks, separate from the code license
   ([TRADEMARK.md](./TRADEMARK.md)).

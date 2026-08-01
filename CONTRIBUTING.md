@@ -5,12 +5,13 @@ Cambodia. Contributions of code, documentation, translations, and ideas are all 
 
 ## License of contributions
 
-REAN's application code is licensed under the
-**GNU Affero General Public License v3.0 or later (AGPL-3.0-or-later)**. Documentation
-and written content are licensed under
+REAN's application code is licensed under the **Apache License 2.0 (Apache-2.0)**.
+Documentation and written content are licensed under
 **Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0)**.
 
 By contributing, you agree that your contribution is provided under these same licenses.
+Under Apache-2.0, this includes granting a patent license for your contribution, as
+described in section 3 of the license.
 
 ## Developer Certificate of Origin (DCO)
 

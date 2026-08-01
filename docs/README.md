@@ -47,5 +47,5 @@ screens involved, and the key rules that govern it.
 
 The documentation in this folder is licensed under
 **Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0)**. The REAN application
-code is licensed separately under **AGPL-3.0-or-later** (see the
+code is licensed separately under **Apache-2.0** (see the
 [LICENSE](../LICENSE) file at the repository root).

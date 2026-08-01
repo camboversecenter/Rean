@@ -1,8 +1,9 @@
 # REAN Trademark and Branding Policy
 
-The REAN source code is open source under the AGPL-3.0-or-later license, and you are
-free to use, modify, and self-host it under those terms. **However, the open-source code
-license does not grant any rights to the REAN name, logo, or brand.**
+The REAN source code is open source under the Apache-2.0 license, and you are free to
+use, modify, and self-host it under those terms. **However, the open-source code license
+does not grant any rights to the REAN name, logo, or brand** (Apache-2.0 section 6
+explicitly does not grant trademark rights).
 
 ## What this means
 

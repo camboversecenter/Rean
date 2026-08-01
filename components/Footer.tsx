@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-            {/* AGPL section 13: users of a network service can obtain the source. */}
+            {/* Link to the open-source repository. */}
             <a
               href={REPO_URL}
               target="_blank"
@@ -51,7 +51,7 @@ const Footer: React.FC = () => {
             Made with <Heart className="h-3 w-3 mx-1 text-red-400" aria-hidden="true" /> for the
             Cambodian learning community.
           </p>
-          <p>© {year} REAN. Code licensed under AGPL-3.0-or-later. Free to use in Cambodia.</p>
+          <p>© {year} REAN. Code licensed under Apache-2.0. Free to use in Cambodia.</p>
         </div>
       </div>
     </footer>

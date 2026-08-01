@@ -158,8 +158,8 @@ workflow and the Developer Certificate of Origin (DCO) sign-off we use (`git com
 
 ## 📄 License
 
-- **Application code** is licensed under the **GNU Affero General Public License v3.0 or
-  later (AGPL-3.0-or-later)**. See [LICENSE](./LICENSE) for the full text.
+- **Application code** is licensed under the **Apache License 2.0 (Apache-2.0)**. See
+  [LICENSE](./LICENSE) for the full text.
 - **Documentation and written content** (the `docs/` folder and other prose) are
   licensed under **Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0)**.
 - The **REAN name and logo** are trademarks and are not covered by the code license. See
@@ -168,11 +168,9 @@ workflow and the Developer Certificate of Origin (DCO) sign-off we use (`git com
 REAN is free for everyone in Cambodia to use. The project sustains itself through
 community support, donations, grants, and training rather than by selling the software.
 
-> **Note on AGPL and network use:** Because REAN is delivered as a web service, AGPL
-> section 13 asks that users interacting with a modified version over a network be able
-> to obtain its source. A common way to satisfy this is a visible "Source code" link in
-> the app footer pointing to this repository (or to your fork, if you run a modified
-> version).
+> Apache-2.0 is a permissive license: anyone may use, modify, and redistribute the code,
+> including in closed-source or commercial products, as long as they keep the license and
+> copyright notices. It also grants an explicit patent license from contributors.
 
 ## 🙏 Acknowledgements
 
