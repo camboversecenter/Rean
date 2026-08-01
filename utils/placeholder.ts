@@ -11,11 +11,7 @@
  * @param height intrinsic height in px
  * @param text   optional label centered in the box
  */
-export function placeholderImage(
-  width = 400,
-  height = 300,
-  text = ''
-): string {
+export function placeholderImage(width = 400, height = 300, text = ''): string {
   const label = text || `${width}×${height}`;
   const fontSize = Math.max(12, Math.round(Math.min(width, height) / 8));
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">

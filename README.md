@@ -124,6 +124,7 @@ supabase functions deploy og-mission --no-verify-jwt
 supabase functions deploy og-tutor --no-verify-jwt
 supabase functions deploy og-short-course --no-verify-jwt
 ```
+
 3.  Set the secrets for the function:
 
 ```bash
