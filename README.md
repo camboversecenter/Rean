@@ -1,4 +1,4 @@
-# REAN - Educational Marketplace (Cambodia)
+# REAN - Educational Platform (Cambodia)
 
 REAN (រៀន means "to learn" in Khmer) is a comprehensive educational platform for Cambodia, connecting students with schools, tutors, and AI-driven learning missions. It features a gamified community, real-time AI tutoring, and a marketplace for short courses.
 
