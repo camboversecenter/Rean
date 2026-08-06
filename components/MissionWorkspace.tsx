@@ -28,6 +28,9 @@ import {
   Layout,
   X,
   Experiment,
+  ChevronDown,
+  Lightbulb,
+  Sparkles,
 } from './Icons';
 import { Mission, ChatMessage, MissionModuleStatus, SquadMember } from '../types';
 import {
@@ -76,6 +79,46 @@ const base64ToBlob = (base64: string, mimeType: string = 'image/png') => {
   const byteArray = new Uint8Array(byteNumbers);
   return new Blob([byteArray], { type: mimeType });
 };
+
+/**
+ * The assignment the student has to hand in. It lives on the practice screens
+ * (Studio and Simulation) so the instruction stays visible while they work,
+ * instead of being stranded on the summary screen. Collapsible so it does not
+ * eat the typing area on small phones.
+ */
+const TaskCard: React.FC<{
+  task: string;
+  expanded: boolean;
+  onToggle: () => void;
+}> = ({ task, expanded, onToggle }) => (
+  <div className="bg-white rounded-2xl shadow-sm border border-gray-100 border-l-4 border-l-primary overflow-hidden">
+    <button
+      type="button"
+      onClick={onToggle}
+      aria-expanded={expanded}
+      className="w-full flex items-center justify-between gap-3 p-4 text-left hover:bg-gray-50/60 transition-colors"
+    >
+      <span className="flex items-center min-w-0">
+        <Target className="h-5 w-5 mr-2 text-primary flex-shrink-0" />
+        <span className="font-bold text-gray-900 truncate">កិច្ចការរបស់អ្នក (Your Task)</span>
+      </span>
+      <span className="flex items-center gap-2 flex-shrink-0">
+        <span className="hidden sm:inline text-[10px] font-bold text-gray-600 bg-gray-100 px-2 py-1 rounded-full">
+          ជាប់ត្រូវបាន ៧០/១០០
+        </span>
+        <ChevronDown
+          className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`}
+        />
+      </span>
+    </button>
+    {expanded && (
+      <div className="px-4 pb-4 text-sm text-gray-700 leading-relaxed">
+        <MarkdownText content={task} />
+        <p className="sm:hidden mt-3 text-[11px] font-bold text-gray-500">ជាប់ត្រូវបាន ៧០/១០០</p>
+      </div>
+    )}
+  </div>
+);
 
 const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
   mission,
@@ -129,6 +172,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
       isEvaluating: false,
       isChatLoading: false,
       showCompletionModal: false,
+      taskExpanded: true,
     };
   });
 
@@ -153,6 +197,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
     isEvaluating,
     isChatLoading,
     showCompletionModal,
+    taskExpanded,
   } = state;
 
   const setActiveModuleId = React.useCallback(
@@ -236,6 +281,10 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
     (v: any) => setState((s) => ({ ...s, showCompletionModal: v })),
     []
   );
+  const toggleTaskExpanded = React.useCallback(
+    () => setState((s) => ({ ...s, taskExpanded: !s.taskExpanded })),
+    []
+  );
 
   const noteSaveTimeout = useRef<any>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -246,9 +295,62 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
   const prevInitialSquadNoteRef = useRef(initialSquadNote);
 
   const activeModule = mission.modules.find((m) => m.id === activeModuleId) || mission.modules[0];
+  const activeModuleIndex = Math.max(
+    0,
+    mission.modules.findIndex((m) => m.id === activeModuleId)
+  );
   const isLocked = moduleStatus[activeModuleId] === 'locked';
   const currentSubmissionText = submissionData[activeModuleId] || '';
   const currentEvaluation = evaluationData[activeModuleId];
+
+  // The summary screen describes the lesson itself. The assignment text lives on
+  // the practice screens, so here we lead with the topic the module teaches.
+  const lessonOverview =
+    activeModule.theoryPrompt?.trim() ||
+    `ក្នុងមេរៀន "${activeModule.title}" នេះ អ្នកនឹងសិក្សាទ្រឹស្តី រួចអនុវត្តវាទៅលើកិច្ចការជាក់ស្តែងមួយ។ ចុចផ្ទាំង **រៀន** ដើម្បីឱ្យគ្រូជំនួយ AI ពន្យល់មេរៀនជូនអ្នក។`;
+
+  const lessonSteps = [
+    {
+      icon: BookOpen,
+      tab: 'learn' as const,
+      title: 'រៀន (Learn)',
+      desc: 'អានមេរៀន ហើយសួរគ្រូជំនួយ AI រហូតដល់អ្នកយល់ច្បាស់។',
+    },
+    ...(activeModule.simulationConfig
+      ? [
+          {
+            icon: Experiment,
+            tab: 'simulation' as const,
+            title:
+              activeModule.simulationConfig.type === 'wokwi'
+                ? 'ពិសោធន៍ (IoT Lab)'
+                : 'ពិសោធន៍ (Sim)',
+            desc: 'ធ្វើការពិសោធន៍ក្នុងកម្មវិធីត្រាប់តាម រួចថតរូបអេក្រង់ទុក។',
+          },
+        ]
+      : []),
+    {
+      icon: Edit,
+      tab: 'studio' as const,
+      title: 'អនុវត្ត (Practice)',
+      desc: 'មើលកិច្ចការរបស់អ្នក ហើយសរសេរចម្លើយនៅក្នុងកន្លែងអនុវត្ត។',
+    },
+    {
+      icon: CheckCircle,
+      tab: 'studio' as const,
+      title: 'ដាក់ស្នើ (Submit)',
+      desc: 'AI នឹងត្រួតពិនិត្យ និងផ្តល់ពិន្ទុ។ ត្រូវបាន ៧០/១០០ ឡើងទៅទើបជាប់។',
+    },
+  ];
+
+  const lessonTips = [
+    'រៀនមុន ធ្វើក្រោយ។ ការអានមេរៀនជាមុនធ្វើឱ្យចម្លើយរបស់អ្នកបានពិន្ទុខ្ពស់ជាង។',
+    'ប្រសិនបើមានចំណុចមិនយល់ សូមសួរគ្រូជំនួយ AI នៅផ្ទាំងខាងស្តាំ។',
+    mission.enablePlagiarismCheck
+      ? 'សរសេរដោយពាក្យរបស់ខ្លួនឯង។ ប្រព័ន្ធនឹងពិនិត្យមើលភាពដូចគ្នានឹងចម្លើយអ្នកដទៃ។'
+      : 'សរសេរដោយពាក្យរបស់ខ្លួនឯង ព្រោះ AI ផ្តល់ពិន្ទុលើការយល់ដឹង មិនមែនលើប្រវែងចម្លើយទេ។',
+    'បើមិនទាន់ជាប់ អ្នកអាចកែតម្រូវ ហើយដាក់ស្នើម្តងទៀតបាន។',
+  ];
 
   // Auto-switch to Simulation tab if module has sim and is active, but only on first load of that module
   useEffect(() => {
@@ -773,41 +875,87 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
           <div className="flex-1 overflow-y-auto p-4 md:p-6 pb-24 md:pb-6">
             {activeTab === 'brief' && (
               <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
+                {/* WHAT THIS LESSON IS ABOUT */}
                 <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                  <h2 className="text-xl font-bold text-gray-900 mb-4">{activeModule.title}</h2>
-                  <div className="bg-blue-50 text-blue-800 p-4 rounded-xl text-sm font-medium mb-6 flex items-start">
-                    <Target className="h-5 w-5 mr-3 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <span className="block font-bold mb-1 uppercase text-xs tracking-wider">
-                        គោលបំណង
+                  <div className="flex flex-wrap items-center gap-2 mb-2">
+                    <span className="text-[11px] font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-full">
+                      មេរៀនទី {activeModuleIndex + 1} / {mission.modules.length}
+                    </span>
+                    {activeModule.simulationConfig && (
+                      <span className="text-[11px] font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-full">
+                        មានពិសោធន៍ (Lab)
                       </span>
-                      <MarkdownText content={activeModule.task} />
+                    )}
+                    {moduleStatus[activeModuleId] === 'completed' && (
+                      <span className="text-[11px] font-bold text-green-700 bg-green-50 px-2.5 py-1 rounded-full">
+                        បានបញ្ចប់
+                      </span>
+                    )}
+                  </div>
+                  <h2 className="text-xl font-bold text-gray-900 mb-4">{activeModule.title}</h2>
+                  <div className="bg-indigo-50 text-indigo-900 p-4 rounded-xl flex items-start">
+                    <BookOpen className="h-5 w-5 mr-3 mt-0.5 flex-shrink-0 text-indigo-500" />
+                    <div className="min-w-0">
+                      <span className="block font-bold mb-1 uppercase text-xs tracking-wider">
+                        តើអ្នកនឹងរៀនអ្វីខ្លះ (What you will learn)
+                      </span>
+                      <div className="text-sm leading-relaxed">
+                        <MarkdownText content={lessonOverview} />
+                      </div>
                     </div>
                   </div>
-                  <div className="prose prose-sm max-w-none text-gray-600">
-                    <p>
-                      ស្វាគមន៍មកកាន់មេរៀននេះ។
-                      {activeModule.simulationConfig ? (
-                        <>
-                          {' '}
-                          សូមចូលទៅកាន់ផ្ទាំង{' '}
-                          <strong>
-                            {activeModule.simulationConfig.type === 'wokwi'
-                              ? 'IoT Lab'
-                              : 'ពិសោធន៍ (Sim)'}
-                          </strong>{' '}
-                          ដើម្បីចាប់ផ្តើម។
-                        </>
-                      ) : (
-                        <>
-                          {' '}
-                          ប្រើប្រាស់ផ្ទាំង <strong>កន្លែងអនុវត្ត (Studio)</strong>{' '}
-                          ដើម្បីដាក់ស្នើកិច្ចការរបស់អ្នក។
-                        </>
-                      )}
-                    </p>
+                </div>
+
+                {/* HOW THIS LESSON WORKS */}
+                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                  <h3 className="font-bold text-gray-900 mb-4 flex items-center">
+                    <Sparkles className="h-5 w-5 mr-2 text-primary" />
+                    ដំណើរការសិក្សា (How this lesson works)
+                  </h3>
+                  <div className="space-y-2">
+                    {lessonSteps.map((step, idx) => {
+                      const StepIcon = step.icon;
+                      return (
+                        <button
+                          type="button"
+                          key={step.title}
+                          onClick={() => setActiveTab(step.tab)}
+                          className="w-full flex items-start text-left gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors group"
+                        >
+                          <span className="w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center flex-shrink-0 text-xs font-bold group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+                            {idx + 1}
+                          </span>
+                          <span className="min-w-0">
+                            <span className="flex items-center font-bold text-sm text-gray-900">
+                              <StepIcon className="h-4 w-4 mr-1.5 text-gray-400 group-hover:text-primary transition-colors" />
+                              {step.title}
+                            </span>
+                            <span className="block text-xs text-gray-500 mt-0.5 leading-relaxed">
+                              {step.desc}
+                            </span>
+                          </span>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
+
+                {/* TIPS */}
+                <div className="bg-amber-50 border border-amber-100 rounded-2xl p-5">
+                  <h3 className="font-bold text-amber-900 mb-3 flex items-center">
+                    <Lightbulb className="h-5 w-5 mr-2 text-amber-600" />
+                    គន្លឹះសម្រាប់មេរៀននេះ (Tips)
+                  </h3>
+                  <ul className="space-y-2">
+                    {lessonTips.map((tip) => (
+                      <li key={tip} className="flex items-start text-sm text-amber-900/90">
+                        <span className="mr-2 mt-0.5 text-amber-500 flex-shrink-0">•</span>
+                        <span className="leading-relaxed">{tip}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
                 <div className="flex justify-end gap-3">
                   <button
                     type="button"
@@ -840,6 +988,24 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
             {/* Simulation Tab (Supports PhET and Wokwi) */}
             {activeTab === 'simulation' && activeModule.simulationConfig && (
               <div className="flex flex-col h-full gap-4 animate-fade-in">
+                <TaskCard
+                  task={activeModule.task}
+                  expanded={taskExpanded}
+                  onToggle={toggleTaskExpanded}
+                />
+
+                {activeModule.simulationConfig.instructions && (
+                  <div className="bg-purple-50 border border-purple-100 rounded-2xl p-4">
+                    <h3 className="font-bold text-purple-900 mb-2 flex items-center text-sm">
+                      <Experiment className="h-4 w-4 mr-2 text-purple-600" />
+                      ការណែនាំពិសោធន៍ (Lab Instructions)
+                    </h3>
+                    <div className="text-sm text-purple-900/90 leading-relaxed">
+                      <MarkdownText content={activeModule.simulationConfig.instructions} />
+                    </div>
+                  </div>
+                )}
+
                 <div className="flex-1 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden relative min-h-[500px]">
                   {activeModule.simulationConfig.type === 'wokwi' ? (
                     // Wokwi Embed (Official Embedding supports params like &diagram=1 etc)
@@ -996,6 +1162,12 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
 
             {activeTab === 'studio' && (
               <div className="max-w-3xl mx-auto flex flex-col gap-6 animate-fade-in">
+                <TaskCard
+                  task={activeModule.task}
+                  expanded={taskExpanded}
+                  onToggle={toggleTaskExpanded}
+                />
+
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col overflow-hidden">
                   <div className="p-3 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
                     <div className="flex gap-1 p-1 bg-white rounded-lg border border-gray-200 shadow-sm">
