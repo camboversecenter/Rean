@@ -27,10 +27,14 @@ export interface Mission {
 export interface MissionModule {
   id: string;
   title: string;
-  task: string; // The specific goal (e.g. "Create a SWOT analysis")
+  task: string; // The assignment the student hands in (e.g. "Create a SWOT analysis")
   aiPersona: string; // The system instruction for the AI for this specific module
   initialPrompt: string; // What the AI says to start the conversation
   theoryPrompt?: string; // New: The topic for the AI to teach (e.g. "Explain SWOT Analysis")
+  // Student-facing lesson brief, shown on the mission summary screen. Written by
+  // the creator (or the AI generator), unlike theoryPrompt which is a prompt.
+  objective?: string; // What the student will be able to do after this lesson
+  keyPoints?: string[]; // The main ideas and tricks worth remembering
   simulationConfig?: {
     type: 'phet' | 'wokwi' | 'other';
     url: string; // For Wokwi, this is the project URL

@@ -31,6 +31,7 @@ import {
   ChevronDown,
   Lightbulb,
   Sparkles,
+  CheckSquare,
 } from './Icons';
 import { Mission, ChatMessage, MissionModuleStatus, SquadMember } from '../types';
 import {
@@ -304,10 +305,19 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
   const currentEvaluation = evaluationData[activeModuleId];
 
   // The summary screen describes the lesson itself. The assignment text lives on
-  // the practice screens, so here we lead with the topic the module teaches.
+  // the practice screens, so here we lead with what the lesson teaches.
+  // Prefer the creator's student-facing objective. theoryPrompt is phrased as an
+  // instruction to the AI, so it only stands in when no objective was authored.
   const lessonOverview =
+    activeModule.objective?.trim() ||
     activeModule.theoryPrompt?.trim() ||
     `ក្នុងមេរៀន "${activeModule.title}" នេះ អ្នកនឹងសិក្សាទ្រឹស្តី រួចអនុវត្តវាទៅលើកិច្ចការជាក់ស្តែងមួយ។ ចុចផ្ទាំង **រៀន** ដើម្បីឱ្យគ្រូជំនួយ AI ពន្យល់មេរៀនជូនអ្នក។`;
+
+  // Modules are stored as JSONB, so guard against rows written before this field
+  // existed or saved with the wrong shape.
+  const keyPoints = Array.isArray(activeModule.keyPoints)
+    ? activeModule.keyPoints.map((p) => String(p).trim()).filter(Boolean)
+    : [];
 
   const lessonSteps = [
     {
@@ -905,6 +915,28 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                     </div>
                   </div>
                 </div>
+
+                {/* KEY POINTS, only when the creator wrote some */}
+                {keyPoints.length > 0 && (
+                  <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                    <h3 className="font-bold text-gray-900 mb-4 flex items-center">
+                      <CheckSquare className="h-5 w-5 mr-2 text-indigo-500" />
+                      ចំណុចសំខាន់ៗ (Key points)
+                    </h3>
+                    <ul className="space-y-3">
+                      {keyPoints.map((point, idx) => (
+                        <li key={point} className="flex items-start">
+                          <span className="w-6 h-6 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0 mr-3 text-[11px] font-bold">
+                            {idx + 1}
+                          </span>
+                          <div className="text-sm text-gray-700 leading-relaxed min-w-0">
+                            <MarkdownText content={point} />
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
                 {/* HOW THIS LESSON WORKS */}
                 <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">

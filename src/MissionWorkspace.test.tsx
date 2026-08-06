@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, cleanup } from '@testing-library/react';
+import { render, screen, fireEvent, cleanup, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import type { Mission } from '../types';
 
@@ -130,6 +130,77 @@ describe('MissionWorkspace tab layout', () => {
 
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
     expect(screen.queryByText(TASK_TEXT)).toBeNull();
+  });
+
+  it('prefers the authored objective over the theory prompt on the summary', () => {
+    const withObjective: Mission = {
+      ...mission,
+      modules: [
+        {
+          ...mission.modules[0],
+          objective: 'You will be able to judge whether a small business is worth starting.',
+        },
+      ],
+    };
+
+    render(
+      <MemoryRouter>
+        <MissionWorkspace mission={withObjective} />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText(/judge whether a small business/)).toBeDefined();
+    // theoryPrompt is written for the AI, so it must not be shown once a
+    // student facing objective exists.
+    expect(screen.queryByText(THEORY_TEXT)).toBeNull();
+  });
+
+  it('lists key points on the summary and hides the card when there are none', () => {
+    const withPoints: Mission = {
+      ...mission,
+      modules: [
+        {
+          ...mission.modules[0],
+          keyPoints: ['Strengths are internal', 'Threats are external', '   '],
+        },
+      ],
+    };
+
+    render(
+      <MemoryRouter>
+        <MissionWorkspace mission={withPoints} />
+      </MemoryRouter>
+    );
+
+    const heading = screen.getByText(/Key points/);
+    expect(heading).toBeDefined();
+    expect(screen.getByText('Strengths are internal')).toBeDefined();
+    expect(screen.getByText('Threats are external')).toBeDefined();
+
+    // Scope to the key points card, since the tips card also renders a list.
+    // The blank entry is dropped rather than rendered as an empty bullet.
+    const card = heading.closest('div') as HTMLElement;
+    expect(within(card).getAllByRole('listitem').length).toBe(2);
+
+    cleanup();
+    renderWorkspace();
+    expect(screen.queryByText(/Key points/)).toBeNull();
+  });
+
+  it('does not crash when key points were stored with the wrong shape', () => {
+    const malformed = {
+      ...mission,
+      modules: [{ ...mission.modules[0], keyPoints: 'not an array' as unknown as string[] }],
+    } as Mission;
+
+    render(
+      <MemoryRouter>
+        <MissionWorkspace mission={malformed} />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByRole('heading', { name: 'Lesson 1: SWOT' })).toBeDefined();
+    expect(screen.queryByText(/Key points/)).toBeNull();
   });
 
   it('falls back to a lesson description when the module has no theory prompt', () => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Save,
   Zap,
@@ -35,6 +35,32 @@ const TASK_LIMIT = 500;
 const PERSONA_LIMIT = 500;
 const PROMPT_LIMIT = 300;
 const THEORY_LIMIT = 1000;
+const OBJECTIVE_LIMIT = 300;
+const KEY_POINTS_LIMIT = 800;
+
+/** One key point per line. Blank lines and stray bullet markers are dropped. */
+export const splitKeyPoints = (text: string): string[] =>
+  text
+    .split('\n')
+    .map((line) => line.replace(/^\s*[-*•]\s*/, '').trim())
+    .filter(Boolean);
+
+/**
+ * Key points must reach the student view as an array. The model sometimes
+ * returns a single block of text instead, which would otherwise be stored as a
+ * string and crash the renderer, so coerce whatever comes back.
+ */
+export const normalizeKeyPoints = (value: unknown): string[] | undefined => {
+  if (Array.isArray(value)) {
+    const points = value.map((p) => String(p).trim()).filter(Boolean);
+    return points.length > 0 ? points : undefined;
+  }
+  if (typeof value === 'string') {
+    const points = splitKeyPoints(value);
+    return points.length > 0 ? points : undefined;
+  }
+  return undefined;
+};
 
 interface MissionFormProps {
   initialMission: Partial<Mission>;
@@ -118,6 +144,7 @@ const MissionForm: React.FC<MissionFormProps> = ({
         const newModules = (structure.modules || []).map((m: any, idx: number) => ({
           ...m,
           id: m.id || `mod-${Date.now()}-${idx}`,
+          keyPoints: normalizeKeyPoints(m.keyPoints),
         }));
 
         setState((prev) => ({
@@ -181,6 +208,8 @@ const MissionForm: React.FC<MissionFormProps> = ({
             aiPersona: 'You are a helpful mentor.',
             initialPrompt: 'Hello! Ready to start?',
             theoryPrompt: '',
+            objective: '',
+            keyPoints: [],
           },
         ],
       },
@@ -779,6 +808,28 @@ const ModuleEditor: React.FC<{
   const [isExpanded, setIsExpanded] = useState(false);
   const [generating, setGenerating] = useState(false);
 
+  // Key points are stored as an array but edited as one line of text per point.
+  // The textarea keeps its own draft so that pressing Enter on a fresh line is
+  // not swallowed by the trim-and-filter round trip. The ref lets us tell our
+  // own edits apart from an external change such as Magic Fill.
+  const joinedKeyPoints = (module.keyPoints || []).join('\n');
+  const [keyPointsText, setKeyPointsText] = useState(joinedKeyPoints);
+  const lastSyncedKeyPoints = useRef(joinedKeyPoints);
+
+  useEffect(() => {
+    if (joinedKeyPoints !== lastSyncedKeyPoints.current) {
+      lastSyncedKeyPoints.current = joinedKeyPoints;
+      setKeyPointsText(joinedKeyPoints);
+    }
+  }, [joinedKeyPoints]);
+
+  const handleKeyPointsChange = (text: string) => {
+    setKeyPointsText(text);
+    const points = splitKeyPoints(text);
+    lastSyncedKeyPoints.current = points.join('\n');
+    onBatchUpdate(index, { keyPoints: points });
+  };
+
   const handleAutoGenerate = async () => {
     if (!module.title) {
       toast.error('Please provide a title first.');
@@ -789,7 +840,11 @@ const ModuleEditor: React.FC<{
       const prompt = `
                 Generate specific content for an educational module titled "${module.title}".
                 Return a JSON object with:
-                - task: A specific, actionable task for the student.
+                - objective: One or two sentences, written TO the student, describing what they
+                  will be able to do after this lesson. Student facing prose, not a prompt.
+                - keyPoints: An array of 3 to 5 short strings covering the main ideas, useful
+                  tricks, and common mistakes for this lesson. Student facing prose.
+                - task: A specific, actionable assignment the student has to hand in.
                 - aiPersona: A system instruction for an AI mentor.
                 - initialPrompt: The first thing the AI says to the student.
                 - theoryPrompt: A prompt for the AI to explain the theory.
@@ -812,6 +867,9 @@ const ModuleEditor: React.FC<{
       if (data.aiPersona) updates.aiPersona = data.aiPersona;
       if (data.initialPrompt) updates.initialPrompt = data.initialPrompt;
       if (data.theoryPrompt) updates.theoryPrompt = data.theoryPrompt;
+      if (data.objective) updates.objective = data.objective;
+      const generatedKeyPoints = normalizeKeyPoints(data.keyPoints);
+      if (generatedKeyPoints) updates.keyPoints = generatedKeyPoints;
 
       if (Object.keys(updates).length > 0) {
         onBatchUpdate(index, updates);
@@ -954,6 +1012,47 @@ const ModuleEditor: React.FC<{
             />
             <CharCounter current={module.title.length} limit={MODULE_TITLE_LIMIT} />
           </div>
+
+          <div className="bg-indigo-50/60 border border-indigo-100 rounded-xl p-3 space-y-4">
+            <p className="text-[10px] font-bold text-indigo-700 uppercase tracking-wide">
+              Lesson brief (shown to students on the Summary tab)
+            </p>
+            <div>
+              <label
+                htmlFor={`mod-objective-${index}`}
+                className="block text-xs font-bold text-gray-400 mb-1 uppercase"
+              >
+                Objective
+              </label>
+              <textarea
+                id={`mod-objective-${index}`}
+                className="w-full p-3 border border-gray-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary/20 outline-none resize-none min-h-[80px]"
+                placeholder="What the student will be able to do after this lesson"
+                value={module.objective || ''}
+                onChange={(e) => onChange(index, 'objective', e.target.value)}
+              />
+              <CharCounter current={module.objective?.length || 0} limit={OBJECTIVE_LIMIT} />
+            </div>
+            <div>
+              <label
+                htmlFor={`mod-keypoints-${index}`}
+                className="block text-xs font-bold text-gray-400 mb-1 uppercase"
+              >
+                Key points, one per line
+              </label>
+              <textarea
+                id={`mod-keypoints-${index}`}
+                className="w-full p-3 border border-gray-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary/20 outline-none resize-none min-h-[90px]"
+                placeholder={
+                  'The main idea to remember\nA trick that makes it easier\nA common mistake to avoid'
+                }
+                value={keyPointsText}
+                onChange={(e) => handleKeyPointsChange(e.target.value)}
+              />
+              <CharCounter current={keyPointsText.length} limit={KEY_POINTS_LIMIT} />
+            </div>
+          </div>
+
           <div>
             <div className="flex justify-between items-center mb-1">
               <label
@@ -962,11 +1061,14 @@ const ModuleEditor: React.FC<{
               >
                 Task
               </label>
+              <span className="text-[10px] text-gray-400">
+                Shown on the Practice tab, above the workspace
+              </span>
             </div>
             <textarea
               id={`mod-task-${index}`}
               className="w-full p-3 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 outline-none resize-none min-h-[100px]"
-              placeholder="Task Description"
+              placeholder="The assignment the student has to hand in"
               value={module.task}
               onChange={(e) => onChange(index, 'task', e.target.value)}
             />
