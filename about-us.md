@@ -25,7 +25,7 @@ We are a team of 11 dedicated individuals working together to build REAN.
     </td>
     <td align="center">
       <img src="path/to/image3.png" width="120px;" alt="Member 3"/><br />
-      <b>Member 3 Name</b><br />
+      <b>Tie Porching</b><br />
       <i>Role / Title</i><br />
       <a href="https://github.com/username">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
     </td>
