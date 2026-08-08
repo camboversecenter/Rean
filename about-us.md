@@ -80,10 +80,10 @@ We are a team of 11 dedicated individuals working together to build REAN.
       <a href="https://github.com/username">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
     </td>
     <td align="center">
-      <img src="public/team/member3.png" width="120px;" alt="Tie Porching"/><br />
+      <img src="https://github.com/user-attachments/assets/9216a453-8a1b-404a-b4d0-e09d14bb0f4b" width="120px;" alt="Tie Porching"/><br />
       <b>Tie Porching</b><br />
       <i>Role / Title</i><br />
-      <a href="https://github.com/username">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
+      <a href="https://github.com/tieporching-debug">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
     </td>
   </tr>
   <!-- ROW 2 -->
