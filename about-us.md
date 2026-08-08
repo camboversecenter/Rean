@@ -125,7 +125,7 @@ We are a team of 10 dedicated individuals working together to build REAN.
       <img  src="https://github.com/user-attachments/assets/2fad9ea2-542e-4879-94cf-eadd4ccf9e56" width="120px;" alt="Soeun somera" /><br />
       <b>Soeun somera</b><br />
       <i>Role / Title</i><br />
-      <a href="https://github.com/Somera-Soeun">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
+      <a href="https://github.com/Somera-Soeun">GitHub</a> | <a href="https://www.linkedin.com/in/somera-soeun-a75716428">LinkedIn</a>
     </td>
   </tr>
   <!-- ROW 4 -->
@@ -134,7 +134,7 @@ We are a team of 10 dedicated individuals working together to build REAN.
       <img  src="https://github.com/user-attachments/assets/8af1eae4-3790-4998-bc00-21d5cda668af"  width="120px;" alt="Chiv chan seyha"/><br />
       <b>Chiv chan seyha</b><br />
       <i>Role / Title</i><br />
-      <a href="https://github.com/username">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
+      <a href="https://github.com/chivchanseyha3066-user">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
     </td>
     <!-- Empty cell to balance the 3-column grid -->
     <td align="center">
