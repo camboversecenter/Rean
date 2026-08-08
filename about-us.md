@@ -154,7 +154,17 @@ We are a team of 11 dedicated individuals working together to build REAN.
 
 We are grateful for the support and collaboration of our partners.
 
-<!-- Logo files go in public/partners/. Until they are added, the names below still link correctly. -->
+<!--
+  Logo files go in public/partners/ with these exact names, so that this page and
+  the in-app About page (pages/AboutPage.tsx) both pick them up:
+
+    public/partners/num.png         National University of Management
+    public/partners/camboverse.png  CamboVerse Center
+    public/partners/e-khmer.png     E-KHMER Technology Co., Ltd.
+
+  Until a file is added, the in-app page shows a lettermark instead and the names
+  below still link correctly.
+-->
 
 <table>
   <tr>
