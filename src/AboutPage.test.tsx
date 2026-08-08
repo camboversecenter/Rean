@@ -67,11 +67,24 @@ describe('AboutPage', () => {
     }
   });
 
-  it('falls back to a lettermark when a partner logo file is missing', () => {
+  it('points each partner at its committed logo asset', () => {
+    renderAbout();
+
+    expect(screen.getByAltText('National University of Management logo').getAttribute('src')).toBe(
+      '/partners/num.webp'
+    );
+    expect(screen.getByAltText('CamboVerse Center logo').getAttribute('src')).toBe(
+      '/partners/camboverse.png'
+    );
+    expect(screen.getByAltText('E-KHMER Technology Co., Ltd. logo').getAttribute('src')).toBe(
+      '/partners/e-khmer.png'
+    );
+  });
+
+  it('falls back to a lettermark if a partner logo fails to load', () => {
     renderAbout();
 
     const logo = screen.getByAltText('CamboVerse Center logo');
-    expect(logo.getAttribute('src')).toBe('/partners/camboverse.png');
 
     // Simulate the asset not being deployed yet.
     fireEvent.error(logo);

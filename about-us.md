@@ -158,11 +158,11 @@ We are grateful for the support and collaboration of our partners.
   Logo files go in public/partners/ with these exact names, so that this page and
   the in-app About page (pages/AboutPage.tsx) both pick them up:
 
-    public/partners/num.png         National University of Management
+    public/partners/num.webp        National University of Management
     public/partners/camboverse.png  CamboVerse Center
     public/partners/e-khmer.png     E-KHMER Technology Co., Ltd.
 
-  Until a file is added, the in-app page shows a lettermark instead and the names
+  If a file is missing, the in-app page shows a lettermark instead and the names
   below still link correctly.
 -->
 
@@ -170,7 +170,7 @@ We are grateful for the support and collaboration of our partners.
   <tr>
     <td align="center">
       <a href="https://numuniversity.com/">
-        <img src="public/partners/num.png" height="80px" alt="National University of Management logo"/>
+        <img src="public/partners/num.webp" height="80px" alt="National University of Management logo"/>
       </a><br />
       <b><a href="https://numuniversity.com/">National University of Management</a></b><br />
       <i>Host university</i>
