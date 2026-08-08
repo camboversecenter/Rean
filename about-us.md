@@ -68,9 +68,8 @@ We are a team of 11 dedicated individuals working together to build REAN.
   <!-- ROW 1 -->
   <tr>
     <td align="center">
-     <img src="public/team/van-sopha.png" width="120px" alt="Van sopha"/><br /><img width="1109" height="1419" alt="sopha" src="https://github.com/user-attachments/assets/9c384c62-04b2-4dcb-ac5c-1dd1a74c4372" />
-
-      <b>Van sopha</b><br />
+<img width="1109" height="1419" alt="sopha" src="https://github.com/user-attachments/assets/4b4e9a17-61c8-40ba-bdcb-4a0cafc95c4f" />
+    <b>Van sopha</b><br />
       <i>Role / Title</i><br />
       <a href="https://github.com/username">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
     </td>
