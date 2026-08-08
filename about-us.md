@@ -89,10 +89,11 @@ We are a team of 11 dedicated individuals working together to build REAN.
   <!-- ROW 2 -->
   <tr>
     <td align="center">
-      <img src="public/team/member4.png" width="120px;" alt="Member 4"/><br />
-      <b>Member 4 Name</b><br />
+      <img src="public/team/member4.png" width="120px;" alt="Khorn Aliza"/><br />
+      <b>Khorn Aliza</b><br />
       <i>Role / Title</i><br />
-      <a href="https://github.com/username">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
+      <a href="https://github.com/zakitty112233-cell">GitHub</a> | <a href="https://linkedin.com/in/zakitty112233-cell<img width="1792" height="2388" alt="IMG_8685" src="https://github.com/user-attachments/assets/212d5490-bda0-4c77-b5f2-0fa9d55ea080" />
+">LinkedIn</a>
     </td>
     <td align="center">
       <img src="public/team/member5.png" width="120px;" alt="Member 5"/><br />
