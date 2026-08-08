@@ -74,8 +74,8 @@ We are a team of 11 dedicated individuals working together to build REAN.
       <a href="https://github.com/vsopha9664-design">GitHub</a> | <a href="www.linkedin.com/in/sopha-van-84a7653a4">LinkedIn</a>
     </td>
     <td align="center">
-     <img  src="https://github.com/user-attachments/assets/9d97e6f4-5155-4d5f-8338-0de9017e0652" width="120px;" alt="Phorn sreytey"/>
-      <b>Member 2 Name</b><br />
+     <img  src="https://github.com/user-attachments/assets/9d97e6f4-5155-4d5f-8338-0de9017e0652" width="120px;" alt="Phorn sreytey"/><br  />
+       <b>Phorn sreytey</b><br />
       <i>Role / Title</i><br />
       <a href="https://github.com/username">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
     </td>
