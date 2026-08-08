@@ -371,10 +371,17 @@ export const generateMissionStructure = async (topic: string): Promise<Partial<a
             "price": 0,
             "squadSize": 3,
             "modules": [
-                { "id": "mod1", "title": "", "task": "Use LaTeX $$...$$ for math formulas", "aiPersona": "", "initialPrompt": "", "theoryPrompt": "" }
+                { "id": "mod1", "title": "", "objective": "", "keyPoints": ["", "", ""], "task": "Use LaTeX $$...$$ for math formulas", "aiPersona": "", "initialPrompt": "", "theoryPrompt": "" }
             ]
         }
         Create 5 distinct modules.
+        For every module:
+        - "objective" is one or two sentences written TO the student saying what they will be
+          able to do after the lesson. Student facing prose, never an instruction to the AI.
+        - "keyPoints" is an array of 3 to 5 short student facing strings covering the main
+          ideas, useful tricks, and common mistakes.
+        - "task" is the assignment the student hands in, and is shown separately from the
+          lesson brief, so it must make sense on its own.
     `;
 
   try {

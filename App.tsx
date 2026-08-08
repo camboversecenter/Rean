@@ -40,6 +40,7 @@ import TutorDoc from './documents/TutorDoc';
 import MissionsDoc from './documents/MissionsDoc';
 import LazyLearningDoc from './documents/LazyLearningDoc';
 import CommunityLicensePage from './pages/CommunityLicensePage';
+import AboutPage from './pages/AboutPage';
 import PublicProfilePage from './pages/PublicProfilePage';
 
 // Helper to update document title based on route
@@ -143,12 +144,15 @@ const AppContent: React.FC = () => {
   }
 
   // BLOCKING: Authenticated users MUST have a role selected before using the app
-  // Exception: License page (in case they want to read terms)
-  if (session && !userRole && window.location.hash !== '#/license') {
+  // Exception: the license and about pages, so they can read the terms and learn
+  // who runs the project before committing to a role.
+  const PUBLIC_INFO_HASHES = ['#/license', '#/about'];
+  if (session && !userRole && !PUBLIC_INFO_HASHES.includes(window.location.hash)) {
     return (
       <div className="min-h-screen bg-gray-50 font-sans">
         <Routes>
           <Route path="/license" element={<CommunityLicensePage />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="*" element={<RoleSelectionPage />} />
         </Routes>
         <Toaster position="top-center" />
@@ -188,6 +192,7 @@ const AppContent: React.FC = () => {
           <Route path="/docs/missions" element={<MissionsDoc />} />
           <Route path="/docs/lazy-learning" element={<LazyLearningDoc />} />
           <Route path="/license" element={<CommunityLicensePage />} />
+          <Route path="/about" element={<AboutPage />} />
 
           {/* Authentication Route */}
           {/* If already logged in, /login redirects to home */}

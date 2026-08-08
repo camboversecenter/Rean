@@ -14,11 +14,32 @@ const Footer: React.FC = () => {
           <div className="space-y-1">
             <p className="font-bold text-gray-900">REAN</p>
             <p className="text-sm text-gray-500">
-              Incubated by CamboVerse Center, National University of Management (NUM).
+              Incubated by{' '}
+              <a
+                href="https://camboverse.world/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-primary transition-colors underline decoration-gray-300 underline-offset-2"
+              >
+                CamboVerse Center
+              </a>
+              ,{' '}
+              <a
+                href="https://numuniversity.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-primary transition-colors underline decoration-gray-300 underline-offset-2"
+              >
+                National University of Management (NUM)
+              </a>
+              .
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+            <Link to="/about" className="text-gray-600 hover:text-primary transition-colors">
+              About
+            </Link>
             {/* Link to the open-source repository. */}
             <a
               href={REPO_URL}

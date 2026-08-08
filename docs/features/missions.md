@@ -22,7 +22,10 @@ A Mission (`types.ts` → `Mission`) contains:
 - **Title, description, thumbnail, category, level** (Beginner / Intermediate / Advanced).
 - **Price** (missions can be free or paid).
 - **Modules**: the "Living Syllabus". Each module (`MissionModule`) has:
-  - a **task** (the concrete goal, e.g. "Create a SWOT analysis"),
+  - a **task** (the assignment the student hands in, e.g. "Create a SWOT analysis"),
+  - an optional **objective** (student-facing prose describing what the student will be
+    able to do after the lesson),
+  - optional **key points** (a list of the main ideas, tricks, and common mistakes),
   - an **AI persona** (system instructions for the module's AI tutor),
   - an **initial prompt** (what the AI says to start),
   - an optional **theory prompt** (the topic the AI teaches),
@@ -31,6 +34,13 @@ A Mission (`types.ts` → `Mission`) contains:
 - **Enrollment type:** `open` (public) or `invite_only` (private).
 - **Optional plagiarism check** using AI embeddings.
 - **Payment details:** QR code URL, payment instructions, Telegram group link.
+
+Note the split in audience among the module fields. **Objective** and **key points**
+are written for the student and appear on the Brief tab. **Theory prompt** and
+**AI persona** are written for the AI and are never shown directly, except that the
+theory prompt stands in on the Brief tab when no objective was authored. Modules are
+stored as JSONB, so these fields need no database migration and older missions simply
+omit them.
 
 ## Classes / Cohorts
 
@@ -51,11 +61,15 @@ share a squad note. See `getSquadMembers`, `updateStudentSquad`, `updateMissionS
    receipt**; the creator later approves or rejects it (`approvePayment`,
    `rejectPayment`). Enrollment status flows through pending → active.
 3. **Learn** in the Classroom (`MissionWorkspace.tsx`), which has tabs:
-   - **Brief**: the mission/module overview.
+   - **Brief**: the lesson brief. What the lesson teaches, the key points, a step by
+     step map of how the lesson works, and study tips. The assignment is deliberately
+     not shown here.
    - **Learn**: AI teaches the theory.
-   - **Studio**: where the student writes their answer or does the task.
+   - **Studio**: the practice screen. The task appears in a collapsible card at the
+     top so it stays visible while the student writes their answer below it.
    - **Team**: the squad view.
-   - **Simulation**: embedded PhET/Wokwi tools when configured.
+   - **Simulation**: embedded PhET/Wokwi tools when configured, with the same task
+     card and any lab instructions.
 4. **Submit** work in the Studio tab (text or image).
 5. **Get graded** by the AI (see below), or reviewed by a mentor (`reviewSubmission`).
 6. **Advance**: passing unlocks the next module. Module status is one of
