@@ -77,7 +77,7 @@ We are a team of 11 dedicated individuals working together to build REAN.
      <img  src="https://github.com/user-attachments/assets/9d97e6f4-5155-4d5f-8338-0de9017e0652" width="120px;" alt="Phorn sreytey"/><br  />
        <b>Phorn sreytey</b><br />
       <i>Role / Title</i><br />
-      <a href="https://github.com/phornsreytey2-bot">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
+      <a href="https://github.com/phornsreytey2-bot">GitHub</a> | <a href="www.linkedin.com/in/phorn-sreytey-a856bb428">LinkedIn</a>
     </td>
     <td align="center">
       <img src="https://github.com/user-attachments/assets/9216a453-8a1b-404a-b4d0-e09d14bb0f4b" width="120px;" alt="Tie Porching"/><br />
@@ -92,11 +92,9 @@ We are a team of 11 dedicated individuals working together to build REAN.
   <img src="https://github.com/user-attachments/assets/850cca70-792c-4596-9910-667a869cbba8" width="120px;" alt="Khorn Aliza"/><br />
   <b>Khorn Aliza</b><br />
   <i>Digital Economics / Contributor</i><br />
-  <a href="https://github.com/zakitty112233-cell">GitHub</a> | 
-  <a href="#">LinkedIn</a>
+  <a href="https://github.com/zakitty112233-cell">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
 </td>
-
-    <td align="center">
+ <td align="center">
       <img src="public/team/member5.png" width="120px;" alt="Member 5"/><br />
       <b>Member 5 Name</b><br />
       <i>Role / Title</i><br />
