@@ -1,4 +1,6 @@
-# REAN -  Educational Platform (Cambodia)
+# REAN - Educational Platform (Cambodia)
+
+### 👥 [About Us](./about-us.md) · 📚 [Documentation](./docs/README.md) · 🤝 [Contributing](./CONTRIBUTING.md) · 📄 [License](./LICENSE) · 🔒 [Security](./SECURITY.md) · 🌐 [Live site](https://rean.camboverse.world)
 
 REAN (រៀន means "to learn" in Khmer) is a comprehensive educational platform for Cambodia, connecting students with schools, tutors, and AI-driven learning missions. It features a gamified community, real-time AI tutoring, and a marketplace for short courses.
 
@@ -88,8 +90,8 @@ VITE_GEMINI_DEV_KEY=your_google_gemini_api_key
 `VITE_SUPABASE_URL` and one of `VITE_SUPABASE_PUBLISHABLE_KEY` /
 `VITE_SUPABASE_ANON_KEY` are **required**. There is no built-in fallback project: the
 app throws a clear configuration error on startup if they are missing, so remember to
-set them in your host's build environment too (for Cloudflare Pages: *Settings →
-Environment variables*), not just in your local `.env`.
+set them in your host's build environment too (for Cloudflare Pages: _Settings →
+Environment variables_), not just in your local `.env`.
 
 > **Security note:** never commit `.env`. Production AI requests run through the
 > `ai-assistant` Supabase Edge Function; the Gemini key lives only in Supabase

@@ -105,7 +105,7 @@ const PARTNERS = [
     role: 'សាកលវិទ្យាល័យម្ចាស់ផ្ទះ (Host university)',
     desc: 'REAN is hosted at the National University of Management in Phnom Penh.',
     url: 'https://numuniversity.com/',
-    logo: '/partners/num.png',
+    logo: '/partners/num.webp',
   },
   {
     name: 'CamboVerse Center',
@@ -131,6 +131,11 @@ const PARTNERS = [
  * Renders a partner logo when the image file exists in `public/partners/`, and
  * falls back to a lettermark otherwise. This keeps the page intact whether or
  * not the logo assets have been added yet.
+ *
+ * The three marks have very different shapes: the NUM emblem is square, while
+ * the E-KHMER and CamboVerse logos are wide wordmarks. Constraining height and
+ * width separately and letting the image keep its own ratio means a square mark
+ * fills the row height and a wide one scales down to fit instead of squashing.
  */
 const PartnerLogo: React.FC<{ name: string; initials: string; logo?: string }> = ({
   name,
@@ -145,7 +150,7 @@ const PartnerLogo: React.FC<{ name: string; initials: string; logo?: string }> =
         src={logo}
         alt={`${name} logo`}
         onError={() => setFailed(true)}
-        className="h-14 max-w-[150px] object-contain"
+        className="max-h-[72px] max-w-[200px] w-auto h-auto object-contain"
         loading="lazy"
       />
     );
@@ -395,7 +400,7 @@ const AboutPage: React.FC = () => {
                 rel="noopener noreferrer"
                 className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col items-center text-center"
               >
-                <div className="h-16 flex items-center justify-center mb-4">
+                <div className="h-20 w-full flex items-center justify-center mb-4">
                   <PartnerLogo name={p.name} initials={p.initials} logo={p.logo} />
                 </div>
                 <p className="font-bold text-gray-900 text-sm mb-1">{p.name}</p>

@@ -24,5 +24,11 @@ describe('LandingPage', () => {
       .getAllByRole('link')
       .filter((a) => a.getAttribute('href') === '/explore');
     expect(exploreLinks.length).toBeGreaterThan(0);
+
+    // About must be reachable straight from the front page, not only the footer.
+    const aboutLinks = screen
+      .getAllByRole('link')
+      .filter((a) => a.getAttribute('href') === '/about');
+    expect(aboutLinks.length).toBeGreaterThan(0);
   });
 });
