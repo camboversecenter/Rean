@@ -33,7 +33,7 @@ REAN (រៀន means "to learn" in Khmer) is a comprehensive educational platfo
 
 4. **Short Courses**: A simpler marketplace product alongside Missions, managed from the `CreatorDashboard`.
 
-5. **AI Tutor "Kru Rean"**: A Gemini-powered chat assistant (`KruReanChat`) plus a `LiveVoiceTutor` for real-time voice sessions. AI usage is metered by the points economy (see below) and processed server-side through the `ai-assistant` Edge Function, which verifies affordability and deducts points using the service-role key so the economy cannot be bypassed from the client. A direct client-side fallback exists for local development.
+5. **AI Tutor "Kru Rean"**: A Gemini-powered chat assistant (`KruReanChat`). A `LiveVoiceTutor` component for real-time voice sessions also exists but is not yet wired into any route. AI usage is metered by the points economy (see below) and processed server-side through the `ai-assistant` Edge Function, which verifies affordability and deducts points using the service-role key so the economy cannot be bypassed from the client. A direct client-side fallback exists for local development.
 
 6. **Gamified Community ("Lazy Learning")**: A Q&A-style community feed with reactions, accepted answers, and bounties. Includes leaderboards, achievements, Lucky Drops (random rewards, limited per day), Mystery Boxes, and a rewards page for redeeming points.
 
@@ -59,7 +59,7 @@ Users hold two balances: **XP** (reputation, never spent) and **Points** (spenda
 | `types.ts`            | The domain model (~25 interfaces: Mission, School, Tutor, ShortCourse, UserProfile, …).                                                                                       |
 | `documents/`          | In-app documentation pages rendered at `/docs/*`.                                                                                                                             |
 | `supabase/functions/` | Deno Edge Functions (`ai-assistant` + the `og-*` social preview functions).                                                                                                   |
-| `*.sql` (root)        | Supabase setup scripts: schema, RLS policies, point triggers, and table partitioning for scalability.                                                                         |
+| `*.sql` (root)        | Supabase scripts: the ranked feed function, wallet hardening + point RPCs, and optional table partitioning.                                                                   |
 
 ---
 
@@ -85,19 +85,32 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 VITE_GEMINI_DEV_KEY=your_google_gemini_api_key
 ```
 
+`VITE_SUPABASE_URL` and one of `VITE_SUPABASE_PUBLISHABLE_KEY` /
+`VITE_SUPABASE_ANON_KEY` are **required**. There is no built-in fallback project: the
+app throws a clear configuration error on startup if they are missing, so remember to
+set them in your host's build environment too (for Cloudflare Pages: *Settings →
+Environment variables*), not just in your local `.env`.
+
 > **Security note:** never commit `.env`. Production AI requests run through the
 > `ai-assistant` Supabase Edge Function; the Gemini key lives only in Supabase
 > secrets and is never exposed to the browser.
 
 ### 2. Supabase Database Setup
 
-Run the SQL scripts in the **Supabase SQL Editor** to set up the schema, security, and functions:
+Run the SQL scripts in the **Supabase SQL Editor**, in this order:
 
-1. `SUPABASE_SETUP.sql` (schema, feed algorithm)
-2. `FIX_COMMENTS_RLS.sql` and `UPDATE_POINTS_TRIGGER.sql`
-3. `SUPABASE_HARDENING.sql` (**required**: locks wallet columns and adds the atomic
-   `spend_points` / `award_action` RPCs the app prefers)
-4. `SCALABILITY_PARTITIONING.sql` (optional, for large datasets)
+1. `SUPABASE_SETUP.sql` — the ranked community feed function and the reaction-count
+   triggers.
+2. `SUPABASE_HARDENING.sql` (**required**) — locks the wallet columns
+   (`spendable_points`, `lifetime_xp`) against direct writes from the browser and adds
+   the atomic `spend_points` / `award_action` RPCs the app prefers.
+3. `SCALABILITY_PARTITIONING.sql` (optional, for large datasets).
+
+> **Note:** these scripts cover the feed function, security hardening, and partitioning
+> — they do not create the base tables. The table definitions (`profiles`,
+> `student_posts`, `community_replies`, `user_reactions`, `point_transactions`,
+> missions, schools, tutors, …) still need to be created from the domain model in
+> `types.ts`; contributions of a complete `schema.sql` are very welcome.
 
 ### 3. Storage Buckets
 

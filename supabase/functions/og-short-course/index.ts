@@ -9,6 +9,26 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// This page interpolates database values (titles, descriptions, image URLs
+// authored by users) into HTML. Everything must be escaped or a crafted value
+// becomes stored XSS on the function origin for anyone opening a shared link.
+const escapeHtml = (value: unknown): string =>
+  String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
+// Record ids are opaque database keys (UUIDs today). Restricting them to a safe
+// charset keeps quotes, angle brackets and backslashes out of the redirect URL
+// and the HTML below, without hardcoding one specific key format.
+const SAFE_ID_RE = /^[A-Za-z0-9_-]{1,64}$/;
+
+// Safe to embed inside a <script> block: JSON-encoded, with the closing-tag
+// sequence neutralised so the string cannot terminate the script element.
+const toScriptString = (value: string): string => JSON.stringify(value).replace(/</g, '\\u003c');
+
 serve(async (req: Request) => {
   // 1. Handle CORS Preflight
   if (req.method === 'OPTIONS') {
@@ -22,15 +42,15 @@ serve(async (req: Request) => {
     // The web application URL (frontend)
     const frontendUrl = Deno.env.get('FRONTEND_URL') || 'https://rean.camboverse.world';
 
-    if (!courseId) {
-      return new Response('Missing ID', {
+    if (!courseId || !SAFE_ID_RE.test(courseId)) {
+      return new Response('Missing or invalid ID', {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'text/plain' },
       });
     }
 
     // 2. Initialize Supabase Client
-    const supabaseUrl = Deno.env.get('SUPABASE_URL') || 'https://oficlnrazfeswkdrpzjh.supabase.co';
+    const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
     const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -51,16 +71,18 @@ serve(async (req: Request) => {
       });
     }
 
-    // 4. Sanitize strings
-    const safeTitle = (course.title || 'Short Course').replace(/"/g, '&quot;');
-    const safeDesc = (course.description || 'View course details on REAN')
-      .substring(0, 160)
-      .replace(/"/g, '&quot;');
-    const image =
+    // 4. Escape every value that lands in the HTML below.
+    const safeTitle = escapeHtml(course.title || 'Short Course');
+    const safeDesc = escapeHtml(
+      (course.description || 'View course details on REAN').substring(0, 160)
+    );
+    const image = escapeHtml(
       course.cover_image ||
-      'https://oficlnrazfeswkdrpzjh.supabase.co/storage/v1/object/public/Rean/course-covers/default-course.png';
+        `${supabaseUrl}/storage/v1/object/public/Rean/course-covers/default-course.png`
+    );
     const redirectUrl = `${frontendUrl}/#/course/${courseId}`;
-    const schoolName = course.schools?.name || 'REAN';
+    const safeRedirectUrl = escapeHtml(redirectUrl);
+    const schoolName = escapeHtml(course.schools?.name || 'REAN');
 
     // 5. Construct HTML Template
     const html = `<!DOCTYPE html>
@@ -72,18 +94,18 @@ serve(async (req: Request) => {
     
     <!-- SEO & Meta Tags -->
     <meta name="description" content="${safeDesc}">
-    <link rel="canonical" href="${redirectUrl}">
+    <link rel="canonical" href="${safeRedirectUrl}">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="${redirectUrl}">
+    <meta property="og:url" content="${safeRedirectUrl}">
     <meta property="og:title" content="${safeTitle} | ${schoolName}">
     <meta property="og:description" content="${safeDesc}">
     <meta property="og:image" content="${image}">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="${redirectUrl}">
+    <meta property="twitter:url" content="${safeRedirectUrl}">
     <meta property="twitter:title" content="${safeTitle} | ${schoolName}">
     <meta property="twitter:description" content="${safeDesc}">
     <meta property="twitter:image" content="${image}">
@@ -119,7 +141,7 @@ serve(async (req: Request) => {
     <p>កំពុងនាំអ្នកទៅកាន់ ${safeTitle}...</p>
     <script>
         window.onload = function() {
-            window.location.href = "${redirectUrl}";
+            window.location.href = ${toScriptString(redirectUrl)};
         };
     </script>
 </body>

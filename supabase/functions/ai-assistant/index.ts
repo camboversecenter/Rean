@@ -254,12 +254,18 @@ serve(async (req: Request) => {
           // 2. Verify Reply Validity
           const { data: reply, error: replyError } = await supabaseAdmin
             .from('community_replies')
-            .select('author_id, is_accepted')
+            .select('author_id, is_accepted, post_id')
             .eq('id', replyId)
             .single();
 
           if (replyError || !reply) throw new Error('Reply not found');
+          // The reply must belong to the post being awarded. Without this the
+          // author of one post could accept a reply on somebody else's post,
+          // minting XP and draining their own bounty to an arbitrary account.
+          if (reply.post_id !== postId) throw new Error('Reply does not belong to this question.');
           if (reply.is_accepted) throw new Error('Reply already accepted');
+          // Accepting your own answer must not pay out; it is free XP otherwise.
+          if (reply.author_id === user.id) throw new Error('You cannot accept your own answer.');
 
           // 3. Mark Reply as Accepted
           const { error: updateError } = await supabaseAdmin

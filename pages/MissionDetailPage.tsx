@@ -27,8 +27,8 @@ import toast from 'react-hot-toast';
 
 // Helper to construct the Edge Function URL
 const getShareLink = (missionId: string) => {
-  // Robust fallback to ensure we never get "undefined/functions..."
-  const baseUrl = SUPABASE_URL || 'https://oficlnrazfeswkdrpzjh.supabase.co';
+  // SUPABASE_URL is guaranteed non-empty: supabaseClient throws at startup if unset.
+  const baseUrl = SUPABASE_URL;
   // Ensure no double slashes if base url has trailing slash
   const cleanBase = baseUrl.replace(/\/$/, '');
   return `${cleanBase}/functions/v1/og-mission?id=${missionId}`;

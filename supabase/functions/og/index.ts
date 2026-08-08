@@ -9,6 +9,27 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// This page interpolates database values (mission titles, descriptions, image
+// URLs authored by creators) into HTML. Everything must be escaped or a crafted
+// title becomes stored XSS on the function's origin for anyone opening a shared
+// link.
+const escapeHtml = (value: unknown): string =>
+  String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
+// Record ids are opaque database keys (UUIDs today). Restricting them to a safe
+// charset keeps quotes, angle brackets and backslashes out of the redirect URL
+// and the HTML below, without hardcoding one specific key format.
+const SAFE_ID_RE = /^[A-Za-z0-9_-]{1,64}$/;
+
+// Safe to embed inside a <script> block: JSON-encoded, with the closing-tag
+// sequence neutralised so the string cannot terminate the script element.
+const toScriptString = (value: string): string => JSON.stringify(value).replace(/</g, '\\u003c');
+
 serve(async (req: Request) => {
   // Handle CORS
   if (req.method === 'OPTIONS') {
@@ -20,12 +41,12 @@ serve(async (req: Request) => {
     const missionId = url.searchParams.get('id');
     const frontendUrl = Deno.env.get('FRONTEND_URL') || 'https://rean.camboverse.world';
 
-    if (!missionId) {
-      return new Response('Missing ID', { status: 400 });
+    if (!missionId || !SAFE_ID_RE.test(missionId)) {
+      return new Response('Missing or invalid ID', { status: 400 });
     }
 
     // Initialize Supabase Client with custom domain
-    const supabaseUrl = Deno.env.get('SUPABASE_URL') || 'https://oficlnrazfeswkdrpzjh.supabase.co';
+    const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
     const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -43,26 +64,32 @@ serve(async (req: Request) => {
       });
     }
 
+    const safeTitle = escapeHtml(mission.title || 'Mission');
+    const safeDesc = `${escapeHtml((mission.description || '').substring(0, 150))}...`;
+    const safeImage = escapeHtml(mission.thumbnail || '');
+    const redirectUrl = `${frontendUrl}/#/mission/${missionId}`;
+    const safeRedirectUrl = escapeHtml(redirectUrl);
+
     const html = `
       <!DOCTYPE html>
       <html lang="km">
       <head>
         <meta charset="UTF-8">
-        <title>${mission.title} | REAN</title>
-        <meta name="description" content="${mission.description?.substring(0, 150)}...">
-        
+        <title>${safeTitle} | REAN</title>
+        <meta name="description" content="${safeDesc}">
+
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website">
-        <meta property="og:url" content="${frontendUrl}/#/mission/${missionId}">
-        <meta property="og:title" content="${mission.title}">
-        <meta property="og:description" content="${mission.description?.substring(0, 150)}...">
-        <meta property="og:image" content="${mission.thumbnail}">
+        <meta property="og:url" content="${safeRedirectUrl}">
+        <meta property="og:title" content="${safeTitle}">
+        <meta property="og:description" content="${safeDesc}">
+        <meta property="og:image" content="${safeImage}">
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image">
-        <meta property="twitter:title" content="${mission.title}">
-        <meta property="twitter:description" content="${mission.description?.substring(0, 150)}...">
-        <meta property="twitter:image" content="${mission.thumbnail}">
+        <meta property="twitter:title" content="${safeTitle}">
+        <meta property="twitter:description" content="${safeDesc}">
+        <meta property="twitter:image" content="${safeImage}">
 
         <style>
            body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #f9fafb; color: #374151; }
@@ -75,7 +102,7 @@ serve(async (req: Request) => {
         <p>កំពុងនាំអ្នកទៅកាន់ REAN...</p>
         <script>
           setTimeout(() => {
-            window.location.href = "${frontendUrl}/#/mission/${missionId}";
+            window.location.href = ${toScriptString(redirectUrl)};
           }, 50);
         </script>
       </body>
@@ -83,7 +110,11 @@ serve(async (req: Request) => {
     `;
 
     return new Response(html, {
-      headers: { ...corsHeaders, 'Content-Type': 'text/html; charset=utf-8' },
+      headers: {
+        ...corsHeaders,
+        'Content-Type': 'text/html; charset=utf-8',
+        'X-Content-Type-Options': 'nosniff',
+      },
     });
   } catch (error: any) {
     return new Response(JSON.stringify({ error: error.message }), {

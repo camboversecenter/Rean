@@ -22,7 +22,7 @@ import toast from 'react-hot-toast';
 
 // Helper to construct the Edge Function URL for Tutor SEO
 const getTutorShareLink = (tutorId: string) => {
-  const baseUrl = SUPABASE_URL || 'https://oficlnrazfeswkdrpzjh.supabase.co';
+  const baseUrl = SUPABASE_URL;
   const cleanBase = baseUrl.replace(/\/$/, '');
   return `${cleanBase}/functions/v1/og-tutor?id=${tutorId}`;
 };

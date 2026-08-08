@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 
-// ⚠️ PRODUCTION NOTICE:
-// In a real production build, these keys MUST come from environment variables.
-// Do not commit hardcoded keys to public GitHub repositories.
+// Connection details come from the environment only. Nothing is hardcoded, so
+// a clone of this repository never talks to somebody else's Supabase project
+// by accident — you must point it at your own (see .env.example).
 
 // Safe environment variable retrieval (Vite injects import.meta.env in the
 // browser, in tests, and at build time; no process.env polyfill is shipped).
@@ -11,17 +11,19 @@ const getEnv = (key: string): string => {
   return env?.[key] || '';
 };
 
-// Preferred: set VITE_SUPABASE_URL at build time. The fallback points at the
-// project's default supabase.co URL (the old e-khmer.com custom domain was
-// retired).
-export const SUPABASE_URL =
-  getEnv('VITE_SUPABASE_URL') || 'https://oficlnrazfeswkdrpzjh.supabase.co';
+export const SUPABASE_URL = getEnv('VITE_SUPABASE_URL');
 
 // Support both VITE_SUPABASE_PUBLISHABLE_KEY (New Standard) and VITE_SUPABASE_ANON_KEY (Legacy)
-const SUPABASE_KEY =
-  getEnv('VITE_SUPABASE_PUBLISHABLE_KEY') ||
-  getEnv('VITE_SUPABASE_ANON_KEY') ||
-  'sb_publishable_fbkyJlwt7bcGtiVexvq39w_m6n4_Vxf';
+const SUPABASE_KEY = getEnv('VITE_SUPABASE_PUBLISHABLE_KEY') || getEnv('VITE_SUPABASE_ANON_KEY');
+
+if (!SUPABASE_URL || !SUPABASE_KEY) {
+  // Fail loudly and early: an unconfigured client otherwise surfaces later as
+  // a wall of confusing "Failed to fetch" errors on every screen.
+  throw new Error(
+    'Supabase is not configured. Copy .env.example to .env and set ' +
+      'VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY (see README "Setup Instructions").'
+  );
+}
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth: {

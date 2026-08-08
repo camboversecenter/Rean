@@ -438,17 +438,23 @@ const QuestionDetailPage: React.FC = () => {
                       <CheckCircle className="h-3 w-3 mr-1" /> Accepted
                     </span>
                   )}
-                  {!reply.accepted && !reply.isAI && currentUser?.id === post.author_id && (
-                    <button
-                      type="button"
-                      onClick={() => handleAcceptAnswer(reply)}
-                      className="text-gray-400 hover:text-green-600 p-1"
-                      title="Accept Answer"
-                      aria-label="Accept Answer"
-                    >
-                      <CheckCircle className="h-5 w-5" />
-                    </button>
-                  )}
+                  {/* Only the question author accepts, and never their own reply:
+                      self-accepting would mint XP for free (the edge function
+                      rejects it server-side too). */}
+                  {!reply.accepted &&
+                    !reply.isAI &&
+                    currentUser?.id === post.author_id &&
+                    currentUser?.id !== reply.author_id && (
+                      <button
+                        type="button"
+                        onClick={() => handleAcceptAnswer(reply)}
+                        className="text-gray-400 hover:text-green-600 p-1"
+                        title="Accept Answer"
+                        aria-label="Accept Answer"
+                      >
+                        <CheckCircle className="h-5 w-5" />
+                      </button>
+                    )}
                   {!reply.isAI &&
                     currentUser?.id === reply.author_id &&
                     editState.replyId !== reply.id && (

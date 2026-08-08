@@ -27,3 +27,13 @@ dist-ssr
 .env
 .env.*
 !.env.example
+
+# Supabase CLI local state (contains the linked project ref and pooler URL)
+supabase/.temp/
+supabase/.branches/
+
+# Local tooling output (React Doctor, audit dumps, coverage)
+report.json
+doctor_output.txt
+react-doctor-report.txt
+coverage
