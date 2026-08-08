@@ -133,6 +133,13 @@ const LandingPage: React.FC = () => {
               <Compass className="h-5 w-5 mr-2" />
               រុករកវគ្គសិក្សា (Explore)
             </Link>
+            <Link
+              to="/about"
+              className="w-full sm:w-auto bg-white/10 backdrop-blur-sm border border-white/30 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-white/20 transition-all active:scale-95 flex items-center justify-center"
+            >
+              <Users className="h-5 w-5 mr-2" />
+              អំពីយើង (About us)
+            </Link>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-8 text-teal-100 text-sm">
@@ -276,10 +283,13 @@ const LandingPage: React.FC = () => {
             <ChevronRight className="h-5 w-5 ml-1" />
           </Link>
 
-          <p className="text-gray-500 text-sm mt-8 flex items-center justify-center">
+          <Link
+            to="/about"
+            className="text-gray-500 hover:text-gray-300 text-sm mt-8 flex items-center justify-center transition-colors"
+          >
             <Heart className="h-4 w-4 mr-1.5 text-red-400" />
             Incubated by CamboVerse Center, National University of Management (NUM)
-          </p>
+          </Link>
         </div>
       </section>
     </div>

@@ -9,8 +9,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "deploy": "vite build && wrangler pages deploy dist",
-    "format": "prettier --write \"**/*.{ts,tsx,css,md}\"",
-    "format:check": "prettier --check \"**/*.{ts,tsx,css,md}\"",
+    "format": "prettier --write \"**/*.{ts,tsx,css,md,MD}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,css,md,MD}\"",
     "lint": "tsc --noEmit",
     "test": "vitest run"
   },

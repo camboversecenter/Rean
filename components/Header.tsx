@@ -40,6 +40,7 @@ const Header: React.FC = () => {
   const isRewards = location.pathname === '/rewards';
   const isTutorMarket = location.pathname === '/tutors';
   const isDocs = location.pathname === '/docs';
+  const isAbout = location.pathname === '/about';
   const isDetail =
     location.pathname.startsWith('/course/') ||
     location.pathname.startsWith('/school/') ||
@@ -154,6 +155,12 @@ const Header: React.FC = () => {
               className={`text-sm font-medium hover:text-primary transition-colors ${isChat ? 'text-primary font-bold' : 'text-gray-600'}`}
             >
               សុភាទន្សាយ
+            </Link>
+            <Link
+              to="/about"
+              className={`text-sm font-medium hover:text-primary transition-colors ${isAbout ? 'text-primary font-bold' : 'text-gray-600'}`}
+            >
+              អំពីយើង
             </Link>
           </nav>
 
