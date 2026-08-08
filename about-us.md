@@ -57,7 +57,7 @@ the Developer Certificate of Origin (DCO) sign-off we use (`git commit -s`).
 
 ## 👥 Meet the Team
 
-We are a team of 11 dedicated individuals working together to build REAN.
+We are a team of 10 dedicated individuals working together to build REAN.
 
 <!--
   TODO: replace the remaining "Member N Name" placeholders, roles, and profile links.
@@ -95,25 +95,25 @@ We are a team of 11 dedicated individuals working together to build REAN.
   <a href="https://github.com/zakitty112233-cell">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
 </td>
  <td align="center">
-      <img src="public/team/member5.png" width="120px;" alt="Member 5"/><br />
-      <b>Member 5 Name</b><br />
-      <i>Role / Title</i><br />
-      <a href="https://github.com/username">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
+     <img src="https://github.com/user-attachments/assets/754d1318-ab88-437a-b120-0a5c2478d7eb"   width="120px;"  alt="Hong hana"/b><br />
+     <b>Hong hana</b><br />
+     <i>Role / Title</i><br />
+      <a href="https://github.com/hanahong070707-design ">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
     </td>
     <td align="center">
-      <img src="public/team/member6.png" width="120px;" alt="Member 6"/><br />
-      <b>Member 6 Name</b><br />
+      <img src="https://github.com/user-attachments/assets/4220cb46-6143-4245-8244-24e94bb6e9ea"  width="120px;" alt=""/><br />
+      <b>Soeun Chanliza</b><br />
       <i>Role / Title</i><br />
-      <a href="https://github.com/username">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
+      <a href="https://github.com/chanlizasoeun-netizen">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
     </td>
   </tr>
   <!-- ROW 3 -->
   <tr>
     <td align="center">
-      <img src="public/team/member7.png" width="120px;" alt="Member 7"/><br />
-      <b>Member 7 Name</b><br />
+      <img src="https://github.com/user-attachments/assets/38dc021c-04ed-4bce-a1dc-49b09069cc43"  width="120px;" alt="Cheat Mouyyean"/><br />
+      <b>MCheat Mouyyean</b><br />
       <i>Role / Title</i><br />
-      <a href="https://github.com/username">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
+      <a href="https://github.com/mouyyeancheat-coder">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
     </td>
     <td align="center">
       <img src="public/team/member8.png" width="120px;" alt="Member 8"/><br />
@@ -122,23 +122,17 @@ We are a team of 11 dedicated individuals working together to build REAN.
       <a href="https://github.com/username">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
     </td>
     <td align="center">
-      <img src="public/team/member9.png" width="120px;" alt="Member 9"/><br />
-      <b>Member 9 Name</b><br />
+      <img  src="https://github.com/user-attachments/assets/2fad9ea2-542e-4879-94cf-eadd4ccf9e56" width="120px;" alt="Soeun somera" /><br />
+      <b>Soeun somera</b><br />
       <i>Role / Title</i><br />
-      <a href="https://github.com/username">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
+      <a href="https://github.com/Somera-Soeun">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
     </td>
   </tr>
   <!-- ROW 4 -->
   <tr>
     <td align="center">
-      <img src="public/team/member10.png" width="120px;" alt="Member 10"/><br />
-      <b>Member 10 Name</b><br />
-      <i>Role / Title</i><br />
-      <a href="https://github.com/username">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
-    </td>
-    <td align="center">
-      <img src="public/team/member11.png" width="120px;" alt="Member 11"/><br />
-      <b>Member 11 Name</b><br />
+      <img  src="https://github.com/user-attachments/assets/8af1eae4-3790-4998-bc00-21d5cda668af"  width="120px;" alt="Chiv chan seyha"/><br />
+      <b>Chiv chan seyha</b><br />
       <i>Role / Title</i><br />
       <a href="https://github.com/username">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
     </td>
