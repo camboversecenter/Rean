@@ -1,3 +1,4 @@
+<img width="993" height="1280" alt="sreytey" src="https://github.com/user-attachments/assets/9d97e6f4-5155-4d5f-8338-0de9017e0652" />
 # About REAN
 
 REAN (រៀន means "to learn" in Khmer) is a free educational platform for Cambodia. It
