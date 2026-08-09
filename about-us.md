@@ -70,19 +70,19 @@ We are a team of 10 dedicated individuals working together to build REAN.
     <td align="center">
 <img src="https://github.com/user-attachments/assets/4b4e9a17-61c8-40ba-bdcb-4a0cafc95c4f" width="120px;" alt="Van sopha"/><br  />
     <b>Van sopha</b><br />
-      <i>Role / Title</i><br />
+      <i>Tester / Contributor</i><br />
       <a href="https://github.com/vsopha9664-design">GitHub</a> | <a href="www.linkedin.com/in/sopha-van-84a7653a4">LinkedIn</a>
     </td>
     <td align="center">
      <img  src="https://github.com/user-attachments/assets/9d97e6f4-5155-4d5f-8338-0de9017e0652" width="120px;" alt="Phorn sreytey"/><br  />
        <b>Phorn sreytey</b><br />
-      <i>Role / Title</i><br />
+      <i>Tester / Contributor</i><br />
       <a href="https://github.com/phornsreytey2-bot">GitHub</a> | <a href="www.linkedin.com/in/phorn-sreytey-a856bb428">LinkedIn</a>
     </td>
     <td align="center">
       <img src="https://github.com/user-attachments/assets/9216a453-8a1b-404a-b4d0-e09d14bb0f4b" width="120px;" alt="Tie Porching"/><br />
       <b>Tie Porching</b><br />
-      <i>Role / Title</i><br />
+      <i>Tester / Contributor</i><br />
       <a href="https://github.com/tieporching-debug">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
     </td>
   </tr>
@@ -91,19 +91,19 @@ We are a team of 10 dedicated individuals working together to build REAN.
     <td align="center">
   <img src="https://github.com/user-attachments/assets/850cca70-792c-4596-9910-667a869cbba8" width="120px;" alt="Khorn Aliza"/><br />
   <b>Khorn Aliza</b><br />
-  <i>Digital Economics / Contributor</i><br />
+  <i>Tester / Contributor</i><br />
   <a href="https://github.com/zakitty112233-cell">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
 </td>
  <td align="center">
      <img src="https://github.com/user-attachments/assets/754d1318-ab88-437a-b120-0a5c2478d7eb"   width="120px;"  alt="Hong hana"/b><br />
      <b>Hong hana</b><br />
-     <i>Role / Title</i><br />
-      <a href="https://github.com/hanahong070707-design ">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
+     <i>Tester / Contributor</i><br />
+      <a href="https://github.com/hanahong070707-design ">GitHub</a> | <a href="https://www.linkedin.com/in/hana-hong-774713428">LinkedIn</a>
     </td>
     <td align="center">
       <img src="https://github.com/user-attachments/assets/4220cb46-6143-4245-8244-24e94bb6e9ea"  width="120px;" alt=""/><br />
       <b>Soeun Chanliza</b><br />
-      <i>Role / Title</i><br />
+      <i>Tester / Contributor</i><br />
       <a href="https://github.com/chanlizasoeun-netizen">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
     </td>
   </tr>
@@ -112,19 +112,19 @@ We are a team of 10 dedicated individuals working together to build REAN.
     <td align="center">
       <img src="https://github.com/user-attachments/assets/38dc021c-04ed-4bce-a1dc-49b09069cc43"  width="120px;" alt="Cheat Mouyyean"/><br />
       <b>MCheat Mouyyean</b><br />
-      <i>Role / Title</i><br />
+      <i>Tester / Contributor</i><br />
       <a href="https://github.com/mouyyeancheat-coder">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
     </td>
     <td align="center">
-      <img src="public/team/member8.png" width="120px;" alt="Member 8"/><br />
-      <b>Member 8 Name</b><br />
-      <i>Role / Title</i><br />
-      <a href="https://github.com/username">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
+      <img src="https://github.com/user-attachments/assets/dece275f-a39f-4bb6-93f4-8c83f361e6db"  width="120px;" alt="Eng leakhena"/><br />
+      <b>Eng leakhena</b><br />
+      <i>Tester / Contributor</i><br />
+      <a href="https://github.com/englakna157-lang">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
     </td>
     <td align="center">
       <img  src="https://github.com/user-attachments/assets/2fad9ea2-542e-4879-94cf-eadd4ccf9e56" width="120px;" alt="Soeun somera" /><br />
       <b>Soeun somera</b><br />
-      <i>Role / Title</i><br />
+      <i>Tester / Contributor</i><br />
       <a href="https://github.com/Somera-Soeun">GitHub</a> | <a href="https://www.linkedin.com/in/somera-soeun-a75716428">LinkedIn</a>
     </td>
   </tr>
@@ -133,7 +133,7 @@ We are a team of 10 dedicated individuals working together to build REAN.
     <td align="center">
       <img  src="https://github.com/user-attachments/assets/8af1eae4-3790-4998-bc00-21d5cda668af"  width="120px;" alt="Chiv chan seyha"/><br />
       <b>Chiv chan seyha</b><br />
-      <i>Role / Title</i><br />
+      <i>Tester / Contributor</i><br />
       <a href="https://github.com/chivchanseyha3066-user">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
     </td>
     <!-- Empty cell to balance the 3-column grid -->
