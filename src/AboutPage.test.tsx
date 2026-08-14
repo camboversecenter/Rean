@@ -45,7 +45,7 @@ describe('AboutPage', () => {
     const links = screen.getAllByRole('link') as HTMLElement[];
     const hrefs = hrefsOf(links);
 
-    expect(hrefs).toContain('https://numuniversity.com/');
+    expect(hrefs).toContain('https://num.edu.kh/');
     expect(hrefs).toContain('https://camboverse.world/');
     expect(hrefs).toContain('https://www.e-khmer.com/en');
     expect(hrefs).toContain('https://github.com/camboversecenter/Rean');
@@ -79,6 +79,59 @@ describe('AboutPage', () => {
     expect(screen.getByAltText('E-KHMER Technology Co., Ltd. logo').getAttribute('src')).toBe(
       '/partners/e-khmer.png'
     );
+  });
+
+  it('shows the team above the partners, with circular initials until photos land', () => {
+    renderAbout();
+
+    expect(screen.getByText(/Meet the team/)).toBeDefined();
+    // All ten members from about-us.md on main.
+    for (const name of [
+      'Van sopha',
+      'Phorn sreytey',
+      'Tie Porching',
+      'Khorn Aliza',
+      'Hong hana',
+      'Soeun Chanliza',
+      'MCheat Mouyyean',
+      'Eng leakhena',
+      'Soeun somera',
+      'Chiv chan seyha',
+    ]) {
+      expect(screen.getByText(name)).toBeDefined();
+    }
+
+    // No photo has been matched to a name yet, so each portrait renders
+    // initials rather than requesting an image that would 404.
+    expect(screen.getByText('VS')).toBeDefined();
+    expect(screen.getByText('TP')).toBeDefined();
+    expect(screen.queryByAltText('Van sopha')).toBeNull();
+
+    // Placeholder rows from about-us.md must never reach the public site.
+    expect(screen.queryByText(/Member \d+ Name/)).toBeNull();
+    expect(screen.queryByText('Role / Title')).toBeNull();
+  });
+
+  it('never renders a placeholder LinkedIn URL as a live link', () => {
+    renderAbout();
+
+    const hrefs = hrefsOf(screen.getAllByRole('link') as HTMLElement[]);
+    // about-us.md still carries linkedin.com/in/username for six members. A
+    // dead profile link is worse than no link at all.
+    expect(hrefs.some((h) => h?.includes('/in/username'))).toBe(false);
+    // Every LinkedIn link that does render must be absolute, or the browser
+    // resolves it against this site instead of linkedin.com.
+    for (const h of hrefs.filter((x) => x?.includes('linkedin.com'))) {
+      expect(h?.startsWith('https://')).toBe(true);
+    }
+  });
+
+  it('renders the team section before the partners section', () => {
+    const { container } = renderAbout();
+
+    const text = container.textContent || '';
+    expect(text.indexOf('Meet the team')).toBeGreaterThan(-1);
+    expect(text.indexOf('Meet the team')).toBeLessThan(text.indexOf('Partners and supporters'));
   });
 
   it('falls back to a lettermark if a partner logo fails to load', () => {

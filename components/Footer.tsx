@@ -25,7 +25,7 @@ const Footer: React.FC = () => {
               </a>
               ,{' '}
               <a
-                href="https://numuniversity.com/"
+                href="https://num.edu.kh/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-primary transition-colors underline decoration-gray-300 underline-offset-2"

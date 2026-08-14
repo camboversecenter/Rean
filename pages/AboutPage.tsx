@@ -104,7 +104,7 @@ const PARTNERS = [
     initials: 'NUM',
     role: 'សាកលវិទ្យាល័យម្ចាស់ផ្ទះ (Host university)',
     desc: 'REAN is hosted at the National University of Management in Phnom Penh.',
-    url: 'https://numuniversity.com/',
+    url: 'https://num.edu.kh/',
     logo: '/partners/num.webp',
   },
   {
@@ -126,6 +126,129 @@ const PARTNERS = [
     logo: '/partners/e-khmer.png',
   },
 ];
+
+/**
+ * The people behind REAN. Only members whose real name is known are listed, so
+ * that the "Member N Name" placeholders in about-us.md never reach the public
+ * site. Add an entry as each person confirms how they want to be credited.
+ *
+ * To add a portrait, put the file in `public/team/` and set `photo` to its path.
+ * Leave `photo` unset while no file exists, otherwise every visitor requests an
+ * image that 404s before the initials fallback takes over. `role`, `github`,
+ * and `linkedin` are optional and are simply not rendered when absent.
+ *
+ * Names, roles, and profile links come from about-us.md on main, which the team
+ * maintains. Placeholder LinkedIn URLs (linkedin.com/in/username) are omitted
+ * rather than rendered as dead links.
+ *
+ * public/team/photo-1 through photo-8 are uploaded portraits that have not been
+ * matched to a name yet. They are intentionally not wired up here: attaching a
+ * real person's face to the wrong name is worse than showing initials. Rename
+ * each file after the person it shows and set `photo` once the mapping is
+ * confirmed.
+ */
+const TEAM_SIZE = 10;
+
+const TEAM: {
+  name: string;
+  role?: string;
+  photo?: string;
+  github?: string;
+  linkedin?: string;
+}[] = [
+  {
+    name: 'Van sopha',
+    role: 'Tester / Contributor',
+    github: 'https://github.com/vsopha9664-design',
+    linkedin: 'https://www.linkedin.com/in/sopha-van-84a7653a4',
+  },
+  {
+    name: 'Phorn sreytey',
+    role: 'Tester / Contributor',
+    github: 'https://github.com/phornsreytey2-bot',
+    linkedin: 'https://www.linkedin.com/in/phorn-sreytey-a856bb428',
+  },
+  {
+    name: 'Tie Porching',
+    role: 'Tester / Contributor',
+    github: 'https://github.com/tieporching-debug',
+  },
+  {
+    name: 'Khorn Aliza',
+    role: 'Tester / Contributor',
+    github: 'https://github.com/zakitty112233-cell',
+  },
+  {
+    name: 'Hong hana',
+    role: 'Tester / Contributor',
+    github: 'https://github.com/hanahong070707-design',
+    linkedin: 'https://www.linkedin.com/in/hana-hong-774713428',
+  },
+  {
+    name: 'Soeun Chanliza',
+    role: 'Tester / Contributor',
+    github: 'https://github.com/chanlizasoeun-netizen',
+  },
+  {
+    name: 'MCheat Mouyyean',
+    role: 'Tester / Contributor',
+    github: 'https://github.com/mouyyeancheat-coder',
+  },
+  {
+    name: 'Eng leakhena',
+    role: 'Tester / Contributor',
+    github: 'https://github.com/englakna157-lang',
+  },
+  {
+    name: 'Soeun somera',
+    role: 'Tester / Contributor',
+    github: 'https://github.com/Somera-Soeun',
+    linkedin: 'https://www.linkedin.com/in/somera-soeun-a75716428',
+  },
+  {
+    name: 'Chiv chan seyha',
+    role: 'Tester / Contributor',
+    github: 'https://github.com/chivchanseyha3066-user',
+  },
+];
+
+/** "Van sopha" becomes "VS". Used when a member has no photo yet. */
+const initialsOf = (name: string) =>
+  name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0].toUpperCase())
+    .join('');
+
+/**
+ * A circular team portrait. Falls back to the member's initials when no photo
+ * has been added, so the row stays a clean circle rather than a broken image.
+ */
+const TeamAvatar: React.FC<{ name: string; photo?: string }> = ({ name, photo }) => {
+  const [failed, setFailed] = useState(false);
+
+  if (photo && !failed) {
+    return (
+      <img
+        src={photo}
+        alt={name}
+        onError={() => setFailed(true)}
+        loading="lazy"
+        className="h-24 w-24 rounded-full object-cover bg-gray-100 ring-4 ring-white shadow-md"
+      />
+    );
+  }
+
+  return (
+    <div
+      aria-hidden="true"
+      className="h-24 w-24 rounded-full bg-gradient-to-br from-primary to-accent text-white flex items-center justify-center text-2xl font-extrabold tracking-tight ring-4 ring-white shadow-md"
+    >
+      {initialsOf(name)}
+    </div>
+  );
+};
 
 /**
  * Renders a partner logo when the image file exists in `public/partners/`, and
@@ -376,6 +499,58 @@ const AboutPage: React.FC = () => {
           >
             <Github className="h-4 w-4 mr-2" /> View the source
           </a>
+        </div>
+      </section>
+
+      {/* ===== TEAM ===== */}
+      <section className="max-w-5xl mx-auto px-4 py-14 md:py-16">
+        <div className="text-center mb-10">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-3">
+            ក្រុមការងាររបស់យើង (Meet the team)
+          </h2>
+          <p className="text-gray-500 max-w-2xl mx-auto">
+            REAN is built by a team of {TEAM_SIZE} people. More profiles are being added.
+          </p>
+        </div>
+
+        {/* A centred wrap rather than a fixed grid, so a short list stays centred
+            instead of hugging the left edge as the team fills out. */}
+        <div className="flex flex-wrap justify-center gap-x-8 gap-y-10">
+          {TEAM.map((member) => (
+            <div key={member.name} className="w-32 flex flex-col items-center text-center">
+              <TeamAvatar name={member.name} photo={member.photo} />
+              <p className="font-bold text-gray-900 text-sm mt-4">{member.name}</p>
+              {member.role && (
+                <p className="text-xs text-primary font-medium mt-0.5">{member.role}</p>
+              )}
+              {(member.github || member.linkedin) && (
+                <div className="flex items-center gap-3 mt-2">
+                  {member.github && (
+                    <a
+                      href={member.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-400 hover:text-primary transition-colors"
+                      aria-label={`${member.name} on GitHub`}
+                    >
+                      <Github className="h-4 w-4" />
+                    </a>
+                  )}
+                  {member.linkedin && (
+                    <a
+                      href={member.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-400 hover:text-primary transition-colors"
+                      aria-label={`${member.name} on LinkedIn`}
+                    >
+                      <Globe className="h-4 w-4" />
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </section>
 
