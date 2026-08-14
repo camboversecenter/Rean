@@ -1245,15 +1245,10 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                       onChange={(e) => handleTextChange(e.target.value)}
                       disabled={moduleStatus[activeModuleId] === 'completed'}
                     />
-                    <CharCounter
-                      current={currentSubmissionText.length}
-                      limit={SUBMISSION_LIMIT}
-                    />
+                    <CharCounter current={currentSubmissionText.length} limit={SUBMISSION_LIMIT} />
                   </div>
                   <div className="p-4 border-t border-gray-100 bg-gray-50 flex justify-between items-center">
-                    <span className="text-xs text-gray-400">
-                      Supports Markdown & LaTeX $$...$$
-                    </span>
+                    <span className="text-xs text-gray-400">Supports Markdown & LaTeX $$...$$</span>
                     <button
                       type="button"
                       onClick={handleSubmitWork}
