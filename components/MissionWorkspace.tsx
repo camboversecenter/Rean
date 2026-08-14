@@ -24,7 +24,6 @@ import {
   Home,
   Camera,
   Image as ImageIcon,
-  Terminal,
   Layout,
   X,
   Experiment,
@@ -50,7 +49,7 @@ import {
 } from '../services/missionProgressService';
 import { uploadFile, deleteFileFromUrl } from '../services/storageService';
 import MarkdownText from './MarkdownText';
-import CodeEditor from './CodeEditor';
+
 import CharCounter from './CharCounter';
 import toast from 'react-hot-toast';
 import confetti from 'canvas-confetti';
@@ -156,8 +155,6 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
       chatInput: '',
       messages: {} as Record<string, ChatMessage[]>,
       submissionData: {} as Record<string, string>,
-      submissionType: 'text' as 'text' | 'code',
-      codeLanguage: 'javascript' as 'javascript' | 'python' | 'html',
       submissionImage: null as string | null,
       evaluationData: {} as Record<
         string,
@@ -184,8 +181,6 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
     chatInput,
     messages,
     submissionData,
-    submissionType,
-    codeLanguage,
     submissionImage,
     evaluationData,
     generatedLessons,
@@ -222,14 +217,6 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
         ...s,
         submissionData: typeof v === 'function' ? v(s.submissionData) : v,
       })),
-    []
-  );
-  const setSubmissionType = React.useCallback(
-    (v: any) => setState((s) => ({ ...s, submissionType: v })),
-    []
-  );
-  const setCodeLanguage = React.useCallback(
-    (v: any) => setState((s) => ({ ...s, codeLanguage: v })),
     []
   );
   const setSubmissionImage = React.useCallback(
@@ -626,8 +613,6 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
             } else {
               finalSubmissionText = `[Image Upload Failed] ${currentSubmissionText}`;
             }
-          } else if (submissionType === 'code') {
-            finalSubmissionText = `\`\`\`${codeLanguage}\n${currentSubmissionText}\n\`\`\``;
           }
 
           await updateMissionProgress(
@@ -1201,31 +1186,14 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                 />
 
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col overflow-hidden">
-                  <div className="p-3 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
-                    <div className="flex gap-1 p-1 bg-white rounded-lg border border-gray-200 shadow-sm">
-                      <button
-                        type="button"
-                        onClick={() => setSubmissionType('text')}
-                        className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-1.5 ${submissionType === 'text' ? 'bg-gray-100 text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
-                      >
-                        <FileText className="h-3.5 w-3.5" /> Text Answer
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setSubmissionType('code')}
-                        className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-1.5 ${submissionType === 'code' ? 'bg-indigo-50 text-indigo-700' : 'text-gray-500 hover:text-gray-700'}`}
-                      >
-                        <Terminal className="h-3.5 w-3.5" /> Code Editor
-                      </button>
-                    </div>
-
-                    {mission.enablePlagiarismCheck && (
+                  {mission.enablePlagiarismCheck && (
+                    <div className="p-3 bg-gray-50 border-b border-gray-100 flex justify-end items-center">
                       <div className="flex items-center text-[10px] text-green-600 font-bold bg-green-50 px-2 py-1 rounded border border-green-100">
                         <ShieldCheck className="h-3 w-3 mr-1" />
                         Check Active
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
 
                   <div className="px-4 pt-4">
                     {submissionImage ? (
@@ -1244,7 +1212,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                           <X className="h-4 w-4" />
                         </button>
                       </div>
-                    ) : submissionType === 'text' ? (
+                    ) : (
                       <div
                         onClick={() => fileInputRef.current?.click()}
                         className="w-full h-16 border-2 border-dashed border-gray-200 rounded-xl flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors mb-2 gap-2"
@@ -1262,58 +1230,25 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                           aria-label="Upload Attachment"
                         />
                       </div>
-                    ) : (
-                      <div className="flex gap-2 mb-2">
-                        {['javascript', 'python', 'html'].map((lang) => (
-                          <button
-                            type="button"
-                            key={lang}
-                            onClick={() => setCodeLanguage(lang as any)}
-                            className={`px-3 py-1 rounded text-xs font-bold uppercase transition-colors ${codeLanguage === lang ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
-                          >
-                            {lang}
-                          </button>
-                        ))}
-                      </div>
                     )}
                   </div>
 
                   <div className="px-4 pb-4">
-                    {submissionType === 'code' ? (
-                      <div className="h-[400px]">
-                        <CodeEditor
-                          initialCode={currentSubmissionText || '// Start coding here...'}
-                          language={codeLanguage}
-                          onChange={(val) => handleTextChange(val)}
-                          readOnly={moduleStatus[activeModuleId] === 'completed'}
-                        />
-                      </div>
-                    ) : (
-                      <>
-                        <label htmlFor="submissionTextInput" className="sr-only">
-                          Submission Text
-                        </label>
-                        <textarea
-                          id="submissionTextInput"
-                          className="w-full resize-y focus:outline-none text-sm text-gray-800 leading-relaxed min-h-[150px] bg-transparent p-2"
-                          placeholder="សរសេរចម្លើយរបស់អ្នកនៅទីនេះ..."
-                          value={currentSubmissionText}
-                          onChange={(e) => handleTextChange(e.target.value)}
-                          disabled={moduleStatus[activeModuleId] === 'completed'}
-                        />
-                        <CharCounter
-                          current={currentSubmissionText.length}
-                          limit={SUBMISSION_LIMIT}
-                        />
-                      </>
-                    )}
+                    <label htmlFor="submissionTextInput" className="sr-only">
+                      Submission Text
+                    </label>
+                    <textarea
+                      id="submissionTextInput"
+                      className="w-full resize-y focus:outline-none text-sm text-gray-800 leading-relaxed min-h-[150px] bg-transparent p-2"
+                      placeholder="សរសេរចម្លើយរបស់អ្នកនៅទីនេះ..."
+                      value={currentSubmissionText}
+                      onChange={(e) => handleTextChange(e.target.value)}
+                      disabled={moduleStatus[activeModuleId] === 'completed'}
+                    />
+                    <CharCounter current={currentSubmissionText.length} limit={SUBMISSION_LIMIT} />
                   </div>
                   <div className="p-4 border-t border-gray-100 bg-gray-50 flex justify-between items-center">
-                    <span className="text-xs text-gray-400">
-                      {submissionType === 'code'
-                        ? 'Code is run in browser sandbox'
-                        : 'Supports Markdown & LaTeX $$...$$'}
-                    </span>
+                    <span className="text-xs text-gray-400">Supports Markdown & LaTeX $$...$$</span>
                     <button
                       type="button"
                       onClick={handleSubmitWork}

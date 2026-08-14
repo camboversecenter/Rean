@@ -81,7 +81,7 @@ describe('AboutPage', () => {
     );
   });
 
-  it('shows the team above the partners, with circular initials until photos land', () => {
+  it('shows the team with photos where available and initials otherwise', () => {
     renderAbout();
 
     expect(screen.getByText(/Meet the team/)).toBeDefined();
@@ -101,11 +101,12 @@ describe('AboutPage', () => {
       expect(screen.getByText(name)).toBeDefined();
     }
 
-    // No photo has been matched to a name yet, so each portrait renders
-    // initials rather than requesting an image that would 404.
-    expect(screen.getByText('VS')).toBeDefined();
-    expect(screen.getByText('TP')).toBeDefined();
-    expect(screen.queryByAltText('Van sopha')).toBeNull();
+    // Eight members have photos wired up; the remaining two show initials.
+    expect(screen.getByAltText('Van sopha')).toBeDefined();
+    expect(screen.getByAltText('Tie Porching')).toBeDefined();
+    // Soeun Chanliza and Soeun somera have no local photo yet.
+    expect(screen.getByText('SC')).toBeDefined();
+    expect(screen.getByText('SS')).toBeDefined();
 
     // Placeholder rows from about-us.md must never reach the public site.
     expect(screen.queryByText(/Member \d+ Name/)).toBeNull();
