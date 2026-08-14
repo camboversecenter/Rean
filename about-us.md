@@ -4,7 +4,7 @@ REAN (រៀន means "to learn" in Khmer) is a free educational platform for Ca
 connects students with schools, tutors, and AI-driven learning missions, wrapped in a
 gamified community and a points-based economy.
 
-> **Incubated by [CamboVerse Center](https://camboverse.world/), [National University of Management (NUM)](https://numuniversity.com/).**
+> **Incubated by [CamboVerse Center](https://camboverse.world/), [National University of Management (NUM)](https://num.edu.kh/).**
 >
 > 🌐 Live at **[rean.camboverse.world](https://rean.camboverse.world)**
 
@@ -163,7 +163,7 @@ We are grateful for the support and collaboration of our partners.
 <table>
   <tr>
     <td align="center">
-      <a href="https://numuniversity.com/">
+      <a href="https://num.edu.kh/">
         <img src="public/partners/num.webp" height="80px" alt="National University of Management logo"/>
       </a><br />
       <b><a href="https://num.edu.kh/">National University of Management</a></b><br />

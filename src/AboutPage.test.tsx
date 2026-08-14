@@ -45,7 +45,7 @@ describe('AboutPage', () => {
     const links = screen.getAllByRole('link') as HTMLElement[];
     const hrefs = hrefsOf(links);
 
-    expect(hrefs).toContain('https://numuniversity.com/');
+    expect(hrefs).toContain('https://num.edu.kh/');
     expect(hrefs).toContain('https://camboverse.world/');
     expect(hrefs).toContain('https://www.e-khmer.com/en');
     expect(hrefs).toContain('https://github.com/camboversecenter/Rean');
@@ -79,6 +79,32 @@ describe('AboutPage', () => {
     expect(screen.getByAltText('E-KHMER Technology Co., Ltd. logo').getAttribute('src')).toBe(
       '/partners/e-khmer.png'
     );
+  });
+
+  it('shows the team above the partners, with circular initials until photos land', () => {
+    renderAbout();
+
+    expect(screen.getByText(/Meet the team/)).toBeDefined();
+    expect(screen.getByText('Van sopha')).toBeDefined();
+    expect(screen.getByText('Tie Porching')).toBeDefined();
+
+    // No photo files exist yet, so each portrait renders initials rather than
+    // requesting an image that would 404.
+    expect(screen.getByText('VS')).toBeDefined();
+    expect(screen.getByText('TP')).toBeDefined();
+    expect(screen.queryByAltText('Van sopha')).toBeNull();
+
+    // Placeholder rows from about-us.md must never reach the public site.
+    expect(screen.queryByText(/Member \d+ Name/)).toBeNull();
+    expect(screen.queryByText('Role / Title')).toBeNull();
+  });
+
+  it('renders the team section before the partners section', () => {
+    const { container } = renderAbout();
+
+    const text = container.textContent || '';
+    expect(text.indexOf('Meet the team')).toBeGreaterThan(-1);
+    expect(text.indexOf('Meet the team')).toBeLessThan(text.indexOf('Partners and supporters'));
   });
 
   it('falls back to a lettermark if a partner logo fails to load', () => {
