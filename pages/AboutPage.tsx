@@ -128,24 +128,9 @@ const PARTNERS = [
 ];
 
 /**
- * The people behind REAN. Only members whose real name is known are listed, so
- * that the "Member N Name" placeholders in about-us.md never reach the public
- * site. Add an entry as each person confirms how they want to be credited.
- *
- * To add a portrait, put the file in `public/team/` and set `photo` to its path.
- * Leave `photo` unset while no file exists, otherwise every visitor requests an
- * image that 404s before the initials fallback takes over. `role`, `github`,
- * and `linkedin` are optional and are simply not rendered when absent.
- *
- * Names, roles, and profile links come from about-us.md on main, which the team
- * maintains. Placeholder LinkedIn URLs (linkedin.com/in/username) are omitted
- * rather than rendered as dead links.
- *
- * public/team/photo-1 through photo-8 are uploaded portraits that have not been
- * matched to a name yet. They are intentionally not wired up here: attaching a
- * real person's face to the wrong name is worse than showing initials. Rename
- * each file after the person it shows and set `photo` once the mapping is
- * confirmed.
+ * The people behind REAN. Names, roles, and profile links come from
+ * about-us.md on main, which the team maintains. Placeholder LinkedIn URLs
+ * (linkedin.com/in/username) are omitted rather than rendered as dead links.
  */
 const TEAM_SIZE = 10;
 
@@ -158,56 +143,64 @@ const TEAM: {
 }[] = [
   {
     name: 'Van sopha',
-    role: 'Tester / Contributor',
+    role: 'Member',
+    photo: '/team/photo-1.webp',
     github: 'https://github.com/vsopha9664-design',
     linkedin: 'https://www.linkedin.com/in/sopha-van-84a7653a4',
   },
   {
     name: 'Phorn sreytey',
-    role: 'Tester / Contributor',
+    role: 'Member',
+    photo: '/team/photo-2.jpg',
     github: 'https://github.com/phornsreytey2-bot',
     linkedin: 'https://www.linkedin.com/in/phorn-sreytey-a856bb428',
   },
   {
     name: 'Tie Porching',
-    role: 'Tester / Contributor',
+    role: 'Member',
+    photo: '/team/photo-3.webp',
     github: 'https://github.com/tieporching-debug',
   },
   {
     name: 'Khorn Aliza',
-    role: 'Tester / Contributor',
+    role: 'Member',
+    photo: '/team/photo-4.jpg',
     github: 'https://github.com/zakitty112233-cell',
   },
   {
     name: 'Hong hana',
-    role: 'Tester / Contributor',
+    role: 'Member',
+    photo: '/team/photo-5.jpg',
     github: 'https://github.com/hanahong070707-design',
     linkedin: 'https://www.linkedin.com/in/hana-hong-774713428',
   },
   {
     name: 'Soeun Chanliza',
-    role: 'Tester / Contributor',
+    role: 'Member',
     github: 'https://github.com/chanlizasoeun-netizen',
   },
   {
     name: 'MCheat Mouyyean',
-    role: 'Tester / Contributor',
+    role: 'Member',
+    photo: '/team/photo-8.jpg',
     github: 'https://github.com/mouyyeancheat-coder',
   },
   {
     name: 'Eng leakhena',
-    role: 'Tester / Contributor',
+    role: 'Member',
+    photo: '/team/photo-6.webp',
     github: 'https://github.com/englakna157-lang',
   },
   {
     name: 'Soeun somera',
-    role: 'Tester / Contributor',
+    role: 'Member',
     github: 'https://github.com/Somera-Soeun',
     linkedin: 'https://www.linkedin.com/in/somera-soeun-a75716428',
   },
   {
     name: 'Chiv chan seyha',
-    role: 'Tester / Contributor',
+    role: 'Member',
+    photo: '/team/photo-7.jpg',
     github: 'https://github.com/chivchanseyha3066-user',
   },
 ];
