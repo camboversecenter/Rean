@@ -201,6 +201,6 @@ Stay up to date with our project and community.
 | **Website**     | [rean.camboverse.world](https://rean.camboverse.world)                       |
 | **Source code** | [github.com/camboversecenter/Rean](https://github.com/camboversecenter/Rean) |
 | **Incubator**   | [camboverse.world](https://camboverse.world/)                                |
-| **University**  | [numuniversity.com](https://num.edu.kh/)                              |
+| **University**  | [num.edu.kh](https://num.edu.kh/)                              |
 
 Made with ❤️ for the Cambodian learning community.
