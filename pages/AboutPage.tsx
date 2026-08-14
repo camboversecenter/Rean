@@ -132,11 +132,16 @@ const PARTNERS = [
  * that the "Member N Name" placeholders in about-us.md never reach the public
  * site. Add an entry as each person confirms how they want to be credited.
  *
- * To add a portrait, put the file in `public/team/` and set `photo` to its path
- * (for example `/team/van-sopha.jpg`). Leave `photo` unset while no file exists,
- * otherwise every visitor requests an image that 404s before the initials
- * fallback takes over. `role`, `github`, and `linkedin` are optional and are
- * simply not rendered when absent.
+ * To add a portrait, put the file in `public/team/` and set `photo` to its path.
+ * Leave `photo` unset while no file exists, otherwise every visitor requests an
+ * image that 404s before the initials fallback takes over. `role`, `github`,
+ * and `linkedin` are optional and are simply not rendered when absent.
+ *
+ * public/team/photo-1 through photo-5 are uploaded portraits that have not been
+ * matched to a name yet. They are intentionally not wired up here: attaching a
+ * real person's face to the wrong name is worse than showing initials. Rename
+ * each file after the person it shows and set `photo` once the mapping is
+ * confirmed.
  */
 const TEAM_SIZE = 11;
 
