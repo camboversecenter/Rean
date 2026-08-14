@@ -1,6 +1,6 @@
 # REAN - Educational Platform (Cambodia)
 
-### 👥 [About Us](./about-us.md) · 📚 [Documentation](./docs/README.md) · 🤝 [Contributing](./CONTRIBUTING.md) · 📄 [License](./LICENSE) · 🔒 [Security](./SECURITY.md) · 🌐 [Live site](https://rean.camboverse.world)
+### 👥 [About Us](./about-us.md) · 📚 [Documentation](./docs/README.md) · 🤝 [Contributing](./CONTRIBUTING.md) · 💬 [Code of Conduct](./CODE_OF_CONDUCT.md) · 📄 [License](./LICENSE) · 🔒 [Security](./SECURITY.md) · 🌐 [Live site](https://rean.camboverse.world)
 
 REAN (រៀន means "to learn" in Khmer) is a comprehensive educational platform for Cambodia, connecting students with schools, tutors, and AI-driven learning missions. It features a gamified community, real-time AI tutoring, and a marketplace for short courses.
 

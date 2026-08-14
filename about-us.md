@@ -60,73 +60,73 @@ the Developer Certificate of Origin (DCO) sign-off we use (`git commit -s`).
 We are a team of 10 dedicated individuals working together to build REAN.
 
 <!--
-  TODO: six members still carry the placeholder LinkedIn URL
-  https://linkedin.com/in/username. Replace or remove those.
+  Portraits are committed under public/team/ so they keep working in forks and
+  clones, instead of depending on GitHub's attachment CDN. Two members are still
+  served from an attachment URL because no local copy was supplied; to fix, add
+  the file to public/team/ and point the src here at it.
 
-  Portraits are currently hosted as GitHub user-attachment URLs, which render
-  here but are not suitable for the website. Copies live in public/team/ as
-  photo-1 through photo-8, still waiting to be matched to a name.
+  LinkedIn is listed only for members who supplied a real profile URL.
 -->
 
 <table>
   <!-- ROW 1 -->
   <tr>
     <td align="center">
-<img src="https://github.com/user-attachments/assets/4b4e9a17-61c8-40ba-bdcb-4a0cafc95c4f" width="120px;" alt="Van sopha"/><br  />
-    <b>Van sopha</b><br />
+      <img src="public/team/photo-1.webp" width="120px;" alt="Van sopha"/><br />
+      <b>Van sopha</b><br />
       <i>Member</i><br />
       <a href="https://github.com/vsopha9664-design">GitHub</a> | <a href="https://www.linkedin.com/in/sopha-van-84a7653a4">LinkedIn</a>
     </td>
     <td align="center">
-     <img  src="https://github.com/user-attachments/assets/9d97e6f4-5155-4d5f-8338-0de9017e0652" width="120px;" alt="Phorn sreytey"/><br  />
-       <b>Phorn sreytey</b><br />
+      <img src="public/team/photo-2.jpg" width="120px;" alt="Phorn sreytey"/><br />
+      <b>Phorn sreytey</b><br />
       <i>Member</i><br />
       <a href="https://github.com/phornsreytey2-bot">GitHub</a> | <a href="https://www.linkedin.com/in/phorn-sreytey-a856bb428">LinkedIn</a>
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/9216a453-8a1b-404a-b4d0-e09d14bb0f4b" width="120px;" alt="Tie Porching"/><br />
+      <img src="public/team/photo-3.webp" width="120px;" alt="Tie Porching"/><br />
       <b>Tie Porching</b><br />
       <i>Member</i><br />
-      <a href="https://github.com/tieporching-debug">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
+      <a href="https://github.com/tieporching-debug">GitHub</a>
     </td>
   </tr>
   <!-- ROW 2 -->
   <tr>
     <td align="center">
-  <img src="https://github.com/user-attachments/assets/850cca70-792c-4596-9910-667a869cbba8" width="120px;" alt="Khorn Aliza"/><br />
-  <b>Khorn Aliza</b><br />
-  <i>Member</i><br />
-  <a href="https://github.com/zakitty112233-cell">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
-</td>
- <td align="center">
-     <img src="https://github.com/user-attachments/assets/754d1318-ab88-437a-b120-0a5c2478d7eb"   width="120px;"  alt="Hong hana"/><br />
-     <b>Hong hana</b><br />
-     <i>Member</i><br />
+      <img src="public/team/photo-4.jpg" width="120px;" alt="Khorn Aliza"/><br />
+      <b>Khorn Aliza</b><br />
+      <i>Member</i><br />
+      <a href="https://github.com/zakitty112233-cell">GitHub</a>
+    </td>
+    <td align="center">
+      <img src="public/team/photo-5.jpg" width="120px;" alt="Hong hana"/><br />
+      <b>Hong hana</b><br />
+      <i>Member</i><br />
       <a href="https://github.com/hanahong070707-design">GitHub</a> | <a href="https://www.linkedin.com/in/hana-hong-774713428">LinkedIn</a>
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/4220cb46-6143-4245-8244-24e94bb6e9ea"  width="120px;" alt=""/><br />
+      <img src="https://github.com/user-attachments/assets/4220cb46-6143-4245-8244-24e94bb6e9ea" width="120px;" alt="Soeun Chanliza"/><br />
       <b>Soeun Chanliza</b><br />
       <i>Member</i><br />
-      <a href="https://github.com/chanlizasoeun-netizen">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
+      <a href="https://github.com/chanlizasoeun-netizen">GitHub</a>
     </td>
   </tr>
   <!-- ROW 3 -->
   <tr>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/38dc021c-04ed-4bce-a1dc-49b09069cc43"  width="120px;" alt="Cheat Mouyyean"/><br />
+      <img src="public/team/photo-8.jpg" width="120px;" alt="MCheat Mouyyean"/><br />
       <b>MCheat Mouyyean</b><br />
       <i>Member</i><br />
-      <a href="https://github.com/mouyyeancheat-coder">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
+      <a href="https://github.com/mouyyeancheat-coder">GitHub</a>
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/dece275f-a39f-4bb6-93f4-8c83f361e6db"  width="120px;" alt="Eng leakhena"/><br />
+      <img src="public/team/photo-6.webp" width="120px;" alt="Eng leakhena"/><br />
       <b>Eng leakhena</b><br />
       <i>Member</i><br />
-      <a href="https://github.com/englakna157-lang">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
+      <a href="https://github.com/englakna157-lang">GitHub</a>
     </td>
     <td align="center">
-      <img  src="https://github.com/user-attachments/assets/2fad9ea2-542e-4879-94cf-eadd4ccf9e56" width="120px;" alt="Soeun somera" /><br />
+      <img src="https://github.com/user-attachments/assets/2fad9ea2-542e-4879-94cf-eadd4ccf9e56" width="120px;" alt="Soeun somera"/><br />
       <b>Soeun somera</b><br />
       <i>Member</i><br />
       <a href="https://github.com/Somera-Soeun">GitHub</a> | <a href="https://www.linkedin.com/in/somera-soeun-a75716428">LinkedIn</a>
@@ -135,14 +135,14 @@ We are a team of 10 dedicated individuals working together to build REAN.
   <!-- ROW 4 -->
   <tr>
     <td align="center">
-      <img  src="https://github.com/user-attachments/assets/8af1eae4-3790-4998-bc00-21d5cda668af"  width="120px;" alt="Chiv chan seyha"/><br />
+      <img src="public/team/photo-7.jpg" width="120px;" alt="Chiv chan seyha"/><br />
       <b>Chiv chan seyha</b><br />
       <i>Member</i><br />
-      <a href="https://github.com/chivchanseyha3066-user">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
+      <a href="https://github.com/chivchanseyha3066-user">GitHub</a>
     </td>
-    <!-- Empty cell to balance the 3-column grid -->
-    <td align="center">
-    </td>
+    <!-- Empty cells to balance the 3-column grid -->
+    <td align="center"></td>
+    <td align="center"></td>
   </tr>
 </table>
 

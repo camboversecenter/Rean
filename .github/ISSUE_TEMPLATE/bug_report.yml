@@ -1,0 +1,67 @@
+name: Bug report
+description: Something in REAN is not working as expected
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug.
+
+        **Please do not report security vulnerabilities here.** Use the
+        [Security tab](../../security/advisories/new) instead, so the issue can be
+        fixed before it is public.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe the bug and what you expected instead.
+      placeholder: When I submit an answer in the classroom, the score never appears.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The smallest sequence of steps that triggers the bug.
+      placeholder: |
+        1. Sign in as a student
+        2. Open a mission and go to the Practice tab
+        3. Write an answer and press Submit
+        4. See the error
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part of REAN?
+      options:
+        - Missions / classroom
+        - Schools
+        - Tutors
+        - Short courses
+        - AI tutor (Kru Rean)
+        - Community (Lazy Learning)
+        - Points, rewards, or leaderboard
+        - Sign-in and roles
+        - Something else / not sure
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Device and browser
+      placeholder: Android phone, Chrome 121 / Windows laptop, Firefox
+    validations:
+      required: false
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Screenshots or console errors
+      description: Screenshots help a lot. Paste any red errors from the browser console if you can.
+    validations:
+      required: false

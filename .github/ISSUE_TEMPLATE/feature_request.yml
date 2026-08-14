@@ -1,0 +1,41 @@
+name: Feature request
+description: Suggest an improvement or a new capability for REAN
+labels: ['enhancement']
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the need first, rather than the solution. Who is blocked, and by what?
+      placeholder: Students on slow connections cannot tell whether their answer was submitted.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What would you like REAN to do?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: who
+    attributes:
+      label: Who benefits?
+      multiple: true
+      options:
+        - Students
+        - Teachers and mission creators
+        - Schools
+        - Tutors
+        - Maintainers and contributors
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered
+    validations:
+      required: false

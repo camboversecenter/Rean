@@ -2,7 +2,27 @@
   "name": "rean-marketplace",
   "private": true,
   "version": "1.0.0",
+  "description": "REAN is a free, open-source educational platform for Cambodia, connecting students with schools, tutors, and AI-driven learning missions.",
   "license": "Apache-2.0",
+  "author": "CamboVerse Center, National University of Management (NUM)",
+  "homepage": "https://rean.camboverse.world",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/camboversecenter/Rean.git"
+  },
+  "bugs": {
+    "url": "https://github.com/camboversecenter/Rean/issues"
+  },
+  "keywords": [
+    "education",
+    "cambodia",
+    "khmer",
+    "e-learning",
+    "ai-tutor",
+    "supabase",
+    "react",
+    "open-source"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",

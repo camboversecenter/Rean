@@ -3,6 +3,12 @@
 Thank you for helping build REAN, a free, community-driven educational platform for
 Cambodia. Contributions of code, documentation, translations, and ideas are all welcome.
 
+## Code of Conduct
+
+This project follows a [Code of Conduct](./CODE_OF_CONDUCT.md). By participating, you are
+expected to uphold it. Please report unacceptable behavior through the repository's
+Security tab or to the maintainers.
+
 ## License of contributions
 
 REAN's application code is licensed under the **Apache License 2.0 (Apache-2.0)**.
