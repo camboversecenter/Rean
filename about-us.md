@@ -166,7 +166,7 @@ We are grateful for the support and collaboration of our partners.
       <a href="https://numuniversity.com/">
         <img src="public/partners/num.webp" height="80px" alt="National University of Management logo"/>
       </a><br />
-      <b><a href="https://numuniversity.com/">National University of Management</a></b><br />
+      <b><a href="https://num.edu.kh/">National University of Management</a></b><br />
       <i>Host university</i>
     </td>
     <td align="center">
@@ -201,6 +201,6 @@ Stay up to date with our project and community.
 | **Website**     | [rean.camboverse.world](https://rean.camboverse.world)                       |
 | **Source code** | [github.com/camboversecenter/Rean](https://github.com/camboversecenter/Rean) |
 | **Incubator**   | [camboverse.world](https://camboverse.world/)                                |
-| **University**  | [numuniversity.com](https://numuniversity.com/)                              |
+| **University**  | [numuniversity.com](https://num.edu.kh/)                              |
 
 Made with ❤️ for the Cambodian learning community.
