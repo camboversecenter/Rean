@@ -85,11 +85,24 @@ describe('AboutPage', () => {
     renderAbout();
 
     expect(screen.getByText(/Meet the team/)).toBeDefined();
-    expect(screen.getByText('Van sopha')).toBeDefined();
-    expect(screen.getByText('Tie Porching')).toBeDefined();
+    // All ten members from about-us.md on main.
+    for (const name of [
+      'Van sopha',
+      'Phorn sreytey',
+      'Tie Porching',
+      'Khorn Aliza',
+      'Hong hana',
+      'Soeun Chanliza',
+      'MCheat Mouyyean',
+      'Eng leakhena',
+      'Soeun somera',
+      'Chiv chan seyha',
+    ]) {
+      expect(screen.getByText(name)).toBeDefined();
+    }
 
-    // No photo files exist yet, so each portrait renders initials rather than
-    // requesting an image that would 404.
+    // No photo has been matched to a name yet, so each portrait renders
+    // initials rather than requesting an image that would 404.
     expect(screen.getByText('VS')).toBeDefined();
     expect(screen.getByText('TP')).toBeDefined();
     expect(screen.queryByAltText('Van sopha')).toBeNull();
@@ -97,6 +110,20 @@ describe('AboutPage', () => {
     // Placeholder rows from about-us.md must never reach the public site.
     expect(screen.queryByText(/Member \d+ Name/)).toBeNull();
     expect(screen.queryByText('Role / Title')).toBeNull();
+  });
+
+  it('never renders a placeholder LinkedIn URL as a live link', () => {
+    renderAbout();
+
+    const hrefs = hrefsOf(screen.getAllByRole('link') as HTMLElement[]);
+    // about-us.md still carries linkedin.com/in/username for six members. A
+    // dead profile link is worse than no link at all.
+    expect(hrefs.some((h) => h?.includes('/in/username'))).toBe(false);
+    // Every LinkedIn link that does render must be absolute, or the browser
+    // resolves it against this site instead of linkedin.com.
+    for (const h of hrefs.filter((x) => x?.includes('linkedin.com'))) {
+      expect(h?.startsWith('https://')).toBe(true);
+    }
   });
 
   it('renders the team section before the partners section', () => {

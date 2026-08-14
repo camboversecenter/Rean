@@ -60,8 +60,12 @@ the Developer Certificate of Origin (DCO) sign-off we use (`git commit -s`).
 We are a team of 10 dedicated individuals working together to build REAN.
 
 <!--
-  TODO: replace the remaining "Member N Name" placeholders, roles, and profile links.
-  Team photos go in public/team/ and are referenced as public/team/<name>.png
+  TODO: six members still carry the placeholder LinkedIn URL
+  https://linkedin.com/in/username. Replace or remove those.
+
+  Portraits are currently hosted as GitHub user-attachment URLs, which render
+  here but are not suitable for the website. Copies live in public/team/ as
+  photo-1 through photo-8, still waiting to be matched to a name.
 -->
 
 <table>
@@ -71,13 +75,13 @@ We are a team of 10 dedicated individuals working together to build REAN.
 <img src="https://github.com/user-attachments/assets/4b4e9a17-61c8-40ba-bdcb-4a0cafc95c4f" width="120px;" alt="Van sopha"/><br  />
     <b>Van sopha</b><br />
       <i>Tester / Contributor</i><br />
-      <a href="https://github.com/vsopha9664-design">GitHub</a> | <a href="www.linkedin.com/in/sopha-van-84a7653a4">LinkedIn</a>
+      <a href="https://github.com/vsopha9664-design">GitHub</a> | <a href="https://www.linkedin.com/in/sopha-van-84a7653a4">LinkedIn</a>
     </td>
     <td align="center">
      <img  src="https://github.com/user-attachments/assets/9d97e6f4-5155-4d5f-8338-0de9017e0652" width="120px;" alt="Phorn sreytey"/><br  />
        <b>Phorn sreytey</b><br />
       <i>Tester / Contributor</i><br />
-      <a href="https://github.com/phornsreytey2-bot">GitHub</a> | <a href="www.linkedin.com/in/phorn-sreytey-a856bb428">LinkedIn</a>
+      <a href="https://github.com/phornsreytey2-bot">GitHub</a> | <a href="https://www.linkedin.com/in/phorn-sreytey-a856bb428">LinkedIn</a>
     </td>
     <td align="center">
       <img src="https://github.com/user-attachments/assets/9216a453-8a1b-404a-b4d0-e09d14bb0f4b" width="120px;" alt="Tie Porching"/><br />
@@ -95,10 +99,10 @@ We are a team of 10 dedicated individuals working together to build REAN.
   <a href="https://github.com/zakitty112233-cell">GitHub</a> | <a href="https://linkedin.com/in/username">LinkedIn</a>
 </td>
  <td align="center">
-     <img src="https://github.com/user-attachments/assets/754d1318-ab88-437a-b120-0a5c2478d7eb"   width="120px;"  alt="Hong hana"/b><br />
+     <img src="https://github.com/user-attachments/assets/754d1318-ab88-437a-b120-0a5c2478d7eb"   width="120px;"  alt="Hong hana"/><br />
      <b>Hong hana</b><br />
      <i>Tester / Contributor</i><br />
-      <a href="https://github.com/hanahong070707-design ">GitHub</a> | <a href="https://www.linkedin.com/in/hana-hong-774713428">LinkedIn</a>
+      <a href="https://github.com/hanahong070707-design">GitHub</a> | <a href="https://www.linkedin.com/in/hana-hong-774713428">LinkedIn</a>
     </td>
     <td align="center">
       <img src="https://github.com/user-attachments/assets/4220cb46-6143-4245-8244-24e94bb6e9ea"  width="120px;" alt=""/><br />
@@ -201,6 +205,6 @@ Stay up to date with our project and community.
 | **Website**     | [rean.camboverse.world](https://rean.camboverse.world)                       |
 | **Source code** | [github.com/camboversecenter/Rean](https://github.com/camboversecenter/Rean) |
 | **Incubator**   | [camboverse.world](https://camboverse.world/)                                |
-| **University**  | [num.edu.kh](https://num.edu.kh/)                              |
+| **University**  | [num.edu.kh](https://num.edu.kh/)                                            |
 
 Made with ❤️ for the Cambodian learning community.

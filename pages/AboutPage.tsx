@@ -137,13 +137,17 @@ const PARTNERS = [
  * image that 404s before the initials fallback takes over. `role`, `github`,
  * and `linkedin` are optional and are simply not rendered when absent.
  *
- * public/team/photo-1 through photo-5 are uploaded portraits that have not been
+ * Names, roles, and profile links come from about-us.md on main, which the team
+ * maintains. Placeholder LinkedIn URLs (linkedin.com/in/username) are omitted
+ * rather than rendered as dead links.
+ *
+ * public/team/photo-1 through photo-8 are uploaded portraits that have not been
  * matched to a name yet. They are intentionally not wired up here: attaching a
  * real person's face to the wrong name is worse than showing initials. Rename
  * each file after the person it shows and set `photo` once the mapping is
  * confirmed.
  */
-const TEAM_SIZE = 11;
+const TEAM_SIZE = 10;
 
 const TEAM: {
   name: string;
@@ -151,7 +155,62 @@ const TEAM: {
   photo?: string;
   github?: string;
   linkedin?: string;
-}[] = [{ name: 'Van sopha' }, { name: 'Tie Porching' }];
+}[] = [
+  {
+    name: 'Van sopha',
+    role: 'Tester / Contributor',
+    github: 'https://github.com/vsopha9664-design',
+    linkedin: 'https://www.linkedin.com/in/sopha-van-84a7653a4',
+  },
+  {
+    name: 'Phorn sreytey',
+    role: 'Tester / Contributor',
+    github: 'https://github.com/phornsreytey2-bot',
+    linkedin: 'https://www.linkedin.com/in/phorn-sreytey-a856bb428',
+  },
+  {
+    name: 'Tie Porching',
+    role: 'Tester / Contributor',
+    github: 'https://github.com/tieporching-debug',
+  },
+  {
+    name: 'Khorn Aliza',
+    role: 'Tester / Contributor',
+    github: 'https://github.com/zakitty112233-cell',
+  },
+  {
+    name: 'Hong hana',
+    role: 'Tester / Contributor',
+    github: 'https://github.com/hanahong070707-design',
+    linkedin: 'https://www.linkedin.com/in/hana-hong-774713428',
+  },
+  {
+    name: 'Soeun Chanliza',
+    role: 'Tester / Contributor',
+    github: 'https://github.com/chanlizasoeun-netizen',
+  },
+  {
+    name: 'MCheat Mouyyean',
+    role: 'Tester / Contributor',
+    github: 'https://github.com/mouyyeancheat-coder',
+  },
+  {
+    name: 'Eng leakhena',
+    role: 'Tester / Contributor',
+    github: 'https://github.com/englakna157-lang',
+  },
+  {
+    name: 'Soeun somera',
+    role: 'Tester / Contributor',
+    github: 'https://github.com/Somera-Soeun',
+    linkedin: 'https://www.linkedin.com/in/somera-soeun-a75716428',
+  },
+  {
+    name: 'Chiv chan seyha',
+    role: 'Tester / Contributor',
+    github: 'https://github.com/chivchanseyha3066-user',
+  },
+];
 
 /** "Van sopha" becomes "VS". Used when a member has no photo yet. */
 const initialsOf = (name: string) =>
