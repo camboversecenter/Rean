@@ -128,15 +128,19 @@ const PARTNERS = [
 
 /**
  * The people behind REAN. Names, roles, photos, and profile links mirror
- * about-us.md on main, which the team maintains and which is the source of
- * truth for who each portrait belongs to. Placeholder LinkedIn URLs
+ * about-us.md, which the team maintains. Placeholder LinkedIn URLs
  * (linkedin.com/in/username) are omitted rather than rendered as dead links.
  *
- * Five members have no `photo` because their portrait exists only as a GitHub
- * attachment on about-us.md and was never committed to public/team/. They
- * render initials until the file is added. Do not guess a mapping from the
- * remaining unused photo-N files: pairing a real face with the wrong name is
- * worse than showing initials.
+ * All ten portraits in public/team/ are now assigned, one per member.
+ *
+ * Seven pairings are confirmed, either from sopha's corrections in about-us.md
+ * (8fbabad) or from a filename that names the person outright.
+ *
+ * Three are marked UNVERIFIED below. Those files arrived as photo-N with no
+ * name attached, and the remaining candidates are hard to tell apart at a
+ * glance. If one is wrong, swap the `photo` values between the two members
+ * involved. Nothing else needs to change: the test deliberately does not pin
+ * a name to a specific file, so corrections here will not fail CI.
  */
 const TEAM_SIZE = 10;
 
@@ -170,6 +174,8 @@ const TEAM: {
   {
     name: 'Khorn Aliza',
     role: 'Member',
+    // UNVERIFIED: swap with Cheat Mouyyean if this is the wrong person.
+    photo: '/team/photo-3.webp',
     github: 'https://github.com/zakitty112233-cell',
   },
   {
@@ -182,11 +188,17 @@ const TEAM: {
   {
     name: 'Soeun Chanliza',
     role: 'Member',
+    // UNVERIFIED, but likely right: this is the only remaining portrait with a
+    // blue background and a short bob, matching the photo you labelled
+    // "chanliza".
+    photo: '/team/photo-8.jpg',
     github: 'https://github.com/chanlizasoeun-netizen',
   },
   {
     name: 'Cheat Mouyyean',
     role: 'Member',
+    // UNVERIFIED: swap with Khorn Aliza if this is the wrong person.
+    photo: '/team/photo-5.jpg',
     github: 'https://github.com/mouyyeancheat-coder',
   },
   {

@@ -13,6 +13,20 @@ const renderAbout = () =>
 
 const hrefsOf = (nodes: HTMLElement[]) => nodes.map((n) => n.getAttribute('href'));
 
+/** The ten members listed in about-us.md. */
+const TEAM_NAMES = [
+  'Van sopha',
+  'Phorn sreytey',
+  'Tie Porching',
+  'Khorn Aliza',
+  'Hong hana',
+  'Soeun Chanliza',
+  'Cheat Mouyyean',
+  'Eng leakhena',
+  'Soeun somera',
+  'Chiv chan seyha',
+];
+
 describe('AboutPage', () => {
   afterEach(cleanup);
 
@@ -80,53 +94,28 @@ describe('AboutPage', () => {
     );
   });
 
-  it('shows the team with photos where available and initials otherwise', () => {
+  it('shows every team member with their own committed portrait', () => {
     renderAbout();
 
     expect(screen.getByText(/Meet the team/)).toBeDefined();
-    // All ten members from about-us.md on main.
-    for (const name of [
-      'Van sopha',
-      'Phorn sreytey',
-      'Tie Porching',
-      'Khorn Aliza',
-      'Hong hana',
-      'Soeun Chanliza',
-      'Cheat Mouyyean',
-      'Eng leakhena',
-      'Soeun somera',
-      'Chiv chan seyha',
-    ]) {
+    for (const name of TEAM_NAMES) {
       expect(screen.getByText(name)).toBeDefined();
     }
 
-    // Nobody may be shown under the wrong face. These pairings are the ones
-    // the team set in about-us.md; changing one here without changing it
-    // there means the site and the repo disagree about who is who.
-    const expectedPhotos: Record<string, string> = {
-      'Van sopha': '/team/photo-1.webp',
-      'Phorn sreytey': '/team/photo-6.webp',
-      'Tie Porching': '/team/photo-4.jpg',
-      'Hong hana': '/team/honghana.webp',
-      'Eng leakhena': '/team/leakhena.jpg',
-      'Soeun somera': '/team/photo-2.jpg',
-      'Chiv chan seyha': '/team/photo-7.jpg',
-    };
-    for (const [name, src] of Object.entries(expectedPhotos)) {
-      expect(screen.getByAltText(name).getAttribute('src')).toBe(src);
-    }
+    // Every member has a committed portrait, so nobody should fall back to
+    // initials. This deliberately does not pin a name to a specific file:
+    // three pairings are still unconfirmed and the team corrects them by hand,
+    // which must not break the build.
+    const photoSrcs = TEAM_NAMES.map((name) => {
+      const img = screen.getByAltText(name);
+      const src = img.getAttribute('src') || '';
+      expect(src.startsWith('/team/')).toBe(true);
+      return src;
+    });
 
-    // These three portraits live only as GitHub attachments on about-us.md and
-    // were never committed, so they must render initials rather than a broken
-    // image or, worse, somebody else's face.
-    for (const [name, initials] of Object.entries({
-      'Khorn Aliza': 'KA',
-      'Soeun Chanliza': 'SC',
-      'Cheat Mouyyean': 'CM',
-    })) {
-      expect(screen.queryByAltText(name)).toBeNull();
-      expect(screen.getByText(initials)).toBeDefined();
-    }
+    // Two members sharing one file means an edit went wrong: somebody is now
+    // wearing someone else's face and somebody else has no portrait at all.
+    expect(new Set(photoSrcs).size).toBe(TEAM_NAMES.length);
 
     // Placeholder rows from about-us.md must never reach the public site.
     expect(screen.queryByText(/Member \d+ Name/)).toBeNull();

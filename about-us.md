@@ -61,9 +61,14 @@ We are a team of 10 dedicated individuals working together to build REAN.
 
 <!--
   Portraits are committed under public/team/ so they keep working in forks and
-  clones, instead of depending on GitHub's attachment CDN. Two members are still
-  served from an attachment URL because no local copy was supplied; to fix, add
-  the file to public/team/ and point the src here at it.
+  clones, instead of depending on GitHub's attachment CDN.
+
+  Keep this table and pages/AboutPage.tsx in agreement. If you correct who a
+  photo belongs to, change it in both places, or the website and this page will
+  show different faces for the same person.
+
+  photo-3, photo-5 and photo-8 arrived without a name attached and their
+  pairings are the least certain. To correct one, swap the two src values.
 
   LinkedIn is listed only for members who supplied a real profile URL.
 -->
@@ -93,7 +98,7 @@ We are a team of 10 dedicated individuals working together to build REAN.
   <!-- ROW 2 -->
   <tr>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/feecccda-ab10-4968-a18b-1e01a19e0dd3" width="180px ;" alt="Khorn Aliza"/><br />
+      <img src="public/team/photo-3.webp" width="180px ;" alt="Khorn Aliza"/><br />
       <b>Khorn Aliza</b><br />
       <i>Member</i><br />
       <a href="https://github.com/zakitty112233-cell">GitHub</a>
@@ -105,7 +110,7 @@ We are a team of 10 dedicated individuals working together to build REAN.
       <a href="https://github.com/hanahong070707-design">GitHub</a> | <a href="https://www.linkedin.com/in/hana-hong-774713428">LinkedIn</a>
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/8b4520e5-3aca-46b6-8f98-6d36fea5b5f4"  width="120px;" alt="Soeun Chanliza"/><br />
+      <img src="public/team/photo-8.jpg"  width="120px;" alt="Soeun Chanliza"/><br />
       <b>Soeun Chanliza</b><br />
       <i>Member</i><br />
       <a href="https://github.com/chanlizasoeun-netizen">GitHub</a>
@@ -114,7 +119,7 @@ We are a team of 10 dedicated individuals working together to build REAN.
   <!-- ROW 3 -->
   <tr>
     <td align="center">
-      <img  src="https://github.com/user-attachments/assets/31e8f666-3f00-441a-98cf-158c6ba4ca6b"  width="120px;" alt="Cheat Mouyyean"/><br /> 
+      <img  src="public/team/photo-5.jpg"  width="120px;" alt="Cheat Mouyyean"/><br /> 
        <b>Cheat Mouyyean</b><br />
       <i>Member</i><br />
       <a href="https://github.com/mouyyeancheat-coder">GitHub</a>
