@@ -71,7 +71,8 @@ free of database logic and centralizes auth, error handling, and the points econ
 | `achievementService.ts`     | Achievements.                                                |
 | `bookmarkService.ts`        | Saved posts.                                                 |
 | `geminiService.ts`          | AI features + AI cost table (calls the edge function).       |
-| `storageService.ts`         | File uploads to Supabase Storage.                            |
+| `storageService.ts`         | File uploads to Supabase Storage (shrinks images first).     |
+| `imageOptimizer.ts`         | Browser-side image resize + WebP re-encode before upload.    |
 
 ## Backend (Supabase)
 
@@ -82,6 +83,12 @@ free of database logic and centralizes auth, error handling, and the points econ
 - **Storage:** a public bucket named `Rean` with folders for avatars, school logos,
   school covers, course covers, missions, and rewards. Public read; authenticated
   write.
+  - Every upload goes through `uploadFile`, which shrinks images in the browser first
+    (`imageOptimizer.ts`): resized to a per-folder maximum and re-encoded to WebP, so a
+    6 MB phone photo is stored as a few hundred KB. The stored object is named after the
+    format it ended up in, and its `contentType` is set to match. Non-images, animated
+    GIFs, SVGs, files already under 50 KB, and anything the browser cannot re-encode are
+    uploaded untouched — shrinking never blocks an upload.
 - **Point triggers:** database triggers keep the points/XP economy consistent.
 
 ## Edge functions (Deno)
