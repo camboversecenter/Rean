@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Github, Code2, Heart } from './Icons';
+import { Github, Heart } from './Icons';
 
 const REPO_URL = 'https://github.com/camboversecenter/Rean';
 
@@ -36,21 +36,11 @@ const Footer: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm">
             <Link to="/about" className="text-gray-600 hover:text-primary transition-colors">
               About
             </Link>
             {/* Link to the open-source repository. */}
-            <a
-              href={REPO_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center text-gray-600 hover:text-primary transition-colors"
-              aria-label="View source code on GitHub"
-            >
-              <Code2 className="h-4 w-4 mr-1.5" aria-hidden="true" />
-              Source code
-            </a>
             <a
               href={REPO_URL}
               target="_blank"
