@@ -104,7 +104,7 @@ const LandingPage: React.FC = () => {
         <div className="relative max-w-5xl mx-auto px-4 py-16 md:py-24 text-center animate-fade-in">
           <span className="inline-flex items-center bg-white/15 backdrop-blur-sm text-white text-xs font-semibold px-4 py-1.5 rounded-full mb-6">
             <Sparkles className="h-3.5 w-3.5 mr-2 text-secondary" />
-            វេទិកាសិក្សាឥតគិតថ្លៃសម្រាប់កម្ពុជា
+            ថ្នាលសិក្សាឥតគិតថ្លៃសម្រាប់កម្ពុជា
           </span>
 
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-5">

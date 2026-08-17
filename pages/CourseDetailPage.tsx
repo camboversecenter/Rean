@@ -434,7 +434,7 @@ const CourseDetailPage: React.FC = () => {
                 <p className="text-sm text-gray-600 leading-relaxed mb-6">
                   {/* Fallback description if not joined, normally handled by backend view */}
                   វគ្គសិក្សានេះផ្តល់ជូនដោយ {course.school.name}{' '}
-                  ដែលជាគ្រឹះស្ថានអប់រំឈានមុខគេមួយក្នុងវេទិកា REAN។
+                  ដែលជាគ្រឹះស្ថានអប់រំឈានមុខគេមួយក្នុងថ្នាល REAN។
                   ពួកគេប្តេជ្ញាផ្តល់ជូននូវការអប់រំដែលមានគុណភាពខ្ពស់ និងជំនាញជាក់ស្តែង។
                 </p>
               </div>

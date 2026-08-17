@@ -1,7 +1,7 @@
 import { Mission, MissionCategory, School, StudentPost, TutorRequest } from './types';
 
 export const HERO_TITLE = 'ស្វែងរកអនាគតរបស់អ្នក';
-export const HERO_SUBTITLE = 'វេទិកាអប់រំធំបំផុតនៅកម្ពុជា - សាលារៀន វគ្គសិក្សា និងគ្រូបង្រៀន';
+export const HERO_SUBTITLE = 'ថ្នាលអប់រំធំបំផុតនៅកម្ពុជា - សាលារៀន វគ្គសិក្សា និងគ្រូបង្រៀន';
 export const SEARCH_PLACEHOLDER = 'ស្វែងរកសាលា ឬជំនាញ...';
 
 export const MOCK_MISSIONS: Mission[] = [
