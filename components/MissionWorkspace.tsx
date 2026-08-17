@@ -46,6 +46,8 @@ import {
   checkPlagiarism,
   saveSubmissionVector,
   updateEnrollmentStatus,
+  PLAGIARISM_THRESHOLD,
+  PLAGIARISM_MIN_CHARS,
 } from '../services/missionProgressService';
 import { uploadFile, deleteFileFromUrl } from '../services/storageService';
 import MarkdownText from './MarkdownText';
@@ -545,18 +547,30 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
     }
     setIsEvaluating(true);
 
+    // Kept from the plagiarism check so the accepted submission is stored
+    // without paying for a second embedding of the same text.
+    let submissionEmbedding: number[] | null = null;
+
     try {
-      // 1. Plagiarism Check (Only if enabled and text exists)
-      if (enrollmentId && mission.enablePlagiarismCheck && currentSubmissionText.length > 50) {
-        const similarSubmission = await checkPlagiarism(
+      // 1. Plagiarism Check (Only if enabled and the answer is long enough to compare)
+      const plagiarismCheckApplies = Boolean(
+        enrollmentId &&
+        mission.enablePlagiarismCheck &&
+        currentSubmissionText.length >= PLAGIARISM_MIN_CHARS
+      );
+
+      if (plagiarismCheckApplies) {
+        const { embedding, match } = await checkPlagiarism(
           mission.id,
           activeModuleId,
-          enrollmentId,
+          enrollmentId!,
           currentSubmissionText
         );
-        if (similarSubmission && similarSubmission.similarity > 0.85) {
+        submissionEmbedding = embedding;
+
+        if (match && match.similarity >= PLAGIARISM_THRESHOLD) {
           toast.error(
-            `⚠️ រកឃើញភាពដូចគ្នាខ្លាំងទៅនឹងចម្លើយដែលមានស្រាប់ (${(similarSubmission.similarity * 100).toFixed(0)}%)។ សូមសរសេរដោយខ្លួនឯង។`
+            `⚠️ រកឃើញភាពដូចគ្នាខ្លាំងទៅនឹងចម្លើយដែលមានស្រាប់ (${(match.similarity * 100).toFixed(0)}%)។ សូមសរសេរដោយខ្លួនឯង។`
           );
           setIsEvaluating(false);
           return;
@@ -623,12 +637,15 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
             persistentFeedback
           );
 
-          if (mission.enablePlagiarismCheck && currentSubmissionText) {
+          // Only accepted work joins the corpus, and only if it was long
+          // enough to have been checked in the first place.
+          if (plagiarismCheckApplies) {
             await saveSubmissionVector(
               mission.id,
               enrollmentId,
               activeModuleId,
-              currentSubmissionText
+              currentSubmissionText,
+              submissionEmbedding
             );
           }
 

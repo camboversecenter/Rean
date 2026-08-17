@@ -84,9 +84,32 @@ Grading costs points from the student's balance (evaluation = 5 points).
 
 ## Plagiarism Check (optional)
 
-When a creator enables it, submissions are embedded into vectors (`generateEmbedding`,
-`saveSubmissionVector`) and compared against prior submissions (`checkPlagiarism`) to
-detect copied work. The embedding check costs 1 point.
+A creator turns this on per mission with **Enable Plagiarism Check (AI)** in the mission
+form (`missions.enable_plagiarism_check`). When it is on, handing work in goes like this:
+
+1. Answers shorter than `PLAGIARISM_MIN_CHARS` (50) are skipped — a one-line answer
+   resembles everyone's and the score would mean nothing.
+2. The answer is embedded through the `ai-assistant` edge function (`embed`, 1 point) and
+   compared against classmates' submissions for the same module with the
+   `match_submissions` RPC (`checkPlagiarism`).
+3. A cosine similarity at or above `PLAGIARISM_THRESHOLD` (0.85) blocks the submission:
+   the student is told to write it themselves and **the answer is never sent for
+   grading**, so no evaluation points are spent.
+4. Otherwise the answer is graded as usual, and if it passes it joins the corpus
+   (`saveSubmissionVector`) for the next student to be checked against. The vector from
+   step 2 is reused, so a submission is only ever embedded once.
+
+The student's own enrollment is excluded from the search, so retrying a lesson never
+flags them against themselves; a retry replaces their stored vector.
+
+The check **fails open**: if the embedding or the search fails, the submission proceeds
+and the failure is logged rather than blocking the student on an outage.
+
+Requires `SUPABASE_PLAGIARISM.sql` (pgvector, the `submission_embeddings` table with its
+RLS policies, and the `match_submissions` function). Submission text is readable only by
+its author and by the mission owner/mentor; `match_submissions` is `SECURITY DEFINER` and
+returns similarity scores only — never another student's text — and only to someone
+inside the mission.
 
 ## Creator Tools
 

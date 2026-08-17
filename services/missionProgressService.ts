@@ -43,26 +43,59 @@ export const getMissionEnrollmentCount = async (missionId: string): Promise<numb
 };
 
 // --- PLAGIARISM CHECKING (PGVECTOR) ---
+// Requires the objects in SUPABASE_PLAGIARISM.sql (the
+// submission_embeddings table and the match_submissions RPC).
+
+/**
+ * Cosine similarity at or above this counts as copied work.
+ * 1 = identical text, 0 = unrelated.
+ */
+export const PLAGIARISM_THRESHOLD = 0.85;
+
+/**
+ * Below this many characters an answer is too short for the similarity
+ * score to mean anything ("Yes, I agree." matches everyone). Short answers
+ * are neither checked nor added to the corpus, which also saves the point
+ * the embedding would cost.
+ */
+export const PLAGIARISM_MIN_CHARS = 50;
+
+export interface PlagiarismMatch {
+  id: string;
+  similarity: number;
+}
+
+export interface PlagiarismCheckResult {
+  /**
+   * The embedding of the submitted text. Pass it to saveSubmissionVector so
+   * the same submission is not embedded (and charged for) twice.
+   * Null when the embedding could not be generated.
+   */
+  embedding: number[] | null;
+  /** The closest classmate submission above the threshold, if any. */
+  match: PlagiarismMatch | null;
+}
 
 export const checkPlagiarism = async (
   missionId: string,
   moduleId: string,
   enrollmentId: string,
   text: string
-): Promise<{ id: string; similarity: number } | null> => {
+): Promise<PlagiarismCheckResult> => {
   // 1. Generate Embedding via Gemini (Cost: 1 Point handled in service)
   const embedding = await generateEmbedding(text);
 
   if (!embedding) {
     console.warn('Embedding generation failed, skipping plagiarism check.');
-    return null; // Fail open if API down, or fail closed? Let's fail open but log.
+    // Fail open: an AI outage must not block students from handing work in.
+    return { embedding: null, match: null };
   }
 
-  // 2. Call RPC to find neighbors
-  // Note: match_threshold 0.85 indicates very high similarity
+  // 2. Call RPC to find neighbors. The RPC applies the threshold too, so it
+  // returns only genuine matches.
   const { data, error } = await supabase.rpc('match_submissions', {
     query_embedding: embedding,
-    match_threshold: 0.85,
+    match_threshold: PLAGIARISM_THRESHOLD,
     match_count: 1,
     filter_mission_id: missionId,
     filter_module_id: moduleId,
@@ -71,32 +104,46 @@ export const checkPlagiarism = async (
 
   if (error) {
     console.error('Vector search failed:', error);
-    return null;
+    return { embedding, match: null };
   }
 
-  return data && data.length > 0 ? data[0] : null;
+  return { embedding, match: data && data.length > 0 ? data[0] : null };
 };
 
 export const saveSubmissionVector = async (
   missionId: string,
   enrollmentId: string,
   moduleId: string,
-  text: string
+  text: string,
+  /** Reuse the vector from checkPlagiarism when there is one. */
+  embedding?: number[] | null
 ) => {
-  // We regenerate embedding to save it.
-  // Optimization: We could return embedding from checkPlagiarism to reuse, but for clean separation we regen or pass it.
-  // Given the cheap cost, regeneration ensures we have the latest.
-  const embedding = await generateEmbedding(text);
+  const vector = embedding ?? (await generateEmbedding(text));
 
-  if (embedding) {
-    // Insert into submission_embeddings table
-    // Note: You must ensure this table is created in Supabase with vector extension
-    await supabase.from('submission_embeddings').insert({
+  if (!vector) {
+    console.warn('Embedding generation failed, submission not added to the corpus.');
+    return;
+  }
+
+  // Upsert rather than insert: a student who retries a lesson should replace
+  // their own vector, not leave near-duplicates behind that later flag them
+  // against themselves.
+  const { error } = await supabase.from('submission_embeddings').upsert(
+    {
+      mission_id: missionId,
       enrollment_id: enrollmentId,
       module_id: moduleId,
       content: text,
-      embedding: embedding,
-    });
+      embedding: vector,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: 'enrollment_id,module_id' }
+  );
+
+  if (error) {
+    // Not fatal: the work is already graded and saved, it just does not join
+    // the corpus future submissions are compared against.
+    console.error('Failed to store submission vector:', error);
   }
 };
 
