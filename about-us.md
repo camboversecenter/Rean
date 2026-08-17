@@ -78,13 +78,13 @@ We are a team of 10 dedicated individuals working together to build REAN.
       <a href="https://github.com/vsopha9664-design">GitHub</a> | <a href="https://www.linkedin.com/in/sopha-van-84a7653a4">LinkedIn</a>
     </td>
     <td align="center">
-      <img src="public/team/photo-2.jpg" width="120px;" alt="Phorn sreytey"/><br />
+      <img src="public/team/photo-6.webp" width="120px;" alt="Phorn sreytey"/><br /> 
       <b>Phorn sreytey</b><br />
       <i>Member</i><br />
       <a href="https://github.com/phornsreytey2-bot">GitHub</a> | <a href="https://www.linkedin.com/in/phorn-sreytey-a856bb428">LinkedIn</a>
     </td>
     <td align="center">
-      <img src="public/team/photo-3.webp" width="120px;" alt="Tie Porching"/><br />
+      <img src="public/team/photo-4.jpg" width="120px;" alt="Tie Porching"/><br />
       <b>Tie Porching</b><br />
       <i>Member</i><br />
       <a href="https://github.com/tieporching-debug">GitHub</a>
@@ -93,19 +93,19 @@ We are a team of 10 dedicated individuals working together to build REAN.
   <!-- ROW 2 -->
   <tr>
     <td align="center">
-      <img src="public/team/photo-4.jpg" width="120px;" alt="Khorn Aliza"/><br />
+      <img src="https://github.com/user-attachments/assets/feecccda-ab10-4968-a18b-1e01a19e0dd3" width="180px ;" alt="Khorn Aliza"/><br />
       <b>Khorn Aliza</b><br />
       <i>Member</i><br />
       <a href="https://github.com/zakitty112233-cell">GitHub</a>
     </td>
     <td align="center">
-      <img src="public/team/photo-5.jpg" width="120px;" alt="Hong hana"/><br />
+      <img  src="https://github.com/user-attachments/assets/d9d9c01c-aede-4a30-a219-6497ab7d8e7b" width="120px;" alt="Hong hana"/><br />
       <b>Hong hana</b><br />
       <i>Member</i><br />
       <a href="https://github.com/hanahong070707-design">GitHub</a> | <a href="https://www.linkedin.com/in/hana-hong-774713428">LinkedIn</a>
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/4220cb46-6143-4245-8244-24e94bb6e9ea" width="120px;" alt="Soeun Chanliza"/><br />
+      <img src="https://github.com/user-attachments/assets/8b4520e5-3aca-46b6-8f98-6d36fea5b5f4"  width="120px;" alt="Soeun Chanliza"/><br />
       <b>Soeun Chanliza</b><br />
       <i>Member</i><br />
       <a href="https://github.com/chanlizasoeun-netizen">GitHub</a>
@@ -114,19 +114,19 @@ We are a team of 10 dedicated individuals working together to build REAN.
   <!-- ROW 3 -->
   <tr>
     <td align="center">
-      <img src="public/team/photo-8.jpg" width="120px;" alt="MCheat Mouyyean"/><br />
-      <b>MCheat Mouyyean</b><br />
+      <img  src="https://github.com/user-attachments/assets/31e8f666-3f00-441a-98cf-158c6ba4ca6b"  width="120px;" alt="Cheat Mouyyean"/><br /> 
+       <b>Cheat Mouyyean</b><br />
       <i>Member</i><br />
       <a href="https://github.com/mouyyeancheat-coder">GitHub</a>
     </td>
     <td align="center">
-      <img src="public/team/photo-6.webp" width="120px;" alt="Eng leakhena"/><br />
+      <img src="https://github.com/user-attachments/assets/e9f779df-662a-4830-a081-8b6170d72d19"  width="120px;" alt="Eng leakhena"/><br /> 
       <b>Eng leakhena</b><br />
       <i>Member</i><br />
       <a href="https://github.com/englakna157-lang">GitHub</a>
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/2fad9ea2-542e-4879-94cf-eadd4ccf9e56" width="120px;" alt="Soeun somera"/><br />
+      <img src="public/team/photo-2.jpg" width="120px;" alt="Soeun somera"/><br />
       <b>Soeun somera</b><br />
       <i>Member</i><br />
       <a href="https://github.com/Somera-Soeun">GitHub</a> | <a href="https://www.linkedin.com/in/somera-soeun-a75716428">LinkedIn</a>
