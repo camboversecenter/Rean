@@ -68,11 +68,22 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="mt-6 pt-4 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-gray-400">
-          <p className="flex items-center">
-            Made with <Heart className="h-3 w-3 mx-1 text-red-400" aria-hidden="true" /> for the
-            Cambodian learning community.
+          {/*
+            The heart sits inline rather than as a flex item: a flex container
+            drops the whitespace-only nodes around it, which ran the sentence
+            together as "Made withfor the ...". Labelling it instead of hiding
+            it keeps the line readable when it is announced or copied.
+          */}
+          <p>
+            Made with{' '}
+            <Heart
+              className="inline h-3 w-3 align-[-2px] text-red-400"
+              role="img"
+              aria-label="love"
+            />{' '}
+            for learners across Cambodia.
           </p>
-          <p>© {year} REAN. Code licensed under Apache-2.0. Free to use in Cambodia.</p>
+          <p>© {year} REAN · Free and open source under Apache-2.0</p>
         </div>
       </div>
     </footer>
