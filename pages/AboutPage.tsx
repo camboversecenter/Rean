@@ -478,12 +478,6 @@ const AboutPage: React.FC = () => {
         </div>
 
         <div className="flex flex-wrap justify-center gap-3">
-          <Link
-            to="/license"
-            className="inline-flex items-center bg-primary text-white font-bold px-6 py-3 rounded-xl shadow hover:bg-accent transition-colors"
-          >
-            <ShieldCheck className="h-4 w-4 mr-2" /> អានអាជ្ញាប័ណ្ណ (Read the license)
-          </Link>
           <a
             href={REPO_URL}
             target="_blank"

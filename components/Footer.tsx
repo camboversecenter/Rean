@@ -61,9 +61,6 @@ const Footer: React.FC = () => {
               <Github className="h-4 w-4 mr-1.5" aria-hidden="true" />
               GitHub
             </a>
-            <Link to="/license" className="text-gray-600 hover:text-primary transition-colors">
-              License
-            </Link>
           </div>
         </div>
 

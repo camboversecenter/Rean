@@ -1,9 +1,8 @@
 // @vitest-environment jsdom
 import { describe, it, expect, afterEach } from 'vitest';
-import { render, screen, cleanup, within, fireEvent } from '@testing-library/react';
+import { render, screen, cleanup, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import AboutPage from '../pages/AboutPage';
-import CommunityLicensePage from '../pages/CommunityLicensePage';
 
 const renderAbout = () =>
   render(
@@ -145,50 +144,5 @@ describe('AboutPage', () => {
 
     expect(screen.queryByAltText('CamboVerse Center logo')).toBeNull();
     expect(screen.getByText('CV')).toBeDefined();
-  });
-});
-
-describe('CommunityLicensePage', () => {
-  afterEach(cleanup);
-
-  it('matches the repository licence instead of claiming the code is closed', () => {
-    const { container } = render(
-      <MemoryRouter>
-        <CommunityLicensePage />
-      </MemoryRouter>
-    );
-
-    expect(screen.getByText(/Open Source: Apache-2.0/)).toBeDefined();
-    expect(screen.getByText(/source code is public under the Apache License 2.0/)).toBeDefined();
-
-    // The old copy promised open sourcing only after a token sale and forbade
-    // copying. Both contradict the Apache-2.0 licence now in the repository.
-    const text = container.textContent || '';
-    expect(text).not.toMatch(/Closed Source/i);
-    expect(text).not.toMatch(/Token Sale/i);
-    expect(text).not.toMatch(/Reverse Engineering/i);
-    expect(text).not.toMatch(/proprietary/i);
-  });
-
-  it('keeps the trademark carve-out and the warranty disclaimer', () => {
-    render(
-      <MemoryRouter>
-        <CommunityLicensePage />
-      </MemoryRouter>
-    );
-
-    expect(screen.getByText(/name and logo are trademarks/)).toBeDefined();
-    expect(screen.getByText(/without warranty of any kind/)).toBeDefined();
-  });
-
-  it('credits the incubator', () => {
-    const { container } = render(
-      <MemoryRouter>
-        <CommunityLicensePage />
-      </MemoryRouter>
-    );
-
-    expect(within(container).getByText(/CamboVerse Center/)).toBeDefined();
-    expect(within(container).getByText(/National University of Management/)).toBeDefined();
   });
 });
