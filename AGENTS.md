@@ -117,7 +117,9 @@ push and PR (`.github/workflows/ci.yml`).
   type error fails the pipeline.
 - Routing uses `HashRouter` (URLs contain `#/`) to suit static hosting. Keep new routes
   consistent with the public vs. protected split declared in `App.tsx`.
-- Supabase Storage uses a single public bucket named `Rean`.
+- Supabase Storage uses a single public bucket named `Rean`. Upload through
+  `uploadFile` (`storageService.ts`) so images are shrunk before they go over the wire;
+  never call `supabase.storage.upload` directly.
 - The AI economy deducts points ONLY in the `ai-assistant` edge function, which refunds
   on failure. Client services call `canAfford` for UX and never `spendPoints` for AI.
 - Wallet writes go through the `spend_points` / `award_action` RPCs (see
