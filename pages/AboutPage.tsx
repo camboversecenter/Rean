@@ -19,10 +19,42 @@ import {
   FileText,
   Award,
   Brain,
+  Send,
+  MessageCircle,
 } from '../components/Icons';
+import { TELEGRAM_COMMUNITY_URL } from '../constants';
 
 const REPO_URL = 'https://github.com/camboversecenter/Rean';
 const SITE_URL = 'https://rean.camboverse.world';
+
+/**
+ * How to reach the team. Telegram is first and highlighted because it is the
+ * channel students actually use, and it is the only one that does not require
+ * a GitHub account.
+ */
+const CONTACT_CHANNELS = [
+  {
+    icon: Send,
+    title: 'Telegram community',
+    desc: 'Ask questions and get help from the team and other learners. This is the fastest way to reach us.',
+    url: TELEGRAM_COMMUNITY_URL,
+    primary: true,
+  },
+  {
+    icon: MessageCircle,
+    title: 'Report a bug or idea',
+    desc: 'Open an issue on GitHub for anything broken, confusing, or missing.',
+    url: `${REPO_URL}/issues/new/choose`,
+    primary: false,
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Report a security problem',
+    desc: 'Found a vulnerability? Report it privately so it can be fixed before it is public.',
+    url: `${REPO_URL}/security/advisories/new`,
+    primary: false,
+  },
+];
 
 /** Mirrors the "Core Feature Areas" section of README.md. */
 const FEATURES = [
@@ -594,6 +626,64 @@ const AboutPage: React.FC = () => {
               </a>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ===== CONTACT AND SUPPORT ===== */}
+      <section className="bg-white border-t border-gray-100">
+        <div className="max-w-5xl mx-auto px-4 py-14 md:py-16">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-3">
+              ទាក់ទង និងជំនួយ (Contact and support)
+            </h2>
+            <p className="text-gray-500 max-w-2xl mx-auto leading-relaxed">
+              Stuck on a mission, found a bug, or want to work with us? Here is how to reach the
+              team.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {CONTACT_CHANNELS.map((c) => {
+              const Icon = c.icon;
+              return (
+                <a
+                  key={c.title}
+                  href={c.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`group flex flex-col p-5 rounded-2xl border transition-all hover:-translate-y-0.5 ${
+                    c.primary
+                      ? 'bg-primary text-white border-primary shadow-lg hover:bg-accent'
+                      : 'bg-gray-50 border-gray-100 hover:bg-white hover:shadow-md'
+                  }`}
+                >
+                  <span
+                    className={`h-11 w-11 rounded-xl flex items-center justify-center mb-4 ${
+                      c.primary ? 'bg-white/20' : 'bg-white border border-gray-100'
+                    }`}
+                  >
+                    <Icon className={`h-5 w-5 ${c.primary ? 'text-white' : 'text-primary'}`} />
+                  </span>
+                  <span
+                    className={`font-bold mb-1 ${c.primary ? 'text-white' : 'text-gray-900'} flex items-center`}
+                  >
+                    {c.title}
+                    <ChevronRight className="h-4 w-4 ml-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+                  </span>
+                  <span
+                    className={`text-sm leading-relaxed ${c.primary ? 'text-white/90' : 'text-gray-500'}`}
+                  >
+                    {c.desc}
+                  </span>
+                </a>
+              );
+            })}
+          </div>
+
+          <p className="text-center text-xs text-gray-400 mt-8 leading-relaxed">
+            Please do not post security problems publicly. Use the security link above so the issue
+            can be fixed before it becomes known.
+          </p>
         </div>
       </section>
 

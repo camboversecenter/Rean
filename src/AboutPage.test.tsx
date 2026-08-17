@@ -3,6 +3,8 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import AboutPage from '../pages/AboutPage';
+import Footer from '../components/Footer';
+import { TELEGRAM_COMMUNITY_URL } from '../constants';
 
 const renderAbout = () =>
   render(
@@ -134,6 +136,33 @@ describe('AboutPage', () => {
     for (const h of hrefs.filter((x) => x?.includes('linkedin.com'))) {
       expect(h?.startsWith('https://')).toBe(true);
     }
+  });
+
+  it('gives visitors a way to contact the team', () => {
+    renderAbout();
+
+    expect(screen.getByText(/Contact and support/)).toBeDefined();
+
+    const hrefs = hrefsOf(screen.getAllByRole('link') as HTMLElement[]);
+    // Telegram is the channel students actually use, and the only one that
+    // does not require a GitHub account.
+    expect(hrefs).toContain(TELEGRAM_COMMUNITY_URL);
+    expect(hrefs).toContain('https://github.com/camboversecenter/Rean/issues/new/choose');
+    // Security reports must have a private route, never a public issue.
+    expect(hrefs).toContain('https://github.com/camboversecenter/Rean/security/advisories/new');
+  });
+
+  it('keeps the support link reachable from the footer on every page', () => {
+    render(
+      <MemoryRouter>
+        <Footer />
+      </MemoryRouter>
+    );
+
+    const hrefs = hrefsOf(screen.getAllByRole('link') as HTMLElement[]);
+    // Before this existed the invite lived only on the sign-in screen, so a
+    // logged-in student had no way to find help.
+    expect(hrefs).toContain(TELEGRAM_COMMUNITY_URL);
   });
 
   it('renders the team section before the partners section', () => {

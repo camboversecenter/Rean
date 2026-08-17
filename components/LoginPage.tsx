@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { signInWithGoogle } from '../services/authService';
 import { BookOpen, AlertCircle, Send } from './Icons';
+import { TELEGRAM_COMMUNITY_URL } from '../constants';
 
 const getInitialError = (): string | null => {
   const params = new URLSearchParams(window.location.hash.substring(1));
@@ -86,7 +87,7 @@ const LoginPage: React.FC = () => {
         <div className="mt-8 flex flex-col items-center space-y-4">
           <div className="flex flex-wrap justify-center gap-2">
             <a
-              href="https://t.me/+cHeoKXBW_hllMzE1"
+              href={TELEGRAM_COMMUNITY_URL}
               target="_blank"
               rel="noreferrer"
               aria-label="Telegram Community"

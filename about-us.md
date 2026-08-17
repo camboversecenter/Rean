@@ -207,9 +207,21 @@ Stay up to date with our project and community.
 
 | Where           | Link                                                                         |
 | --------------- | ---------------------------------------------------------------------------- |
+| **Get help**    | [Telegram community](https://t.me/+cHeoKXBW_hllMzE1)                         |
 | **Website**     | [rean.camboverse.world](https://rean.camboverse.world)                       |
 | **Source code** | [github.com/camboversecenter/Rean](https://github.com/camboversecenter/Rean) |
 | **Incubator**   | [camboverse.world](https://camboverse.world/)                                |
 | **University**  | [num.edu.kh](https://num.edu.kh/)                                            |
+
+### Getting support
+
+| What you need                | Where to go                                                                                                   |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Help with a mission or class | [Telegram community](https://t.me/+cHeoKXBW_hllMzE1)                                                          |
+| A bug, or an idea            | [Open an issue](https://github.com/camboversecenter/Rean/issues/new/choose)                                   |
+| A security problem           | [Report privately](https://github.com/camboversecenter/Rean/security/advisories/new), never as a public issue |
+
+The Telegram invite is stored once in `constants.ts` as `TELEGRAM_COMMUNITY_URL`. Change it
+there and every page follows.
 
 Made with ❤️ for the Cambodian learning community.

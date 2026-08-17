@@ -1,5 +1,13 @@
 import { Mission, MissionCategory, School, StudentPost, TutorRequest } from './types';
 
+/**
+ * Where learners can reach the team. Imported by every page that shows a
+ * support link, so the invite only ever has to be changed here. A Telegram
+ * invite that has been revoked is worse than none at all, since it sends
+ * students to a dead end.
+ */
+export const TELEGRAM_COMMUNITY_URL = 'https://t.me/+cHeoKXBW_hllMzE1';
+
 export const HERO_TITLE = 'ស្វែងរកអនាគតរបស់អ្នក';
 export const HERO_SUBTITLE = 'ថ្នាលអប់រំធំបំផុតនៅកម្ពុជា - សាលារៀន វគ្គសិក្សា និងគ្រូបង្រៀន';
 export const SEARCH_PLACEHOLDER = 'ស្វែងរកសាលា ឬជំនាញ...';

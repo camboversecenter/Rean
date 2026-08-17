@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Github, Heart } from './Icons';
+import { Github, Heart, Send } from './Icons';
+import { TELEGRAM_COMMUNITY_URL } from '../constants';
 
 const REPO_URL = 'https://github.com/camboversecenter/Rean';
 
@@ -40,6 +41,21 @@ const Footer: React.FC = () => {
             <Link to="/about" className="text-gray-600 hover:text-primary transition-colors">
               About
             </Link>
+            {/* Support channel. Students should be able to reach help from any
+                page, not only from the sign-in screen. */}
+            <a
+              href={TELEGRAM_COMMUNITY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center text-gray-600 hover:text-primary transition-colors"
+              aria-label="Get help on Telegram"
+            >
+              <Send
+                className="h-4 w-4 mr-1.5 rotate-45 transform -translate-y-[1px]"
+                aria-hidden="true"
+              />
+              Get help
+            </a>
             {/* Link to the open-source repository. */}
             <a
               href={REPO_URL}
