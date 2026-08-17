@@ -127,9 +127,16 @@ const PARTNERS = [
 ];
 
 /**
- * The people behind REAN. Names, roles, and profile links come from
- * about-us.md on main, which the team maintains. Placeholder LinkedIn URLs
+ * The people behind REAN. Names, roles, photos, and profile links mirror
+ * about-us.md on main, which the team maintains and which is the source of
+ * truth for who each portrait belongs to. Placeholder LinkedIn URLs
  * (linkedin.com/in/username) are omitted rather than rendered as dead links.
+ *
+ * Five members have no `photo` because their portrait exists only as a GitHub
+ * attachment on about-us.md and was never committed to public/team/. They
+ * render initials until the file is added. Do not guess a mapping from the
+ * remaining unused photo-N files: pairing a real face with the wrong name is
+ * worse than showing initials.
  */
 const TEAM_SIZE = 10;
 
@@ -150,26 +157,24 @@ const TEAM: {
   {
     name: 'Phorn sreytey',
     role: 'Member',
-    photo: '/team/photo-2.jpg',
+    photo: '/team/photo-6.webp',
     github: 'https://github.com/phornsreytey2-bot',
     linkedin: 'https://www.linkedin.com/in/phorn-sreytey-a856bb428',
   },
   {
     name: 'Tie Porching',
     role: 'Member',
-    photo: '/team/photo-3.webp',
+    photo: '/team/photo-4.jpg',
     github: 'https://github.com/tieporching-debug',
   },
   {
     name: 'Khorn Aliza',
     role: 'Member',
-    photo: '/team/photo-4.jpg',
     github: 'https://github.com/zakitty112233-cell',
   },
   {
     name: 'Hong hana',
     role: 'Member',
-    photo: '/team/photo-5.jpg',
     github: 'https://github.com/hanahong070707-design',
     linkedin: 'https://www.linkedin.com/in/hana-hong-774713428',
   },
@@ -179,20 +184,19 @@ const TEAM: {
     github: 'https://github.com/chanlizasoeun-netizen',
   },
   {
-    name: 'MCheat Mouyyean',
+    name: 'Cheat Mouyyean',
     role: 'Member',
-    photo: '/team/photo-8.jpg',
     github: 'https://github.com/mouyyeancheat-coder',
   },
   {
     name: 'Eng leakhena',
     role: 'Member',
-    photo: '/team/photo-6.webp',
     github: 'https://github.com/englakna157-lang',
   },
   {
     name: 'Soeun somera',
     role: 'Member',
+    photo: '/team/photo-2.jpg',
     github: 'https://github.com/Somera-Soeun',
     linkedin: 'https://www.linkedin.com/in/somera-soeun-a75716428',
   },

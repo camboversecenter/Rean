@@ -92,7 +92,7 @@ describe('AboutPage', () => {
       'Khorn Aliza',
       'Hong hana',
       'Soeun Chanliza',
-      'MCheat Mouyyean',
+      'Cheat Mouyyean',
       'Eng leakhena',
       'Soeun somera',
       'Chiv chan seyha',
@@ -100,12 +100,33 @@ describe('AboutPage', () => {
       expect(screen.getByText(name)).toBeDefined();
     }
 
-    // Eight members have photos wired up; the remaining two show initials.
-    expect(screen.getByAltText('Van sopha')).toBeDefined();
-    expect(screen.getByAltText('Tie Porching')).toBeDefined();
-    // Soeun Chanliza and Soeun somera have no local photo yet.
-    expect(screen.getByText('SC')).toBeDefined();
-    expect(screen.getByText('SS')).toBeDefined();
+    // Nobody may be shown under the wrong face. These pairings are the ones
+    // the team set in about-us.md; changing one here without changing it
+    // there means the site and the repo disagree about who is who.
+    const expectedPhotos: Record<string, string> = {
+      'Van sopha': '/team/photo-1.webp',
+      'Phorn sreytey': '/team/photo-6.webp',
+      'Tie Porching': '/team/photo-4.jpg',
+      'Soeun somera': '/team/photo-2.jpg',
+      'Chiv chan seyha': '/team/photo-7.jpg',
+    };
+    for (const [name, src] of Object.entries(expectedPhotos)) {
+      expect(screen.getByAltText(name).getAttribute('src')).toBe(src);
+    }
+
+    // The other five portraits live only as GitHub attachments on about-us.md
+    // and were never committed, so they must render initials rather than a
+    // broken image or, worse, somebody else's face.
+    for (const [name, initials] of Object.entries({
+      'Khorn Aliza': 'KA',
+      'Hong hana': 'HH',
+      'Soeun Chanliza': 'SC',
+      'Cheat Mouyyean': 'CM',
+      'Eng leakhena': 'EL',
+    })) {
+      expect(screen.queryByAltText(name)).toBeNull();
+      expect(screen.getByText(initials)).toBeDefined();
+    }
 
     // Placeholder rows from about-us.md must never reach the public site.
     expect(screen.queryByText(/Member \d+ Name/)).toBeNull();
