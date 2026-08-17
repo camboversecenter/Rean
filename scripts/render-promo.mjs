@@ -1,28 +1,51 @@
 /**
- * Renders scripts/promo-open-source.html to public/promo/rean-open-source-km.png.
+ * Renders the promo artwork in scripts/ to PNGs in public/promo/.
  *
- *   npx -p playwright node scripts/render-promo.mjs
+ *   npx -p playwright node scripts/render-promo.mjs           # everything
+ *   npx -p playwright node scripts/render-promo.mjs poster    # just one
  *
  * Playwright is not a dependency of this project - it is only needed when
- * regenerating the promo card, so it is borrowed for the run rather than
+ * regenerating the artwork, so it is borrowed for the run rather than
  * installed for everyone. If you already have it (globally, or in the repo),
  * plain `node scripts/render-promo.mjs` works.
  *
- * The card is designed at 1200x630, the ratio Facebook uses for a shared link
- * and a landscape feed image, and captured at 2x so it stays sharp on the
- * high-density phone screens most people will see it on.
+ * Everything is captured at 2x so it stays sharp on the high-density phone
+ * screens most people will see it on.
  */
 import { createRequire } from 'node:module';
 import { mkdirSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 
-const WIDTH = 1200;
-const HEIGHT = 630;
 const SCALE = 2;
 
-const SOURCE = resolve('scripts/promo-open-source.html');
-const OUTPUT = resolve('public/promo/rean-open-source-km.png');
+const ARTWORK = {
+  // 1200x630 is the ratio Facebook uses for a shared link and a landscape
+  // feed image.
+  'open-source': {
+    source: 'scripts/promo-open-source.html',
+    output: 'public/promo/rean-open-source-km.png',
+    width: 1200,
+    height: 630,
+  },
+  // 2:3 portrait, the usual poster shape. Facebook crops portrait previews to
+  // 4:5 in the feed; it opens in full when tapped.
+  poster: {
+    source: 'scripts/promo-pitch-poster.html',
+    output: 'public/promo/rean-pitch-poster-km-en.png',
+    width: 1080,
+    height: 1620,
+  },
+};
+
+const requested = process.argv.slice(2);
+const unknown = requested.filter((name) => !ARTWORK[name]);
+if (unknown.length) {
+  console.error(`Unknown artwork: ${unknown.join(', ')}. Known: ${Object.keys(ARTWORK).join(', ')}`);
+  process.exit(1);
+}
+
+const jobs = (requested.length ? requested : Object.keys(ARTWORK)).map((name) => ARTWORK[name]);
 
 const require = createRequire(import.meta.url);
 
@@ -53,27 +76,31 @@ const browser = await chromium.launch({
 });
 
 try {
-  const page = await browser.newPage({
-    // Deliberately taller than the card. Headless Chromium drops the bottom of
-    // the page from the raster when the document is exactly as tall as the
-    // viewport - the footer measures correctly in the DOM but comes out blank
-    // in the PNG. Rendering with slack and clipping avoids that entirely.
-    viewport: { width: WIDTH, height: HEIGHT + 300 },
-    deviceScaleFactor: SCALE,
-  });
+  for (const { source, output, width, height } of jobs) {
+    const page = await browser.newPage({
+      // Deliberately taller than the artwork. Headless Chromium drops the
+      // bottom of the page from the raster when the document is exactly as
+      // tall as the viewport - the footer measures correctly in the DOM but
+      // comes out blank in the PNG. Rendering with slack and clipping avoids
+      // that entirely.
+      viewport: { width, height: height + 300 },
+      deviceScaleFactor: SCALE,
+    });
 
-  await page.goto(pathToFileURL(SOURCE).href, { waitUntil: 'load' });
+    await page.goto(pathToFileURL(resolve(source)).href, { waitUntil: 'load' });
 
-  // Khmer without Kantumruy Pro falls back to a font with no Khmer shaping, so
-  // every cluster breaks apart. Wait for the real thing before capturing.
-  await page.evaluate(() => document.fonts.ready);
+    // Khmer without Kantumruy Pro falls back to a font with no Khmer shaping,
+    // so every cluster breaks apart. Wait for the real thing before capturing.
+    await page.evaluate(() => document.fonts.ready);
 
-  await page.screenshot({
-    path: OUTPUT,
-    clip: { x: 0, y: 0, width: WIDTH, height: HEIGHT },
-  });
+    await page.screenshot({
+      path: resolve(output),
+      clip: { x: 0, y: 0, width, height },
+    });
 
-  console.log(`Wrote ${OUTPUT} at ${WIDTH * SCALE}x${HEIGHT * SCALE}`);
+    await page.close();
+    console.log(`Wrote ${output} at ${width * SCALE}x${height * SCALE}`);
+  }
 } finally {
   await browser.close();
 }
