@@ -66,7 +66,7 @@ const FEATURES = [
     icon: Zap,
     color: 'bg-yellow-50 text-yellow-600',
     title: 'សហគមន៍ (Lazy Learning)',
-    desc: 'វេទិកាសួរឆ្លើយ ដែលមានប្រតិកម្ម ចម្លើយដែលទទួលយក និងរង្វាន់ជម្រុញ។',
+    desc: 'ថ្នាលសួរឆ្លើយ ដែលមានប្រតិកម្ម ចម្លើយដែលទទួលយក និងរង្វាន់ជម្រុញ។',
     en: 'A Q&A feed with reactions, accepted answers, and bounties.',
   },
   {
@@ -296,7 +296,7 @@ const AboutPage: React.FC = () => {
           </span>
 
           <h1 className="text-3xl md:text-5xl font-extrabold leading-tight mb-5">
-            វេទិកាសិក្សាឥតគិតថ្លៃ សម្រាប់កម្ពុជា
+            ថ្នាលសិក្សាឥតគិតថ្លៃ សម្រាប់កម្ពុជា
           </h1>
 
           <p className="text-teal-50 text-base md:text-lg leading-relaxed mb-6">
