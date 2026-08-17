@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { signInWithGoogle } from '../services/authService';
 import { BookOpen, AlertCircle, Send } from './Icons';
-import { Link } from 'react-router-dom';
 
 const getInitialError = (): string | null => {
   const params = new URLSearchParams(window.location.hash.substring(1));
@@ -99,13 +98,6 @@ const LoginPage: React.FC = () => {
               />
               តេឡេក្រាមសហគមន៍ (Telegram)
             </a>
-            <Link
-              to="/license"
-              aria-label="Community License"
-              className="inline-flex items-center justify-center px-4 py-2 bg-gray-50 rounded-full text-[10px] text-primary font-bold hover:bg-primary/5 transition-colors border border-gray-100"
-            >
-              🛡️ អាជ្ញាប័ណ្ណសហគមន៍ (Community License)
-            </Link>
           </div>
           <div className="pt-2">
             <span className="text-[10px] text-gray-300 font-mono">Ver 0.01 (Beta)</span>
