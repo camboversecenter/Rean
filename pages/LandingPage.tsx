@@ -16,7 +16,6 @@ import {
   ShieldCheck,
   Brain,
   Award,
-  Heart,
   MessageCircle,
 } from '../components/Icons';
 
@@ -163,7 +162,7 @@ const LandingPage: React.FC = () => {
             អ្វីៗគ្រប់យ៉ាងសម្រាប់ការសិក្សា
           </h2>
           <p className="text-gray-500 max-w-2xl mx-auto">
-            Everything you need to learn, teach, and grow, in one platform built for Cambodia.
+            Everything you need to learn, teach, and grow — in one platform built for Cambodia.
           </p>
         </div>
 
@@ -221,7 +220,7 @@ const LandingPage: React.FC = () => {
             សម្រាប់អ្នករាល់គ្នា (For everyone)
           </h2>
           <p className="text-gray-500 max-w-2xl mx-auto">
-            REAN welcomes learners and educators of every kind.
+            REAN is built for students, tutors, schools, and partners alike.
           </p>
         </div>
 
@@ -273,7 +272,7 @@ const LandingPage: React.FC = () => {
         <div className="max-w-4xl mx-auto px-4 py-16 md:py-20 text-center">
           <h2 className="text-3xl md:text-4xl font-extrabold mb-4">ត្រៀមខ្លួនចាប់ផ្តើមហើយឬនៅ?</h2>
           <p className="text-gray-300 mb-8 max-w-xl mx-auto">
-            Join REAN today. It is free, and it is built for learners in Cambodia.
+            Join REAN today — free, and built for learners in Cambodia.
           </p>
           <Link
             to="/login"
@@ -281,14 +280,6 @@ const LandingPage: React.FC = () => {
           >
             ចាប់ផ្តើមឥឡូវនេះ (Get Started Free)
             <ChevronRight className="h-5 w-5 ml-1" />
-          </Link>
-
-          <Link
-            to="/about"
-            className="text-gray-500 hover:text-gray-300 text-sm mt-8 flex items-center justify-center transition-colors"
-          >
-            <Heart className="h-4 w-4 mr-1.5 text-red-400" />
-            Incubated by CamboVerse Center, National University of Management (NUM)
           </Link>
         </div>
       </section>
