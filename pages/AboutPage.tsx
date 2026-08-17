@@ -11,7 +11,6 @@ import {
   GraduationCap,
   ChevronRight,
   ShieldCheck,
-  Heart,
   Github,
   Code2,
   Globe,
@@ -46,21 +45,21 @@ const FEATURES = [
     color: 'bg-orange-50 text-orange-500',
     title: 'គ្រូបង្រៀន (Tutors)',
     desc: 'ប្រវត្តិរូបគ្រូ ការកក់ម៉ោងរៀន និងសំណើពីសិស្ស។',
-    en: 'Tutor profiles, bookings, and student tutor requests.',
+    en: 'Tutor profiles, bookings, and requests from students looking for a tutor.',
   },
   {
     icon: BookOpen,
     color: 'bg-blue-50 text-blue-600',
     title: 'វគ្គសិក្សាខ្លី (Short Courses)',
     desc: 'ទីផ្សារវគ្គសិក្សាខ្លីៗ សម្រាប់ការរៀនរហ័ស។',
-    en: 'A lighter marketplace product alongside Missions.',
+    en: 'Shorter courses for quick, focused learning, alongside the full missions.',
   },
   {
     icon: Bot,
     color: 'bg-teal-50 text-primary',
     title: 'គ្រូ AI (Kru Rean)',
     desc: 'ជំនួយការ AI ដែលបង្រៀន ឆ្លើយសំណួរ វាយតម្លៃកិច្ចការ និងមានមុខងារសន្ទនាដោយសំឡេង។',
-    en: 'A Gemini-powered chat tutor plus a live voice tutor.',
+    en: 'A Gemini-powered chat tutor, plus a live voice tutor.',
   },
   {
     icon: Zap,
@@ -81,7 +80,7 @@ const FEATURES = [
     color: 'bg-green-50 text-green-600',
     title: 'តួនាទី និងសុវត្ថិភាព (Roles & Auth)',
     desc: 'ចូលប្រើដោយគណនី Google និងជ្រើសរើសតួនាទី មុនពេលចាប់ផ្តើមប្រើប្រាស់។',
-    en: 'Google sign-in with role selection and role-gated dashboards.',
+    en: 'Google sign-in, role selection, and a dashboard for each role.',
   },
 ];
 
@@ -112,7 +111,7 @@ const PARTNERS = [
     short: 'CamboVerse',
     initials: 'CV',
     role: 'អ្នកបណ្តុះបណ្តាលគម្រោង (Incubator)',
-    desc: 'REAN is incubated by the CamboVerse Center at NUM, which supports Cambodian technology projects.',
+    desc: 'The CamboVerse Center at NUM incubates REAN and supports Cambodian technology projects.',
     url: 'https://camboverse.world/',
     logo: '/partners/camboverse.png',
   },
@@ -300,9 +299,9 @@ const AboutPage: React.FC = () => {
           </h1>
 
           <p className="text-teal-50 text-base md:text-lg leading-relaxed mb-6">
-            REAN (រៀន means "to learn" in Khmer) is an educational platform for Cambodia that
-            connects students with schools, tutors, and AI-driven learning missions, wrapped in a
-            gamified community.
+            REAN (រៀន) means "to learn" in Khmer. It is a free education platform for Cambodia,
+            connecting students with schools, tutors, and AI-guided learning missions — and
+            rewarding them for helping one another along the way.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3 text-sm">
@@ -335,15 +334,15 @@ const AboutPage: React.FC = () => {
         </div>
         <div className="prose prose-gray max-w-none text-gray-600 leading-relaxed space-y-4">
           <p>
-            REAN exists so that any learner in Cambodia can study for free. Students learn by doing.
-            They work through project-based missions, get taught and graded by an AI tutor in Khmer
-            or English, and help each other in a community where answering questions earns
-            recognition.
+            REAN exists so that anyone in Cambodia can keep learning without paying for it. Students
+            learn by doing: they work through project-based missions, an AI tutor teaches and grades
+            their work in Khmer or English, and the community answers whatever the tutor cannot.
+            Helping a classmate earns real recognition here, not just thanks.
           </p>
           <p>
-            The platform is free for everyone in Cambodia to use. The project sustains itself
-            through community support, donations, grants, and training rather than by selling the
-            software.
+            The platform is free for everyone in Cambodia. The project supports itself through
+            community backing, donations, grants, and training partnerships rather than by selling
+            the software.
           </p>
         </div>
       </section>
@@ -356,7 +355,7 @@ const AboutPage: React.FC = () => {
               អ្វីដែល REAN ផ្តល់ជូន (What REAN offers)
             </h2>
             <p className="text-gray-500 max-w-2xl mx-auto">
-              The platform is built around eight feature areas.
+              The platform is built around {FEATURES.length} areas.
             </p>
           </div>
 
@@ -388,22 +387,22 @@ const AboutPage: React.FC = () => {
             ប្រព័ន្ធពិន្ទុ (The points economy)
           </h2>
           <p className="text-orange-50 leading-relaxed mb-4">
-            Members hold two balances. <strong>XP</strong> is reputation and is never spent.{' '}
-            <strong>Points</strong> are the spendable currency.
+            Every member holds two balances. <strong>XP</strong> is reputation and is never spent.{' '}
+            <strong>Points</strong> are the currency you spend on AI features.
           </p>
           <div className="grid sm:grid-cols-2 gap-4 text-sm">
             <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-4">
               <p className="font-bold mb-1">ការទទួលបាន (Earning)</p>
               <p className="text-orange-50 leading-relaxed">
-                Posting questions, writing helpful replies, receiving likes, having an answer
-                accepted, and daily Lucky Drops. Daily limits keep it fair.
+                Points come from posting questions, writing helpful replies, collecting likes,
+                having an answer accepted, and the daily Lucky Drop. Daily limits keep it fair.
               </p>
             </div>
             <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-4">
               <p className="font-bold mb-1">ការចំណាយ (Spending)</p>
               <p className="text-orange-50 leading-relaxed">
-                AI features such as chat, answer evaluation, lesson generation, image generation,
-                and live voice sessions.
+                Points go on AI features: chat, answer evaluation, lesson generation, image
+                generation, and live voice sessions.
               </p>
             </div>
           </div>
@@ -454,9 +453,9 @@ const AboutPage: React.FC = () => {
             <Code2 className="h-6 w-6 text-primary mb-3" />
             <p className="font-bold text-gray-900 text-sm mb-1">Application code</p>
             <p className="text-sm text-gray-600 leading-relaxed">
-              Licensed under the <strong>Apache License 2.0</strong>. Use, modify, and redistribute
-              it, including commercially, as long as the license and copyright notices stay in
-              place.
+              Licensed under the <strong>Apache License 2.0</strong>. Anyone may use, modify, and
+              redistribute it, including commercially, as long as the license and copyright notices
+              stay in place.
             </p>
           </div>
           <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
@@ -496,7 +495,7 @@ const AboutPage: React.FC = () => {
             ក្រុមការងាររបស់យើង (Meet the team)
           </h2>
           <p className="text-gray-500 max-w-2xl mx-auto">
-            REAN is built by a team of {TEAM_SIZE} people. More profiles are being added.
+            REAN is built by a team of {TEAM_SIZE}. A few profiles are still being filled in.
           </p>
         </div>
 
@@ -608,11 +607,6 @@ const AboutPage: React.FC = () => {
               <Code2 className="h-5 w-5 mr-2" /> Contributing guide
             </a>
           </div>
-
-          <p className="text-gray-500 text-sm mt-8 flex items-center justify-center">
-            <Heart className="h-4 w-4 mr-1.5 text-red-400" />
-            Incubated by CamboVerse Center, National University of Management (NUM)
-          </p>
         </div>
       </section>
     </div>
