@@ -99,7 +99,7 @@ We are a team of 10 dedicated individuals working together to build REAN.
       <a href="https://github.com/zakitty112233-cell">GitHub</a>
     </td>
     <td align="center">
-      <img  src="https://github.com/user-attachments/assets/d9d9c01c-aede-4a30-a219-6497ab7d8e7b" width="120px;" alt="Hong hana"/><br />
+      <img src="public/team/honghana.webp" width="120px;" alt="Hong hana"/><br />
       <b>Hong hana</b><br />
       <i>Member</i><br />
       <a href="https://github.com/hanahong070707-design">GitHub</a> | <a href="https://www.linkedin.com/in/hana-hong-774713428">LinkedIn</a>
@@ -120,7 +120,7 @@ We are a team of 10 dedicated individuals working together to build REAN.
       <a href="https://github.com/mouyyeancheat-coder">GitHub</a>
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/e9f779df-662a-4830-a081-8b6170d72d19"  width="120px;" alt="Eng leakhena"/><br /> 
+      <img src="public/team/leakhena.jpg" width="120px;" alt="Eng leakhena"/><br />
       <b>Eng leakhena</b><br />
       <i>Member</i><br />
       <a href="https://github.com/englakna157-lang">GitHub</a>

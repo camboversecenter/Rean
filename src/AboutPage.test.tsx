@@ -107,6 +107,8 @@ describe('AboutPage', () => {
       'Van sopha': '/team/photo-1.webp',
       'Phorn sreytey': '/team/photo-6.webp',
       'Tie Porching': '/team/photo-4.jpg',
+      'Hong hana': '/team/honghana.webp',
+      'Eng leakhena': '/team/leakhena.jpg',
       'Soeun somera': '/team/photo-2.jpg',
       'Chiv chan seyha': '/team/photo-7.jpg',
     };
@@ -114,15 +116,13 @@ describe('AboutPage', () => {
       expect(screen.getByAltText(name).getAttribute('src')).toBe(src);
     }
 
-    // The other five portraits live only as GitHub attachments on about-us.md
-    // and were never committed, so they must render initials rather than a
-    // broken image or, worse, somebody else's face.
+    // These three portraits live only as GitHub attachments on about-us.md and
+    // were never committed, so they must render initials rather than a broken
+    // image or, worse, somebody else's face.
     for (const [name, initials] of Object.entries({
       'Khorn Aliza': 'KA',
-      'Hong hana': 'HH',
       'Soeun Chanliza': 'SC',
       'Cheat Mouyyean': 'CM',
-      'Eng leakhena': 'EL',
     })) {
       expect(screen.queryByAltText(name)).toBeNull();
       expect(screen.getByText(initials)).toBeDefined();

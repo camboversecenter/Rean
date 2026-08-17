@@ -175,6 +175,7 @@ const TEAM: {
   {
     name: 'Hong hana',
     role: 'Member',
+    photo: '/team/honghana.webp',
     github: 'https://github.com/hanahong070707-design',
     linkedin: 'https://www.linkedin.com/in/hana-hong-774713428',
   },
@@ -191,6 +192,7 @@ const TEAM: {
   {
     name: 'Eng leakhena',
     role: 'Member',
+    photo: '/team/leakhena.jpg',
     github: 'https://github.com/englakna157-lang',
   },
   {

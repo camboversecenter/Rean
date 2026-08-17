@@ -86,7 +86,7 @@ const LoginPage: React.FC = () => {
         <div className="mt-8 flex flex-col items-center space-y-4">
           <div className="flex flex-wrap justify-center gap-2">
             <a
-              href="https://t.me/+DBOU-zZhP_lkNTg9"
+              href="https://t.me/+cHeoKXBW_hllMzE1"
               target="_blank"
               rel="noreferrer"
               aria-label="Telegram Community"
