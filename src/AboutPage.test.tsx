@@ -13,6 +13,20 @@ const renderAbout = () =>
 
 const hrefsOf = (nodes: HTMLElement[]) => nodes.map((n) => n.getAttribute('href'));
 
+/** The ten members listed in about-us.md. */
+const TEAM_NAMES = [
+  'Van sopha',
+  'Phorn sreytey',
+  'Tie Porching',
+  'Khorn Aliza',
+  'Hong hana',
+  'Soeun Chanliza',
+  'Cheat Mouyyean',
+  'Eng leakhena',
+  'Soeun somera',
+  'Chiv chan seyha',
+];
+
 describe('AboutPage', () => {
   afterEach(cleanup);
 
@@ -80,32 +94,28 @@ describe('AboutPage', () => {
     );
   });
 
-  it('shows the team with photos where available and initials otherwise', () => {
+  it('shows every team member with their own committed portrait', () => {
     renderAbout();
 
     expect(screen.getByText(/Meet the team/)).toBeDefined();
-    // All ten members from about-us.md on main.
-    for (const name of [
-      'Van sopha',
-      'Phorn sreytey',
-      'Tie Porching',
-      'Khorn Aliza',
-      'Hong hana',
-      'Soeun Chanliza',
-      'MCheat Mouyyean',
-      'Eng leakhena',
-      'Soeun somera',
-      'Chiv chan seyha',
-    ]) {
+    for (const name of TEAM_NAMES) {
       expect(screen.getByText(name)).toBeDefined();
     }
 
-    // Eight members have photos wired up; the remaining two show initials.
-    expect(screen.getByAltText('Van sopha')).toBeDefined();
-    expect(screen.getByAltText('Tie Porching')).toBeDefined();
-    // Soeun Chanliza and Soeun somera have no local photo yet.
-    expect(screen.getByText('SC')).toBeDefined();
-    expect(screen.getByText('SS')).toBeDefined();
+    // Every member has a committed portrait, so nobody should fall back to
+    // initials. This deliberately does not pin a name to a specific file:
+    // three pairings are still unconfirmed and the team corrects them by hand,
+    // which must not break the build.
+    const photoSrcs = TEAM_NAMES.map((name) => {
+      const img = screen.getByAltText(name);
+      const src = img.getAttribute('src') || '';
+      expect(src.startsWith('/team/')).toBe(true);
+      return src;
+    });
+
+    // Two members sharing one file means an edit went wrong: somebody is now
+    // wearing someone else's face and somebody else has no portrait at all.
+    expect(new Set(photoSrcs).size).toBe(TEAM_NAMES.length);
 
     // Placeholder rows from about-us.md must never reach the public site.
     expect(screen.queryByText(/Member \d+ Name/)).toBeNull();

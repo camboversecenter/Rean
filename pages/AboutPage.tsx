@@ -127,9 +127,20 @@ const PARTNERS = [
 ];
 
 /**
- * The people behind REAN. Names, roles, and profile links come from
- * about-us.md on main, which the team maintains. Placeholder LinkedIn URLs
+ * The people behind REAN. Names, roles, photos, and profile links mirror
+ * about-us.md, which the team maintains. Placeholder LinkedIn URLs
  * (linkedin.com/in/username) are omitted rather than rendered as dead links.
+ *
+ * All ten portraits in public/team/ are now assigned, one per member.
+ *
+ * Seven pairings are confirmed, either from sopha's corrections in about-us.md
+ * (8fbabad) or from a filename that names the person outright.
+ *
+ * Three are marked UNVERIFIED below. Those files arrived as photo-N with no
+ * name attached, and the remaining candidates are hard to tell apart at a
+ * glance. If one is wrong, swap the `photo` values between the two members
+ * involved. Nothing else needs to change: the test deliberately does not pin
+ * a name to a specific file, so corrections here will not fail CI.
  */
 const TEAM_SIZE = 10;
 
@@ -150,49 +161,56 @@ const TEAM: {
   {
     name: 'Phorn sreytey',
     role: 'Member',
-    photo: '/team/photo-2.jpg',
+    photo: '/team/photo-6.webp',
     github: 'https://github.com/phornsreytey2-bot',
     linkedin: 'https://www.linkedin.com/in/phorn-sreytey-a856bb428',
   },
   {
     name: 'Tie Porching',
     role: 'Member',
-    photo: '/team/photo-3.webp',
+    photo: '/team/photo-4.jpg',
     github: 'https://github.com/tieporching-debug',
   },
   {
     name: 'Khorn Aliza',
     role: 'Member',
-    photo: '/team/photo-4.jpg',
+    // UNVERIFIED: swap with Cheat Mouyyean if this is the wrong person.
+    photo: '/team/photo-3.webp',
     github: 'https://github.com/zakitty112233-cell',
   },
   {
     name: 'Hong hana',
     role: 'Member',
-    photo: '/team/photo-5.jpg',
+    photo: '/team/honghana.webp',
     github: 'https://github.com/hanahong070707-design',
     linkedin: 'https://www.linkedin.com/in/hana-hong-774713428',
   },
   {
     name: 'Soeun Chanliza',
     role: 'Member',
+    // UNVERIFIED, but likely right: this is the only remaining portrait with a
+    // blue background and a short bob, matching the photo you labelled
+    // "chanliza".
+    photo: '/team/photo-8.jpg',
     github: 'https://github.com/chanlizasoeun-netizen',
   },
   {
-    name: 'MCheat Mouyyean',
+    name: 'Cheat Mouyyean',
     role: 'Member',
-    photo: '/team/photo-8.jpg',
+    // UNVERIFIED: swap with Khorn Aliza if this is the wrong person.
+    photo: '/team/photo-5.jpg',
     github: 'https://github.com/mouyyeancheat-coder',
   },
   {
     name: 'Eng leakhena',
     role: 'Member',
-    photo: '/team/photo-6.webp',
+    photo: '/team/leakhena.jpg',
     github: 'https://github.com/englakna157-lang',
   },
   {
     name: 'Soeun somera',
     role: 'Member',
+    photo: '/team/photo-2.jpg',
     github: 'https://github.com/Somera-Soeun',
     linkedin: 'https://www.linkedin.com/in/somera-soeun-a75716428',
   },
