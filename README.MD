@@ -106,7 +106,12 @@ Run the SQL scripts in the **Supabase SQL Editor**, in this order:
 2. `SUPABASE_HARDENING.sql` (**required**) — locks the wallet columns
    (`spendable_points`, `lifetime_xp`) against direct writes from the browser and adds
    the atomic `spend_points` / `award_action` RPCs the app prefers.
-3. `SCALABILITY_PARTITIONING.sql` (optional, for large datasets).
+3. `SUPABASE_PLAGIARISM.sql` (required for the mission plagiarism check) — enables
+   pgvector, adds the `missions.enable_plagiarism_check` toggle, the
+   `submission_embeddings` corpus with its RLS policies, and the `match_submissions`
+   similarity RPC. Without it the toggle has nothing to save into and no submission is
+   ever flagged.
+4. `SCALABILITY_PARTITIONING.sql` (optional, for large datasets).
 
 > **Note:** these scripts cover the feed function, security hardening, and partitioning
 > — they do not create the base tables. The table definitions (`profiles`,

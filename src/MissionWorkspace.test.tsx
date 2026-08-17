@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, cleanup, within } from '@testing-library/react';
+import { render, screen, fireEvent, cleanup, within, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import type { Mission } from '../types';
 
@@ -17,9 +17,11 @@ vi.mock('../services/missionProgressService', () => ({
   updateMissionProgress: vi.fn(),
   updateMissionSquadNote: vi.fn(),
   getSquadMembers: vi.fn(async () => []),
-  checkPlagiarism: vi.fn(),
+  checkPlagiarism: vi.fn(async () => ({ embedding: null, match: null })),
   saveSubmissionVector: vi.fn(),
   updateEnrollmentStatus: vi.fn(),
+  PLAGIARISM_THRESHOLD: 0.85,
+  PLAGIARISM_MIN_CHARS: 50,
 }));
 
 vi.mock('../services/storageService', () => ({
@@ -43,6 +45,9 @@ vi.mock('../components/MarkdownText', () => ({
 window.HTMLElement.prototype.scrollIntoView = vi.fn();
 
 import MissionWorkspace from '../components/MissionWorkspace';
+import toast from 'react-hot-toast';
+import { evaluateSubmission } from '../services/geminiService';
+import { checkPlagiarism, saveSubmissionVector } from '../services/missionProgressService';
 
 const TASK_TEXT = 'Build a SWOT analysis for a local coffee shop.';
 const THEORY_TEXT = 'Explain what a SWOT analysis is and when to use one.';
@@ -219,5 +224,97 @@ describe('MissionWorkspace tab layout', () => {
     // assignment off this screen.
     expect(screen.getByRole('heading', { name: 'Lesson 1: SWOT' })).toBeDefined();
     expect(screen.queryByText(TASK_TEXT)).toBeNull();
+  });
+});
+
+describe('MissionWorkspace plagiarism check', () => {
+  const guarded: Mission = { ...mission, enablePlagiarismCheck: true };
+
+  // Long enough to clear PLAGIARISM_MIN_CHARS, otherwise the answer is not
+  // worth comparing and the check is skipped by design.
+  const LONG_ANSWER =
+    'Strengths: the roast and the corner location. Weaknesses: one barista. Threats: the cafe opening next door.';
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.mocked(checkPlagiarism).mockResolvedValue({ embedding: null, match: null });
+    vi.mocked(evaluateSubmission).mockResolvedValue({
+      passed: true,
+      score: 80,
+      feedback: 'Solid work.',
+    });
+  });
+
+  afterEach(cleanup);
+
+  const renderGuarded = (m: Mission = guarded) =>
+    render(
+      <MemoryRouter>
+        <MissionWorkspace mission={m} enrollmentId="enr-1" />
+      </MemoryRouter>
+    );
+
+  const submit = (text: string) => {
+    openPracticeTab();
+    fireEvent.change(screen.getByLabelText('Submission Text'), { target: { value: text } });
+    fireEvent.click(screen.getByRole('button', { name: /Submit/ }));
+  };
+
+  it('refuses to grade an answer that matches a classmate', async () => {
+    vi.mocked(checkPlagiarism).mockResolvedValue({
+      embedding: [0.1, 0.2],
+      match: { id: 'vec-1', similarity: 0.93 },
+    });
+
+    renderGuarded();
+    submit(LONG_ANSWER);
+
+    await waitFor(() => expect(vi.mocked(toast.error)).toHaveBeenCalled());
+
+    // The whole point of the gate: the copy is never sent for grading, so the
+    // student cannot buy a pass with someone else's work.
+    expect(vi.mocked(evaluateSubmission)).not.toHaveBeenCalled();
+    expect(vi.mocked(saveSubmissionVector)).not.toHaveBeenCalled();
+    expect(String(vi.mocked(toast.error).mock.calls[0][0])).toContain('93');
+  });
+
+  it('reuses the check embedding when storing accepted work', async () => {
+    const embedding = [0.4, 0.5, 0.6];
+    vi.mocked(checkPlagiarism).mockResolvedValue({ embedding, match: null });
+
+    renderGuarded();
+    submit(LONG_ANSWER);
+
+    await waitFor(() => expect(vi.mocked(saveSubmissionVector)).toHaveBeenCalled());
+
+    // Passing the vector through avoids embedding the same text twice, which
+    // would charge the student a second point.
+    expect(vi.mocked(saveSubmissionVector)).toHaveBeenCalledWith(
+      'mission-1',
+      'enr-1',
+      'mod-1',
+      LONG_ANSWER,
+      embedding
+    );
+  });
+
+  it('leaves submissions alone when the creator did not enable the check', async () => {
+    renderGuarded(mission);
+    submit(LONG_ANSWER);
+
+    await waitFor(() => expect(vi.mocked(evaluateSubmission)).toHaveBeenCalled());
+
+    expect(vi.mocked(checkPlagiarism)).not.toHaveBeenCalled();
+    expect(vi.mocked(saveSubmissionVector)).not.toHaveBeenCalled();
+  });
+
+  it('skips answers too short to compare meaningfully', async () => {
+    renderGuarded();
+    submit('Yes, I agree.');
+
+    await waitFor(() => expect(vi.mocked(evaluateSubmission)).toHaveBeenCalled());
+
+    expect(vi.mocked(checkPlagiarism)).not.toHaveBeenCalled();
+    expect(vi.mocked(saveSubmissionVector)).not.toHaveBeenCalled();
   });
 });
