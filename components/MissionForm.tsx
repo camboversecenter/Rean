@@ -848,6 +848,13 @@ const ModuleEditor: React.FC<{
                 - aiPersona: A system instruction for an AI mentor.
                 - initialPrompt: The first thing the AI says to the student.
                 - theoryPrompt: A prompt for the AI to explain the theory.
+
+                MATH FORMATTING: the app renders LaTeX through KaTeX. Write every
+                formula, equation, fraction, exponent, root, limit, integral, or
+                summation as LaTeX. Use $...$ inline and $$...$$ for a formula on
+                its own line. For example write $\\lim_{x \\to 3} \\dfrac{x^2-9}{x-3}$,
+                never "lim(x->3) (x^2-9)/(x-3)". This applies to keyPoints and task
+                as well as the prose fields.
             `;
 
       const response = await chatWithAI(

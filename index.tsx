@@ -2,6 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
+// Bundled rather than pulled from a CDN. Without this stylesheet every formula
+// renders as unstyled fragments, and students on a slow or filtered connection
+// were the ones most likely to see that.
+import 'katex/dist/katex.min.css';
 
 // SAFETY: Unregister any existing service workers that might be intercepting API calls
 // This fixes the "Status: 405" error caused by stale service workers from previous deployments
