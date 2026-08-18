@@ -202,13 +202,13 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
             <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
             <div className="w-3 h-3 rounded-full bg-green-500"></div>
           </div>
-          <span className="ml-3 text-xs text-gray-400 font-mono">{language}</span>
+          <span className="ml-3 text-xs text-content-faint font-mono">{language}</span>
         </div>
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={copyCode}
-            className="p-1.5 text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-white/10"
+            className="p-1.5 text-content-faint hover:text-white transition-colors rounded-lg hover:bg-surface/10"
             title="Copy Code"
           >
             <Copy className="h-4 w-4" />
@@ -252,20 +252,20 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
       {language !== 'html' && (
         <div className="h-1/3 min-h-[150px] border-t border-gray-700 bg-[#1e2127] flex flex-col">
           <div className="flex items-center justify-between px-4 py-2 border-b border-gray-700/50">
-            <span className="text-[10px] uppercase font-bold text-gray-500 flex items-center gap-1">
+            <span className="text-[10px] uppercase font-bold text-content-muted flex items-center gap-1">
               <Terminal className="h-3 w-3" /> Console
             </span>
             <button
               type="button"
               onClick={clearLogs}
-              className="text-[10px] text-gray-500 hover:text-red-400 flex items-center gap-1"
+              className="text-[10px] text-content-muted hover:text-red-400 flex items-center gap-1"
             >
               <Trash2 className="h-3 w-3" /> Clear
             </button>
           </div>
           <div className="flex-1 p-4 overflow-y-auto font-mono text-xs text-gray-300 space-y-1">
             {state.output.length === 0 ? (
-              <span className="text-gray-600 italic">
+              <span className="text-content-muted italic">
                 No output yet. Run the code to see results.
               </span>
             ) : (

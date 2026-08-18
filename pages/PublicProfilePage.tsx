@@ -86,12 +86,12 @@ const PublicProfilePage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20 font-sans animate-fade-in">
+    <div className="min-h-screen bg-surface-2 pb-20 font-sans animate-fade-in">
       {/* Header Section */}
-      <div className="bg-white border-b border-gray-200 mb-8 relative">
+      <div className="bg-surface border-b border-line-strong mb-8 relative">
         {/* Page Title - Always Visible */}
         <div className="max-w-5xl mx-auto px-4 pt-6 pb-2 relative z-20">
-          <h1 className="text-xl font-bold text-gray-900">ប្រវត្តិរូប (Profile)</h1>
+          <h1 className="text-xl font-bold text-content">ប្រវត្តិរូប (Profile)</h1>
         </div>
 
         {/* Cover Photo */}
@@ -100,7 +100,7 @@ const PublicProfilePage: React.FC = () => {
             type="button"
             onClick={() => navigate(-1)}
             aria-label="Go back"
-            className="absolute top-4 left-4 p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/30 transition-colors z-30"
+            className="absolute top-4 left-4 p-2 bg-surface/20 backdrop-blur-md rounded-full text-white hover:bg-surface/30 transition-colors z-30"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
@@ -109,7 +109,7 @@ const PublicProfilePage: React.FC = () => {
         {/* Profile Info */}
         <div className="max-w-5xl mx-auto px-4 pb-6 relative z-10">
           <div className="flex flex-col md:flex-row items-center md:items-end -mt-12 md:-mt-16 gap-4 md:gap-6">
-            <div className="w-24 h-24 md:w-36 md:h-36 rounded-full border-4 border-white shadow-lg overflow-hidden bg-gray-200 flex-shrink-0">
+            <div className="w-24 h-24 md:w-36 md:h-36 rounded-full border-4 border-white shadow-lg overflow-hidden bg-line-strong flex-shrink-0">
               <img
                 src={
                   state.profile.avatar_url ||
@@ -120,11 +120,11 @@ const PublicProfilePage: React.FC = () => {
               />
             </div>
             <div className="text-center md:text-left flex-1 mb-2 md:mb-4">
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight mb-1">
+              <h1 className="text-2xl md:text-3xl font-bold text-content leading-tight mb-1">
                 {state.profile.full_name}
               </h1>
               <div className="flex items-center justify-center md:justify-start gap-2">
-                <span className="bg-gray-100 text-gray-600 text-[10px] px-2 py-0.5 rounded uppercase font-bold border border-gray-200">
+                <span className="bg-surface-3 text-content-muted text-[10px] px-2 py-0.5 rounded uppercase font-bold border border-line-strong">
                   {state.profile.role || 'Student'}
                 </span>
                 <span className="bg-yellow-100 text-yellow-700 text-[10px] px-2 py-0.5 rounded font-bold border border-yellow-200">
@@ -135,12 +135,12 @@ const PublicProfilePage: React.FC = () => {
 
             {/* Stats - Desktop aligned right/bottom of header area */}
             <div className="flex gap-4 mb-2 md:mb-6">
-              <div className="text-center bg-gray-50 p-3 rounded-xl min-w-[80px] border border-gray-100">
-                <p className="text-xs text-gray-500 font-bold uppercase">Active</p>
+              <div className="text-center bg-surface-2 p-3 rounded-xl min-w-[80px] border border-line">
+                <p className="text-xs text-content-muted font-bold uppercase">Active</p>
                 <p className="text-xl font-bold text-primary">{displayActive.length}</p>
               </div>
-              <div className="text-center bg-gray-50 p-3 rounded-xl min-w-[80px] border border-gray-100">
-                <p className="text-xs text-gray-500 font-bold uppercase">Done</p>
+              <div className="text-center bg-surface-2 p-3 rounded-xl min-w-[80px] border border-line">
+                <p className="text-xs text-content-muted font-bold uppercase">Done</p>
                 <p className="text-xl font-bold text-green-600">{displayCompleted.length}</p>
               </div>
             </div>
@@ -150,18 +150,18 @@ const PublicProfilePage: React.FC = () => {
 
       <div className="max-w-5xl mx-auto px-4 mt-6">
         {/* Tabs */}
-        <div className="flex border-b border-gray-200 mb-6">
+        <div className="flex border-b border-line-strong mb-6">
           <button
             type="button"
             onClick={() => setState((s) => ({ ...s, activeTab: 'active' }))}
-            className={`flex-1 py-3 text-sm font-bold border-b-2 transition-colors flex items-center justify-center ${state.activeTab === 'active' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
+            className={`flex-1 py-3 text-sm font-bold border-b-2 transition-colors flex items-center justify-center ${state.activeTab === 'active' ? 'border-primary text-primary' : 'border-transparent text-content-muted'}`}
           >
             <GraduationCap className="h-4 w-4 mr-2" /> កំពុងសិក្សា (Learning)
           </button>
           <button
             type="button"
             onClick={() => setState((s) => ({ ...s, activeTab: 'completed' }))}
-            className={`flex-1 py-3 text-sm font-bold border-b-2 transition-colors flex items-center justify-center ${state.activeTab === 'completed' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
+            className={`flex-1 py-3 text-sm font-bold border-b-2 transition-colors flex items-center justify-center ${state.activeTab === 'completed' ? 'border-primary text-primary' : 'border-transparent text-content-muted'}`}
           >
             <Award className="h-4 w-4 mr-2" /> សមិទ្ធិផល (Achievements)
           </button>
@@ -170,13 +170,13 @@ const PublicProfilePage: React.FC = () => {
         {/* Content Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {state.activeTab === 'active' && displayActive.length === 0 && (
-            <div className="col-span-full py-16 text-center text-gray-400 bg-white rounded-2xl border border-dashed border-gray-200">
+            <div className="col-span-full py-16 text-center text-content-faint bg-surface rounded-2xl border border-dashed border-line-strong">
               <BookOpen className="h-10 w-10 mx-auto mb-2 opacity-30" />
               <p>មិនទាន់មានការសិក្សាសកម្មទេ។</p>
             </div>
           )}
           {state.activeTab === 'completed' && displayCompleted.length === 0 && (
-            <div className="col-span-full py-16 text-center text-gray-400 bg-white rounded-2xl border border-dashed border-gray-200">
+            <div className="col-span-full py-16 text-center text-content-faint bg-surface rounded-2xl border border-dashed border-line-strong">
               <Award className="h-10 w-10 mx-auto mb-2 opacity-30" />
               <p>មិនទាន់មានសមិទ្ធិផលនៅឡើយទេ។</p>
             </div>

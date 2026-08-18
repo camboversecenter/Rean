@@ -29,10 +29,10 @@ const TutorRequestCard: React.FC<TutorRequestCardProps> = ({
   onApply,
 }) => {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-3 hover:shadow-md transition-shadow relative group">
+    <div className="bg-surface rounded-xl shadow-sm border border-line p-4 mb-3 hover:shadow-md transition-shadow relative group">
       <div className="flex justify-between items-start mb-2">
         <div>
-          <h3 className="text-sm font-bold text-gray-900 flex items-center">{request.subject}</h3>
+          <h3 className="text-sm font-bold text-content flex items-center">{request.subject}</h3>
           <p className="text-xs text-primary font-medium mt-0.5">{request.grade}</p>
         </div>
         <span className="bg-green-50 text-green-700 text-xs font-bold px-2 py-1 rounded-lg">
@@ -40,15 +40,15 @@ const TutorRequestCard: React.FC<TutorRequestCardProps> = ({
         </span>
       </div>
 
-      <p className="text-sm text-gray-600 mb-3 leading-relaxed">"{request.description}"</p>
+      <p className="text-sm text-content-muted mb-3 leading-relaxed">"{request.description}"</p>
 
-      <div className="flex items-center flex-wrap gap-3 text-xs text-gray-500 border-t border-gray-50 pt-3">
+      <div className="flex items-center flex-wrap gap-3 text-xs text-content-muted border-t border-line pt-3">
         <div className="flex items-center">
-          <User className="h-3.5 w-3.5 mr-1 text-gray-400" />
+          <User className="h-3.5 w-3.5 mr-1 text-content-faint" />
           {request.name}
         </div>
         <div className="flex items-center">
-          <MapPin className="h-3.5 w-3.5 mr-1 text-gray-400" />
+          <MapPin className="h-3.5 w-3.5 mr-1 text-content-faint" />
           {request.location}
         </div>
         <div className="flex items-center ml-auto">

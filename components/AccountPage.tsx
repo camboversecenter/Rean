@@ -216,20 +216,20 @@ const AccountPage: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24 font-sans animate-fade-in">
+    <div className="min-h-screen bg-surface-2 pb-24 font-sans animate-fade-in">
       {/* 1. HEADER SECTION (Redesigned for Desktop) */}
-      <div className="bg-white border-b border-gray-200 mb-8 relative">
+      <div className="bg-surface border-b border-line-strong mb-8 relative">
         {/* Adjusted padding and z-index for visibility */}
         <div className="max-w-5xl mx-auto px-4 pt-6 pb-2 relative z-20">
-          <h1 className="text-xl font-bold text-gray-900">គណនីរបស់ខ្ញុំ</h1>
+          <h1 className="text-xl font-bold text-content">គណនីរបស់ខ្ញុំ</h1>
         </div>
 
         {/* Cover Photo - z-0 to stay behind content */}
         <div className="h-32 md:h-48 bg-gradient-to-r from-primary to-teal-600 relative overflow-hidden z-0">
           <div className="absolute inset-0 bg-black/10"></div>
           {/* Decorative circles */}
-          <div className="absolute -right-10 -top-20 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
-          <div className="absolute left-10 bottom-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+          <div className="absolute -right-10 -top-20 w-72 h-72 bg-surface/10 rounded-full blur-3xl"></div>
+          <div className="absolute left-10 bottom-10 w-40 h-40 bg-surface/10 rounded-full blur-2xl"></div>
         </div>
 
         {/* Profile Content - z-10 to stay above cover */}
@@ -237,7 +237,7 @@ const AccountPage: React.FC = () => {
           <div className="flex flex-col md:flex-row items-center md:items-end -mt-12 md:-mt-16 gap-4 md:gap-6">
             {/* Avatar */}
             <div className="relative group flex-shrink-0">
-              <div className="w-24 h-24 md:w-36 md:h-36 rounded-full border-4 border-white shadow-lg overflow-hidden bg-gray-100">
+              <div className="w-24 h-24 md:w-36 md:h-36 rounded-full border-4 border-white shadow-lg overflow-hidden bg-surface-3">
                 <img
                   src={
                     previewUrl ||
@@ -273,10 +273,10 @@ const AccountPage: React.FC = () => {
 
             {/* User Info */}
             <div className="flex-1 text-center md:text-left mb-2 md:mb-4">
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight mb-1">
+              <h1 className="text-2xl md:text-3xl font-bold text-content leading-tight mb-1">
                 {profile?.full_name}
               </h1>
-              <p className="text-sm text-gray-500 font-medium mb-2">{profile?.email}</p>
+              <p className="text-sm text-content-muted font-medium mb-2">{profile?.email}</p>
               <div className="flex items-center justify-center md:justify-start gap-2">
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 uppercase tracking-wide border border-blue-100">
                   {profile?.role || 'Guest'}
@@ -286,26 +286,28 @@ const AccountPage: React.FC = () => {
 
             {/* Stats Card (Desktop Right) */}
             {levelStats && (
-              <div className="w-full md:w-80 bg-white md:bg-gray-50 p-4 rounded-2xl border border-gray-100 md:border-gray-200 shadow-sm md:shadow-none mb-2 md:mb-4">
+              <div className="w-full md:w-80 bg-surface md:bg-surface-2 p-4 rounded-2xl border border-line md:border-line-strong shadow-sm md:shadow-none mb-2 md:mb-4">
                 <div className="flex justify-between items-end mb-2">
                   <div>
-                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+                    <span className="text-xs font-bold text-content-faint uppercase tracking-wider">
                       Level {currentLevel}
                     </span>
-                    <div className="text-lg font-black text-gray-900 leading-none mt-0.5">
+                    <div className="text-lg font-black text-content leading-none mt-0.5">
                       {profile?.lifetime_xp}{' '}
-                      <span className="text-xs font-bold text-gray-400">XP</span>
+                      <span className="text-xs font-bold text-content-faint">XP</span>
                     </div>
                   </div>
                   <div className="text-right">
                     <div className="text-lg font-black text-primary leading-none">
                       {profile?.spendable_points}{' '}
-                      <span className="text-xs font-bold text-gray-400">Pts</span>
+                      <span className="text-xs font-bold text-content-faint">Pts</span>
                     </div>
-                    <span className="text-[10px] text-gray-400 font-medium">Available Balance</span>
+                    <span className="text-[10px] text-content-faint font-medium">
+                      Available Balance
+                    </span>
                   </div>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden mb-4">
+                <div className="w-full bg-line-strong rounded-full h-2 overflow-hidden mb-4">
                   <div
                     className="bg-gradient-to-r from-secondary to-primary h-full rounded-full transition-all duration-500"
                     style={{ width: `${levelStats.percent}%` }}
@@ -314,13 +316,13 @@ const AccountPage: React.FC = () => {
                 <div className="grid grid-cols-2 gap-2">
                   <Link
                     to="/leaderboard"
-                    className="flex items-center justify-center py-2 bg-white rounded-lg border border-gray-200 text-xs font-bold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all"
+                    className="flex items-center justify-center py-2 bg-surface rounded-lg border border-line-strong text-xs font-bold text-content-soft hover:bg-surface-2 hover:border-line-strong transition-all"
                   >
                     <Award className="h-4 w-4 mr-1.5 text-yellow-500" /> Leaderboard
                   </Link>
                   <Link
                     to="/rewards"
-                    className="flex items-center justify-center py-2 bg-white rounded-lg border border-gray-200 text-xs font-bold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all"
+                    className="flex items-center justify-center py-2 bg-surface rounded-lg border border-line-strong text-xs font-bold text-content-soft hover:bg-surface-2 hover:border-line-strong transition-all"
                   >
                     <Gift className="h-4 w-4 mr-1.5 text-pink-500" /> Rewards
                   </Link>
@@ -341,45 +343,49 @@ const AccountPage: React.FC = () => {
                 {isTutor && (
                   <Link
                     to="/tutor/dashboard"
-                    className="bg-white border border-green-100 p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden"
+                    className="bg-surface border border-green-100 p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden"
                   >
                     <div className="absolute right-0 top-0 p-10 bg-green-50 rounded-full -mr-5 -mt-5 opacity-50 group-hover:scale-110 transition-transform"></div>
                     <div className="relative z-10">
                       <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center text-green-600 mb-3">
                         <GraduationCap className="h-6 w-6" />
                       </div>
-                      <h3 className="font-bold text-gray-900">ផ្ទាំងគ្រប់គ្រងគ្រូ</h3>
-                      <p className="text-xs text-gray-500 mt-1">Manage Tutor Profile & Bookings</p>
+                      <h3 className="font-bold text-content">ផ្ទាំងគ្រប់គ្រងគ្រូ</h3>
+                      <p className="text-xs text-content-muted mt-1">
+                        Manage Tutor Profile & Bookings
+                      </p>
                     </div>
                   </Link>
                 )}
                 {isCreator && (
                   <Link
                     to="/creator"
-                    className="bg-white border border-indigo-100 p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden"
+                    className="bg-surface border border-indigo-100 p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden"
                   >
                     <div className="absolute right-0 top-0 p-10 bg-indigo-50 rounded-full -mr-5 -mt-5 opacity-50 group-hover:scale-110 transition-transform"></div>
                     <div className="relative z-10">
                       <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600 mb-3">
                         <Zap className="h-6 w-6 fill-indigo-600" />
                       </div>
-                      <h3 className="font-bold text-gray-900">ស្ទូឌីយោបេសកកម្ម</h3>
-                      <p className="text-xs text-gray-500 mt-1">Create & Manage Missions</p>
+                      <h3 className="font-bold text-content">ស្ទូឌីយោបេសកកម្ម</h3>
+                      <p className="text-xs text-content-muted mt-1">Create & Manage Missions</p>
                     </div>
                   </Link>
                 )}
                 {isSchool && (
                   <Link
                     to="/school/dashboard"
-                    className="bg-white border border-blue-100 p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden"
+                    className="bg-surface border border-blue-100 p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden"
                   >
                     <div className="absolute right-0 top-0 p-10 bg-blue-50 rounded-full -mr-5 -mt-5 opacity-50 group-hover:scale-110 transition-transform"></div>
                     <div className="relative z-10">
                       <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-3">
                         <Building2 className="h-6 w-6" />
                       </div>
-                      <h3 className="font-bold text-gray-900">ផ្ទាំងគ្រប់គ្រងសាលា</h3>
-                      <p className="text-xs text-gray-500 mt-1">Manage School Page & Admissions</p>
+                      <h3 className="font-bold text-content">ផ្ទាំងគ្រប់គ្រងសាលា</h3>
+                      <p className="text-xs text-content-muted mt-1">
+                        Manage School Page & Admissions
+                      </p>
                     </div>
                   </Link>
                 )}
@@ -389,7 +395,7 @@ const AccountPage: React.FC = () => {
             {/* Incoming Applications */}
             {incomingApplications.length > 0 && (
               <section>
-                <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                <h2 className="text-lg font-bold text-content mb-4 flex items-center">
                   <Bell className="h-5 w-5 mr-2 text-yellow-500 fill-yellow-500" /> សំណើពីគ្រូ (Job
                   Applications)
                 </h2>
@@ -397,23 +403,23 @@ const AccountPage: React.FC = () => {
                   {incomingApplications.map((booking: any) => (
                     <div
                       key={booking.id}
-                      className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:border-primary/30 transition-colors"
+                      className="bg-surface rounded-2xl shadow-sm border border-line p-5 hover:border-primary/30 transition-colors"
                     >
                       <div className="flex flex-col sm:flex-row justify-between gap-4">
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <h4 className="font-bold text-gray-900">
+                            <h4 className="font-bold text-content">
                               {booking.tutorName || 'គ្រូបង្រៀន'}
                             </h4>
                             <span className="bg-yellow-100 text-yellow-800 text-[10px] font-bold px-2 py-0.5 rounded">
                               Applying
                             </span>
                           </div>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-sm text-content-muted">
                             Applied for: <span className="font-bold">{booking.subject}</span>
                           </p>
                           {booking.locationNotes && (
-                            <div className="mt-2 bg-gray-50 p-3 rounded-xl text-sm text-gray-600 border border-gray-100 italic">
+                            <div className="mt-2 bg-surface-2 p-3 rounded-xl text-sm text-content-muted border border-line italic">
                               "{booking.locationNotes.replace('[Job Application] ', '')}"
                             </div>
                           )}
@@ -429,7 +435,7 @@ const AccountPage: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => handleStudentBookingAction(booking.id, 'Rejected')}
-                            className="flex-1 bg-white border border-gray-200 text-gray-600 font-bold py-2 px-4 rounded-xl text-xs hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors"
+                            className="flex-1 bg-surface border border-line-strong text-content-muted font-bold py-2 px-4 rounded-xl text-xs hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors"
                           >
                             បដិសេធ (Decline)
                           </button>
@@ -444,27 +450,27 @@ const AccountPage: React.FC = () => {
             {/* My Requests */}
             {myPendingRequests.length > 0 && (
               <section>
-                <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                  <Clock className="h-5 w-5 mr-2 text-gray-400" /> រង់ចាំការឆ្លើយតប (Pending)
+                <h2 className="text-lg font-bold text-content mb-4 flex items-center">
+                  <Clock className="h-5 w-5 mr-2 text-content-faint" /> រង់ចាំការឆ្លើយតប (Pending)
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {myPendingRequests.map((booking: any) => (
                     <div
                       key={booking.id}
-                      className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 opacity-75 hover:opacity-100 transition-opacity"
+                      className="bg-surface rounded-2xl shadow-sm border border-line-strong p-4 opacity-75 hover:opacity-100 transition-opacity"
                     >
                       <div className="flex justify-between items-start mb-2">
-                        <h4 className="font-bold text-gray-900 text-sm">
+                        <h4 className="font-bold text-content text-sm">
                           {booking.tutorName || 'គ្រូបង្រៀន'}
                         </h4>
-                        <span className="text-[10px] font-bold px-2 py-1 rounded bg-gray-100 text-gray-500">
+                        <span className="text-[10px] font-bold px-2 py-1 rounded bg-surface-3 text-content-muted">
                           Waiting
                         </span>
                       </div>
-                      <div className="text-xs text-gray-500 mb-1">
+                      <div className="text-xs text-content-muted mb-1">
                         <span className="font-medium">{booking.subject}</span>
                       </div>
-                      <p className="text-xs text-gray-400 italic">
+                      <p className="text-xs text-content-faint italic">
                         Sent on {new Date(booking.createdAt).toLocaleDateString()}
                       </p>
                     </div>
@@ -476,7 +482,7 @@ const AccountPage: React.FC = () => {
             {/* Active/History */}
             {activeBookings.length > 0 && (
               <section>
-                <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                <h2 className="text-lg font-bold text-content mb-4 flex items-center">
                   <GraduationCap className="h-5 w-5 mr-2 text-primary" /> ថ្នាក់រៀនរបស់ខ្ញុំ (My
                   Classes)
                 </h2>
@@ -484,15 +490,15 @@ const AccountPage: React.FC = () => {
                   {activeBookings.map((booking: any) => (
                     <div
                       key={booking.id}
-                      className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex items-center justify-between hover:shadow-md transition-shadow"
+                      className="bg-surface rounded-2xl shadow-sm border border-line p-4 flex items-center justify-between hover:shadow-md transition-shadow"
                     >
                       <div className="flex items-center gap-4">
                         <div
-                          className={`w-2 h-10 rounded-full ${booking.status === 'Accepted' ? 'bg-green-500' : 'bg-gray-300'}`}
+                          className={`w-2 h-10 rounded-full ${booking.status === 'Accepted' ? 'bg-green-500' : 'bg-line-strong'}`}
                         ></div>
                         <div>
-                          <h4 className="font-bold text-gray-900 text-sm">{booking.tutorName}</h4>
-                          <p className="text-xs text-gray-500">
+                          <h4 className="font-bold text-content text-sm">{booking.tutorName}</h4>
+                          <p className="text-xs text-content-muted">
                             {booking.subject} • {booking.status}
                           </p>
                         </div>
@@ -514,24 +520,24 @@ const AccountPage: React.FC = () => {
             {/* Active Missions */}
             {activeMissions.length > 0 && (
               <section>
-                <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                <h2 className="text-lg font-bold text-content mb-4 flex items-center">
                   <Target className="h-5 w-5 mr-2 text-red-500" /> បេសកកម្ម (Active Missions)
                 </h2>
                 <div className="space-y-3">
                   {activeMissions.map((m: any) => (
                     <div
                       key={m.enrollmentId}
-                      className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex items-center justify-between hover:border-primary/30 transition-colors"
+                      className="bg-surface rounded-2xl shadow-sm border border-line p-4 flex items-center justify-between hover:border-primary/30 transition-colors"
                     >
                       <div className="flex items-center gap-4 overflow-hidden">
                         <img
                           src={m.thumbnail || placeholderImage(80, 80, 'Mission')}
                           alt={m.title}
-                          className="w-12 h-12 rounded-xl object-cover flex-shrink-0 bg-gray-100"
+                          className="w-12 h-12 rounded-xl object-cover flex-shrink-0 bg-surface-3"
                         />
                         <div className="min-w-0">
-                          <h4 className="font-bold text-gray-900 text-sm truncate">{m.title}</h4>
-                          <p className="text-xs text-gray-500 flex items-center mt-0.5">
+                          <h4 className="font-bold text-content text-sm truncate">{m.title}</h4>
+                          <p className="text-xs text-content-muted flex items-center mt-0.5">
                             <span className="w-2 h-2 rounded-full bg-green-500 mr-1.5"></span> In
                             Progress
                           </p>
@@ -550,15 +556,15 @@ const AccountPage: React.FC = () => {
             )}
 
             {/* Achievements Section (Moved to Left) */}
-            <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
-              <h2 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider flex items-center">
+            <div className="bg-surface rounded-3xl shadow-sm border border-line p-6">
+              <h2 className="text-sm font-bold text-content mb-4 uppercase tracking-wider flex items-center">
                 <Award className="h-4 w-4 mr-2 text-yellow-500" /> សមិទ្ធិផល (Achievements)
               </h2>
 
               {achievements.length === 0 ? (
                 <div className="text-center py-6">
                   <Award className="h-10 w-10 text-gray-200 mx-auto mb-2" />
-                  <p className="text-xs text-gray-400">មិនទាន់មានសមិទ្ធិផល។</p>
+                  <p className="text-xs text-content-faint">មិនទាន់មានសមិទ្ធិផល។</p>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -571,10 +577,14 @@ const AccountPage: React.FC = () => {
                         <Award className="h-4 w-4" />
                       </div>
                       <div className="min-w-0">
-                        <h4 className="font-bold text-gray-900 text-xs truncate">{item.title}</h4>
-                        <p className="text-[10px] text-gray-500 truncate">{item.providerName}</p>
+                        <h4 className="font-bold text-content text-xs truncate">{item.title}</h4>
+                        <p className="text-[10px] text-content-muted truncate">
+                          {item.providerName}
+                        </p>
                       </div>
-                      <div className="ml-auto text-[10px] text-gray-400">{item.completedDate}</div>
+                      <div className="ml-auto text-[10px] text-content-faint">
+                        {item.completedDate}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -585,9 +595,9 @@ const AccountPage: React.FC = () => {
           {/* RIGHT COLUMN (Sidebar) */}
           <div className="md:col-span-1 space-y-6">
             {/* Profile Editor */}
-            <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
+            <div className="bg-surface rounded-3xl shadow-sm border border-line p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider flex items-center">
+                <h2 className="text-sm font-bold text-content uppercase tracking-wider flex items-center">
                   <Edit className="h-4 w-4 mr-2" /> កែប្រែឈ្មោះ
                 </h2>
               </div>
@@ -601,7 +611,7 @@ const AccountPage: React.FC = () => {
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                  className="w-full bg-surface-2 border border-line-strong rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                   placeholder="ឈ្មោះរបស់អ្នក (Full Name)"
                   aria-label="Full Name"
                 />
@@ -621,7 +631,7 @@ const AccountPage: React.FC = () => {
             <div className="space-y-3">
               <Link
                 to="/docs"
-                className="w-full bg-white border border-gray-200 text-gray-700 font-bold py-3 rounded-xl hover:bg-gray-50 transition-colors flex items-center justify-center text-sm"
+                className="w-full bg-surface border border-line-strong text-content-soft font-bold py-3 rounded-xl hover:bg-surface-2 transition-colors flex items-center justify-center text-sm"
               >
                 <HelpCircle className="h-4 w-4 mr-2" /> មជ្ឈមណ្ឌលជំនួយ
               </Link>
@@ -629,7 +639,7 @@ const AccountPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleLogout}
-                className="w-full bg-white border border-red-100 text-red-500 font-bold py-3 rounded-xl hover:bg-red-50 transition-colors flex items-center justify-center text-sm"
+                className="w-full bg-surface border border-red-100 text-red-500 font-bold py-3 rounded-xl hover:bg-red-50 transition-colors flex items-center justify-center text-sm"
               >
                 <LogOut className="h-4 w-4 mr-2" /> ចាកចេញ (Sign Out)
               </button>

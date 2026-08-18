@@ -138,7 +138,7 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex justify-between items-center">
-        <h3 className="font-bold text-gray-900 text-lg">យុទ្ធនាការជ្រើសរើសសិស្ស (Admissions)</h3>
+        <h3 className="font-bold text-content text-lg">យុទ្ធនាការជ្រើសរើសសិស្ស (Admissions)</h3>
         <button
           type="button"
           onClick={() => handleOpenAdmissionModal()}
@@ -150,20 +150,20 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {admissions.length === 0 && (
-          <div className="col-span-full py-12 text-center bg-white rounded-3xl border border-dashed border-gray-200">
+          <div className="col-span-full py-12 text-center bg-surface rounded-3xl border border-dashed border-line-strong">
             <GraduationCap className="h-12 w-12 mx-auto text-gray-200 mb-3" />
-            <p className="text-gray-500">មិនទាន់មានការជ្រើសរើសសិស្សទេ។</p>
+            <p className="text-content-muted">មិនទាន់មានការជ្រើសរើសសិស្សទេ។</p>
           </div>
         )}
         {admissions.map((adm) => (
           <div
             key={adm.id}
-            className="bg-white rounded-3xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
+            className="bg-surface rounded-3xl p-5 border border-line shadow-sm hover:shadow-md transition-shadow"
           >
             <div className="flex justify-between items-start mb-3">
               <div>
-                <h4 className="font-bold text-gray-900">{adm.title}</h4>
-                <div className="flex items-center text-xs text-gray-400 mt-1">
+                <h4 className="font-bold text-content">{adm.title}</h4>
+                <div className="flex items-center text-xs text-content-faint mt-1">
                   <Calendar className="h-3 w-3 mr-1" /> Deadline: {adm.endDate || 'No deadline'}
                 </div>
               </div>
@@ -173,7 +173,7 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
                     ? 'bg-green-100 text-green-700'
                     : adm.status === 'Closing Soon'
                       ? 'bg-orange-100 text-orange-700'
-                      : 'bg-gray-100 text-gray-500'
+                      : 'bg-surface-3 text-content-muted'
                 }`}
               >
                 {adm.status}
@@ -204,9 +204,9 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
                   {adm.scholarships.map((sch) => (
                     <div
                       key={sch.id}
-                      className="flex justify-between items-center text-xs bg-white/50 p-1.5 rounded-lg border border-yellow-50"
+                      className="flex justify-between items-center text-xs bg-surface/50 p-1.5 rounded-lg border border-yellow-50"
                     >
-                      <span className="text-gray-600 truncate mr-2">{sch.title}</span>
+                      <span className="text-content-muted truncate mr-2">{sch.title}</span>
                       <div className="flex items-center gap-2 flex-shrink-0">
                         <span className="font-bold text-green-600">{sch.discount}</span>
                         <button
@@ -227,7 +227,7 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
                 <button
                   type="button"
                   onClick={() => handleOpenAdmissionModal(adm)}
-                  className="flex-1 py-2 bg-gray-50 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-100 flex items-center justify-center transition-colors"
+                  className="flex-1 py-2 bg-surface-2 rounded-xl text-xs font-bold text-content-muted hover:bg-surface-3 flex items-center justify-center transition-colors"
                 >
                   <Edit className="h-3.5 w-3.5 mr-1.5" /> កែប្រែ
                 </button>
@@ -248,8 +248,8 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
       {/* ADMISSION MODAL */}
       {admissionForm.show && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm overflow-y-auto">
-          <div className="bg-white rounded-3xl w-full max-w-lg my-8 animate-scale-in">
-            <div className="p-6 border-b border-gray-100 flex justify-between items-center">
+          <div className="bg-surface rounded-3xl w-full max-w-lg my-8 animate-scale-in">
+            <div className="p-6 border-b border-line flex justify-between items-center">
               <h3 className="font-bold text-xl">
                 {admissionForm.editing?.id ? 'កែប្រែការជ្រើសរើស' : 'បន្ថែមការជ្រើសរើស'}
               </h3>
@@ -258,20 +258,20 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
                 onClick={() => setAdmissionForm((prev) => ({ ...prev, show: false }))}
                 aria-label="Close Admission Modal"
               >
-                <X className="h-6 w-6 text-gray-400" />
+                <X className="h-6 w-6 text-content-faint" />
               </button>
             </div>
             <div className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
               <div>
                 <label
                   htmlFor="adm-title"
-                  className="block text-xs font-bold text-gray-500 mb-1 uppercase"
+                  className="block text-xs font-bold text-content-muted mb-1 uppercase"
                 >
                   ចំណងជើងយុទ្ធនាការ
                 </label>
                 <input
                   id="adm-title"
-                  className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full p-3 bg-surface-2 border border-line rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
                   value={admissionForm.editing?.title || ''}
                   onChange={(e) =>
                     setAdmissionForm((prev) => ({
@@ -286,13 +286,13 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
               <div>
                 <label
                   htmlFor="adm-desc"
-                  className="block text-xs font-bold text-gray-500 mb-1 uppercase"
+                  className="block text-xs font-bold text-content-muted mb-1 uppercase"
                 >
                   ការពិពណ៌នា
                 </label>
                 <textarea
                   id="adm-desc"
-                  className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none h-24 resize-none"
+                  className="w-full p-3 bg-surface-2 border border-line rounded-xl focus:ring-2 focus:ring-primary/20 outline-none h-24 resize-none"
                   value={admissionForm.editing?.description || ''}
                   onChange={(e) =>
                     setAdmissionForm((prev) => ({
@@ -307,13 +307,13 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
               <div>
                 <label
                   htmlFor="adm-majors"
-                  className="block text-xs font-bold text-gray-500 mb-1 uppercase flex items-center"
+                  className="block text-xs font-bold text-content-muted mb-1 uppercase flex items-center"
                 >
                   <BookOpen className="h-3 w-3 mr-1" /> ជំនាញដែលបើកទទួល (Majors)
                 </label>
                 <input
                   id="adm-majors"
-                  className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full p-3 bg-surface-2 border border-line rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
                   value={admissionForm.majorsStr}
                   onChange={(e) =>
                     setAdmissionForm((prev) => ({ ...prev, majorsStr: e.target.value }))
@@ -326,14 +326,14 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
                 <div>
                   <label
                     htmlFor="adm-start"
-                    className="block text-xs font-bold text-gray-500 mb-1 uppercase"
+                    className="block text-xs font-bold text-content-muted mb-1 uppercase"
                   >
                     ថ្ងៃចាប់ផ្តើម
                   </label>
                   <input
                     id="adm-start"
                     type="date"
-                    className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
+                    className="w-full p-3 bg-surface-2 border border-line rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
                     value={admissionForm.editing?.startDate || ''}
                     onChange={(e) =>
                       setAdmissionForm((prev) => ({
@@ -346,14 +346,14 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
                 <div>
                   <label
                     htmlFor="adm-end"
-                    className="block text-xs font-bold text-gray-500 mb-1 uppercase"
+                    className="block text-xs font-bold text-content-muted mb-1 uppercase"
                   >
                     ថ្ងៃផុតកំណត់
                   </label>
                   <input
                     id="adm-end"
                     type="date"
-                    className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
+                    className="w-full p-3 bg-surface-2 border border-line rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
                     value={admissionForm.editing?.endDate || ''}
                     onChange={(e) =>
                       setAdmissionForm((prev) => ({
@@ -368,13 +368,13 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
               <div>
                 <label
                   htmlFor="adm-status"
-                  className="block text-xs font-bold text-gray-500 mb-1 uppercase"
+                  className="block text-xs font-bold text-content-muted mb-1 uppercase"
                 >
                   ស្ថានភាព
                 </label>
                 <select
                   id="adm-status"
-                  className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full p-3 bg-surface-2 border border-line rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
                   value={admissionForm.editing?.status || 'Open'}
                   onChange={(e) =>
                     setAdmissionForm((prev) => ({
@@ -389,7 +389,7 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
                 </select>
               </div>
             </div>
-            <div className="p-6 border-t bg-gray-50 flex justify-end gap-3 rounded-b-3xl">
+            <div className="p-6 border-t bg-surface-2 flex justify-end gap-3 rounded-b-3xl">
               <button
                 type="button"
                 onClick={handleSaveAdmission}
@@ -411,28 +411,28 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
       {/* SCHOLARSHIP MODAL */}
       {scholarshipForm.show && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl w-full max-w-sm animate-scale-in">
-            <div className="p-5 border-b border-gray-100 flex justify-between items-center">
+          <div className="bg-surface rounded-3xl w-full max-w-sm animate-scale-in">
+            <div className="p-5 border-b border-line flex justify-between items-center">
               <h3 className="font-bold text-lg">បន្ថែមអាហារូបករណ៍</h3>
               <button
                 type="button"
                 onClick={() => setScholarshipForm((prev) => ({ ...prev, show: false }))}
                 aria-label="Close Scholarship Modal"
               >
-                <X className="h-5 w-5 text-gray-400" />
+                <X className="h-5 w-5 text-content-faint" />
               </button>
             </div>
             <div className="p-5 space-y-4">
               <div>
                 <label
                   htmlFor="sch-title"
-                  className="block text-xs font-bold text-gray-500 mb-1 uppercase"
+                  className="block text-xs font-bold text-content-muted mb-1 uppercase"
                 >
                   ឈ្មោះអាហារូបករណ៍
                 </label>
                 <input
                   id="sch-title"
-                  className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full p-3 bg-surface-2 border border-line rounded-xl focus:ring-2 focus:ring-primary/20 outline-none"
                   value={scholarshipForm.newScholarship.title}
                   onChange={(e) =>
                     setScholarshipForm((prev) => ({
@@ -446,13 +446,13 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
               <div>
                 <label
                   htmlFor="sch-discount"
-                  className="block text-xs font-bold text-gray-500 mb-1 uppercase"
+                  className="block text-xs font-bold text-content-muted mb-1 uppercase"
                 >
                   ការបញ្ចុះតម្លៃ (%)
                 </label>
                 <input
                   id="sch-discount"
-                  className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl font-bold focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full p-3 bg-surface-2 border border-line rounded-xl font-bold focus:ring-2 focus:ring-primary/20 outline-none"
                   value={scholarshipForm.newScholarship.discount}
                   onChange={(e) =>
                     setScholarshipForm((prev) => ({

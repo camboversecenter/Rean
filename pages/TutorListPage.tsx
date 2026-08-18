@@ -176,37 +176,37 @@ const TutorListPage: React.FC = () => {
   const isTutor = state.currentUser?.role === 'tutor' || state.currentUser?.role === 'admin';
 
   return (
-    <div className="pb-24 pt-4 px-4 bg-gray-50 min-h-screen font-sans">
+    <div className="pb-24 pt-4 px-4 bg-surface-2 min-h-screen font-sans">
       <div className="max-w-5xl mx-auto">
         <div className="flex justify-between items-start mb-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">ទីផ្សារគ្រូបង្រៀន</h1>
-            <p className="text-xs text-gray-500 mt-1">
+            <h1 className="text-2xl font-bold text-content">ទីផ្សារគ្រូបង្រៀន</h1>
+            <p className="text-xs text-content-muted mt-1">
               ស្វែងរកគ្រូ ឬប្រកាសពីតម្រូវការសិក្សារបស់អ្នក
             </p>
           </div>
           <button
             type="button"
             onClick={handleRefresh}
-            className={`p-2 bg-white rounded-full shadow-sm border border-gray-100 text-gray-500 hover:text-primary transition-colors ${state.refreshing ? 'animate-spin' : ''}`}
+            className={`p-2 bg-surface rounded-full shadow-sm border border-line text-content-muted hover:text-primary transition-colors ${state.refreshing ? 'animate-spin' : ''}`}
           >
             <RefreshCw className="h-4 w-4" />
           </button>
         </div>
 
         {/* Top Toggle Switch */}
-        <div className="bg-white p-1 rounded-xl shadow-sm border border-gray-200 mb-6 flex max-w-md mx-auto">
+        <div className="bg-surface p-1 rounded-xl shadow-sm border border-line-strong mb-6 flex max-w-md mx-auto">
           <button
             type="button"
             onClick={() => setState((s) => ({ ...s, activeTab: 'tutors' }))}
-            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all flex items-center justify-center ${state.activeTab === 'tutors' ? 'bg-primary text-white shadow-md' : 'text-gray-500 hover:bg-gray-50'}`}
+            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all flex items-center justify-center ${state.activeTab === 'tutors' ? 'bg-primary text-white shadow-md' : 'text-content-muted hover:bg-surface-2'}`}
           >
             ស្វែងរកគ្រូ (Browse Tutors)
           </button>
           <button
             type="button"
             onClick={() => setState((s) => ({ ...s, activeTab: 'requests' }))}
-            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all flex items-center justify-center ${state.activeTab === 'requests' ? 'bg-primary text-white shadow-md' : 'text-gray-500 hover:bg-gray-50'}`}
+            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all flex items-center justify-center ${state.activeTab === 'requests' ? 'bg-primary text-white shadow-md' : 'text-content-muted hover:bg-surface-2'}`}
           >
             សំណើសិស្ស (Requests)
           </button>
@@ -215,8 +215,8 @@ const TutorListPage: React.FC = () => {
         {state.activeTab === 'tutors' && (
           <div className="mb-6">
             <div className="flex items-center gap-2 mb-3 overflow-x-auto pb-2 scrollbar-hide">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 flex-shrink-0">
-                <Filter className="h-4 w-4 text-gray-500" />
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-surface-3 flex-shrink-0">
+                <Filter className="h-4 w-4 text-content-muted" />
               </div>
               {subjects.map((s) => (
                 <button
@@ -226,7 +226,7 @@ const TutorListPage: React.FC = () => {
                   className={`whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all border ${
                     state.subjectFilter === s
                       ? 'bg-gray-900 text-white border-gray-900'
-                      : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'
+                      : 'bg-surface text-content-muted border-line-strong hover:border-line-strong'
                   }`}
                 >
                   {s === 'All' ? 'ទាំងអស់' : s}
@@ -239,17 +239,17 @@ const TutorListPage: React.FC = () => {
         {state.loading ? (
           <div className="flex flex-col items-center justify-center py-20">
             <Loader2 className="h-8 w-8 animate-spin text-primary mb-2" />
-            <p className="text-xs text-gray-400">កំពុងផ្ទុកទិន្នន័យ...</p>
+            <p className="text-xs text-content-faint">កំពុងផ្ទុកទិន្នន័យ...</p>
           </div>
         ) : state.activeTab === 'tutors' ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {state.tutors.length === 0 && (
-              <div className="col-span-full flex flex-col items-center justify-center py-16 text-center bg-white rounded-2xl border border-dashed border-gray-200">
-                <div className="bg-gray-50 p-4 rounded-full mb-3">
+              <div className="col-span-full flex flex-col items-center justify-center py-16 text-center bg-surface rounded-2xl border border-dashed border-line-strong">
+                <div className="bg-surface-2 p-4 rounded-full mb-3">
                   <Search className="h-8 w-8 text-gray-300" />
                 </div>
-                <h3 className="text-gray-900 font-bold mb-1">មិនមានគ្រូបង្រៀនទេ</h3>
-                <p className="text-gray-500 text-xs">
+                <h3 className="text-content font-bold mb-1">មិនមានគ្រូបង្រៀនទេ</h3>
+                <p className="text-content-muted text-xs">
                   សូមព្យាយាមប្តូរប្រភេទស្វែងរក ឬត្រឡប់មកវិញពេលក្រោយ។
                 </p>
               </div>
@@ -264,8 +264,8 @@ const TutorListPage: React.FC = () => {
             {!isTutor && (
               <div className="bg-gradient-to-r from-primary/10 to-teal-100/50 border border-primary/10 rounded-2xl p-5 flex items-center justify-between relative overflow-hidden">
                 <div className="relative z-10">
-                  <h3 className="text-sm font-bold text-gray-900 mb-1">ត្រូវការគ្រូបង្រៀនមែនទេ?</h3>
-                  <p className="text-xs text-gray-600">
+                  <h3 className="text-sm font-bold text-content mb-1">ត្រូវការគ្រូបង្រៀនមែនទេ?</h3>
+                  <p className="text-xs text-content-muted">
                     ប្រកាសពីតម្រូវការរបស់អ្នក ដើម្បីឱ្យគ្រូទាក់ទងមក។
                   </p>
                 </div>
@@ -281,14 +281,14 @@ const TutorListPage: React.FC = () => {
             )}
 
             <div className="flex items-center justify-between mt-6 mb-2">
-              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+              <h3 className="text-xs font-bold text-content-muted uppercase tracking-wider">
                 សំណើថ្មីៗ (Latest Requests)
               </h3>
             </div>
 
             {state.requests.length === 0 && (
-              <div className="text-center py-16 bg-white rounded-2xl border border-dashed border-gray-200">
-                <p className="text-gray-400 text-sm">មិនទាន់មានសំណើទេ។</p>
+              <div className="text-center py-16 bg-surface rounded-2xl border border-dashed border-line-strong">
+                <p className="text-content-faint text-sm">មិនទាន់មានសំណើទេ។</p>
               </div>
             )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -313,7 +313,7 @@ const TutorListPage: React.FC = () => {
               type="button"
               onClick={handleLoadMore}
               disabled={state.loadingMore}
-              className="bg-white border border-gray-200 text-gray-600 font-bold py-2 px-6 rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-50 flex items-center text-sm"
+              className="bg-surface border border-line-strong text-content-muted font-bold py-2 px-6 rounded-full shadow-sm hover:bg-surface-2 disabled:opacity-50 flex items-center text-sm"
             >
               {state.loadingMore ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -329,34 +329,36 @@ const TutorListPage: React.FC = () => {
       {/* Apply Modal */}
       {state.showApplyModal && state.selectedRequest && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-sm animate-scale-in shadow-2xl">
+          <div className="bg-surface rounded-2xl p-6 w-full max-w-sm animate-scale-in shadow-2xl">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="font-bold text-lg text-gray-900">ទាក់ទងសិស្ស (Contact)</h3>
+              <h3 className="font-bold text-lg text-content">ទាក់ទងសិស្ស (Contact)</h3>
               <button
                 type="button"
                 onClick={() => setState((s) => ({ ...s, showApplyModal: false }))}
               >
-                <X className="h-5 w-5 text-gray-400" />
+                <X className="h-5 w-5 text-content-faint" />
               </button>
             </div>
 
-            <div className="bg-gray-50 p-3 rounded-xl mb-4 border border-gray-100">
-              <p className="text-xs text-gray-500 font-bold uppercase mb-1">ដាក់ពាក្យសម្រាប់</p>
-              <p className="font-bold text-gray-900 text-sm">{state.selectedRequest.subject}</p>
-              <p className="text-xs text-gray-600">{state.selectedRequest.grade}</p>
+            <div className="bg-surface-2 p-3 rounded-xl mb-4 border border-line">
+              <p className="text-xs text-content-muted font-bold uppercase mb-1">
+                ដាក់ពាក្យសម្រាប់
+              </p>
+              <p className="font-bold text-content text-sm">{state.selectedRequest.subject}</p>
+              <p className="text-xs text-content-muted">{state.selectedRequest.grade}</p>
             </div>
 
             <div className="space-y-4">
               <div>
                 <label
                   htmlFor="applyMessage"
-                  className="block text-xs font-bold text-gray-500 mb-1"
+                  className="block text-xs font-bold text-content-muted mb-1"
                 >
                   សារខ្លីៗទៅកាន់សិស្ស
                 </label>
                 <textarea
                   id="applyMessage"
-                  className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm h-24 focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none"
+                  className="w-full p-3 bg-surface border border-line-strong rounded-xl text-sm h-24 focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none"
                   placeholder="ណែនាំខ្លួនអ្នក និងបទពិសោធន៍..."
                   value={state.applyMessage}
                   onChange={(e) => setState((s) => ({ ...s, applyMessage: e.target.value }))}
@@ -385,29 +387,32 @@ const TutorListPage: React.FC = () => {
       {/* Request Modal */}
       {state.showRequestModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-sm animate-scale-in shadow-2xl">
+          <div className="bg-surface rounded-2xl p-6 w-full max-w-sm animate-scale-in shadow-2xl">
             <div className="flex justify-between items-center mb-6">
               <div>
-                <h3 className="font-bold text-lg text-gray-900">ប្រកាសសំណើសិក្សា</h3>
-                <p className="text-xs text-gray-500">ស្វែងរកគ្រូដែលសាកសមនឹងអ្នក</p>
+                <h3 className="font-bold text-lg text-content">ប្រកាសសំណើសិក្សា</h3>
+                <p className="text-xs text-content-muted">ស្វែងរកគ្រូដែលសាកសមនឹងអ្នក</p>
               </div>
               <button
                 type="button"
                 onClick={() => setState((s) => ({ ...s, showRequestModal: false }))}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                className="p-2 hover:bg-surface-3 rounded-full transition-colors"
               >
-                <X className="h-5 w-5 text-gray-400" />
+                <X className="h-5 w-5 text-content-faint" />
               </button>
             </div>
             <div className="space-y-4">
               <div>
-                <label htmlFor="subject" className="block text-xs font-bold text-gray-500 mb-1">
+                <label
+                  htmlFor="subject"
+                  className="block text-xs font-bold text-content-muted mb-1"
+                >
                   មុខវិជ្ជា
                 </label>
                 <input
                   id="subject"
                   placeholder="ឧ. គណិតវិទ្យា, រូបវិទ្យា..."
-                  className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full p-3 bg-surface-2 border border-line-strong rounded-xl text-sm focus:bg-surface focus:ring-2 focus:ring-primary/20 outline-none"
                   onChange={(e) =>
                     setState((s) => ({
                       ...s,
@@ -418,13 +423,16 @@ const TutorListPage: React.FC = () => {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label htmlFor="grade" className="block text-xs font-bold text-gray-500 mb-1">
+                  <label
+                    htmlFor="grade"
+                    className="block text-xs font-bold text-content-muted mb-1"
+                  >
                     កម្រិត
                   </label>
                   <input
                     id="grade"
                     placeholder="ឧ. ថ្នាក់ទី១២"
-                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none"
+                    className="w-full p-3 bg-surface-2 border border-line-strong rounded-xl text-sm focus:bg-surface focus:ring-2 focus:ring-primary/20 outline-none"
                     onChange={(e) =>
                       setState((s) => ({
                         ...s,
@@ -434,14 +442,17 @@ const TutorListPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="budget" className="block text-xs font-bold text-gray-500 mb-1">
+                  <label
+                    htmlFor="budget"
+                    className="block text-xs font-bold text-content-muted mb-1"
+                  >
                     ថវិកា (រៀល)
                   </label>
                   <input
                     id="budget"
                     type="number"
                     placeholder="ឧ. 20000"
-                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none"
+                    className="w-full p-3 bg-surface-2 border border-line-strong rounded-xl text-sm focus:bg-surface focus:ring-2 focus:ring-primary/20 outline-none"
                     onChange={(e) =>
                       setState((s) => ({
                         ...s,
@@ -452,13 +463,16 @@ const TutorListPage: React.FC = () => {
                 </div>
               </div>
               <div>
-                <label htmlFor="location" className="block text-xs font-bold text-gray-500 mb-1">
+                <label
+                  htmlFor="location"
+                  className="block text-xs font-bold text-content-muted mb-1"
+                >
                   ទីតាំង
                 </label>
                 <input
                   id="location"
                   placeholder="ទីតាំង ឬ អនឡាញ"
-                  className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full p-3 bg-surface-2 border border-line-strong rounded-xl text-sm focus:bg-surface focus:ring-2 focus:ring-primary/20 outline-none"
                   onChange={(e) =>
                     setState((s) => ({
                       ...s,
@@ -468,13 +482,16 @@ const TutorListPage: React.FC = () => {
                 />
               </div>
               <div>
-                <label htmlFor="description" className="block text-xs font-bold text-gray-500 mb-1">
+                <label
+                  htmlFor="description"
+                  className="block text-xs font-bold text-content-muted mb-1"
+                >
                   ព័ត៌មានលម្អិត
                 </label>
                 <textarea
                   id="description"
                   placeholder="ពណ៌នាអំពីតម្រូវការរបស់អ្នក..."
-                  className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm h-24 focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none resize-none"
+                  className="w-full p-3 bg-surface-2 border border-line-strong rounded-xl text-sm h-24 focus:bg-surface focus:ring-2 focus:ring-primary/20 outline-none resize-none"
                   onChange={(e) =>
                     setState((s) => ({
                       ...s,

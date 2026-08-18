@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import ThemeProvider from './components/ThemeProvider';
 import './index.css';
 // Bundled rather than pulled from a CDN. Without this stylesheet every formula
 // renders as unstyled fragments, and students on a slow or filtered connection
@@ -32,6 +33,8 @@ if (!rootElement) {
 const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
   </React.StrictMode>
 );

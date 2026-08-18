@@ -190,18 +190,18 @@ const MysteryBoxManager: React.FC = () => {
   return (
     <div className="animate-fade-in">
       <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
-        <div className="flex bg-gray-100 p-1 rounded-xl">
+        <div className="flex bg-surface-3 p-1 rounded-xl">
           <button
             type="button"
             onClick={() => setState((s) => ({ ...s, rewardSubTab: 'boxes' }))}
-            className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${state.rewardSubTab === 'boxes' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
+            className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${state.rewardSubTab === 'boxes' ? 'bg-surface shadow-sm text-content' : 'text-content-muted hover:text-content-soft'}`}
           >
             ប្រអប់រង្វាន់ (Boxes)
           </button>
           <button
             type="button"
             onClick={() => setState((s) => ({ ...s, rewardSubTab: 'claims' }))}
-            className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${state.rewardSubTab === 'claims' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
+            className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${state.rewardSubTab === 'claims' ? 'bg-surface shadow-sm text-content' : 'text-content-muted hover:text-content-soft'}`}
           >
             អ្នកឈ្នះ (Claims)
           </button>
@@ -221,10 +221,10 @@ const MysteryBoxManager: React.FC = () => {
       {state.rewardSubTab === 'boxes' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {state.mysteryBoxes.length === 0 && (
-            <div className="col-span-full text-center py-16 bg-white rounded-3xl border border-dashed border-gray-300">
+            <div className="col-span-full text-center py-16 bg-surface rounded-3xl border border-dashed border-line-strong">
               <Gift className="h-16 w-16 mx-auto mb-4 text-gray-200" />
-              <h3 className="font-bold text-gray-900 text-lg">មិនទាន់មានរង្វាន់</h3>
-              <p className="text-gray-500 mb-6">បង្កើតប្រអប់សំណាងដំបូងរបស់អ្នក។</p>
+              <h3 className="font-bold text-content text-lg">មិនទាន់មានរង្វាន់</h3>
+              <p className="text-content-muted mb-6">បង្កើតប្រអប់សំណាងដំបូងរបស់អ្នក។</p>
               <button
                 type="button"
                 onClick={handleCreateBox}
@@ -237,7 +237,7 @@ const MysteryBoxManager: React.FC = () => {
           {state.mysteryBoxes.map((box) => (
             <div
               key={box.id}
-              className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all group"
+              className="bg-surface rounded-2xl shadow-sm border border-line overflow-hidden hover:shadow-md transition-all group"
             >
               <div className="relative h-40 bg-purple-50 flex items-center justify-center overflow-hidden">
                 {box.cover_image ? (
@@ -253,7 +253,7 @@ const MysteryBoxManager: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handleDeleteBox(box.id)}
-                    className="bg-white p-2 rounded-full text-red-500 shadow-sm hover:bg-red-50"
+                    className="bg-surface p-2 rounded-full text-red-500 shadow-sm hover:bg-red-50"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -263,21 +263,23 @@ const MysteryBoxManager: React.FC = () => {
                 </div>
               </div>
               <div className="p-4">
-                <h3 className="font-bold text-gray-900 mb-1">{box.title}</h3>
-                <p className="text-xs text-gray-500 mb-3 line-clamp-2">{box.description}</p>
-                <div className="bg-gray-50 rounded-lg p-2 text-xs border border-gray-100">
-                  <p className="font-bold text-gray-700 mb-1">Items in box:</p>
+                <h3 className="font-bold text-content mb-1">{box.title}</h3>
+                <p className="text-xs text-content-muted mb-3 line-clamp-2">{box.description}</p>
+                <div className="bg-surface-2 rounded-lg p-2 text-xs border border-line">
+                  <p className="font-bold text-content-soft mb-1">Items in box:</p>
                   <div className="flex flex-wrap gap-1">
                     {box.items?.slice(0, 3).map((item, idx) => (
                       <span
                         key={item.id || `${item.name}-${idx}`}
-                        className="bg-white px-2 py-0.5 rounded border border-gray-200 text-gray-600"
+                        className="bg-surface px-2 py-0.5 rounded border border-line-strong text-content-muted"
                       >
                         {item.name}
                       </span>
                     ))}
                     {(box.items?.length || 0) > 3 && (
-                      <span className="text-gray-400">+{(box.items?.length || 0) - 3} more</span>
+                      <span className="text-content-faint">
+                        +{(box.items?.length || 0) - 3} more
+                      </span>
                     )}
                   </div>
                 </div>
@@ -286,10 +288,10 @@ const MysteryBoxManager: React.FC = () => {
           ))}
         </div>
       ) : (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="bg-surface rounded-2xl shadow-sm border border-line overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
-              <thead className="bg-gray-50 text-gray-500 font-bold text-xs uppercase">
+              <thead className="bg-surface-2 text-content-muted font-bold text-xs uppercase">
                 <tr>
                   <th className="px-6 py-4">អ្នកឈ្នះ (Winner)</th>
                   <th className="px-6 py-4">រង្វាន់ (Prize)</th>
@@ -298,32 +300,32 @@ const MysteryBoxManager: React.FC = () => {
                   <th className="px-6 py-4 text-right">ស្ថានភាព</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-line">
                 {state.claims.length === 0 && (
                   <tr>
-                    <td colSpan={5} className="px-6 py-10 text-center text-gray-400">
+                    <td colSpan={5} className="px-6 py-10 text-center text-content-faint">
                       មិនទាន់មានអ្នកឈ្នះទេ។
                     </td>
                   </tr>
                 )}
                 {state.claims.map((claim) => (
-                  <tr key={claim.id} className="hover:bg-gray-50">
+                  <tr key={claim.id} className="hover:bg-surface-2">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <img
                           src={claim.user_avatar || placeholderImage(30, 30)}
-                          className="w-8 h-8 rounded-full bg-gray-200"
+                          className="w-8 h-8 rounded-full bg-line-strong"
                           alt="User Avatar"
                         />
                         <div>
-                          <div className="font-bold text-gray-900">{claim.user_name}</div>
-                          <div className="text-xs text-gray-500">{claim.user_email}</div>
+                          <div className="font-bold text-content">{claim.user_name}</div>
+                          <div className="text-xs text-content-muted">{claim.user_email}</div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 font-medium text-purple-600">{claim.reward_detail}</td>
-                    <td className="px-6 py-4 text-gray-500">{claim.box_title}</td>
-                    <td className="px-6 py-4 text-xs text-gray-400">{claim.created_at}</td>
+                    <td className="px-6 py-4 text-content-muted">{claim.box_title}</td>
+                    <td className="px-6 py-4 text-xs text-content-faint">{claim.created_at}</td>
                     <td className="px-6 py-4 text-right">
                       {claim.status === 'Pending' ? (
                         <button
@@ -350,28 +352,31 @@ const MysteryBoxManager: React.FC = () => {
       {/* BOX CREATION MODAL */}
       {state.showBoxModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col animate-scale-in">
-            <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-              <h3 className="font-bold text-lg text-gray-900 flex items-center">
+          <div className="bg-surface rounded-2xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col animate-scale-in">
+            <div className="p-4 border-b border-line flex justify-between items-center bg-surface-2">
+              <h3 className="font-bold text-lg text-content flex items-center">
                 <Gift className="h-5 w-5 mr-2 text-purple-500" /> បង្កើតប្រអប់រង្វាន់
               </h3>
               <button
                 type="button"
                 onClick={() => setState((s) => ({ ...s, showBoxModal: false }))}
               >
-                <X className="h-5 w-5 text-gray-400" />
+                <X className="h-5 w-5 text-content-faint" />
               </button>
             </div>
 
             <div className="p-6 overflow-y-auto space-y-5">
               {/* 1. Details */}
               <div className="space-y-3">
-                <label htmlFor="boxTitle" className="text-xs font-bold text-gray-500 uppercase">
+                <label
+                  htmlFor="boxTitle"
+                  className="text-xs font-bold text-content-muted uppercase"
+                >
                   ព័ត៌មានប្រអប់
                 </label>
                 <input
                   id="boxTitle"
-                  className="w-full p-3 border border-gray-200 rounded-xl text-sm"
+                  className="w-full p-3 border border-line-strong rounded-xl text-sm"
                   placeholder="ឈ្មោះប្រអប់ (Box Title)"
                   value={state.currentBox.title}
                   onChange={(e) =>
@@ -386,7 +391,7 @@ const MysteryBoxManager: React.FC = () => {
                 </label>
                 <textarea
                   id="boxDescription"
-                  className="w-full p-3 border border-gray-200 rounded-xl text-sm h-20"
+                  className="w-full p-3 border border-line-strong rounded-xl text-sm h-20"
                   placeholder="ការពិពណ៌នា..."
                   value={state.currentBox.description}
                   onChange={(e) =>
@@ -400,14 +405,14 @@ const MysteryBoxManager: React.FC = () => {
                   <div className="flex-1">
                     <label
                       htmlFor="boxPoints"
-                      className="text-xs font-bold text-gray-500 uppercase mb-1 block"
+                      className="text-xs font-bold text-content-muted uppercase mb-1 block"
                     >
                       តម្លៃ (Points)
                     </label>
                     <input
                       id="boxPoints"
                       type="number"
-                      className="w-full p-3 border border-gray-200 rounded-xl text-sm font-bold"
+                      className="w-full p-3 border border-line-strong rounded-xl text-sm font-bold"
                       placeholder="100"
                       value={state.currentBox.price_points}
                       onChange={(e) =>
@@ -424,7 +429,10 @@ const MysteryBoxManager: React.FC = () => {
               {/* 2. Image */}
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <label htmlFor="boxImage" className="text-xs font-bold text-gray-500 uppercase">
+                  <label
+                    htmlFor="boxImage"
+                    className="text-xs font-bold text-content-muted uppercase"
+                  >
                     រូបភាព
                   </label>
                   <button
@@ -442,7 +450,7 @@ const MysteryBoxManager: React.FC = () => {
                     )}
                   </button>
                 </div>
-                <div className="h-32 bg-gray-100 rounded-xl border border-gray-200 flex items-center justify-center relative overflow-hidden group">
+                <div className="h-32 bg-surface-3 rounded-xl border border-line-strong flex items-center justify-center relative overflow-hidden group">
                   {state.boxImageBase64 || state.boxImageFile || state.currentBox.cover_image ? (
                     <img
                       src={
@@ -475,14 +483,17 @@ const MysteryBoxManager: React.FC = () => {
               </div>
 
               {/* 3. Items */}
-              <div className="space-y-3 bg-gray-50 p-4 rounded-xl border border-gray-100">
-                <label htmlFor="boxItemName" className="text-xs font-bold text-gray-500 uppercase">
+              <div className="space-y-3 bg-surface-2 p-4 rounded-xl border border-line">
+                <label
+                  htmlFor="boxItemName"
+                  className="text-xs font-bold text-content-muted uppercase"
+                >
                   រង្វាន់ក្នុងប្រអប់ (Items)
                 </label>
                 <div className="flex gap-2">
                   <input
                     id="boxItemName"
-                    className="flex-1 p-2 border border-gray-200 rounded-lg text-sm"
+                    className="flex-1 p-2 border border-line-strong rounded-lg text-sm"
                     placeholder="ឈ្មោះរង្វាន់ (ឧ. អាវយឺត, Coupon 50%)"
                     value={state.newItemName}
                     onChange={(e) => setState((s) => ({ ...s, newItemName: e.target.value }))}
@@ -493,7 +504,7 @@ const MysteryBoxManager: React.FC = () => {
                   <input
                     id="boxItemProb"
                     type="number"
-                    className="w-20 p-2 border border-gray-200 rounded-lg text-sm"
+                    className="w-20 p-2 border border-line-strong rounded-lg text-sm"
                     placeholder="Weight"
                     value={state.newItemProb}
                     onChange={(e) =>
@@ -512,18 +523,18 @@ const MysteryBoxManager: React.FC = () => {
 
                 <div className="space-y-2 max-h-32 overflow-y-auto">
                   {state.boxItems.length === 0 && (
-                    <p className="text-xs text-gray-400 text-center italic py-2">
+                    <p className="text-xs text-content-faint text-center italic py-2">
                       មិនទាន់មានរង្វាន់។
                     </p>
                   )}
                   {state.boxItems.map((item, idx) => (
                     <div
                       key={item.id}
-                      className="flex justify-between items-center bg-white p-2 rounded border border-gray-200 text-sm"
+                      className="flex justify-between items-center bg-surface p-2 rounded border border-line-strong text-sm"
                     >
                       <span>{item.name}</span>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs text-gray-400 bg-gray-100 px-1.5 rounded">
+                        <span className="text-xs text-content-faint bg-surface-3 px-1.5 rounded">
                           W: {item.probability}
                         </span>
                         <button
@@ -540,11 +551,11 @@ const MysteryBoxManager: React.FC = () => {
               </div>
             </div>
 
-            <div className="p-4 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">
+            <div className="p-4 border-t border-line bg-surface-2 flex justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setState((s) => ({ ...s, showBoxModal: false }))}
-                className="px-4 py-2 text-gray-600 font-bold text-sm hover:bg-gray-200 rounded-lg"
+                className="px-4 py-2 text-content-muted font-bold text-sm hover:bg-line-strong rounded-lg"
               >
                 បោះបង់
               </button>

@@ -325,22 +325,22 @@ const CommunityFeed: React.FC = () => {
   };
 
   return (
-    <div className="pb-20 pt-4 bg-gray-50 min-h-screen">
+    <div className="pb-20 pt-4 bg-surface-2 min-h-screen">
       <div className="max-w-5xl mx-auto">
         <div className="px-4 mb-4 flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold text-gray-900 flex items-center">
+            <h1 className="text-xl font-bold text-content flex items-center">
               <Zap className="h-5 w-5 text-secondary mr-2 fill-secondary" />
               Lazy Learning (រៀនផ្លូវកាត់)
             </h1>
-            <p className="text-xs text-gray-500">ខ្ជិលស្រាវជ្រាវមែនទេ? សួរនៅទីនេះបាន!</p>
+            <p className="text-xs text-content-muted">ខ្ជិលស្រាវជ្រាវមែនទេ? សួរនៅទីនេះបាន!</p>
           </div>
           {userProfile && (
-            <div className="bg-white border border-gray-200 px-3 py-1 rounded-full flex items-center shadow-sm">
+            <div className="bg-surface border border-line-strong px-3 py-1 rounded-full flex items-center shadow-sm">
               <div className="w-4 h-4 rounded-full bg-secondary flex items-center justify-center text-[8px] text-white font-bold mr-2">
                 P
               </div>
-              <span className="text-xs font-bold text-gray-700">
+              <span className="text-xs font-bold text-content-soft">
                 {userProfile.spendable_points || 0} ពិន្ទុ
               </span>
             </div>
@@ -348,7 +348,7 @@ const CommunityFeed: React.FC = () => {
         </div>
 
         {activeTab === 'all' && (
-          <div className="mx-4 mb-6 bg-white p-4 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden">
+          <div className="mx-4 mb-6 bg-surface p-4 rounded-2xl shadow-sm border border-line relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-secondary to-primary"></div>
 
             <div className="flex gap-3 mb-1">
@@ -370,7 +370,7 @@ const CommunityFeed: React.FC = () => {
                   placeholder={
                     isAnonymous ? 'សួរដោយអនាមិក (Ninja Mode)...' : 'តើអ្នកចង់ដឹងអ្វីនៅពេលនេះ?'
                   }
-                  className="w-full text-base text-gray-900 resize-none focus:outline-none min-h-[60px] placeholder-gray-400 bg-transparent py-1"
+                  className="w-full text-base text-content resize-none focus:outline-none min-h-[60px] placeholder-content-faint bg-transparent py-1"
                   disabled={isPosting}
                   aria-label="New post content"
                 />
@@ -378,13 +378,13 @@ const CommunityFeed: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex flex-wrap justify-between items-center mt-2 pt-2 border-t border-gray-50 gap-2">
+            <div className="flex flex-wrap justify-between items-center mt-2 pt-2 border-t border-line gap-2">
               <div className="flex items-center space-x-2">
                 <div className="relative group">
                   <select
                     value={bountyAmount}
                     onChange={(e) => setBountyAmount(Number(e.target.value))}
-                    className="appearance-none bg-gray-100 text-gray-600 text-xs font-bold pl-3 pr-8 py-2 rounded-full hover:bg-gray-200 focus:outline-none cursor-pointer"
+                    className="appearance-none bg-surface-3 text-content-muted text-xs font-bold pl-3 pr-8 py-2 rounded-full hover:bg-line-strong focus:outline-none cursor-pointer"
                     disabled={isPosting}
                     aria-label="Bounty amount"
                   >
@@ -394,7 +394,7 @@ const CommunityFeed: React.FC = () => {
                     <option value={50}>🏆 50 ពិន្ទុ</option>
                     <option value={100}>🏆 100 ពិន្ទុ</option>
                   </select>
-                  <Award className="absolute right-2 top-2 h-4 w-4 text-gray-400 pointer-events-none" />
+                  <Award className="absolute right-2 top-2 h-4 w-4 text-content-faint pointer-events-none" />
                 </div>
 
                 <button
@@ -403,7 +403,7 @@ const CommunityFeed: React.FC = () => {
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${
                     isAnonymous
                       ? 'bg-gray-800 text-white border-gray-800 shadow-md'
-                      : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'
+                      : 'bg-surface text-content-muted border-line-strong hover:bg-surface-2'
                   }`}
                   title="សួរដោយអនាមិក (Ask Anonymously)"
                 >
@@ -438,18 +438,18 @@ const CommunityFeed: React.FC = () => {
 
         <div className="px-4 mb-4 flex flex-col gap-4">
           {/* View Tabs (All vs Saved) */}
-          <div className="flex p-1 bg-gray-200 rounded-xl shadow-inner">
+          <div className="flex p-1 bg-line-strong rounded-xl shadow-inner">
             <button
               type="button"
               onClick={() => setActiveTab('all')}
-              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${activeTab === 'all' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
+              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${activeTab === 'all' ? 'bg-surface shadow-sm text-content' : 'text-content-muted hover:text-content-soft'}`}
             >
               សំណួរទាំងអស់ (All)
             </button>
             <button
               type="button"
               onClick={() => setActiveTab('saved')}
-              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1 ${activeTab === 'saved' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
+              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1 ${activeTab === 'saved' ? 'bg-surface shadow-sm text-content' : 'text-content-muted hover:text-content-soft'}`}
             >
               <Bookmark className="h-3 w-3" /> បានរក្សាទុក (Saved)
             </button>
@@ -464,7 +464,7 @@ const CommunityFeed: React.FC = () => {
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${
                   sortBy === 'latest'
                     ? 'bg-blue-100 text-blue-700 border-blue-200'
-                    : 'bg-white text-gray-600 border-gray-200'
+                    : 'bg-surface text-content-muted border-line-strong'
                 }`}
               >
                 <Clock className="h-3.5 w-3.5" /> ថ្មីៗ (Newest)
@@ -475,7 +475,7 @@ const CommunityFeed: React.FC = () => {
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${
                   sortBy === 'trending'
                     ? 'bg-orange-100 text-orange-700 border-orange-200'
-                    : 'bg-white text-gray-600 border-gray-200'
+                    : 'bg-surface text-content-muted border-line-strong'
                 }`}
               >
                 <Zap className={`h-3.5 w-3.5 ${sortBy === 'trending' ? 'fill-orange-600' : ''}`} />{' '}
@@ -487,7 +487,7 @@ const CommunityFeed: React.FC = () => {
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${
                   sortBy === 'bounty'
                     ? 'bg-yellow-100 text-yellow-800 border-yellow-200'
-                    : 'bg-white text-gray-600 border-gray-200'
+                    : 'bg-surface text-content-muted border-line-strong'
                 }`}
               >
                 <Award className="h-3.5 w-3.5" /> រង្វាន់ច្រើន (High Bounty)
@@ -497,20 +497,20 @@ const CommunityFeed: React.FC = () => {
 
           {activeTab === 'all' && (
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-content-faint" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="ស្វែងរកសំណួរ... (Search questions)"
-                className="w-full bg-white border border-gray-200 rounded-xl pl-10 pr-10 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-sm"
+                className="w-full bg-surface border border-line-strong rounded-xl pl-10 pr-10 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-sm"
                 aria-label="Search community"
               />
               {searchQuery && (
                 <button
                   type="button"
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 bg-surface-3 rounded-full text-content-muted hover:bg-line-strong"
                   aria-label="Clear search"
                 >
                   <X className="h-3 w-3" />
@@ -523,10 +523,10 @@ const CommunityFeed: React.FC = () => {
         <div className="space-y-4 px-4">
           {isLoading ? (
             <div className="flex justify-center py-10">
-              <div className="w-8 h-8 border-4 border-gray-200 border-t-primary rounded-full animate-spin"></div>
+              <div className="w-8 h-8 border-4 border-line-strong border-t-primary rounded-full animate-spin"></div>
             </div>
           ) : posts.length === 0 ? (
-            <div className="text-center py-10 text-gray-400 bg-white rounded-xl border border-dashed border-gray-200">
+            <div className="text-center py-10 text-content-faint bg-surface rounded-xl border border-dashed border-line-strong">
               {activeTab === 'saved' ? (
                 <p>មិនទាន់មានសំណួរដែលបានរក្សាទុកទេ។</p>
               ) : (
@@ -560,7 +560,7 @@ const CommunityFeed: React.FC = () => {
                     <div
                       key={post.id}
                       onClick={() => navigate(`/community/question/${post.id}`)}
-                      className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 animate-fade-in relative overflow-hidden cursor-pointer hover:shadow-md transition-shadow group h-full flex flex-col"
+                      className="bg-surface rounded-xl border border-line shadow-sm p-4 animate-fade-in relative overflow-hidden cursor-pointer hover:shadow-md transition-shadow group h-full flex flex-col"
                     >
                       {(post.bounty_points || 0) > 0 && (
                         <div
@@ -574,8 +574,8 @@ const CommunityFeed: React.FC = () => {
 
                       <div className="flex items-start gap-3 mb-2">
                         {isPostAnonymous ? (
-                          <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center border border-gray-300 flex-shrink-0">
-                            <Ghost className="h-5 w-5 text-gray-500" />
+                          <div className="w-9 h-9 rounded-full bg-line-strong flex items-center justify-center border border-line-strong flex-shrink-0">
+                            <Ghost className="h-5 w-5 text-content-muted" />
                           </div>
                         ) : (
                           <img
@@ -584,19 +584,19 @@ const CommunityFeed: React.FC = () => {
                               `https://ui-avatars.com/api/?name=${post.authorName}`
                             }
                             alt={post.authorName}
-                            className="w-9 h-9 rounded-full border border-gray-100 object-cover flex-shrink-0"
+                            className="w-9 h-9 rounded-full border border-line object-cover flex-shrink-0"
                           />
                         )}
                         <div className="flex-1">
                           <div className="flex justify-between items-start">
                             <h3
-                              className={`text-sm font-bold ${isPostAnonymous ? 'text-gray-500 italic' : 'text-gray-900'}`}
+                              className={`text-sm font-bold ${isPostAnonymous ? 'text-content-muted italic' : 'text-content'}`}
                             >
                               {displayAuthor}
                             </h3>
-                            <span className="text-[10px] text-gray-400">{post.timestamp}</span>
+                            <span className="text-[10px] text-content-faint">{post.timestamp}</span>
                           </div>
-                          <p className="text-sm text-gray-800 font-medium leading-relaxed mt-1 line-clamp-3">
+                          <p className="text-sm text-content font-medium leading-relaxed mt-1 line-clamp-3">
                             {post.content}
                           </p>
                         </div>
@@ -611,7 +611,7 @@ const CommunityFeed: React.FC = () => {
                                 ? 'border-green-500 bg-green-50/30 rounded-r-lg'
                                 : reply.isAI
                                   ? 'border-primary bg-primary/5 rounded-r-lg'
-                                  : 'border-gray-200'
+                                  : 'border-line-strong'
                             }`}
                           >
                             <div className="flex items-center gap-1 mb-1">
@@ -628,7 +628,7 @@ const CommunityFeed: React.FC = () => {
                                 />
                               )}
                               <span
-                                className={`text-[10px] font-bold ${reply.isAI ? 'text-primary' : 'text-gray-700'}`}
+                                className={`text-[10px] font-bold ${reply.isAI ? 'text-primary' : 'text-content-soft'}`}
                               >
                                 {reply.isAI && reply.authorName === 'Kru REAN'
                                   ? 'សុភាទន្សាយ'
@@ -640,7 +640,7 @@ const CommunityFeed: React.FC = () => {
                                 </span>
                               )}
                             </div>
-                            <div className="text-xs text-gray-700 leading-relaxed line-clamp-2">
+                            <div className="text-xs text-content-soft leading-relaxed line-clamp-2">
                               <MarkdownText content={reply.content} />
                             </div>
                           </div>
@@ -653,7 +653,7 @@ const CommunityFeed: React.FC = () => {
                         </div>
                       )}
 
-                      <div className="flex items-center gap-4 mt-4 pl-12 border-t border-gray-50 pt-2">
+                      <div className="flex items-center gap-4 mt-4 pl-12 border-t border-line pt-2">
                         <ReactionBar
                           reactions={post.reactions}
                           userReaction={post.userReaction}
@@ -661,7 +661,7 @@ const CommunityFeed: React.FC = () => {
                           size="sm"
                         />
 
-                        <div className="flex items-center text-xs text-gray-400 ml-2">
+                        <div className="flex items-center text-xs text-content-faint ml-2">
                           <MessageCircle className="h-3.5 w-3.5 mr-1" />
                           {post.replies.length}
                         </div>
@@ -673,7 +673,7 @@ const CommunityFeed: React.FC = () => {
                               e.stopPropagation();
                               handleBookmark(post);
                             }}
-                            className={`flex items-center text-xs transition-transform active:scale-90 ${isBookmarked ? 'text-blue-600' : 'text-gray-400 hover:text-blue-500'}`}
+                            className={`flex items-center text-xs transition-transform active:scale-90 ${isBookmarked ? 'text-blue-600' : 'text-content-faint hover:text-blue-500'}`}
                             title={isBookmarked ? 'ឈប់រក្សាទុក' : 'រក្សាទុក'}
                             aria-label={isBookmarked ? 'ឈប់រក្សាទុក' : 'រក្សាទុក'}
                           >
@@ -682,7 +682,7 @@ const CommunityFeed: React.FC = () => {
                             />
                           </button>
 
-                          <div className="text-gray-400 group-hover:text-primary transition-colors">
+                          <div className="text-content-faint group-hover:text-primary transition-colors">
                             <ChevronRight className="h-4 w-4" />
                           </div>
                         </div>
@@ -698,7 +698,7 @@ const CommunityFeed: React.FC = () => {
                     type="button"
                     onClick={handleLoadMore}
                     disabled={loadingMore}
-                    className="bg-white border border-gray-200 text-gray-600 font-bold py-2 px-6 rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-50 flex items-center text-sm"
+                    className="bg-surface border border-line-strong text-content-muted font-bold py-2 px-6 rounded-full shadow-sm hover:bg-surface-2 disabled:opacity-50 flex items-center text-sm"
                   >
                     {loadingMore ? (
                       <Loader2 className="h-4 w-4 animate-spin mr-2" />

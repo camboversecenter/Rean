@@ -200,7 +200,7 @@ const MissionDetailPage: React.FC = () => {
 
   // View 2: Landing Page (Sales/Enrollment View) - Publicly Accessible
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-surface-2 pb-20">
       {/* Hero */}
       <div className="relative h-64 md:h-80 bg-gray-900">
         <img
@@ -213,14 +213,14 @@ const MissionDetailPage: React.FC = () => {
             type="button"
             onClick={() => navigate(-1)}
             aria-label="Go back"
-            className="p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/30 transition-colors"
+            className="p-2 bg-surface/20 backdrop-blur-md rounded-full text-white hover:bg-surface/30 transition-colors"
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
           <button
             type="button"
             onClick={handleShare}
-            className="p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/30 transition-colors"
+            className="p-2 bg-surface/20 backdrop-blur-md rounded-full text-white hover:bg-surface/30 transition-colors"
             title="ចែករំលែក (Share)"
             aria-label="Share Mission"
           >
@@ -256,30 +256,30 @@ const MissionDetailPage: React.FC = () => {
           {/* Left Content */}
           <div className="md:col-span-2 space-y-8">
             {/* Description */}
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-              <h2 className="font-bold text-xl text-gray-900 mb-4">សង្ខេបបេសកកម្ម (Briefing)</h2>
-              <p className="text-gray-600 leading-relaxed whitespace-pre-wrap">
+            <div className="bg-surface rounded-2xl p-6 shadow-sm border border-line">
+              <h2 className="font-bold text-xl text-content mb-4">សង្ខេបបេសកកម្ម (Briefing)</h2>
+              <p className="text-content-muted leading-relaxed whitespace-pre-wrap">
                 {mission.description}
               </p>
             </div>
 
             {/* Syllabus / Modules */}
             <div>
-              <h2 className="font-bold text-xl text-gray-900 mb-4 flex items-center">
+              <h2 className="font-bold text-xl text-content mb-4 flex items-center">
                 <Target className="h-6 w-6 mr-2 text-primary" /> ផែនទីមេរៀន (Roadmap)
               </h2>
               <div className="space-y-4">
                 {mission.modules.map((mod, idx) => (
                   <div
                     key={mod.id}
-                    className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm flex items-start group hover:border-primary/30 transition-colors"
+                    className="bg-surface rounded-xl p-5 border border-line shadow-sm flex items-start group hover:border-primary/30 transition-colors"
                   >
-                    <div className="bg-gray-100 text-gray-500 font-bold w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+                    <div className="bg-surface-3 text-content-muted font-bold w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
                       {idx + 1}
                     </div>
                     <div>
-                      <h4 className="font-bold text-gray-900 text-base mb-1">{mod.title}</h4>
-                      <p className="text-sm text-gray-500 line-clamp-2">{mod.task}</p>
+                      <h4 className="font-bold text-content text-base mb-1">{mod.title}</h4>
+                      <p className="text-sm text-content-muted line-clamp-2">{mod.task}</p>
                     </div>
                   </div>
                 ))}
@@ -289,12 +289,12 @@ const MissionDetailPage: React.FC = () => {
 
           {/* Right Sidebar (Action Card) */}
           <div className="md:col-span-1">
-            <div className="bg-white rounded-2xl p-6 shadow-lg shadow-gray-200/50 border border-gray-100 sticky top-24">
+            <div className="bg-surface rounded-2xl p-6 shadow-lg shadow-gray-200/50 border border-line sticky top-24">
               <div className="mb-6 text-center">
-                <p className="text-sm text-gray-500 font-bold uppercase tracking-wider mb-1">
+                <p className="text-sm text-content-muted font-bold uppercase tracking-wider mb-1">
                   តម្លៃសរុប (Total Price)
                 </p>
-                <p className="text-3xl font-bold text-gray-900">
+                <p className="text-3xl font-bold text-content">
                   {mission.price === 0 ? 'ឥតគិតថ្លៃ' : formatRiel(mission.price)}
                 </p>
               </div>
@@ -310,8 +310,8 @@ const MissionDetailPage: React.FC = () => {
                   </p>
                 </div>
               ) : mission.enrollmentType === 'invite_only' ? (
-                <div className="w-full bg-gray-100 border border-gray-200 text-gray-500 p-4 rounded-xl text-center mb-4">
-                  <Lock className="h-8 w-8 mx-auto mb-2 text-gray-400" />
+                <div className="w-full bg-surface-3 border border-line-strong text-content-muted p-4 rounded-xl text-center mb-4">
+                  <Lock className="h-8 w-8 mx-auto mb-2 text-content-faint" />
                   <h4 className="font-bold text-sm mb-1">សម្រាប់តែអ្នកដែលត្រូវបានអញ្ជើញ</h4>
                   <p className="text-xs">បេសកកម្មនេះជាឯកជន។ សូមទាក់ទងអ្នកបង្កើតដើម្បីចូលរៀន។</p>
                 </div>
@@ -337,12 +337,12 @@ const MissionDetailPage: React.FC = () => {
                 </button>
               )}
 
-              <div className="space-y-3 pt-4 border-t border-gray-100">
-                <div className="flex items-center text-sm text-gray-600">
+              <div className="space-y-3 pt-4 border-t border-line">
+                <div className="flex items-center text-sm text-content-muted">
                   <CheckCircle className="h-4 w-4 mr-3 text-green-500" />
                   <span>មតិកែលម្អពី AI (Feedback)</span>
                 </div>
-                <div className="flex items-center text-sm text-gray-600">
+                <div className="flex items-center text-sm text-content-muted">
                   <CheckCircle className="h-4 w-4 mr-3 text-green-500" />
                   <span>គម្រោងជាក់ស្តែង (Portfolio)</span>
                 </div>
@@ -355,9 +355,9 @@ const MissionDetailPage: React.FC = () => {
       {/* PAYMENT MODAL (Only shows if logged in) */}
       {paymentState.showModal && currentUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl w-full max-w-sm overflow-hidden animate-scale-in">
-            <div className="bg-gray-50 px-4 py-3 border-b border-gray-100 flex justify-between items-center">
-              <h3 className="font-bold text-gray-900 flex items-center">
+          <div className="bg-surface rounded-2xl w-full max-w-sm overflow-hidden animate-scale-in">
+            <div className="bg-surface-2 px-4 py-3 border-b border-line flex justify-between items-center">
+              <h3 className="font-bold text-content flex items-center">
                 <DollarSign className="h-5 w-5 mr-1 text-green-600" /> ការទូទាត់ប្រាក់
               </h3>
               <button
@@ -365,12 +365,12 @@ const MissionDetailPage: React.FC = () => {
                 onClick={() => setPaymentState((prev) => ({ ...prev, showModal: false }))}
                 aria-label="Close modal"
               >
-                <X className="h-5 w-5 text-gray-400" />
+                <X className="h-5 w-5 text-content-faint" />
               </button>
             </div>
             <div className="p-5 space-y-5">
               <div className="text-center">
-                <p className="text-sm text-gray-500 mb-1">សូមបង់ប្រាក់ចំនួន</p>
+                <p className="text-sm text-content-muted mb-1">សូមបង់ប្រាក់ចំនួន</p>
                 <p className="text-2xl font-bold text-primary">{formatRiel(mission.price)}</p>
               </div>
 
@@ -386,7 +386,7 @@ const MissionDetailPage: React.FC = () => {
                   </div>
                 </div>
               ) : (
-                <div className="text-center text-sm text-gray-400 py-4 bg-gray-50 rounded-xl">
+                <div className="text-center text-sm text-content-faint py-4 bg-surface-2 rounded-xl">
                   មិនមាន QR Code ទេ។ សូមទាក់ទងអ្នកបង្កើត។
                 </div>
               )}
@@ -403,7 +403,7 @@ const MissionDetailPage: React.FC = () => {
               <div>
                 <label
                   htmlFor="receiptUpload"
-                  className="block text-xs font-bold text-gray-500 mb-2 uppercase"
+                  className="block text-xs font-bold text-content-muted mb-2 uppercase"
                 >
                   បញ្ចូលវិក្កយបត្រ (Upload Receipt)
                 </label>
@@ -418,7 +418,7 @@ const MissionDetailPage: React.FC = () => {
                     }
                   />
                   <div
-                    className={`border-2 border-dashed rounded-xl p-4 flex flex-col items-center justify-center transition-colors ${paymentState.receipt ? 'border-green-500 bg-green-50' : 'border-gray-300 hover:bg-gray-50'}`}
+                    className={`border-2 border-dashed rounded-xl p-4 flex flex-col items-center justify-center transition-colors ${paymentState.receipt ? 'border-green-500 bg-green-50' : 'border-line-strong hover:bg-surface-2'}`}
                   >
                     {paymentState.receipt ? (
                       <>
@@ -430,7 +430,7 @@ const MissionDetailPage: React.FC = () => {
                     ) : (
                       <>
                         <Image className="h-8 w-8 text-gray-300 mb-2" />
-                        <p className="text-xs text-gray-500">ចុចដើម្បីបញ្ចូលរូបភាព</p>
+                        <p className="text-xs text-content-muted">ចុចដើម្បីបញ្ចូលរូបភាព</p>
                       </>
                     )}
                   </div>

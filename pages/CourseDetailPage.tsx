@@ -144,7 +144,7 @@ const CourseDetailPage: React.FC = () => {
     : false;
 
   return (
-    <div className="bg-gray-50 min-h-screen pb-10">
+    <div className="bg-surface-2 min-h-screen pb-10">
       {/* --- HERO IMAGE --- */}
       <div className="relative h-64 md:h-80 bg-gray-900">
         <img
@@ -159,14 +159,14 @@ const CourseDetailPage: React.FC = () => {
             type="button"
             onClick={() => navigate(-1)}
             aria-label="Go back"
-            className="p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/30 transition-colors"
+            className="p-2 bg-surface/20 backdrop-blur-md rounded-full text-white hover:bg-surface/30 transition-colors"
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
           <button
             type="button"
             onClick={handleShare}
-            className="p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/30 transition-colors"
+            className="p-2 bg-surface/20 backdrop-blur-md rounded-full text-white hover:bg-surface/30 transition-colors"
             title="ចែករំលែក (Share)"
             aria-label="Share Course"
           >
@@ -186,7 +186,11 @@ const CourseDetailPage: React.FC = () => {
               to={`/school/${course.school.id}`}
               className="flex items-center text-gray-200 hover:text-white transition-colors w-fit"
             >
-              <img src={course.school.logo} className="w-6 h-6 rounded bg-white mr-2" alt="logo" />
+              <img
+                src={course.school.logo}
+                className="w-6 h-6 rounded bg-surface mr-2"
+                alt="logo"
+              />
               <span className="text-sm font-bold">{course.school.name}</span>
             </Link>
           </div>
@@ -195,12 +199,12 @@ const CourseDetailPage: React.FC = () => {
 
       {/* --- MAIN INFO CARD --- */}
       <div className="max-w-5xl mx-auto px-4 -mt-4 relative z-10">
-        <div className="bg-white rounded-xl shadow-lg shadow-gray-200/50 border border-gray-100 p-5">
-          <div className="flex flex-wrap gap-y-3 gap-x-6 text-sm text-gray-600 mb-5">
+        <div className="bg-surface rounded-xl shadow-lg shadow-gray-200/50 border border-line p-5">
+          <div className="flex flex-wrap gap-y-3 gap-x-6 text-sm text-content-muted mb-5">
             <div className="flex items-center">
               <Calendar className="h-4 w-4 mr-2 text-primary" />
               <span>
-                ចាប់ផ្តើម៖ <span className="font-bold text-gray-900">{course.startDate}</span>
+                ចាប់ផ្តើម៖ <span className="font-bold text-content">{course.startDate}</span>
               </span>
             </div>
             {course.deadline && (
@@ -239,9 +243,9 @@ const CourseDetailPage: React.FC = () => {
             )}
           </div>
 
-          <div className="flex items-center justify-between border-t border-gray-100 pt-4">
+          <div className="flex items-center justify-between border-t border-line pt-4">
             <div className="flex flex-col">
-              <span className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-0.5">
+              <span className="text-xs text-content-muted uppercase font-bold tracking-wider mb-0.5">
                 តម្លៃសិក្សា (Tuition Fee)
               </span>
               <span className="text-2xl font-bold text-primary">{formatRiel(course.price)}</span>
@@ -262,7 +266,7 @@ const CourseDetailPage: React.FC = () => {
                 disabled={isExpired}
                 className={`px-8 py-3 rounded-xl font-bold shadow-lg transition-all flex items-center ${
                   isExpired
-                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed shadow-none'
+                    ? 'bg-line-strong text-content-muted cursor-not-allowed shadow-none'
                     : 'bg-primary text-white hover:bg-primary/90 active:scale-95'
                 }`}
               >
@@ -304,7 +308,7 @@ const CourseDetailPage: React.FC = () => {
           disabled={isExpired}
           className={`w-full font-bold py-3.5 rounded-xl shadow-lg flex items-center justify-center transition-transform ${
             isExpired
-              ? 'bg-gray-300 text-gray-500 cursor-not-allowed shadow-none'
+              ? 'bg-line-strong text-content-muted cursor-not-allowed shadow-none'
               : 'bg-primary text-white active:scale-95'
           }`}
         >
@@ -322,25 +326,25 @@ const CourseDetailPage: React.FC = () => {
 
       {/* --- TABS --- */}
       <div className="max-w-5xl mx-auto px-4 mt-8">
-        <div className="flex border-b border-gray-200 overflow-x-auto scrollbar-hide">
+        <div className="flex border-b border-line-strong overflow-x-auto scrollbar-hide">
           <button
             type="button"
             onClick={() => setActiveTab('overview')}
-            className={`flex-1 min-w-[100px] py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'overview' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+            className={`flex-1 min-w-[100px] py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'overview' ? 'border-primary text-primary' : 'border-transparent text-content-muted hover:text-content-soft'}`}
           >
             សង្ខេប (Overview)
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('syllabus')}
-            className={`flex-1 min-w-[100px] py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'syllabus' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+            className={`flex-1 min-w-[100px] py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'syllabus' ? 'border-primary text-primary' : 'border-transparent text-content-muted hover:text-content-soft'}`}
           >
             កម្មវិធីសិក្សា (Syllabus)
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('school')}
-            className={`flex-1 min-w-[100px] py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'school' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+            className={`flex-1 min-w-[100px] py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'school' ? 'border-primary text-primary' : 'border-transparent text-content-muted hover:text-content-soft'}`}
           >
             អំពីសាលា (School)
           </button>
@@ -349,15 +353,15 @@ const CourseDetailPage: React.FC = () => {
         <div className="mt-6 mb-12 min-h-[300px]">
           {activeTab === 'overview' && (
             <div className="space-y-6 animate-fade-in">
-              <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
-                <h3 className="font-bold text-gray-900 mb-4 text-lg">អំពីវគ្គសិក្សានេះ</h3>
-                <div className="text-gray-600 leading-relaxed">
+              <div className="bg-surface rounded-xl p-6 border border-line shadow-sm">
+                <h3 className="font-bold text-content mb-4 text-lg">អំពីវគ្គសិក្សានេះ</h3>
+                <div className="text-content-muted leading-relaxed">
                   <MarkdownText content={course.description || 'មិនមានការពិពណ៌នាទេ។'} />
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
-                <h3 className="font-bold text-gray-900 mb-4 text-lg">កាលវិភាគ & ទីតាំង</h3>
+              <div className="bg-surface rounded-xl p-6 border border-line shadow-sm">
+                <h3 className="font-bold text-content mb-4 text-lg">កាលវិភាគ & ទីតាំង</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-blue-50 text-blue-800 p-4 rounded-xl text-sm font-medium flex items-start">
                     <Clock className="h-5 w-5 mr-3 mt-0.5 flex-shrink-0" />
@@ -384,17 +388,17 @@ const CourseDetailPage: React.FC = () => {
                 course.syllabus.map((topic, idx) => (
                   <div
                     key={topic.title}
-                    className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm group hover:border-primary/30 transition-colors"
+                    className="bg-surface rounded-xl p-5 border border-line shadow-sm group hover:border-primary/30 transition-colors"
                   >
                     <div className="flex items-start">
                       <div className="bg-primary/10 text-primary font-bold w-8 h-8 rounded-lg flex items-center justify-center mr-4 flex-shrink-0 text-xs">
                         {idx + 1}
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-bold text-gray-900 text-sm mb-1 group-hover:text-primary transition-colors">
+                        <h4 className="font-bold text-content text-sm mb-1 group-hover:text-primary transition-colors">
                           {topic.title}
                         </h4>
-                        <div className="text-xs text-gray-600 leading-relaxed">
+                        <div className="text-xs text-content-muted leading-relaxed">
                           <MarkdownText content={topic.content} />
                         </div>
                       </div>
@@ -402,9 +406,11 @@ const CourseDetailPage: React.FC = () => {
                   </div>
                 ))
               ) : (
-                <div className="text-center py-12 bg-white rounded-xl border border-gray-100 border-dashed">
+                <div className="text-center py-12 bg-surface rounded-xl border border-line border-dashed">
                   <BookOpen className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-                  <p className="text-gray-500 font-medium">កម្មវិធីសិក្សាលម្អិតនឹងមកដល់ឆាប់ៗនេះ។</p>
+                  <p className="text-content-muted font-medium">
+                    កម្មវិធីសិក្សាលម្អិតនឹងមកដល់ឆាប់ៗនេះ។
+                  </p>
                 </div>
               )}
             </div>
@@ -412,15 +418,15 @@ const CourseDetailPage: React.FC = () => {
 
           {activeTab === 'school' && (
             <div className="space-y-6 animate-fade-in">
-              <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+              <div className="bg-surface rounded-xl p-6 border border-line shadow-sm">
                 <div className="flex items-center mb-6">
                   <img
                     src={course.school.logo}
-                    className="w-16 h-16 rounded-xl border border-gray-100 mr-4 p-1"
+                    className="w-16 h-16 rounded-xl border border-line mr-4 p-1"
                     alt="School Logo"
                   />
                   <div>
-                    <h3 className="font-bold text-gray-900 text-lg">{course.school.name}</h3>
+                    <h3 className="font-bold text-content text-lg">{course.school.name}</h3>
                     <Link
                       to={`/school/${course.school.id}`}
                       className="text-sm text-primary hover:underline font-medium"
@@ -430,8 +436,8 @@ const CourseDetailPage: React.FC = () => {
                   </div>
                 </div>
 
-                <h4 className="font-bold text-gray-900 text-sm mb-2">អំពីសាលា</h4>
-                <p className="text-sm text-gray-600 leading-relaxed mb-6">
+                <h4 className="font-bold text-content text-sm mb-2">អំពីសាលា</h4>
+                <p className="text-sm text-content-muted leading-relaxed mb-6">
                   {/* Fallback description if not joined, normally handled by backend view */}
                   វគ្គសិក្សានេះផ្តល់ជូនដោយ {course.school.name}{' '}
                   ដែលជាគ្រឹះស្ថានអប់រំឈានមុខគេមួយក្នុងថ្នាល REAN។
@@ -444,8 +450,8 @@ const CourseDetailPage: React.FC = () => {
 
         {/* --- RELATED COURSES --- */}
         {relatedCourses.length > 0 && (
-          <div className="mb-10 pt-8 border-t border-gray-200">
-            <h3 className="font-bold text-gray-900 mb-6 px-2 text-lg">វគ្គសិក្សាស្រដៀងគ្នា</h3>
+          <div className="mb-10 pt-8 border-t border-line-strong">
+            <h3 className="font-bold text-content mb-6 px-2 text-lg">វគ្គសិក្សាស្រដៀងគ្នា</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {relatedCourses.map((rc) => (
                 <ShortCourseCard key={rc.id} course={rc} schoolName={rc.schoolName} />
@@ -458,28 +464,30 @@ const CourseDetailPage: React.FC = () => {
       {/* --- ENROLL MODAL --- */}
       {enrollState.showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="bg-white rounded-2xl w-full max-w-sm overflow-hidden animate-scale-in shadow-2xl">
-            <div className="bg-primary/5 p-5 border-b border-gray-100 flex justify-between items-center">
-              <h3 className="font-bold text-gray-900 text-lg">ចុះឈ្មោះចូលរៀន</h3>
+          <div className="bg-surface rounded-2xl w-full max-w-sm overflow-hidden animate-scale-in shadow-2xl">
+            <div className="bg-primary/5 p-5 border-b border-line flex justify-between items-center">
+              <h3 className="font-bold text-content text-lg">ចុះឈ្មោះចូលរៀន</h3>
               <button
                 type="button"
                 onClick={() => setEnrollState((prev) => ({ ...prev, showModal: false }))}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-content-faint hover:text-content-muted"
                 aria-label="Close Enroll Modal"
               >
                 <X className="h-6 w-6" />
               </button>
             </div>
             <div className="p-6 space-y-5">
-              <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                <p className="text-xs text-gray-500 uppercase font-bold mb-1">ដាក់ពាក្យសម្រាប់</p>
-                <p className="font-bold text-gray-900 text-base">{course.title}</p>
+              <div className="bg-surface-2 p-4 rounded-xl border border-line">
+                <p className="text-xs text-content-muted uppercase font-bold mb-1">
+                  ដាក់ពាក្យសម្រាប់
+                </p>
+                <p className="font-bold text-content text-base">{course.title}</p>
               </div>
 
               <div>
                 <label
                   htmlFor="enroll-name"
-                  className="block text-xs font-bold text-gray-500 mb-1.5 uppercase"
+                  className="block text-xs font-bold text-content-muted mb-1.5 uppercase"
                 >
                   ឈ្មោះរបស់អ្នក
                 </label>
@@ -493,13 +501,13 @@ const CourseDetailPage: React.FC = () => {
                       form: { ...prev.form, name: e.target.value },
                     }))
                   }
-                  className="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full p-3.5 bg-surface-2 border border-line-strong rounded-xl text-sm focus:bg-surface focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
               <div>
                 <label
                   htmlFor="enroll-phone"
-                  className="block text-xs font-bold text-gray-500 mb-1.5 uppercase"
+                  className="block text-xs font-bold text-content-muted mb-1.5 uppercase"
                 >
                   លេខទូរស័ព្ទ <span className="text-red-500">*</span>
                 </label>
@@ -514,7 +522,7 @@ const CourseDetailPage: React.FC = () => {
                     }))
                   }
                   placeholder="012 345 678"
-                  className="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full p-3.5 bg-surface-2 border border-line-strong rounded-xl text-sm focus:bg-surface focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 

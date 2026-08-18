@@ -28,23 +28,23 @@ const SchoolInquiryManager: React.FC<SchoolInquiryManagerProps> = ({ inquiries, 
   return (
     <div className="space-y-4 animate-fade-in">
       <div className="flex justify-between items-center mb-2">
-        <h3 className="font-bold text-gray-900 text-lg">សិស្សដែលបានសាកសួរព័ត៌មាន (Leads)</h3>
-        <span className="bg-gray-100 text-gray-600 text-xs font-bold px-3 py-1 rounded-full">
+        <h3 className="font-bold text-content text-lg">សិស្សដែលបានសាកសួរព័ត៌មាន (Leads)</h3>
+        <span className="bg-surface-3 text-content-muted text-xs font-bold px-3 py-1 rounded-full">
           សរុប៖ {inquiries.length}
         </span>
       </div>
 
       {inquiries.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-3xl border border-dashed border-gray-200">
+        <div className="text-center py-16 bg-surface rounded-3xl border border-dashed border-line-strong">
           <MessageCircle className="h-12 w-12 mx-auto text-gray-200 mb-3" />
-          <p className="text-gray-400">មិនទាន់មានសំណួរពីសិស្សនៅឡើយទេ។</p>
+          <p className="text-content-faint">មិនទាន់មានសំណួរពីសិស្សនៅឡើយទេ។</p>
         </div>
       ) : (
         <div className="grid gap-4">
           {inquiries.map((item) => (
             <div
               key={item.id}
-              className="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm flex flex-col md:flex-row justify-between gap-4 hover:shadow-md transition-shadow"
+              className="bg-surface p-5 rounded-3xl border border-line shadow-sm flex flex-col md:flex-row justify-between gap-4 hover:shadow-md transition-shadow"
             >
               <div className="flex gap-4">
                 <div className="bg-blue-50 p-3 rounded-2xl text-blue-600 h-fit flex-shrink-0">
@@ -52,8 +52,8 @@ const SchoolInquiryManager: React.FC<SchoolInquiryManagerProps> = ({ inquiries, 
                 </div>
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h4 className="font-bold text-gray-900">{item.studentName}</h4>
-                    <span className="text-[10px] text-gray-400 flex items-center">
+                    <h4 className="font-bold text-content">{item.studentName}</h4>
+                    <span className="text-[10px] text-content-faint flex items-center">
                       <Clock className="h-3 w-3 mr-1" /> {item.createdAt}
                     </span>
                   </div>
@@ -64,14 +64,16 @@ const SchoolInquiryManager: React.FC<SchoolInquiryManagerProps> = ({ inquiries, 
                     <Phone className="h-3 w-3 mr-1" /> {item.studentPhone}
                   </a>
 
-                  <div className="mt-3 bg-gray-50 p-3 rounded-2xl relative">
-                    <div className="absolute -top-2 left-4 w-3 h-3 bg-gray-50 rotate-45 border-l border-t border-gray-50"></div>
-                    <p className="text-sm text-gray-600 italic leading-relaxed">"{item.message}"</p>
+                  <div className="mt-3 bg-surface-2 p-3 rounded-2xl relative">
+                    <div className="absolute -top-2 left-4 w-3 h-3 bg-surface-2 rotate-45 border-l border-t border-line"></div>
+                    <p className="text-sm text-content-muted italic leading-relaxed">
+                      "{item.message}"
+                    </p>
                   </div>
 
                   {item.admissionTitle && (
                     <div className="mt-3 flex items-center">
-                      <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                      <span className="text-[10px] font-bold text-content-faint uppercase tracking-wider">
                         ចំណាប់អារម្មណ៍លើ៖
                       </span>
                       <span className="ml-2 text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">

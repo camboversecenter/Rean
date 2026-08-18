@@ -2,6 +2,72 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Theme tokens.
+ *
+ * Light is the default: the values on :root apply until the user explicitly
+ * chooses dark, at which point ThemeProvider adds `.dark` to <html>. The system
+ * preference is deliberately not consulted, so a learner on a phone set to dark
+ * still gets the light interface until they ask otherwise.
+ *
+ * Values are space separated RGB channels rather than hex, so Tailwind can
+ * apply opacity modifiers like bg-surface/80.
+ */
+@layer base {
+  :root {
+    --c-primary: 15 118 110; /* teal 700 */
+    --c-secondary: 245 158 11; /* amber 500 */
+    --c-accent: 13 148 136; /* teal 600 */
+
+    --c-surface: 255 255 255; /* white */
+    --c-surface-2: 249 250 251; /* gray 50 */
+    --c-surface-3: 243 244 246; /* gray 100 */
+
+    --c-content: 17 24 39; /* gray 900 */
+    --c-content-soft: 55 65 81; /* gray 700 */
+    --c-content-muted: 107 114 128; /* gray 500 */
+    --c-content-faint: 156 163 175; /* gray 400 */
+
+    --c-line: 243 244 246; /* gray 100 */
+    --c-line-strong: 229 231 235; /* gray 200 */
+
+    color-scheme: light;
+  }
+
+  .dark {
+    /* Lifted teal and amber. The light-mode teal is too dark to read against a
+       dark surface, and fails contrast on small Khmer glyphs. */
+    --c-primary: 45 212 191; /* teal 300 */
+    --c-secondary: 252 211 77; /* amber 300 */
+    --c-accent: 20 184 166; /* teal 500 */
+
+    /* Slightly blue-tinted charcoals rather than pure black, which reduces the
+       halation that makes light text smear on OLED phones. */
+    --c-surface: 24 31 42;
+    --c-surface-2: 15 20 28;
+    --c-surface-3: 34 43 56;
+
+    --c-content: 241 245 249;
+    --c-content-soft: 203 213 225;
+    --c-content-muted: 148 163 184;
+    --c-content-faint: 100 116 139;
+
+    --c-line: 39 49 63;
+    --c-line-strong: 51 63 80;
+
+    color-scheme: dark;
+  }
+
+  /* The page itself, so the area below short pages is themed too. */
+  html {
+    background-color: rgb(var(--c-surface-2));
+  }
+
+  body {
+    @apply bg-surface-2 text-content-soft;
+  }
+}
+
 @layer utilities {
   .pb-safe {
     padding-bottom: env(safe-area-inset-bottom);

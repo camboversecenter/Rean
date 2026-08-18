@@ -48,9 +48,9 @@ const MissionClassManager: React.FC<MissionClassManagerProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full">
-      <div className="p-5 border-b border-gray-50 bg-gray-50/50">
-        <h3 className="font-bold text-gray-900 flex items-center">
+    <div className="bg-surface rounded-2xl shadow-sm border border-line overflow-hidden flex flex-col h-full">
+      <div className="p-5 border-b border-line bg-surface-2/50">
+        <h3 className="font-bold text-content flex items-center">
           <BookOpen className="h-5 w-5 mr-2 text-primary" />
           គ្រប់គ្រងថ្នាក់ (Cohorts)
         </h3>
@@ -58,27 +58,27 @@ const MissionClassManager: React.FC<MissionClassManagerProps> = ({
 
       <div className="p-4 space-y-2 flex-1 overflow-y-auto max-h-[400px]">
         {classes.length === 0 ? (
-          <div className="text-center py-6 text-gray-400 text-xs italic">
+          <div className="text-center py-6 text-content-faint text-xs italic">
             មិនទាន់មានថ្នាក់រៀនទេ។ បង្កើតមួយឥឡូវនេះ!
           </div>
         ) : (
           classes.map((c) => (
             <div
               key={c.id}
-              className={`group flex items-center justify-between p-1 rounded-xl transition-all ${selectedClassId === c.id ? 'bg-primary/5 ring-1 ring-primary/20' : 'hover:bg-gray-50'}`}
+              className={`group flex items-center justify-between p-1 rounded-xl transition-all ${selectedClassId === c.id ? 'bg-primary/5 ring-1 ring-primary/20' : 'hover:bg-surface-2'}`}
             >
               <button
                 type="button"
                 onClick={() => onSelectClass(c.id)}
-                className="flex-1 text-left px-3 py-2 text-sm font-medium text-gray-700 truncate flex items-center"
+                className="flex-1 text-left px-3 py-2 text-sm font-medium text-content-soft truncate flex items-center"
               >
-                <Users className="h-4 w-4 mr-2 text-gray-400" />
+                <Users className="h-4 w-4 mr-2 text-content-faint" />
                 {c.title}
               </button>
               <button
                 type="button"
                 onClick={() => handleDeleteClass(c.id)}
-                className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
+                className="p-2 text-content-faint hover:text-red-500 hover:bg-red-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
                 title="Delete Class"
                 aria-label={`Delete Class ${c.title}`}
               >
@@ -89,10 +89,10 @@ const MissionClassManager: React.FC<MissionClassManagerProps> = ({
         )}
       </div>
 
-      <div className="p-4 border-t border-gray-100 bg-gray-50">
+      <div className="p-4 border-t border-line bg-surface-2">
         <label
           htmlFor="newClassTitle"
-          className="text-[10px] font-bold text-gray-500 uppercase mb-2 block"
+          className="text-[10px] font-bold text-content-muted uppercase mb-2 block"
         >
           បង្កើតថ្នាក់ថ្មី
         </label>
@@ -100,7 +100,7 @@ const MissionClassManager: React.FC<MissionClassManagerProps> = ({
           <input
             id="newClassTitle"
             type="text"
-            className="flex-1 p-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 bg-white shadow-sm"
+            className="flex-1 p-2.5 border border-line-strong rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 bg-surface shadow-sm"
             placeholder="ឈ្មោះថ្នាក់ (ឧ. ជំនាន់ទី ១)"
             value={state.title}
             onChange={(e) => setState((s) => ({ ...s, title: e.target.value }))}

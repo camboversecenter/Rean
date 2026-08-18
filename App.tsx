@@ -133,10 +133,10 @@ const AppContent: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-surface-2">
         <div className="flex flex-col items-center">
           <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
-          <p className="text-gray-500 font-medium">Loading REAN...</p>
+          <p className="text-content-muted font-medium">Loading REAN...</p>
         </div>
       </div>
     );
@@ -148,7 +148,7 @@ const AppContent: React.FC = () => {
   const PUBLIC_INFO_HASHES = ['#/about'];
   if (session && !userRole && !PUBLIC_INFO_HASHES.includes(window.location.hash)) {
     return (
-      <div className="min-h-screen bg-gray-50 font-sans">
+      <div className="min-h-screen bg-surface-2 font-sans">
         <Routes>
           <Route path="/about" element={<AboutPage />} />
           <Route path="*" element={<RoleSelectionPage />} />
@@ -160,7 +160,7 @@ const AppContent: React.FC = () => {
 
   // MAIN APP ROUTING (Both Public & Protected)
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 font-sans">
+    <div className="flex flex-col min-h-screen bg-surface-2 font-sans">
       <ScrollToTop />
       <PageTitleUpdater />
       <Header />

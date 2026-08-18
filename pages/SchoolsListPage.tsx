@@ -72,10 +72,10 @@ const SchoolsListPage: React.FC = () => {
   };
 
   return (
-    <div className="pb-20 pt-4 px-4 min-h-screen bg-gray-50">
+    <div className="pb-20 pt-4 px-4 min-h-screen bg-surface-2">
       <div className="max-w-5xl mx-auto">
         <div className="mb-6">
-          <h1 className="text-xl font-bold text-gray-900 mb-4">
+          <h1 className="text-xl font-bold text-content mb-4">
             ការជ្រើសរើសសិស្សថ្មី (Recruitment)
           </h1>
 
@@ -88,9 +88,9 @@ const SchoolsListPage: React.FC = () => {
               value={state.searchQuery}
               onChange={(e) => setState((s) => ({ ...s, searchQuery: e.target.value }))}
               placeholder="ស្វែងរកតាមឈ្មោះសាលា..."
-              className="w-full bg-white border border-gray-200 rounded-xl py-3 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-sm"
+              className="w-full bg-surface border border-line-strong rounded-xl py-3 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-sm"
             />
-            <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+            <Search className="absolute left-3 top-3 h-5 w-5 text-content-faint" />
           </div>
 
           {/* Filter Chips */}
@@ -100,7 +100,7 @@ const SchoolsListPage: React.FC = () => {
                 type="button"
                 key={t}
                 onClick={() => setState((s) => ({ ...s, filterType: t }))}
-                className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold transition-colors ${state.filterType === t ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold transition-colors ${state.filterType === t ? 'bg-primary text-white' : 'bg-surface-3 text-content-muted hover:bg-line-strong'}`}
               >
                 {typeMapping[t]}
               </button>
@@ -129,7 +129,7 @@ const SchoolsListPage: React.FC = () => {
                     type="button"
                     onClick={handleLoadMore}
                     disabled={state.loadingMore}
-                    className="bg-white border border-gray-200 text-gray-600 font-bold py-2 px-6 rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-50 flex items-center text-sm"
+                    className="bg-surface border border-line-strong text-content-muted font-bold py-2 px-6 rounded-full shadow-sm hover:bg-surface-2 disabled:opacity-50 flex items-center text-sm"
                   >
                     {state.loadingMore ? (
                       <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -142,7 +142,7 @@ const SchoolsListPage: React.FC = () => {
               )}
             </>
           ) : (
-            <div className="text-center py-10 text-gray-500">
+            <div className="text-center py-10 text-content-muted">
               <Building2 className="h-12 w-12 mx-auto mb-2 opacity-20" />
               <p>មិនមានសាលាដែលអ្នកស្វែងរកទេ</p>
             </div>

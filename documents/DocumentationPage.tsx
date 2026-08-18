@@ -19,15 +19,15 @@ import { Link } from 'react-router-dom';
 
 const DocumentationPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gray-50 pb-24 pt-8 px-4 font-['Kantumruy_Pro']">
+    <div className="min-h-screen bg-surface-2 pb-24 pt-8 px-4 font-['Kantumruy_Pro']">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12 animate-fade-in">
-          <div className="inline-flex items-center justify-center p-3 bg-white rounded-2xl shadow-sm mb-4">
+          <div className="inline-flex items-center justify-center p-3 bg-surface rounded-2xl shadow-sm mb-4">
             <BookOpen className="h-8 w-8 text-primary mr-2" />
-            <h1 className="text-2xl font-bold text-gray-900">ឯកសារណែនាំ REAN (Documentation)</h1>
+            <h1 className="text-2xl font-bold text-content">ឯកសារណែនាំ REAN (Documentation)</h1>
           </div>
-          <p className="text-gray-500 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-content-muted max-w-2xl mx-auto leading-relaxed">
             ស្វាគមន៍មកកាន់ REAN! នេះជាការណែនាំលម្អិតអំពីរបៀបប្រើប្រាស់មុខងារសំខាន់ៗ តួនាទីរបស់អ្នក
             និងរបៀបដែលប្រព័ន្ធសេដ្ឋកិច្ច (Economy) ដំណើរការ។
           </p>
@@ -37,10 +37,10 @@ const DocumentationPage: React.FC = () => {
           {/* 1. USER ROLES */}
           <section
             id="roles"
-            className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden"
+            className="bg-surface rounded-3xl shadow-sm border border-line overflow-hidden"
           >
-            <div className="bg-gradient-to-r from-gray-50 to-white p-6 border-b border-gray-100">
-              <h2 className="text-xl font-bold text-gray-900 flex items-center">
+            <div className="bg-gradient-to-r from-gray-50 to-white p-6 border-b border-line">
+              <h2 className="text-xl font-bold text-content flex items-center">
                 <span className="bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold shadow-lg shadow-primary/30">
                   1
                 </span>
@@ -81,7 +81,7 @@ const DocumentationPage: React.FC = () => {
               <span className="bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shadow-lg shadow-primary/30">
                 2
               </span>
-              <h2 className="text-2xl font-bold text-gray-900">មុខងារសំខាន់ៗ (Core Functions)</h2>
+              <h2 className="text-2xl font-bold text-content">មុខងារសំខាន់ៗ (Core Functions)</h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -91,7 +91,7 @@ const DocumentationPage: React.FC = () => {
                 title="ទីផ្សារសាលារៀន (Admission Market)"
                 color="bg-blue-50"
               >
-                <ul className="space-y-3 text-sm text-gray-600 mt-2 mb-4">
+                <ul className="space-y-3 text-sm text-content-muted mt-2 mb-4">
                   <li className="flex items-start">
                     <CheckCircle className="h-4 w-4 mr-2 text-blue-500 mt-0.5 flex-shrink-0" />
                     <span>
@@ -121,7 +121,7 @@ const DocumentationPage: React.FC = () => {
                 title="វគ្គសិក្សាជំនាញខ្លី (Short Courses)"
                 color="bg-indigo-50"
               >
-                <ul className="space-y-3 text-sm text-gray-600 mt-2 mb-4">
+                <ul className="space-y-3 text-sm text-content-muted mt-2 mb-4">
                   <li className="flex items-start">
                     <CheckCircle className="h-4 w-4 mr-2 text-indigo-500 mt-0.5 flex-shrink-0" />
                     <span>
@@ -151,7 +151,7 @@ const DocumentationPage: React.FC = () => {
                 title="ទីផ្សារគ្រូបង្រៀន (Tutor Market)"
                 color="bg-green-50"
               >
-                <ul className="space-y-3 text-sm text-gray-600 mt-2 mb-4">
+                <ul className="space-y-3 text-sm text-content-muted mt-2 mb-4">
                   <li className="flex items-start">
                     <CheckCircle className="h-4 w-4 mr-2 text-green-500 mt-0.5 flex-shrink-0" />
                     <span>
@@ -184,7 +184,7 @@ const DocumentationPage: React.FC = () => {
                 <p className="text-xs font-bold text-red-500 uppercase tracking-wider mb-2">
                   Project-Based Learning
                 </p>
-                <ul className="space-y-3 text-sm text-gray-600 mb-4">
+                <ul className="space-y-3 text-sm text-content-muted mb-4">
                   <li className="flex items-start">
                     <CheckCircle className="h-4 w-4 mr-2 text-red-500 mt-0.5 flex-shrink-0" />
                     <span>
@@ -214,7 +214,7 @@ const DocumentationPage: React.FC = () => {
                 title="សហគមន៍ (Lazy Learning)"
                 color="bg-yellow-50"
               >
-                <ul className="space-y-3 text-sm text-gray-600 mt-2 mb-4">
+                <ul className="space-y-3 text-sm text-content-muted mt-2 mb-4">
                   <li className="flex items-start">
                     <CheckCircle className="h-4 w-4 mr-2 text-yellow-600 mt-0.5 flex-shrink-0" />
                     <span>
@@ -244,7 +244,7 @@ const DocumentationPage: React.FC = () => {
                 title="សុភាទន្សាយ (AI Assistant)"
                 color="bg-teal-50"
               >
-                <ul className="space-y-3 text-sm text-gray-600 mt-2">
+                <ul className="space-y-3 text-sm text-content-muted mt-2">
                   <li className="flex items-start">
                     <CheckCircle className="h-4 w-4 mr-2 text-teal-600 mt-0.5 flex-shrink-0" />
                     <span>
@@ -267,18 +267,18 @@ const DocumentationPage: React.FC = () => {
           {/* 3. ECONOMY SYSTEM */}
           <section
             id="economy"
-            className="bg-white rounded-3xl shadow-lg shadow-gray-200/50 border border-gray-100 overflow-hidden relative"
+            className="bg-surface rounded-3xl shadow-lg shadow-gray-200/50 border border-line overflow-hidden relative"
           >
             <div className="absolute top-0 right-0 p-32 bg-yellow-50 rounded-full blur-3xl -mr-16 -mt-16 opacity-50"></div>
 
-            <div className="bg-white p-6 border-b border-gray-100 relative z-10">
-              <h2 className="text-xl font-bold text-gray-900 flex items-center">
+            <div className="bg-surface p-6 border-b border-line relative z-10">
+              <h2 className="text-xl font-bold text-content flex items-center">
                 <span className="bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold shadow-lg shadow-primary/30">
                   3
                 </span>
                 ប្រព័ន្ធសេដ្ឋកិច្ច (Economy & Rewards)
               </h2>
-              <p className="text-gray-500 text-sm mt-1 ml-11">
+              <p className="text-content-muted text-sm mt-1 ml-11">
                 ស្វែងយល់ពីភាពខុសគ្នារវាង XP និង Points
               </p>
             </div>
@@ -323,7 +323,7 @@ const DocumentationPage: React.FC = () => {
                     ជារង្វាន់សម្រាប់ភាពសកម្មរបស់អ្នក។ XP កំណត់ <strong>កម្រិត (Level)</strong>{' '}
                     និងចំណាត់ថ្នាក់របស់អ្នកក្នុង Leaderboard។
                   </p>
-                  <div className="bg-white/60 p-3 rounded-xl space-y-2 text-xs font-medium text-yellow-900">
+                  <div className="bg-surface/60 p-3 rounded-xl space-y-2 text-xs font-medium text-yellow-900">
                     <div className="flex justify-between">
                       <span>• មិនអាចចាយបាន</span> <span>🚫</span>
                     </div>
@@ -352,7 +352,7 @@ const DocumentationPage: React.FC = () => {
                   <p className="text-sm text-green-800 leading-relaxed mb-4">
                     ជារូបិយប័ណ្ណឌីជីថលក្នុង App។ អ្នកអាចប្រើវាដើម្បីទិញសេវាកម្ម ឬដូរយករង្វាន់។
                   </p>
-                  <div className="bg-white/60 p-3 rounded-xl space-y-2 text-xs font-medium text-green-900">
+                  <div className="bg-surface/60 p-3 rounded-xl space-y-2 text-xs font-medium text-green-900">
                     <div className="flex justify-between">
                       <span>• អាចចាយបាន</span> <span>💰</span>
                     </div>
@@ -366,9 +366,9 @@ const DocumentationPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
+              <div className="overflow-x-auto rounded-xl border border-line-strong shadow-sm">
                 <table className="w-full text-sm text-left">
-                  <thead className="bg-gray-50 text-gray-700 font-bold uppercase text-xs">
+                  <thead className="bg-surface-2 text-content-soft font-bold uppercase text-xs">
                     <tr>
                       <th className="p-4">សកម្មភាព (Action)</th>
                       <th className="p-4 text-center">XP (កេរ្តិ៍ឈ្មោះ)</th>
@@ -376,108 +376,106 @@ const DocumentationPage: React.FC = () => {
                       <th className="p-4 text-right">លក្ខខណ្ឌ (Requirement)</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100 bg-white">
+                  <tbody className="divide-y divide-line bg-surface">
                     {/* EARNINGS */}
-                    <tr className="hover:bg-gray-50">
-                      <td className="p-4 font-medium text-gray-900">សួរសំណួរក្នុងសហគមន៍</td>
+                    <tr className="hover:bg-surface-2">
+                      <td className="p-4 font-medium text-content">សួរសំណួរក្នុងសហគមន៍</td>
                       <td className="p-4 text-center font-bold text-yellow-600">+5 XP</td>
-                      <td className="p-4 text-center text-gray-400">0</td>
-                      <td className="p-4 text-right text-gray-500">5 ដង/ថ្ងៃ</td>
+                      <td className="p-4 text-center text-content-faint">0</td>
+                      <td className="p-4 text-right text-content-muted">5 ដង/ថ្ងៃ</td>
                     </tr>
-                    <tr className="hover:bg-gray-50 bg-green-50/20">
-                      <td className="p-4 font-medium text-gray-900">ឆ្លើយតបដែលមានប្រយោជន៍</td>
+                    <tr className="hover:bg-surface-2 bg-green-50/20">
+                      <td className="p-4 font-medium text-content">ឆ្លើយតបដែលមានប្រយោជន៍</td>
                       <td className="p-4 text-center font-bold text-yellow-600">+2 XP</td>
                       <td className="p-4 text-center font-bold text-green-600">+1 Point</td>
                       <td className="p-4 text-right text-red-600 font-bold">AI Score ≥ 70</td>
                     </tr>
-                    <tr className="hover:bg-gray-50">
-                      <td className="p-4 font-medium text-gray-900">
+                    <tr className="hover:bg-surface-2">
+                      <td className="p-4 font-medium text-content">
                         ចម្លើយត្រូវបានទទួលយក (Accepted)
                       </td>
                       <td className="p-4 text-center font-bold text-yellow-600">+20 XP</td>
-                      <td className="p-4 text-center text-gray-400 italic">Bounty Only*</td>
-                      <td className="p-4 text-right text-gray-500">គ្មានកំណត់</td>
+                      <td className="p-4 text-center text-content-faint italic">Bounty Only*</td>
+                      <td className="p-4 text-right text-content-muted">គ្មានកំណត់</td>
                     </tr>
-                    <tr className="hover:bg-gray-50 bg-yellow-50/30">
-                      <td className="p-4 font-medium text-gray-900">
-                        ឈ្នះ Bounty (ចម្លើយល្អបំផុត)
-                      </td>
-                      <td className="p-4 text-center text-gray-400">-</td>
+                    <tr className="hover:bg-surface-2 bg-yellow-50/30">
+                      <td className="p-4 font-medium text-content">ឈ្នះ Bounty (ចម្លើយល្អបំផុត)</td>
+                      <td className="p-4 text-center text-content-faint">-</td>
                       <td className="p-4 text-center font-bold text-green-600">Varies</td>
-                      <td className="p-4 text-right text-gray-500">Paid by User</td>
+                      <td className="p-4 text-right text-content-muted">Paid by User</td>
                     </tr>
-                    <tr className="hover:bg-gray-50">
-                      <td className="p-4 font-medium text-gray-900">កាដូសំណាង (Lucky Drop)</td>
-                      <td className="p-4 text-center text-gray-400">-</td>
+                    <tr className="hover:bg-surface-2">
+                      <td className="p-4 font-medium text-content">កាដូសំណាង (Lucky Drop)</td>
+                      <td className="p-4 text-center text-content-faint">-</td>
                       <td className="p-4 text-center font-bold text-green-600">+5 ~ 20 Points</td>
-                      <td className="p-4 text-right text-gray-500">3 ដង/ថ្ងៃ (Random)</td>
+                      <td className="p-4 text-right text-content-muted">3 ដង/ថ្ងៃ (Random)</td>
                     </tr>
 
                     {/* SPENDING */}
-                    <tr className="hover:bg-gray-50">
-                      <td className="p-4 font-medium text-gray-900">ប្រើ AI Chat (សុភាទន្សាយ)</td>
-                      <td className="p-4 text-center text-gray-400">-</td>
+                    <tr className="hover:bg-surface-2">
+                      <td className="p-4 font-medium text-content">ប្រើ AI Chat (សុភាទន្សាយ)</td>
+                      <td className="p-4 text-center text-content-faint">-</td>
                       <td className="p-4 text-center font-bold text-red-500">-1 Point / សារ</td>
-                      <td className="p-4 text-right text-gray-500">-</td>
+                      <td className="p-4 text-right text-content-muted">-</td>
                     </tr>
-                    <tr className="hover:bg-gray-50">
-                      <td className="p-4 font-medium text-gray-900">
+                    <tr className="hover:bg-surface-2">
+                      <td className="p-4 font-medium text-content">
                         ឱ្យ AI ពិនិត្យកិច្ចការ (Evaluate)
                       </td>
-                      <td className="p-4 text-center text-gray-400">-</td>
+                      <td className="p-4 text-center text-content-faint">-</td>
                       <td className="p-4 text-center font-bold text-red-500">-5 Points</td>
-                      <td className="p-4 text-right text-gray-500">-</td>
+                      <td className="p-4 text-right text-content-muted">-</td>
                     </tr>
-                    <tr className="hover:bg-gray-50">
-                      <td className="p-4 font-medium text-gray-900">Live Tutor (Voice)</td>
-                      <td className="p-4 text-center text-gray-400">-</td>
+                    <tr className="hover:bg-surface-2">
+                      <td className="p-4 font-medium text-content">Live Tutor (Voice)</td>
+                      <td className="p-4 text-center text-content-faint">-</td>
                       <td className="p-4 text-center font-bold text-red-500">
                         -10 Points / Session
                       </td>
-                      <td className="p-4 text-right text-gray-500">-</td>
+                      <td className="p-4 text-right text-content-muted">-</td>
                     </tr>
-                    <tr className="hover:bg-gray-50">
-                      <td className="p-4 font-medium text-gray-900">
+                    <tr className="hover:bg-surface-2">
+                      <td className="p-4 font-medium text-content">
                         បង្កើតមេរៀន AI (Generate Lesson)
                       </td>
-                      <td className="p-4 text-center text-gray-400">-</td>
+                      <td className="p-4 text-center text-content-faint">-</td>
                       <td className="p-4 text-center font-bold text-red-500">-10 Points</td>
-                      <td className="p-4 text-right text-gray-500">-</td>
+                      <td className="p-4 text-right text-content-muted">-</td>
                     </tr>
-                    <tr className="hover:bg-gray-50">
-                      <td className="p-4 font-medium text-gray-900">បង្កើតរូបភាព AI (Image Gen)</td>
-                      <td className="p-4 text-center text-gray-400">-</td>
+                    <tr className="hover:bg-surface-2">
+                      <td className="p-4 font-medium text-content">បង្កើតរូបភាព AI (Image Gen)</td>
+                      <td className="p-4 text-center text-content-faint">-</td>
                       <td className="p-4 text-center font-bold text-red-500">-25 Points</td>
-                      <td className="p-4 text-right text-gray-500">-</td>
+                      <td className="p-4 text-right text-content-muted">-</td>
                     </tr>
-                    <tr className="hover:bg-gray-50">
-                      <td className="p-4 font-medium text-gray-900">
+                    <tr className="hover:bg-surface-2">
+                      <td className="p-4 font-medium text-content">
                         បង្កើតបេសកកម្ម AI (Mission Gen)
                       </td>
-                      <td className="p-4 text-center text-gray-400">-</td>
+                      <td className="p-4 text-center text-content-faint">-</td>
                       <td className="p-4 text-center font-bold text-red-500">-10 Points</td>
-                      <td className="p-4 text-right text-gray-500">For Creators</td>
+                      <td className="p-4 text-right text-content-muted">For Creators</td>
                     </tr>
-                    <tr className="hover:bg-gray-50">
-                      <td className="p-4 font-medium text-gray-900">
+                    <tr className="hover:bg-surface-2">
+                      <td className="p-4 font-medium text-content">
                         ទិញប្រអប់រង្វាន់ (Mystery Box)
                       </td>
-                      <td className="p-4 text-center text-gray-400">-</td>
+                      <td className="p-4 text-center text-content-faint">-</td>
                       <td className="p-4 text-center font-bold text-red-500">Varies (e.g. 100)</td>
-                      <td className="p-4 text-right text-gray-500">-</td>
+                      <td className="p-4 text-right text-content-muted">-</td>
                     </tr>
-                    <tr className="hover:bg-gray-50">
-                      <td className="p-4 font-medium text-gray-900">
+                    <tr className="hover:bg-surface-2">
+                      <td className="p-4 font-medium text-content">
                         ដាក់ប្រាក់រង្វាន់ (Create Bounty)
                       </td>
-                      <td className="p-4 text-center text-gray-400">-</td>
+                      <td className="p-4 text-center text-content-faint">-</td>
                       <td className="p-4 text-center font-bold text-red-500">Varies (User Set)</td>
-                      <td className="p-4 text-right text-gray-500">-</td>
+                      <td className="p-4 text-right text-content-muted">-</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-gray-400 mt-3 text-right italic">
+              <p className="text-xs text-content-faint mt-3 text-right italic">
                 * Quality Control (Web3 Ready): រាល់ចម្លើយត្រូវឆ្លងកាត់ការត្រួតពិនិត្យដោយ AI។
               </p>
             </div>
@@ -496,11 +494,11 @@ const RoleCard: React.FC<{ icon: any; title: string; desc: string; color: string
   desc,
   color,
 }) => (
-  <div className="flex gap-4 items-start p-4 rounded-2xl border border-gray-100 hover:shadow-md transition-shadow bg-white h-full">
+  <div className="flex gap-4 items-start p-4 rounded-2xl border border-line hover:shadow-md transition-shadow bg-surface h-full">
     <div className={`p-3 rounded-xl ${color} flex-shrink-0`}>{icon}</div>
     <div>
-      <h3 className="font-bold text-gray-900 text-base mb-2">{title}</h3>
-      <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
+      <h3 className="font-bold text-content text-base mb-2">{title}</h3>
+      <p className="text-content-muted text-sm leading-relaxed">{desc}</p>
     </div>
   </div>
 );
@@ -511,10 +509,10 @@ const FunctionCard: React.FC<{
   color: string;
   children: React.ReactNode;
 }> = ({ icon, title, color, children }) => (
-  <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:border-primary/20 transition-colors h-full">
+  <div className="bg-surface rounded-2xl p-5 border border-line shadow-sm hover:border-primary/20 transition-colors h-full">
     <div className="flex items-center gap-3 mb-3">
       <div className={`p-2.5 rounded-lg ${color}`}>{icon}</div>
-      <h3 className="font-bold text-gray-900 text-lg">{title}</h3>
+      <h3 className="font-bold text-content text-lg">{title}</h3>
     </div>
     <div className="pl-1">{children}</div>
   </div>

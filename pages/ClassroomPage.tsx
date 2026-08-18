@@ -195,28 +195,28 @@ const ClassroomPage: React.FC = () => {
   if (!booking) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col pb-20">
+    <div className="min-h-screen bg-surface-2 flex flex-col pb-20">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-4 py-3 shadow-sm sticky top-0 z-20">
+      <div className="bg-surface border-b border-line-strong px-4 py-3 shadow-sm sticky top-0 z-20">
         <div className="max-w-3xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => navigate('/account')}
-              className="p-2 hover:bg-gray-100 rounded-full"
+              className="p-2 hover:bg-surface-3 rounded-full"
             >
-              <X className="h-5 w-5 text-gray-500" />
+              <X className="h-5 w-5 text-content-muted" />
             </button>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="font-bold text-gray-900 text-lg">{booking.subject}</h1>
+                <h1 className="font-bold text-content text-lg">{booking.subject}</h1>
                 {booking.status === 'Completed' && (
                   <span className="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded-full font-bold">
                     បានបញ្ចប់ (Paid)
                   </span>
                 )}
               </div>
-              <p className="text-xs text-gray-500 flex items-center">
+              <p className="text-xs text-content-muted flex items-center">
                 {isTutor ? (
                   <User className="h-3 w-3 mr-1" />
                 ) : (
@@ -249,18 +249,18 @@ const ClassroomPage: React.FC = () => {
 
       <div className="max-w-3xl mx-auto w-full flex-1 p-4 flex flex-col">
         {/* Tabs */}
-        <div className="flex bg-white rounded-xl p-1 shadow-sm border border-gray-100 mb-4">
+        <div className="flex bg-surface rounded-xl p-1 shadow-sm border border-line mb-4">
           <button
             type="button"
             onClick={() => setActiveTab('timeline')}
-            className={`flex-1 py-2 text-xs font-bold rounded-lg ${activeTab === 'timeline' ? 'bg-gray-100 text-gray-900' : 'text-gray-500'}`}
+            className={`flex-1 py-2 text-xs font-bold rounded-lg ${activeTab === 'timeline' ? 'bg-surface-3 text-content' : 'text-content-muted'}`}
           >
             សកម្មភាព (Timeline)
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('homework')}
-            className={`flex-1 py-2 text-xs font-bold rounded-lg ${activeTab === 'homework' ? 'bg-gray-100 text-gray-900' : 'text-gray-500'}`}
+            className={`flex-1 py-2 text-xs font-bold rounded-lg ${activeTab === 'homework' ? 'bg-surface-3 text-content' : 'text-content-muted'}`}
           >
             កិច្ចការផ្ទះ ({homeworks.filter((h) => h.status === 'Pending').length})
           </button>
@@ -269,9 +269,11 @@ const ClassroomPage: React.FC = () => {
         {/* TIMELINE TAB */}
         {activeTab === 'timeline' && (
           <div className="flex-1 flex flex-col">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex-1 overflow-y-auto mb-4 min-h-[300px]">
+            <div className="bg-surface rounded-2xl shadow-sm border border-line p-4 flex-1 overflow-y-auto mb-4 min-h-[300px]">
               {logs.length === 0 && (
-                <p className="text-center text-gray-400 py-10 text-sm">មិនទាន់មានសកម្មភាពទេ។</p>
+                <p className="text-center text-content-faint py-10 text-sm">
+                  មិនទាន់មានសកម្មភាពទេ។
+                </p>
               )}
               <div className="space-y-6">
                 {logs.map((log) => {
@@ -287,28 +289,28 @@ const ClassroomPage: React.FC = () => {
                             <h3 className="font-bold text-primary flex items-center">
                               <FileText className="h-4 w-4 mr-2" /> របាយការណ៍បញ្ចប់ថ្នាក់
                             </h3>
-                            <span className="text-[10px] text-gray-400">
+                            <span className="text-[10px] text-content-faint">
                               {new Date(log.created_at).toLocaleString()}
                             </span>
                           </div>
 
-                          <div className="space-y-3 text-sm text-gray-700">
-                            <div className="bg-white/80 p-2 rounded-lg border border-primary/5">
-                              <p className="text-xs font-bold text-gray-500 uppercase mb-1">
+                          <div className="space-y-3 text-sm text-content-soft">
+                            <div className="bg-surface/80 p-2 rounded-lg border border-primary/5">
+                              <p className="text-xs font-bold text-content-muted uppercase mb-1">
                                 សេចក្តីសង្ខេប (Summary)
                               </p>
                               <p>{reportData.summary}</p>
                             </div>
 
                             <div className="flex gap-4">
-                              <div className="bg-white/80 p-2 rounded-lg border border-primary/5 flex-1">
-                                <p className="text-xs font-bold text-gray-500 uppercase mb-1">
+                              <div className="bg-surface/80 p-2 rounded-lg border border-primary/5 flex-1">
+                                <p className="text-xs font-bold text-content-muted uppercase mb-1">
                                   រយៈពេល
                                 </p>
                                 <p className="font-bold">{reportData.duration} នាទី</p>
                               </div>
-                              <div className="bg-white/80 p-2 rounded-lg border border-primary/5 flex-1">
-                                <p className="text-xs font-bold text-gray-500 uppercase mb-1">
+                              <div className="bg-surface/80 p-2 rounded-lg border border-primary/5 flex-1">
+                                <p className="text-xs font-bold text-content-muted uppercase mb-1">
                                   ការវាយតម្លៃ
                                 </p>
                                 <p className="font-bold text-primary">{reportData.performance}</p>
@@ -316,8 +318,8 @@ const ClassroomPage: React.FC = () => {
                             </div>
 
                             {reportData.nextSteps && (
-                              <div className="bg-white/80 p-2 rounded-lg border border-primary/5">
-                                <p className="text-xs font-bold text-gray-500 uppercase mb-1">
+                              <div className="bg-surface/80 p-2 rounded-lg border border-primary/5">
+                                <p className="text-xs font-bold text-content-muted uppercase mb-1">
                                   ជំហានបន្ទាប់
                                 </p>
                                 <p>{reportData.nextSteps}</p>
@@ -337,14 +339,14 @@ const ClassroomPage: React.FC = () => {
                         }`}
                       ></div>
                       <div>
-                        <p className="text-xs font-bold text-gray-900">
+                        <p className="text-xs font-bold text-content">
                           {log.action_type === 'Session Start' ? 'ចាប់ផ្តើមថ្នាក់' : 'កំណត់ហេតុ'}
                         </p>
-                        <p className="text-xs text-gray-500 mb-1">
+                        <p className="text-xs text-content-muted mb-1">
                           {new Date(log.created_at).toLocaleString()}
                         </p>
                         {log.note && !isReport && (
-                          <div className="bg-gray-50 p-2 rounded-lg text-sm text-gray-700">
+                          <div className="bg-surface-2 p-2 rounded-lg text-sm text-content-soft">
                             {log.note}
                           </div>
                         )}
@@ -356,13 +358,13 @@ const ClassroomPage: React.FC = () => {
             </div>
 
             {/* Quick Note Input */}
-            <div className="bg-white p-3 rounded-xl border border-gray-200 flex gap-2">
+            <div className="bg-surface p-3 rounded-xl border border-line-strong flex gap-2">
               <input
                 aria-label="កត់ត្រាសកម្មភាព..."
                 value={newNote}
                 onChange={(e) => setNewNote(e.target.value)}
                 placeholder="កត់ត្រាសកម្មភាព..."
-                className="flex-1 bg-gray-50 rounded-lg px-3 text-sm focus:outline-none"
+                className="flex-1 bg-surface-2 rounded-lg px-3 text-sm focus:outline-none"
               />
               <button
                 type="button"
@@ -382,16 +384,16 @@ const ClassroomPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowHomeworkModal(true)}
-                className="w-full py-3 border-2 border-dashed border-gray-300 rounded-xl text-gray-500 font-bold text-sm hover:border-primary hover:text-primary transition-colors flex items-center justify-center"
+                className="w-full py-3 border-2 border-dashed border-line-strong rounded-xl text-content-muted font-bold text-sm hover:border-primary hover:text-primary transition-colors flex items-center justify-center"
               >
                 <Plus className="h-4 w-4 mr-2" /> ដាក់កិច្ចការផ្ទះថ្មី
               </button>
             )}
 
             {homeworks.map((hw) => (
-              <div key={hw.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+              <div key={hw.id} className="bg-surface rounded-xl shadow-sm border border-line p-4">
                 <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-bold text-gray-900">{hw.title}</h4>
+                  <h4 className="font-bold text-content">{hw.title}</h4>
                   <span
                     className={`text-[10px] font-bold px-2 py-1 rounded ${
                       hw.status === 'Submitted'
@@ -402,7 +404,7 @@ const ClassroomPage: React.FC = () => {
                     {hw.status === 'Submitted' ? 'បានដាក់' : 'រង់ចាំ'}
                   </span>
                 </div>
-                <p className="text-sm text-gray-600 mb-4">{hw.description}</p>
+                <p className="text-sm text-content-muted mb-4">{hw.description}</p>
 
                 {hw.status === 'Pending' && !isTutor && (
                   <div>
@@ -419,7 +421,7 @@ const ClassroomPage: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => setSubmittingHwId(null)}
-                            className="text-xs font-bold text-gray-500"
+                            className="text-xs font-bold text-content-muted"
                           >
                             បោះបង់
                           </button>
@@ -458,11 +460,11 @@ const ClassroomPage: React.FC = () => {
 
       {/* --- PAYMENT BUTTON (Sticky Bottom) --- */}
       {isReportPendingReview && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-[0_-4px_10px_rgba(0,0,0,0.05)] z-30">
+        <div className="fixed bottom-0 left-0 right-0 bg-surface border-t border-line-strong p-4 shadow-[0_-4px_10px_rgba(0,0,0,0.05)] z-30">
           <div className="max-w-3xl mx-auto flex items-center justify-between">
             <div>
-              <p className="text-xs text-gray-500 font-bold uppercase">រង់ចាំការបង់ប្រាក់</p>
-              <p className="text-sm text-gray-700">សូមពិនិត្យរបាយការណ៍ខាងលើ។</p>
+              <p className="text-xs text-content-muted font-bold uppercase">រង់ចាំការបង់ប្រាក់</p>
+              <p className="text-sm text-content-soft">សូមពិនិត្យរបាយការណ៍ខាងលើ។</p>
             </div>
             <button
               type="button"
@@ -478,24 +480,24 @@ const ClassroomPage: React.FC = () => {
       {/* --- REPORT MODAL --- */}
       {showReportModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl animate-scale-in">
-            <div className="bg-gray-50 px-4 py-3 border-b border-gray-100 flex justify-between items-center">
-              <h3 className="font-bold text-gray-900">បង្កើតរបាយការណ៍ (Session Report)</h3>
+          <div className="bg-surface rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl animate-scale-in">
+            <div className="bg-surface-2 px-4 py-3 border-b border-line flex justify-between items-center">
+              <h3 className="font-bold text-content">បង្កើតរបាយការណ៍ (Session Report)</h3>
               <button type="button" onClick={() => setShowReportModal(false)}>
-                <X className="h-5 w-5 text-gray-400" />
+                <X className="h-5 w-5 text-content-faint" />
               </button>
             </div>
             <div className="p-4 space-y-4">
               <div>
                 <label
                   htmlFor="report-summary"
-                  className="block text-xs font-bold text-gray-500 mb-1"
+                  className="block text-xs font-bold text-content-muted mb-1"
                 >
                   សេចក្តីសង្ខេបមេរៀន (Lesson Summary)
                 </label>
                 <textarea
                   id="report-summary"
-                  className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm h-20 resize-none focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full p-3 bg-surface border border-line-strong rounded-xl text-sm h-20 resize-none focus:ring-2 focus:ring-primary/20 outline-none"
                   placeholder="តើបានរៀនអ្វីខ្លះថ្ងៃនេះ?"
                   value={reportForm.summary}
                   onChange={(e) => setReportForm({ ...reportForm, summary: e.target.value })}
@@ -505,14 +507,14 @@ const ClassroomPage: React.FC = () => {
                 <div>
                   <label
                     htmlFor="report-duration"
-                    className="block text-xs font-bold text-gray-500 mb-1"
+                    className="block text-xs font-bold text-content-muted mb-1"
                   >
                     រយៈពេល (នាទី)
                   </label>
                   <input
                     id="report-duration"
                     type="number"
-                    className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm"
+                    className="w-full p-3 bg-surface border border-line-strong rounded-xl text-sm"
                     value={reportForm.duration}
                     onChange={(e) => setReportForm({ ...reportForm, duration: e.target.value })}
                   />
@@ -520,13 +522,13 @@ const ClassroomPage: React.FC = () => {
                 <div>
                   <label
                     htmlFor="report-performance"
-                    className="block text-xs font-bold text-gray-500 mb-1"
+                    className="block text-xs font-bold text-content-muted mb-1"
                   >
                     ការវាយតម្លៃ
                   </label>
                   <select
                     id="report-performance"
-                    className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm"
+                    className="w-full p-3 bg-surface border border-line-strong rounded-xl text-sm"
                     value={reportForm.performance}
                     onChange={(e) => setReportForm({ ...reportForm, performance: e.target.value })}
                   >
@@ -540,13 +542,13 @@ const ClassroomPage: React.FC = () => {
               <div>
                 <label
                   htmlFor="report-nextsteps"
-                  className="block text-xs font-bold text-gray-500 mb-1"
+                  className="block text-xs font-bold text-content-muted mb-1"
                 >
                   ជំហានបន្ទាប់ / កិច្ចការផ្ទះ
                 </label>
                 <input
                   id="report-nextsteps"
-                  className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm"
+                  className="w-full p-3 bg-surface border border-line-strong rounded-xl text-sm"
                   placeholder="តើត្រូវធ្វើអ្វីបន្ត?"
                   value={reportForm.nextSteps}
                   onChange={(e) => setReportForm({ ...reportForm, nextSteps: e.target.value })}
@@ -572,7 +574,7 @@ const ClassroomPage: React.FC = () => {
       {/* Homework Modal */}
       {showHomeworkModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-sm">
+          <div className="bg-surface rounded-2xl p-6 w-full max-w-sm">
             <h3 className="font-bold text-lg mb-4">ដាក់កិច្ចការផ្ទះ</h3>
             <input
               aria-label="ចំណងជើង"
@@ -592,7 +594,7 @@ const ClassroomPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowHomeworkModal(false)}
-                className="px-4 py-2 text-gray-500 font-bold text-sm"
+                className="px-4 py-2 text-content-muted font-bold text-sm"
               >
                 បោះបង់
               </button>

@@ -58,7 +58,7 @@ const MarkdownText: React.FC<MarkdownTextProps> = ({ content, className = '' }) 
             const match = /language-(\w+)/.exec(className || '');
             return !inline && match ? (
               <div className="rounded-lg overflow-hidden my-3 shadow-sm border border-gray-700/50">
-                <div className="bg-[#282c34] px-4 py-1.5 text-xs text-gray-400 font-mono border-b border-gray-700 flex justify-between items-center">
+                <div className="bg-[#282c34] px-4 py-1.5 text-xs text-content-faint font-mono border-b border-gray-700 flex justify-between items-center">
                   <span>{match[1]}</span>
                 </div>
                 <SyntaxHighlighter
@@ -73,7 +73,7 @@ const MarkdownText: React.FC<MarkdownTextProps> = ({ content, className = '' }) 
               </div>
             ) : (
               <code
-                className={`${className} bg-gray-100 text-red-500 px-1.5 py-0.5 rounded font-mono text-xs border border-gray-200`}
+                className={`${className} bg-surface-3 text-red-500 px-1.5 py-0.5 rounded font-mono text-xs border border-line-strong`}
                 {...props}
               >
                 {children}

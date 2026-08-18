@@ -150,9 +150,9 @@ const SchoolDetailPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen pb-20">
+    <div className="bg-surface-2 min-h-screen pb-20">
       {/* --- HERO SECTION --- */}
-      <div className="relative h-48 md:h-64 bg-gray-200">
+      <div className="relative h-48 md:h-64 bg-line-strong">
         <img
           src={state.school.coverImage || placeholderImage(1200, 400, 'School')}
           alt="Cover"
@@ -166,14 +166,14 @@ const SchoolDetailPage: React.FC = () => {
             type="button"
             onClick={() => navigate(-1)}
             aria-label="Go back"
-            className="p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/30 transition-colors"
+            className="p-2 bg-surface/20 backdrop-blur-md rounded-full text-white hover:bg-surface/30 transition-colors"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
           <button
             type="button"
             onClick={handleShare}
-            className="p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/30 transition-colors"
+            className="p-2 bg-surface/20 backdrop-blur-md rounded-full text-white hover:bg-surface/30 transition-colors"
             title="ចែករំលែក (Share)"
           >
             <Share2 className="h-5 w-5" />
@@ -183,22 +183,22 @@ const SchoolDetailPage: React.FC = () => {
 
       {/* --- PROFILE HEADER --- */}
       <div className="max-w-5xl mx-auto px-4 -mt-12 relative z-10">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 md:p-6 flex flex-col md:flex-row items-start md:items-center gap-4">
-          <div className="bg-white p-1 rounded-2xl shadow-md -mt-16 md:mt-0">
+        <div className="bg-surface rounded-2xl shadow-sm border border-line p-4 md:p-6 flex flex-col md:flex-row items-start md:items-center gap-4">
+          <div className="bg-surface p-1 rounded-2xl shadow-md -mt-16 md:mt-0">
             <img
               src={state.school.logo || placeholderImage(150, 150, 'Logo')}
               alt="Logo"
-              className="w-24 h-24 rounded-xl object-contain bg-white"
+              className="w-24 h-24 rounded-xl object-contain bg-surface"
             />
           </div>
           <div className="flex-1">
             <div className="flex flex-wrap items-center gap-2 mb-1">
-              <h1 className="text-xl md:text-2xl font-bold text-gray-900">{state.school.name}</h1>
+              <h1 className="text-xl md:text-2xl font-bold text-content">{state.school.name}</h1>
               {state.school.verified && (
                 <CheckCircle className="h-5 w-5 text-blue-500 fill-white" />
               )}
             </div>
-            <div className="flex flex-col md:flex-row gap-2 md:gap-4 text-sm text-gray-500 mb-2">
+            <div className="flex flex-col md:flex-row gap-2 md:gap-4 text-sm text-content-muted mb-2">
               <span className="flex items-center">
                 <MapPin className="h-4 w-4 mr-1" /> {state.school.location}
               </span>
@@ -221,25 +221,25 @@ const SchoolDetailPage: React.FC = () => {
 
       {/* --- TABS --- */}
       <div className="max-w-5xl mx-auto px-4 mt-6">
-        <div className="flex border-b border-gray-200 overflow-x-auto scrollbar-hide">
+        <div className="flex border-b border-line-strong overflow-x-auto scrollbar-hide">
           <button
             type="button"
             onClick={() => setState((s) => ({ ...s, activeTab: 'admissions' }))}
-            className={`px-6 py-3 text-sm font-bold whitespace-nowrap border-b-2 transition-colors ${state.activeTab === 'admissions' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
+            className={`px-6 py-3 text-sm font-bold whitespace-nowrap border-b-2 transition-colors ${state.activeTab === 'admissions' ? 'border-primary text-primary' : 'border-transparent text-content-muted'}`}
           >
             ការជ្រើសរើស ({activeAdmissions.length})
           </button>
           <button
             type="button"
             onClick={() => setState((s) => ({ ...s, activeTab: 'courses' }))}
-            className={`px-6 py-3 text-sm font-bold whitespace-nowrap border-b-2 transition-colors ${state.activeTab === 'courses' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
+            className={`px-6 py-3 text-sm font-bold whitespace-nowrap border-b-2 transition-colors ${state.activeTab === 'courses' ? 'border-primary text-primary' : 'border-transparent text-content-muted'}`}
           >
             វគ្គសិក្សាខ្លី ({state.school.shortCourses.length})
           </button>
           <button
             type="button"
             onClick={() => setState((s) => ({ ...s, activeTab: 'about' }))}
-            className={`px-6 py-3 text-sm font-bold whitespace-nowrap border-b-2 transition-colors ${state.activeTab === 'about' ? 'border-primary text-primary' : 'border-transparent text-gray-500'}`}
+            className={`px-6 py-3 text-sm font-bold whitespace-nowrap border-b-2 transition-colors ${state.activeTab === 'about' ? 'border-primary text-primary' : 'border-transparent text-content-muted'}`}
           >
             អំពី & ជំនាញ
           </button>
@@ -252,22 +252,22 @@ const SchoolDetailPage: React.FC = () => {
         {state.activeTab === 'admissions' && (
           <div className="space-y-6">
             {activeAdmissions.length === 0 && (
-              <div className="text-center py-10 bg-white rounded-xl border border-gray-200">
+              <div className="text-center py-10 bg-surface rounded-xl border border-line-strong">
                 <AlertCircle className="h-10 w-10 text-gray-300 mx-auto mb-2" />
-                <p className="text-gray-500">មិនមានការជ្រើសរើសសិស្សនៅពេលនេះទេ។</p>
+                <p className="text-content-muted">មិនមានការជ្រើសរើសសិស្សនៅពេលនេះទេ។</p>
               </div>
             )}
 
             {activeAdmissions.map((adm) => (
               <div
                 key={adm.id}
-                className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow"
+                className="bg-surface rounded-2xl shadow-sm border border-line overflow-hidden hover:shadow-md transition-shadow"
               >
-                <div className="p-5 border-b border-gray-50">
+                <div className="p-5 border-b border-line">
                   <div className="flex justify-between items-start mb-2">
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-lg font-bold text-gray-900">{adm.title}</h3>
+                        <h3 className="text-lg font-bold text-content">{adm.title}</h3>
                         <span
                           className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
                             adm.status === 'Open'
@@ -278,16 +278,16 @@ const SchoolDetailPage: React.FC = () => {
                           {adm.status === 'Open' ? 'កំពុងទទួល' : 'ជិតចប់'}
                         </span>
                       </div>
-                      <div className="flex items-center text-sm text-gray-500">
-                        <Calendar className="h-4 w-4 mr-1.5 text-gray-400" />
+                      <div className="flex items-center text-sm text-content-muted">
+                        <Calendar className="h-4 w-4 mr-1.5 text-content-faint" />
                         <span>
-                          ផុតកំណត់៖ <span className="font-medium text-gray-900">{adm.endDate}</span>
+                          ផុតកំណត់៖ <span className="font-medium text-content">{adm.endDate}</span>
                         </span>
                       </div>
                     </div>
                   </div>
 
-                  <p className="text-gray-600 text-sm leading-relaxed mb-4 mt-2">
+                  <p className="text-content-muted text-sm leading-relaxed mb-4 mt-2">
                     {adm.description}
                   </p>
 
@@ -296,13 +296,13 @@ const SchoolDetailPage: React.FC = () => {
                     {adm.majors.slice(0, 5).map((m) => (
                       <span
                         key={m}
-                        className="bg-gray-50 text-gray-600 text-xs px-2 py-1 rounded border border-gray-100"
+                        className="bg-surface-2 text-content-muted text-xs px-2 py-1 rounded border border-line"
                       >
                         {m}
                       </span>
                     ))}
                     {adm.majors.length > 5 && (
-                      <span className="text-xs text-gray-400 py-1">
+                      <span className="text-xs text-content-faint py-1">
                         +{adm.majors.length - 5} more
                       </span>
                     )}
@@ -317,8 +317,8 @@ const SchoolDetailPage: React.FC = () => {
                       <div className="space-y-1">
                         {adm.scholarships.map((sch) => (
                           <div key={sch.id} className="flex justify-between items-center text-xs">
-                            <span className="text-gray-700">{sch.title}</span>
-                            <span className="font-bold text-green-600 bg-white px-1.5 py-0.5 rounded shadow-sm border border-green-100">
+                            <span className="text-content-soft">{sch.title}</span>
+                            <span className="font-bold text-green-600 bg-surface px-1.5 py-0.5 rounded shadow-sm border border-green-100">
                               {sch.discount}
                             </span>
                           </div>
@@ -327,11 +327,11 @@ const SchoolDetailPage: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <div className="bg-gray-50 p-3 flex gap-3">
+                <div className="bg-surface-2 p-3 flex gap-3">
                   <button
                     type="button"
                     onClick={() => openInquiryModal(adm, false)}
-                    className="flex-1 bg-white border border-gray-200 text-gray-700 font-bold py-2.5 rounded-xl hover:bg-gray-100 transition-colors text-sm"
+                    className="flex-1 bg-surface border border-line-strong text-content-soft font-bold py-2.5 rounded-xl hover:bg-surface-3 transition-colors text-sm"
                   >
                     សួរព័ត៌មាន (Ask Info)
                   </button>
@@ -356,7 +356,7 @@ const SchoolDetailPage: React.FC = () => {
             ))}
             {state.school.shortCourses.length === 0 && (
               <div className="col-span-full text-center py-10">
-                <p className="text-gray-400 text-sm">មិនមានវគ្គសិក្សាខ្លីទេ។</p>
+                <p className="text-content-faint text-sm">មិនមានវគ្គសិក្សាខ្លីទេ។</p>
               </div>
             )}
           </div>
@@ -365,31 +365,31 @@ const SchoolDetailPage: React.FC = () => {
         {/* 3. ABOUT TAB */}
         {state.activeTab === 'about' && (
           <div className="space-y-6">
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-              <h3 className="font-bold text-gray-900 mb-3">អំពី {state.school.name}</h3>
-              <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">
+            <div className="bg-surface rounded-2xl p-6 shadow-sm border border-line">
+              <h3 className="font-bold text-content mb-3">អំពី {state.school.name}</h3>
+              <p className="text-sm text-content-muted leading-relaxed whitespace-pre-wrap">
                 {state.school.description}
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                <div className="p-3 bg-gray-50 rounded-xl">
-                  <p className="text-xs text-gray-500 mb-1">តម្លៃសិក្សា (Tuition Range)</p>
-                  <p className="font-bold text-gray-900">{state.school.tuitionRange}</p>
+                <div className="p-3 bg-surface-2 rounded-xl">
+                  <p className="text-xs text-content-muted mb-1">តម្លៃសិក្សា (Tuition Range)</p>
+                  <p className="font-bold text-content">{state.school.tuitionRange}</p>
                 </div>
-                <div className="p-3 bg-gray-50 rounded-xl">
-                  <p className="text-xs text-gray-500 mb-1">ទីតាំង (Location)</p>
-                  <p className="font-bold text-gray-900">{state.school.location}</p>
+                <div className="p-3 bg-surface-2 rounded-xl">
+                  <p className="text-xs text-content-muted mb-1">ទីតាំង (Location)</p>
+                  <p className="font-bold text-content">{state.school.location}</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-              <h3 className="font-bold text-gray-900 mb-4">ជំនាញ / ដេប៉ាតឺម៉ង់ (Majors)</h3>
+            <div className="bg-surface rounded-2xl p-6 shadow-sm border border-line">
+              <h3 className="font-bold text-content mb-4">ជំនាញ / ដេប៉ាតឺម៉ង់ (Majors)</h3>
               <div className="flex flex-wrap gap-2">
                 {state.school.majors.map((major) => (
                   <span
                     key={major}
-                    className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium"
+                    className="px-3 py-2 bg-surface-3 text-content-soft rounded-lg text-sm font-medium"
                   >
                     {major}
                   </span>
@@ -417,17 +417,17 @@ const SchoolDetailPage: React.FC = () => {
       {/* --- INQUIRY MODAL --- */}
       {modalState.show && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="bg-white rounded-2xl w-full max-w-sm overflow-hidden animate-scale-in">
-            <div className="bg-primary/5 p-4 border-b border-gray-100 flex justify-between items-center">
+          <div className="bg-surface rounded-2xl w-full max-w-sm overflow-hidden animate-scale-in">
+            <div className="bg-primary/5 p-4 border-b border-line flex justify-between items-center">
               <div>
-                <h3 className="font-bold text-gray-900">ផ្ញើសំណួរ (Send Inquiry)</h3>
-                <p className="text-xs text-gray-500">ទៅកាន់៖ {state.school.name}</p>
+                <h3 className="font-bold text-content">ផ្ញើសំណួរ (Send Inquiry)</h3>
+                <p className="text-xs text-content-muted">ទៅកាន់៖ {state.school.name}</p>
               </div>
               <button
                 type="button"
                 onClick={() => setModalState((s) => ({ ...s, show: false }))}
                 aria-label="Close modal"
-                className="text-gray-400 hover:text-gray-600"
+                className="text-content-faint hover:text-content-muted"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -443,7 +443,7 @@ const SchoolDetailPage: React.FC = () => {
               <div>
                 <label
                   htmlFor="inquiry-phone"
-                  className="block text-xs font-bold text-gray-500 mb-1"
+                  className="block text-xs font-bold text-content-muted mb-1"
                 >
                   លេខទូរស័ព្ទរបស់អ្នក <span className="text-red-500">*</span>
                 </label>
@@ -458,14 +458,14 @@ const SchoolDetailPage: React.FC = () => {
                     }))
                   }
                   placeholder="012 345 678"
-                  className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  className="w-full p-3 bg-surface-2 border border-line-strong rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="inquiry-message"
-                  className="block text-xs font-bold text-gray-500 mb-1"
+                  className="block text-xs font-bold text-content-muted mb-1"
                 >
                   សារ (Message)
                 </label>
@@ -479,7 +479,7 @@ const SchoolDetailPage: React.FC = () => {
                     }))
                   }
                   placeholder="តើអ្នកចង់ដឹងអ្វីខ្លះ?"
-                  className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl h-24 resize-none focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  className="w-full p-3 bg-surface-2 border border-line-strong rounded-xl h-24 resize-none focus:outline-none focus:ring-2 focus:ring-primary/20"
                 />
               </div>
 

@@ -255,7 +255,7 @@ const LiveVoiceTutor: React.FC<LiveVoiceTutorProps> = ({ onClose }) => {
         type="button"
         onClick={onClose}
         aria-label="Close"
-        className="absolute top-6 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+        className="absolute top-6 right-6 p-2 bg-surface/10 hover:bg-surface/20 rounded-full transition-colors"
       >
         <X className="h-6 w-6" />
       </button>
@@ -277,7 +277,7 @@ const LiveVoiceTutor: React.FC<LiveVoiceTutorProps> = ({ onClose }) => {
               <AlertCircle className="h-12 w-12 text-red-500" />
             ) : (
               <Mic
-                className={`h-12 w-12 ${state.status === 'connected' ? 'text-white' : 'text-gray-500'}`}
+                className={`h-12 w-12 ${state.status === 'connected' ? 'text-white' : 'text-content-muted'}`}
               />
             )}
           </div>
@@ -299,7 +299,7 @@ const LiveVoiceTutor: React.FC<LiveVoiceTutorProps> = ({ onClose }) => {
                 ? 'text-green-400'
                 : state.status === 'error'
                   ? 'text-red-400'
-                  : 'text-gray-400'
+                  : 'text-content-faint'
             }`}
           >
             {state.status === 'connecting' && (
@@ -311,12 +311,12 @@ const LiveVoiceTutor: React.FC<LiveVoiceTutorProps> = ({ onClose }) => {
             {state.status === 'error' && state.errorMessage}
           </p>
           {state.status === 'connecting' && (
-            <p className="text-xs text-gray-500">Entry Cost: {AI_COSTS.LIVE_SESSION} Points</p>
+            <p className="text-xs text-content-muted">Entry Cost: {AI_COSTS.LIVE_SESSION} Points</p>
           )}
         </div>
 
         {state.status === 'connected' && (
-          <div className="bg-white/10 px-6 py-3 rounded-2xl backdrop-blur-sm border border-white/10">
+          <div className="bg-surface/10 px-6 py-3 rounded-2xl backdrop-blur-sm border border-white/10">
             <p className="text-xs text-gray-300 text-center max-w-xs">
               Practice your English conversation. <br /> Try saying:{' '}
               <span className="text-white font-bold">

@@ -1,5 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  // Class-based, not media-based: the app defaults to light and only goes dark
+  // when the user asks for it, so the system preference must not decide.
+  darkMode: 'class',
   content: [
     './index.html',
     './App.tsx',
@@ -11,9 +14,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#0F766E', // Teal 700
-        secondary: '#F59E0B', // Amber 500
-        accent: '#0D9488', // Teal 600
+        primary: 'rgb(var(--c-primary) / <alpha-value>)',
+        secondary: 'rgb(var(--c-secondary) / <alpha-value>)',
+        accent: 'rgb(var(--c-accent) / <alpha-value>)',
+
+        // Semantic tokens. Components use these instead of raw white/gray so a
+        // single variable swap in index.css flips the whole app. Literal
+        // colours such as text-white are deliberately left alone, because they
+        // sit on coloured buttons and must stay white in both themes.
+        surface: 'rgb(var(--c-surface) / <alpha-value>)', // cards, panels
+        'surface-2': 'rgb(var(--c-surface-2) / <alpha-value>)', // page background
+        'surface-3': 'rgb(var(--c-surface-3) / <alpha-value>)', // inputs, chips
+        content: 'rgb(var(--c-content) / <alpha-value>)', // headings
+        'content-soft': 'rgb(var(--c-content-soft) / <alpha-value>)', // body copy
+        'content-muted': 'rgb(var(--c-content-muted) / <alpha-value>)', // secondary
+        'content-faint': 'rgb(var(--c-content-faint) / <alpha-value>)', // hints
+        line: 'rgb(var(--c-line) / <alpha-value>)', // subtle borders
+        'line-strong': 'rgb(var(--c-line-strong) / <alpha-value>)', // visible borders
       },
       fontFamily: {
         sans: ['Kantumruy Pro', 'sans-serif'],

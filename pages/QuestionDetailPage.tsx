@@ -305,20 +305,20 @@ const QuestionDetailPage: React.FC = () => {
   const isTaggingAI = /@(tonsay|sopheatonsay)\b/i.test(replyState.content);
 
   return (
-    <div className="bg-gray-50 min-h-screen pb-32 font-sans">
-      <div className="bg-white border-b border-gray-200 px-4 py-3 sticky top-0 z-30 flex items-center justify-between">
+    <div className="bg-surface-2 min-h-screen pb-32 font-sans">
+      <div className="bg-surface border-b border-line-strong px-4 py-3 sticky top-0 z-30 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={() => navigate(-1)}
             aria-label="Go back"
-            className="p-2 hover:bg-gray-100 rounded-full text-gray-500"
+            className="p-2 hover:bg-surface-3 rounded-full text-content-muted"
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
           <div>
-            <h1 className="text-sm font-bold text-gray-900">សំណួរ (Question)</h1>
-            <p className="text-xs text-gray-500">{replies.length} ចម្លើយ</p>
+            <h1 className="text-sm font-bold text-content">សំណួរ (Question)</h1>
+            <p className="text-xs text-content-muted">{replies.length} ចម្លើយ</p>
           </div>
         </div>
 
@@ -326,33 +326,33 @@ const QuestionDetailPage: React.FC = () => {
           type="button"
           onClick={handleBookmark}
           aria-label="Bookmark"
-          className={`p-2 rounded-full transition-colors ${bookmarked ? 'bg-blue-50 text-blue-600' : 'text-gray-400 hover:bg-gray-100'}`}
+          className={`p-2 rounded-full transition-colors ${bookmarked ? 'bg-blue-50 text-blue-600' : 'text-content-faint hover:bg-surface-3'}`}
         >
           <Bookmark className={`h-5 w-5 ${bookmarked ? 'fill-blue-600' : ''}`} />
         </button>
       </div>
 
       <div className="max-w-3xl mx-auto px-4 py-6">
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-6">
+        <div className="bg-surface rounded-2xl p-5 shadow-sm border border-line mb-6">
           <div className="flex items-start gap-4 mb-4">
             {isPostAnonymous ? (
-              <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center border border-gray-300">
-                <Ghost className="h-6 w-6 text-gray-500" />
+              <div className="w-12 h-12 rounded-full bg-line-strong flex items-center justify-center border border-line-strong">
+                <Ghost className="h-6 w-6 text-content-muted" />
               </div>
             ) : (
               <img
                 src={post.authorAvatar || `https://ui-avatars.com/api/?name=${post.authorName}`}
-                className="w-12 h-12 rounded-full object-cover border border-gray-200"
+                className="w-12 h-12 rounded-full object-cover border border-line-strong"
                 alt="Author Avatar"
               />
             )}
             <div>
               <h2
-                className={`font-bold text-gray-900 ${isPostAnonymous ? 'italic text-gray-500' : ''}`}
+                className={`font-bold text-content ${isPostAnonymous ? 'italic text-content-muted' : ''}`}
               >
                 {displayAuthor}
               </h2>
-              <p className="text-xs text-gray-400">{post.timestamp}</p>
+              <p className="text-xs text-content-faint">{post.timestamp}</p>
             </div>
             {/* Fix: Explicitly check > 0 to prevent rendering '0' */}
             {(post.bounty_points || 0) > 0 && (
@@ -362,22 +362,22 @@ const QuestionDetailPage: React.FC = () => {
             )}
           </div>
 
-          <h3 className="text-lg font-bold text-gray-900 mb-3 leading-relaxed whitespace-pre-wrap">
+          <h3 className="text-lg font-bold text-content mb-3 leading-relaxed whitespace-pre-wrap">
             {post.content}
           </h3>
 
-          <div className="flex items-center gap-4 pt-4 border-t border-gray-50">
+          <div className="flex items-center gap-4 pt-4 border-t border-line">
             <ReactionBar
               reactions={post.reactions}
               userReaction={post.userReaction}
               onReact={handlePostReaction}
               size="md"
             />
-            <div className="h-4 w-[1px] bg-gray-200 mx-2"></div>
+            <div className="h-4 w-[1px] bg-line-strong mx-2"></div>
             <button
               type="button"
               onClick={() => replyInputRef.current?.focus()}
-              className="flex items-center gap-1 text-sm font-medium text-gray-500 hover:text-gray-700"
+              className="flex items-center gap-1 text-sm font-medium text-content-muted hover:text-content-soft"
             >
               <MessageCircle className="h-5 w-5" /> ឆ្លើយតប
             </button>
@@ -385,12 +385,12 @@ const QuestionDetailPage: React.FC = () => {
         </div>
 
         <div className="space-y-4">
-          <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider ml-1">
+          <h3 className="text-sm font-bold text-content-muted uppercase tracking-wider ml-1">
             ចម្លើយទាំងអស់ ({replies.length})
           </h3>
 
           {replies.length === 0 && (
-            <div className="text-center py-10 text-gray-400 bg-white rounded-xl border border-dashed border-gray-200">
+            <div className="text-center py-10 text-content-faint bg-surface rounded-xl border border-dashed border-line-strong">
               <p>មិនទាន់មានចម្លើយទេ។ ឆ្លើយមុនគេ!</p>
             </div>
           )}
@@ -398,12 +398,12 @@ const QuestionDetailPage: React.FC = () => {
           {replies.map((reply) => (
             <div
               key={reply.id}
-              className={`bg-white rounded-xl p-4 shadow-sm border ${
+              className={`bg-surface rounded-xl p-4 shadow-sm border ${
                 reply.accepted
                   ? 'border-green-500 ring-1 ring-green-500 bg-green-50/10'
                   : reply.isAI
                     ? 'border-blue-100 bg-blue-50/20'
-                    : 'border-gray-100'
+                    : 'border-line'
               }`}
             >
               <div className="flex justify-between items-start mb-2">
@@ -423,13 +423,13 @@ const QuestionDetailPage: React.FC = () => {
                   )}
                   <div>
                     <p
-                      className={`text-sm font-bold ${reply.isAI ? 'text-primary' : 'text-gray-900'}`}
+                      className={`text-sm font-bold ${reply.isAI ? 'text-primary' : 'text-content'}`}
                     >
                       {reply.isAI && reply.authorName === 'Kru REAN'
                         ? 'សុភាទន្សាយ (AI)'
                         : reply.authorName}
                     </p>
-                    <p className="text-[10px] text-gray-400">{reply.timestamp}</p>
+                    <p className="text-[10px] text-content-faint">{reply.timestamp}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -448,7 +448,7 @@ const QuestionDetailPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => handleAcceptAnswer(reply)}
-                        className="text-gray-400 hover:text-green-600 p-1"
+                        className="text-content-faint hover:text-green-600 p-1"
                         title="Accept Answer"
                         aria-label="Accept Answer"
                       >
@@ -461,7 +461,7 @@ const QuestionDetailPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => handleEditClick(reply)}
-                        className="text-gray-400 hover:text-blue-600 p-1"
+                        className="text-content-faint hover:text-blue-600 p-1"
                         title="Edit Reply"
                         aria-label="Edit Reply"
                       >
@@ -477,7 +477,7 @@ const QuestionDetailPage: React.FC = () => {
                     value={editState.content}
                     aria-label="Edit reply"
                     onChange={(e) => setEditState((s) => ({ ...s, content: e.target.value }))}
-                    className="w-full p-3 bg-gray-50 border border-blue-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-100 focus:outline-none resize-none"
+                    className="w-full p-3 bg-surface-2 border border-blue-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-100 focus:outline-none resize-none"
                     rows={3}
                   />
                   <CharCounter current={editState.content.length} limit={REPLY_LIMIT} />
@@ -485,7 +485,7 @@ const QuestionDetailPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={handleCancelEdit}
-                      className="px-3 py-1.5 text-xs font-bold text-gray-500 hover:bg-gray-100 rounded-lg transition-colors"
+                      className="px-3 py-1.5 text-xs font-bold text-content-muted hover:bg-surface-3 rounded-lg transition-colors"
                     >
                       បោះបង់ (Cancel)
                     </button>
@@ -500,7 +500,7 @@ const QuestionDetailPage: React.FC = () => {
                   </div>
                 </div>
               ) : (
-                <div className="text-sm text-gray-800 leading-relaxed pl-10 mb-3">
+                <div className="text-sm text-content leading-relaxed pl-10 mb-3">
                   <MarkdownText content={reply.content} />
                 </div>
               )}
@@ -522,7 +522,7 @@ const QuestionDetailPage: React.FC = () => {
               type="button"
               onClick={handleLoadMore}
               disabled={pagination.loadingMore}
-              className="w-full py-3 text-sm text-gray-500 font-bold hover:bg-gray-200 rounded-xl transition-colors flex items-center justify-center"
+              className="w-full py-3 text-sm text-content-muted font-bold hover:bg-line-strong rounded-xl transition-colors flex items-center justify-center"
             >
               {pagination.loadingMore ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -534,7 +534,7 @@ const QuestionDetailPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 md:p-4 z-50">
+      <div className="fixed bottom-0 left-0 right-0 bg-surface border-t border-line-strong p-3 md:p-4 z-50">
         <div className="max-w-3xl mx-auto flex flex-col gap-1">
           <div className="flex gap-3">
             <textarea
@@ -543,7 +543,7 @@ const QuestionDetailPage: React.FC = () => {
               value={replyState.content}
               onChange={(e) => setReplyState((s) => ({ ...s, content: e.target.value }))}
               placeholder="សរសេរចម្លើយរបស់អ្នក..."
-              className="flex-1 bg-gray-100 border-0 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary/20 focus:outline-none resize-none h-12 max-h-32"
+              className="flex-1 bg-surface-3 border-0 rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary/20 focus:outline-none resize-none h-12 max-h-32"
             />
             <button
               type="button"
@@ -569,7 +569,7 @@ const QuestionDetailPage: React.FC = () => {
             </button>
           </div>
           <div className="flex justify-between items-center pr-2 pl-2 mt-1">
-            <p className="text-[10px] text-gray-400">
+            <p className="text-[10px] text-content-faint">
               Tip: Tag{' '}
               <span
                 className="font-bold text-primary cursor-pointer hover:underline"

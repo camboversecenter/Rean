@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import ThemeToggle from './ThemeToggle';
 import {
   BookOpen,
   Search,
@@ -113,7 +114,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
+    <header className="sticky top-0 z-50 bg-surface border-b border-line shadow-sm">
       <div className="container mx-auto px-4 max-w-5xl">
         <div className="flex items-center justify-between h-14 md:h-16">
           {/* Left Side: Hamburger (Mobile), Back Button, or Logo */}
@@ -124,7 +125,7 @@ const Header: React.FC = () => {
                 setState((prev) => ({ ...prev, showMobileMenu: !prev.showMobileMenu }))
               }
               aria-label="Toggle mobile menu"
-              className="p-2 -ml-2 text-gray-600 hover:text-primary rounded-xl hover:bg-gray-100 md:hidden transition-colors"
+              className="p-2 -ml-2 text-content-muted hover:text-primary rounded-xl hover:bg-surface-3 md:hidden transition-colors"
             >
               {state.showMobileMenu ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -141,7 +142,7 @@ const Header: React.FC = () => {
                 type="button"
                 onClick={() => navigate(-1)}
                 aria-label="Go back"
-                className="p-2 text-gray-600 hover:text-primary rounded-full hover:bg-gray-100"
+                className="p-2 text-content-muted hover:text-primary rounded-full hover:bg-surface-3"
               >
                 <ChevronLeft className="h-6 w-6" />
               </button>
@@ -159,37 +160,37 @@ const Header: React.FC = () => {
           <nav className="hidden md:flex space-x-6 mx-4">
             <Link
               to="/"
-              className={`text-sm font-medium hover:text-primary transition-colors ${isHome ? 'text-primary font-bold' : 'text-gray-600'}`}
+              className={`text-sm font-medium hover:text-primary transition-colors ${isHome ? 'text-primary font-bold' : 'text-content-muted'}`}
             >
               ទំព័រដើម
             </Link>
             <Link
               to="/schools"
-              className={`text-sm font-medium hover:text-primary transition-colors ${isSchools ? 'text-primary font-bold' : 'text-gray-600'}`}
+              className={`text-sm font-medium hover:text-primary transition-colors ${isSchools ? 'text-primary font-bold' : 'text-content-muted'}`}
             >
               សាលារៀន
             </Link>
             <Link
               to="/community"
-              className={`text-sm font-medium hover:text-primary transition-colors ${isCommunity ? 'text-primary font-bold' : 'text-gray-600'}`}
+              className={`text-sm font-medium hover:text-primary transition-colors ${isCommunity ? 'text-primary font-bold' : 'text-content-muted'}`}
             >
               សហគមន៍
             </Link>
             <Link
               to="/explore"
-              className={`text-sm font-medium hover:text-primary transition-colors ${isExplore ? 'text-primary font-bold' : 'text-gray-600'}`}
+              className={`text-sm font-medium hover:text-primary transition-colors ${isExplore ? 'text-primary font-bold' : 'text-content-muted'}`}
             >
               វគ្គសិក្សា
             </Link>
             <Link
               to="/chat"
-              className={`text-sm font-medium hover:text-primary transition-colors ${isChat ? 'text-primary font-bold' : 'text-gray-600'}`}
+              className={`text-sm font-medium hover:text-primary transition-colors ${isChat ? 'text-primary font-bold' : 'text-content-muted'}`}
             >
               សុភាទន្សាយ
             </Link>
             <Link
               to="/about"
-              className={`text-sm font-medium hover:text-primary transition-colors ${isAbout ? 'text-primary font-bold' : 'text-gray-600'}`}
+              className={`text-sm font-medium hover:text-primary transition-colors ${isAbout ? 'text-primary font-bold' : 'text-content-muted'}`}
             >
               អំពីយើង
             </Link>
@@ -197,10 +198,14 @@ const Header: React.FC = () => {
 
           {/* Right Side: Actions */}
           <div className="flex items-center space-x-2">
+            {/* Theme switch. Available signed out too, so a visitor can set it
+                before they ever create an account. */}
+            <ThemeToggle />
+
             {/* Tutor Market Link */}
             <Link
               to="/tutors"
-              className={`p-2 rounded-full transition-colors ${isTutorMarket ? 'bg-blue-50 text-blue-600' : 'text-gray-400 hover:text-blue-600'}`}
+              className={`p-2 rounded-full transition-colors ${isTutorMarket ? 'bg-blue-50 text-blue-600' : 'text-content-faint hover:text-blue-600'}`}
               title="Tutor Market"
               aria-label="Tutor Market"
             >
@@ -213,7 +218,7 @@ const Header: React.FC = () => {
                 {/* Gamification Links */}
                 <Link
                   to="/rewards"
-                  className={`p-2 rounded-full transition-colors ${isRewards ? 'bg-pink-50 text-pink-500' : 'text-gray-400 hover:text-pink-500'}`}
+                  className={`p-2 rounded-full transition-colors ${isRewards ? 'bg-pink-50 text-pink-500' : 'text-content-faint hover:text-pink-500'}`}
                   title="Rewards"
                   aria-label="Rewards"
                 >
@@ -228,7 +233,7 @@ const Header: React.FC = () => {
                       setState((prev) => ({ ...prev, showActivity: !prev.showActivity }))
                     }
                     aria-label="Notifications"
-                    className="p-2 text-gray-400 hover:text-primary relative"
+                    className="p-2 text-content-faint hover:text-primary relative"
                   >
                     <Bell className="h-5 w-5" />
                     {state.activity.length > 0 && (
@@ -242,9 +247,9 @@ const Header: React.FC = () => {
                         className="fixed inset-0 z-40"
                         onClick={() => setState((prev) => ({ ...prev, showActivity: false }))}
                       ></div>
-                      <div className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden animate-fade-in">
-                        <div className="p-3 border-b border-gray-50 flex justify-between items-center bg-gray-50">
-                          <span className="text-xs font-bold text-gray-500 uppercase">
+                      <div className="absolute right-0 mt-2 w-72 bg-surface rounded-xl shadow-xl border border-line z-50 overflow-hidden animate-fade-in">
+                        <div className="p-3 border-b border-line flex justify-between items-center bg-surface-2">
+                          <span className="text-xs font-bold text-content-muted uppercase">
                             សកម្មភាពថ្មីៗ
                           </span>
                           <span className="text-xs text-primary font-bold">
@@ -253,14 +258,14 @@ const Header: React.FC = () => {
                         </div>
                         <div className="max-h-64 overflow-y-auto">
                           {state.activity.length === 0 ? (
-                            <div className="p-4 text-center text-xs text-gray-400">
+                            <div className="p-4 text-center text-xs text-content-faint">
                               មិនទាន់មានសកម្មភាពទេ។
                             </div>
                           ) : (
                             state.activity.map((act) => (
                               <div
                                 key={act.id}
-                                className="p-3 border-b border-gray-50 hover:bg-gray-50 flex items-start gap-3"
+                                className="p-3 border-b border-line hover:bg-surface-2 flex items-start gap-3"
                               >
                                 <div
                                   className={`mt-0.5 p-1 rounded-full ${act.amount > 0 ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}
@@ -272,7 +277,7 @@ const Header: React.FC = () => {
                                   )}
                                 </div>
                                 <div>
-                                  <p className="text-xs text-gray-800 font-medium">{act.reason}</p>
+                                  <p className="text-xs text-content font-medium">{act.reason}</p>
                                   <p
                                     className={`text-[10px] font-bold ${act.amount > 0 ? 'text-green-600' : 'text-red-500'}`}
                                   >
@@ -300,7 +305,7 @@ const Header: React.FC = () => {
                 {isSchool && (
                   <Link
                     to="/school/dashboard"
-                    className={`p-2 rounded-full transition-colors ${isSchoolDash ? 'bg-blue-50 text-blue-600' : 'text-gray-400 hover:text-blue-600'}`}
+                    className={`p-2 rounded-full transition-colors ${isSchoolDash ? 'bg-blue-50 text-blue-600' : 'text-content-faint hover:text-blue-600'}`}
                     title="School Management"
                     aria-label="School Management"
                   >
@@ -312,7 +317,7 @@ const Header: React.FC = () => {
                 {canAccessStudio && (
                   <Link
                     to="/creator"
-                    className={`p-2 rounded-full transition-colors ${isCreator ? 'bg-indigo-50 text-indigo-600' : 'text-gray-400 hover:text-indigo-600'}`}
+                    className={`p-2 rounded-full transition-colors ${isCreator ? 'bg-indigo-50 text-indigo-600' : 'text-content-faint hover:text-indigo-600'}`}
                     title="Mission Studio"
                     aria-label="Mission Studio"
                   >
@@ -324,7 +329,7 @@ const Header: React.FC = () => {
                 {isTutor && (
                   <Link
                     to="/tutor/dashboard"
-                    className={`p-2 rounded-full transition-colors ${isTutorDash ? 'bg-green-50 text-green-600' : 'text-gray-400 hover:text-green-600'}`}
+                    className={`p-2 rounded-full transition-colors ${isTutorDash ? 'bg-green-50 text-green-600' : 'text-content-faint hover:text-green-600'}`}
                     title="Tutor Dashboard"
                     aria-label="Tutor Dashboard"
                   >
@@ -341,10 +346,10 @@ const Header: React.FC = () => {
                 className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity ml-1"
               >
                 <div className="hidden md:flex flex-col items-end mr-1">
-                  <span className="text-xs font-bold text-gray-800">
+                  <span className="text-xs font-bold text-content">
                     {state.profile.full_name || 'User'}
                   </span>
-                  <span className="text-[10px] bg-gray-100 px-1 rounded text-gray-500 uppercase">
+                  <span className="text-[10px] bg-surface-3 px-1 rounded text-content-muted uppercase">
                     {state.profile.role || 'Guest'}
                   </span>
                 </div>
@@ -354,7 +359,7 @@ const Header: React.FC = () => {
                     `https://ui-avatars.com/api/?name=${state.profile.full_name || 'User'}`
                   }
                   alt="Profile"
-                  className="w-8 h-8 rounded-full border border-gray-200 object-cover"
+                  className="w-8 h-8 rounded-full border border-line-strong object-cover"
                 />
               </Link>
             ) : (
@@ -383,10 +388,10 @@ const Header: React.FC = () => {
           />
 
           {/* Slide-over Drawer */}
-          <div className="fixed top-0 left-0 bottom-0 w-[82%] max-w-sm bg-white shadow-2xl z-50 flex flex-col justify-between overflow-y-auto animate-fade-in border-r border-gray-100">
+          <div className="fixed top-0 left-0 bottom-0 w-[82%] max-w-sm bg-surface shadow-2xl z-50 flex flex-col justify-between overflow-y-auto animate-fade-in border-r border-line">
             <div>
               {/* Drawer Header */}
-              <div className="p-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/80">
+              <div className="p-4 border-b border-line flex items-center justify-between bg-surface-2/80">
                 <Link
                   to="/"
                   className="flex items-center space-x-2"
@@ -401,7 +406,7 @@ const Header: React.FC = () => {
                   type="button"
                   onClick={() => setState((prev) => ({ ...prev, showMobileMenu: false }))}
                   aria-label="Close menu"
-                  className="p-2 text-gray-500 hover:text-gray-800 rounded-full hover:bg-gray-200 transition-colors"
+                  className="p-2 text-content-muted hover:text-content rounded-full hover:bg-line-strong transition-colors"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -409,7 +414,7 @@ const Header: React.FC = () => {
 
               {/* User Summary Bar (If Logged In) */}
               {state.profile && (
-                <div className="p-4 bg-gradient-to-r from-primary/5 via-teal-50/30 to-blue-50/50 border-b border-gray-100">
+                <div className="p-4 bg-gradient-to-r from-primary/5 via-teal-50/30 to-blue-50/50 border-b border-line">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <img
@@ -421,17 +426,17 @@ const Header: React.FC = () => {
                         className="w-10 h-10 rounded-full border-2 border-white shadow-sm object-cover"
                       />
                       <div>
-                        <p className="text-sm font-bold text-gray-900 leading-tight">
+                        <p className="text-sm font-bold text-content leading-tight">
                           {state.profile.full_name || 'User'}
                         </p>
-                        <p className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">
+                        <p className="text-[10px] text-content-muted uppercase tracking-wider font-semibold">
                           {state.profile.role || 'Student'}
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center bg-white px-2.5 py-1 rounded-full border border-gray-200 shadow-2xs">
+                    <div className="flex items-center bg-surface px-2.5 py-1 rounded-full border border-line-strong shadow-2xs">
                       <Zap className="h-3.5 w-3.5 text-amber-500 fill-amber-500 mr-1" />
-                      <span className="text-xs font-bold text-gray-800">
+                      <span className="text-xs font-bold text-content">
                         {state.profile.spendable_points || 0} Pts
                       </span>
                     </div>
@@ -441,7 +446,7 @@ const Header: React.FC = () => {
 
               {/* Navigation Section */}
               <div className="p-3 space-y-1">
-                <p className="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                <p className="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-content-faint">
                   ម៉ឺនុយមេ (Main Menu)
                 </p>
 
@@ -450,14 +455,14 @@ const Header: React.FC = () => {
                   className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                     isHome
                       ? 'bg-primary/10 text-primary font-bold'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      : 'text-content-soft hover:bg-surface-3'
                   }`}
                 >
                   <div className="flex items-center space-x-3">
                     <Home className="h-4 w-4" />
                     <span>ទំព័រដើម (Home)</span>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-400" />
+                  <ChevronRight className="h-4 w-4 text-content-faint" />
                 </Link>
 
                 <Link
@@ -465,14 +470,14 @@ const Header: React.FC = () => {
                   className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                     isSchools
                       ? 'bg-primary/10 text-primary font-bold'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      : 'text-content-soft hover:bg-surface-3'
                   }`}
                 >
                   <div className="flex items-center space-x-3">
                     <Building2 className="h-4 w-4 text-blue-500" />
                     <span>សាលារៀន (Schools)</span>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-400" />
+                  <ChevronRight className="h-4 w-4 text-content-faint" />
                 </Link>
 
                 <Link
@@ -480,14 +485,14 @@ const Header: React.FC = () => {
                   className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                     isCommunity
                       ? 'bg-primary/10 text-primary font-bold'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      : 'text-content-soft hover:bg-surface-3'
                   }`}
                 >
                   <div className="flex items-center space-x-3">
                     <MessageCircle className="h-4 w-4 text-indigo-500" />
                     <span>សហគមន៍ (Community)</span>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-400" />
+                  <ChevronRight className="h-4 w-4 text-content-faint" />
                 </Link>
 
                 <Link
@@ -495,14 +500,14 @@ const Header: React.FC = () => {
                   className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                     isExplore
                       ? 'bg-primary/10 text-primary font-bold'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      : 'text-content-soft hover:bg-surface-3'
                   }`}
                 >
                   <div className="flex items-center space-x-3">
                     <Compass className="h-4 w-4 text-emerald-500" />
                     <span>វគ្គសិក្សា (Courses & Missions)</span>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-400" />
+                  <ChevronRight className="h-4 w-4 text-content-faint" />
                 </Link>
 
                 <Link
@@ -510,7 +515,7 @@ const Header: React.FC = () => {
                   className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                     isChat
                       ? 'bg-primary/10 text-primary font-bold'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      : 'text-content-soft hover:bg-surface-3'
                   }`}
                 >
                   <div className="flex items-center space-x-3">
@@ -527,14 +532,14 @@ const Header: React.FC = () => {
                   className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                     isTutorMarket
                       ? 'bg-primary/10 text-primary font-bold'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      : 'text-content-soft hover:bg-surface-3'
                   }`}
                 >
                   <div className="flex items-center space-x-3">
                     <Users className="h-4 w-4 text-purple-500" />
                     <span>គ្រូបង្រៀន (Tutor Market)</span>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-400" />
+                  <ChevronRight className="h-4 w-4 text-content-faint" />
                 </Link>
 
                 <Link
@@ -542,14 +547,14 @@ const Header: React.FC = () => {
                   className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                     isRewards
                       ? 'bg-primary/10 text-primary font-bold'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      : 'text-content-soft hover:bg-surface-3'
                   }`}
                 >
                   <div className="flex items-center space-x-3">
                     <Gift className="h-4 w-4 text-pink-500 fill-current" />
                     <span>រង្វាន់ (Rewards Store)</span>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-400" />
+                  <ChevronRight className="h-4 w-4 text-content-faint" />
                 </Link>
 
                 <Link
@@ -557,14 +562,14 @@ const Header: React.FC = () => {
                   className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                     isLeaderboard
                       ? 'bg-primary/10 text-primary font-bold'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      : 'text-content-soft hover:bg-surface-3'
                   }`}
                 >
                   <div className="flex items-center space-x-3">
                     <Award className="h-4 w-4 text-amber-600" />
                     <span>តារាងពិន្ទុ (Leaderboard)</span>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-400" />
+                  <ChevronRight className="h-4 w-4 text-content-faint" />
                 </Link>
 
                 <Link
@@ -572,20 +577,29 @@ const Header: React.FC = () => {
                   className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                     isDocs
                       ? 'bg-primary/10 text-primary font-bold'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      : 'text-content-soft hover:bg-surface-3'
                   }`}
                 >
                   <div className="flex items-center space-x-3">
                     <FileText className="h-4 w-4 text-cyan-600" />
                     <span>ឯកសារ (Docs & Guides)</span>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-400" />
+                  <ChevronRight className="h-4 w-4 text-content-faint" />
                 </Link>
+
+                {/* Appearance. Sits with the nav rather than behind a settings
+                    screen, since most visitors arrive on a phone. */}
+                <div className="pt-2 mt-2 border-t border-line">
+                  <p className="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-content-faint">
+                    រូបរាង (Appearance)
+                  </p>
+                  <ThemeToggle variant="full" />
+                </div>
 
                 {/* Role Specific Management Links */}
                 {(isSchool || canAccessStudio || isTutor) && (
                   <>
-                    <p className="px-3 pt-4 pb-1 text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                    <p className="px-3 pt-4 pb-1 text-[10px] font-bold uppercase tracking-wider text-content-faint">
                       គ្រប់គ្រង (Management)
                     </p>
 
@@ -595,14 +609,14 @@ const Header: React.FC = () => {
                         className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                           isSchoolDash
                             ? 'bg-blue-50 text-blue-600 font-bold'
-                            : 'text-gray-700 hover:bg-gray-100'
+                            : 'text-content-soft hover:bg-surface-3'
                         }`}
                       >
                         <div className="flex items-center space-x-3">
                           <Building2 className="h-4 w-4 text-blue-600" />
                           <span>គ្រប់គ្រងសាលា (School Dashboard)</span>
                         </div>
-                        <ChevronRight className="h-4 w-4 text-gray-400" />
+                        <ChevronRight className="h-4 w-4 text-content-faint" />
                       </Link>
                     )}
 
@@ -612,14 +626,14 @@ const Header: React.FC = () => {
                         className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                           isCreator
                             ? 'bg-indigo-50 text-indigo-600 font-bold'
-                            : 'text-gray-700 hover:bg-gray-100'
+                            : 'text-content-soft hover:bg-surface-3'
                         }`}
                       >
                         <div className="flex items-center space-x-3">
                           <Zap className="h-4 w-4 text-indigo-600 fill-current" />
                           <span>បង្កើតបេសកកម្ម (Mission Studio)</span>
                         </div>
-                        <ChevronRight className="h-4 w-4 text-gray-400" />
+                        <ChevronRight className="h-4 w-4 text-content-faint" />
                       </Link>
                     )}
 
@@ -629,14 +643,14 @@ const Header: React.FC = () => {
                         className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                           isTutorDash
                             ? 'bg-green-50 text-green-600 font-bold'
-                            : 'text-gray-700 hover:bg-gray-100'
+                            : 'text-content-soft hover:bg-surface-3'
                         }`}
                       >
                         <div className="flex items-center space-x-3">
                           <GraduationCap className="h-4 w-4 text-green-600 fill-current" />
                           <span>គ្រប់គ្រងគ្រូ (Tutor Dashboard)</span>
                         </div>
-                        <ChevronRight className="h-4 w-4 text-gray-400" />
+                        <ChevronRight className="h-4 w-4 text-content-faint" />
                       </Link>
                     )}
                   </>
@@ -645,12 +659,12 @@ const Header: React.FC = () => {
             </div>
 
             {/* Drawer Footer Actions */}
-            <div className="p-4 border-t border-gray-100 bg-gray-50/50">
+            <div className="p-4 border-t border-line bg-surface-2/50">
               {state.profile ? (
                 <div className="space-y-2">
                   <Link
                     to="/account"
-                    className="flex items-center justify-center space-x-2 w-full py-2.5 px-4 bg-white border border-gray-200 text-gray-800 font-bold text-xs rounded-xl shadow-2xs hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-center space-x-2 w-full py-2.5 px-4 bg-surface border border-line-strong text-content font-bold text-xs rounded-xl shadow-2xs hover:bg-surface-3 transition-colors"
                   >
                     <UserIcon className="h-4 w-4 text-primary" />
                     <span>គណនីរបស់ខ្ញុំ (Account Profile)</span>

@@ -87,7 +87,7 @@ const KruReanChat: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-120px)] md:h-[calc(100vh-64px)] max-h-[calc(100dvh-120px)] md:max-h-[calc(100dvh-64px)] bg-gray-50">
+    <div className="flex flex-col h-[calc(100vh-120px)] md:h-[calc(100vh-64px)] max-h-[calc(100dvh-120px)] md:max-h-[calc(100dvh-64px)] bg-surface-2">
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-6 scroll-smooth">
         <div className="max-w-5xl mx-auto space-y-6">
@@ -103,12 +103,12 @@ const KruReanChat: React.FC = () => {
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm border border-white ${
                     msg.role === 'user'
-                      ? 'bg-gray-200'
+                      ? 'bg-line-strong'
                       : 'bg-gradient-to-br from-primary to-teal-600'
                   }`}
                 >
                   {msg.role === 'user' ? (
-                    <User className="h-5 w-5 text-gray-500" />
+                    <User className="h-5 w-5 text-content-muted" />
                   ) : (
                     <span className="text-sm">🐰</span>
                   )}
@@ -119,15 +119,15 @@ const KruReanChat: React.FC = () => {
                   className={`px-5 py-3 rounded-2xl text-sm leading-relaxed shadow-sm relative group transition-all ${
                     msg.role === 'user'
                       ? 'bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-br-none'
-                      : 'bg-white text-gray-800 border border-gray-100 rounded-bl-none'
+                      : 'bg-surface text-content border border-line rounded-bl-none'
                   }`}
                 >
                   <MarkdownText
                     content={msg.text}
-                    className={msg.role === 'user' ? 'text-white' : 'text-gray-800'}
+                    className={msg.role === 'user' ? 'text-white' : 'text-content'}
                   />
                   <span
-                    className={`text-[10px] absolute -bottom-5 ${msg.role === 'user' ? 'right-0' : 'left-0'} text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap`}
+                    className={`text-[10px] absolute -bottom-5 ${msg.role === 'user' ? 'right-0' : 'left-0'} text-content-faint opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap`}
                   >
                     {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </span>
@@ -143,7 +143,7 @@ const KruReanChat: React.FC = () => {
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-teal-600 flex items-center justify-center flex-shrink-0 shadow-sm border border-white">
                   <span className="text-sm">🐰</span>
                 </div>
-                <div className="bg-white p-4 rounded-2xl rounded-bl-none shadow-sm border border-gray-100">
+                <div className="bg-surface p-4 rounded-2xl rounded-bl-none shadow-sm border border-line">
                   <div className="flex space-x-1.5 items-center h-4">
                     <div
                       className="w-1.5 h-1.5 bg-primary/60 rounded-full animate-bounce"
@@ -167,7 +167,7 @@ const KruReanChat: React.FC = () => {
       </div>
 
       {/* Input Area */}
-      <div className="p-4 bg-white border-t border-gray-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.02)] z-10">
+      <div className="p-4 bg-surface border-t border-line shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.02)] z-10">
         <div className="max-w-5xl mx-auto relative flex items-center gap-2">
           <div className="relative flex-1">
             <input
@@ -178,13 +178,13 @@ const KruReanChat: React.FC = () => {
               onChange={(e) => setState((prev) => ({ ...prev, input: e.target.value }))}
               onKeyDown={handleKeyPress}
               placeholder="សួរសំណួរ... (1 Pt/Chat)"
-              className="w-full pl-5 pr-16 py-3.5 bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-inner"
+              className="w-full pl-5 pr-16 py-3.5 bg-surface-2 border border-line-strong text-content text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-inner"
               disabled={state.isLoading}
               autoFocus
             />
             {/* Currency hint inside input */}
             <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none">
-              <span className="text-[10px] font-bold text-gray-400 flex items-center bg-gray-100 px-2 py-1 rounded-full border border-gray-200">
+              <span className="text-[10px] font-bold text-content-faint flex items-center bg-surface-3 px-2 py-1 rounded-full border border-line-strong">
                 {AI_COSTS.CHAT} <Zap className="h-3 w-3 ml-0.5 text-yellow-500 fill-yellow-500" />
               </span>
             </div>
@@ -198,13 +198,13 @@ const KruReanChat: React.FC = () => {
             className={`p-3.5 rounded-full shadow-lg transition-all transform active:scale-95 flex-shrink-0 ${
               state.input.trim()
                 ? 'bg-gradient-to-r from-primary to-teal-600 text-white hover:shadow-primary/30'
-                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                : 'bg-line-strong text-content-faint cursor-not-allowed'
             }`}
           >
             <Send className="h-5 w-5 ml-0.5" />
           </button>
         </div>
-        <p className="text-[10px] text-center text-gray-400 mt-2">
+        <p className="text-[10px] text-center text-content-faint mt-2">
           AI អាចមានកំហុស។ សូមត្រួតពិនិត្យព័ត៌មានសំខាន់ៗ។
         </p>
       </div>

@@ -81,18 +81,18 @@ const HomePage: React.FC = () => {
   );
 
   return (
-    <div className="pb-20 md:pb-12 bg-gray-50 min-h-screen">
+    <div className="pb-20 md:pb-12 bg-surface-2 min-h-screen">
       <div className="max-w-5xl mx-auto md:px-4">
         {/* Hero Marketplace Search */}
-        <section className="bg-white md:bg-transparent pb-6 pt-4 px-4 md:px-0 rounded-b-3xl shadow-sm md:shadow-none border-b border-gray-100 md:border-none mb-6 sticky top-14 md:static z-30">
+        <section className="bg-surface md:bg-transparent pb-6 pt-4 px-4 md:px-0 rounded-b-3xl shadow-sm md:shadow-none border-b border-line md:border-none mb-6 sticky top-14 md:static z-30">
           {/* Search Interface */}
           <div className="flex flex-col md:flex-row gap-4 items-center">
             {/* Search Tabs */}
-            <div className="flex justify-center space-x-1 p-1 bg-gray-100 md:bg-white rounded-xl w-fit md:w-auto shrink-0 transition-all md:shadow-sm md:border md:border-gray-200">
+            <div className="flex justify-center space-x-1 p-1 bg-surface-3 md:bg-surface rounded-xl w-fit md:w-auto shrink-0 transition-all md:shadow-sm md:border md:border-line-strong">
               <button
                 type="button"
                 onClick={() => setState((s) => ({ ...s, searchTab: 'school' }))}
-                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center ${state.searchTab === 'school' ? 'bg-white text-primary shadow-sm md:bg-gray-100' : 'text-gray-500 hover:text-gray-700'}`}
+                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center ${state.searchTab === 'school' ? 'bg-surface text-primary shadow-sm md:bg-surface-3' : 'text-content-muted hover:text-content-soft'}`}
               >
                 <Building2 className="h-3.5 w-3.5 mr-2" />
                 សាលារៀន
@@ -100,7 +100,7 @@ const HomePage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setState((s) => ({ ...s, searchTab: 'mission' }))}
-                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center ${state.searchTab === 'mission' ? 'bg-white text-primary shadow-sm md:bg-gray-100' : 'text-gray-500 hover:text-gray-700'}`}
+                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center ${state.searchTab === 'mission' ? 'bg-surface text-primary shadow-sm md:bg-surface-3' : 'text-content-muted hover:text-content-soft'}`}
               >
                 <Target className="h-3.5 w-3.5 mr-2" />
                 បេសកកម្ម
@@ -108,7 +108,7 @@ const HomePage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setState((s) => ({ ...s, searchTab: 'tutor' }))}
-                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center ${state.searchTab === 'tutor' ? 'bg-white text-primary shadow-sm md:bg-gray-100' : 'text-gray-500 hover:text-gray-700'}`}
+                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center ${state.searchTab === 'tutor' ? 'bg-surface text-primary shadow-sm md:bg-surface-3' : 'text-content-muted hover:text-content-soft'}`}
               >
                 <Users className="h-3.5 w-3.5 mr-2" />
                 គ្រូបង្រៀន
@@ -129,17 +129,17 @@ const HomePage: React.FC = () => {
                       ? 'ស្វែងរកជំនាញ (Digital Marketing, Coding...)'
                       : 'ស្វែងរកគ្រូបង្រៀន (គណិតវិទ្យា, អង់គ្លេស...)'
                 }
-                className="w-full bg-gray-50 md:bg-white border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-primary focus:border-primary block w-full pl-12 pr-12 p-3 shadow-sm transition-all"
+                className="w-full bg-surface-2 md:bg-surface border border-line-strong text-content text-sm rounded-xl focus:ring-primary focus:border-primary block w-full pl-12 pr-12 p-3 shadow-sm transition-all"
               />
               <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-                <Search className="w-5 h-5 text-gray-400" />
+                <Search className="w-5 h-5 text-content-faint" />
               </div>
               {state.searchQuery ? (
                 <button
                   type="button"
                   onClick={() => setState((s) => ({ ...s, searchQuery: '' }))}
                   aria-label="Clear Search"
-                  className="absolute right-3 top-2.5 p-1.5 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100"
+                  className="absolute right-3 top-2.5 p-1.5 text-content-faint hover:text-content-muted rounded-full hover:bg-surface-3"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -161,9 +161,9 @@ const HomePage: React.FC = () => {
         {state.searchQuery ? (
           <div className="px-4 md:px-0 min-h-[50vh] animate-fade-in">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="font-bold text-gray-900">
+              <h2 className="font-bold text-content">
                 លទ្ធផលស្វែងរក "{state.searchQuery}"{' '}
-                <span className="text-gray-400 font-normal ml-1">
+                <span className="text-content-faint font-normal ml-1">
                   (
                   {state.searchTab === 'school'
                     ? filteredSchools.length
@@ -180,9 +180,9 @@ const HomePage: React.FC = () => {
                 {filteredSchools.length > 0 ? (
                   filteredSchools.map((s) => <SchoolCard key={s.id} school={s} />)
                 ) : (
-                  <div className="col-span-full text-center py-20 bg-white rounded-2xl border border-dashed border-gray-200">
+                  <div className="col-span-full text-center py-20 bg-surface rounded-2xl border border-dashed border-line-strong">
                     <Building2 className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-                    <p className="text-gray-500">មិនមានសាលាដែលអ្នកស្វែងរកទេ។</p>
+                    <p className="text-content-muted">មិនមានសាលាដែលអ្នកស្វែងរកទេ។</p>
                   </div>
                 )}
               </div>
@@ -193,9 +193,9 @@ const HomePage: React.FC = () => {
                 {filteredMissions.length > 0 ? (
                   filteredMissions.map((m) => <MissionCard key={m.id} mission={m} />)
                 ) : (
-                  <div className="col-span-full text-center py-20 bg-white rounded-2xl border border-dashed border-gray-200">
+                  <div className="col-span-full text-center py-20 bg-surface rounded-2xl border border-dashed border-line-strong">
                     <Target className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-                    <p className="text-gray-500">មិនមានបេសកកម្មដែលអ្នកស្វែងរកទេ។</p>
+                    <p className="text-content-muted">មិនមានបេសកកម្មដែលអ្នកស្វែងរកទេ។</p>
                   </div>
                 )}
               </div>
@@ -206,9 +206,9 @@ const HomePage: React.FC = () => {
                 {filteredTutors.length > 0 ? (
                   filteredTutors.map((t) => <TutorCard key={t.id} tutor={t} />)
                 ) : (
-                  <div className="col-span-full text-center py-20 bg-white rounded-2xl border border-dashed border-gray-200">
+                  <div className="col-span-full text-center py-20 bg-surface rounded-2xl border border-dashed border-line-strong">
                     <Users className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-                    <p className="text-gray-500">មិនមានគ្រូបង្រៀនដែលអ្នកស្វែងរកទេ។</p>
+                    <p className="text-content-muted">មិនមានគ្រូបង្រៀនដែលអ្នកស្វែងរកទេ។</p>
                   </div>
                 )}
               </div>
@@ -220,7 +220,7 @@ const HomePage: React.FC = () => {
             {/* Active Missions (Moved to Top) */}
             <section className="px-4 md:px-0 mb-8">
               <div className="flex items-center justify-between mb-3">
-                <h2 className="font-bold text-gray-900 text-lg flex items-center">
+                <h2 className="font-bold text-content text-lg flex items-center">
                   <Target className="h-5 w-5 mr-2 text-red-500" />
                   រៀនតាមរយៈការអនុវត្ត (Missions)
                 </h2>
@@ -240,7 +240,7 @@ const HomePage: React.FC = () => {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-8 text-gray-400 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                <div className="text-center py-8 text-content-faint bg-surface-2 rounded-xl border border-dashed border-line-strong">
                   <Target className="h-8 w-8 mx-auto mb-2 opacity-50" />
                   <p className="text-sm">No active missions yet.</p>
                 </div>
@@ -262,13 +262,13 @@ const HomePage: React.FC = () => {
                 </div>
                 <Link
                   to="/community"
-                  className="relative z-10 bg-white text-orange-600 font-bold py-3 px-6 rounded-xl shadow-md hover:bg-yellow-50 transition-colors flex items-center whitespace-nowrap active:scale-95 transform"
+                  className="relative z-10 bg-surface text-orange-600 font-bold py-3 px-6 rounded-xl shadow-md hover:bg-yellow-50 transition-colors flex items-center whitespace-nowrap active:scale-95 transform"
                 >
                   <MessageCircle className="h-5 w-5 mr-2" /> ចូលសហគមន៍
                 </Link>
 
                 {/* Decoration */}
-                <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-surface/10 rounded-full blur-3xl pointer-events-none"></div>
                 <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-yellow-400/20 rounded-full blur-3xl pointer-events-none"></div>
               </div>
             </section>
@@ -276,7 +276,7 @@ const HomePage: React.FC = () => {
             {/* School Recruitment */}
             <section className="mb-8">
               <div className="flex items-center justify-between px-4 md:px-0 mb-3">
-                <h2 className="font-bold text-gray-900 text-lg flex items-center">
+                <h2 className="font-bold text-content text-lg flex items-center">
                   <GraduationCap className="h-5 w-5 mr-2 text-primary" />
                   ការជ្រើសរើសសិស្សថ្មី (Admissions)
                 </h2>
@@ -304,7 +304,7 @@ const HomePage: React.FC = () => {
             <section className="mb-8 bg-blue-50 py-6 md:rounded-3xl">
               <div className="px-4 md:px-6">
                 <div className="flex items-center justify-between mb-3">
-                  <h2 className="font-bold text-gray-900 text-lg flex items-center">
+                  <h2 className="font-bold text-content text-lg flex items-center">
                     <BookOpen className="h-5 w-5 mr-2 text-blue-600" />
                     វគ្គសិក្សារយៈពេលខ្លី
                   </h2>
@@ -334,7 +334,7 @@ const HomePage: React.FC = () => {
             {/* Tutors List */}
             <section className="mb-8">
               <div className="flex items-center justify-between px-4 md:px-0 mb-3">
-                <h2 className="font-bold text-gray-900 text-lg flex items-center">
+                <h2 className="font-bold text-content text-lg flex items-center">
                   <Users className="h-5 w-5 mr-2 text-orange-500" />
                   ស្វែងរកគ្រូបង្រៀន (Tutors)
                 </h2>
@@ -352,7 +352,7 @@ const HomePage: React.FC = () => {
                     .slice(0, 4)
                     .map((tutor) => <TutorCard key={tutor.id} tutor={tutor} />)
                 ) : (
-                  <div className="col-span-2 text-center py-8 text-gray-400 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                  <div className="col-span-2 text-center py-8 text-content-faint bg-surface-2 rounded-xl border border-dashed border-line-strong">
                     <Users className="h-8 w-8 mx-auto mb-2 opacity-50" />
                     <p className="text-sm">No active tutors yet.</p>
                   </div>
