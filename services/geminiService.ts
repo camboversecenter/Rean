@@ -371,7 +371,7 @@ export const generateMissionStructure = async (topic: string): Promise<Partial<a
             "price": 0,
             "squadSize": 3,
             "modules": [
-                { "id": "mod1", "title": "", "objective": "", "keyPoints": ["", "", ""], "task": "Use LaTeX $$...$$ for math formulas", "aiPersona": "", "initialPrompt": "", "theoryPrompt": "" }
+                { "id": "mod1", "title": "", "objective": "", "keyPoints": ["", "", ""], "task": "", "aiPersona": "", "initialPrompt": "", "theoryPrompt": "" }
             ]
         }
         Create 5 distinct modules.
@@ -382,6 +382,12 @@ export const generateMissionStructure = async (topic: string): Promise<Partial<a
           ideas, useful tricks, and common mistakes.
         - "task" is the assignment the student hands in, and is shown separately from the
           lesson brief, so it must make sense on its own.
+
+        MATH FORMATTING: the app renders LaTeX through KaTeX. Write every formula,
+        equation, fraction, exponent, root, limit, integral, or summation as LaTeX.
+        Use $...$ inline and $$...$$ for a formula on its own line. For example write
+        $\\lim_{x \\to 3} \\dfrac{x^2-9}{x-3}$, never "lim(x->3) (x^2-9)/(x-3)".
+        This applies to keyPoints and task as well as the prose fields.
     `;
 
   try {
