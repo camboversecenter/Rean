@@ -118,13 +118,13 @@ const LuckyDropManager: React.FC = () => {
         </div>
 
         {/* Tooltip */}
-        <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-white px-3 py-2 rounded-xl shadow-xl border border-gray-100 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none hidden md:block">
-          <p className="text-xs font-bold text-gray-800 text-center">
+        <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-surface px-3 py-2 rounded-xl shadow-xl border border-line whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none hidden md:block">
+          <p className="text-xs font-bold text-content text-center">
             កាដូសំណាង!
             <br />
             <span className="text-primary font-normal">ចុចបើកភ្លាម</span>
           </p>
-          <div className="absolute right-[-5px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-white rotate-45 border-r border-t border-gray-100"></div>
+          <div className="absolute right-[-5px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-surface rotate-45 border-r border-t border-line"></div>
         </div>
       </button>
     </div>

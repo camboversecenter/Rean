@@ -67,8 +67,8 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
     <div className="space-y-4 animate-fade-in">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-2">
         <div>
-          <h3 className="font-bold text-gray-900 text-lg">ការចុះឈ្មោះវគ្គសិក្សា (Enrollments)</h3>
-          <span className="bg-gray-100 text-gray-600 text-xs font-bold px-3 py-1 rounded-full">
+          <h3 className="font-bold text-content text-lg">ការចុះឈ្មោះវគ្គសិក្សា (Enrollments)</h3>
+          <span className="bg-surface-3 text-content-muted text-xs font-bold px-3 py-1 rounded-full">
             សរុប៖ {filteredEnrollments.length}
           </span>
         </div>
@@ -76,12 +76,12 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
         <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
           {/* Search Student */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-content-faint" />
             <input
               type="text"
               aria-label="ស្វែងរកឈ្មោះសិស្ស"
               placeholder="ស្វែងរកឈ្មោះសិស្ស..."
-              className="pl-9 pr-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 w-full sm:w-64"
+              className="pl-9 pr-4 py-2 border border-line-strong rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 w-full sm:w-64"
               value={state.searchStudent}
               onChange={(e) => setState((prev) => ({ ...prev, searchStudent: e.target.value }))}
             />
@@ -89,10 +89,10 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
 
           {/* Filter Course */}
           <div className="relative">
-            <Filter className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Filter className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-content-faint" />
             <select
               aria-label="ជ្រើសរើសវគ្គសិក្សា"
-              className="pl-9 pr-8 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 appearance-none bg-white w-full sm:w-48 cursor-pointer"
+              className="pl-9 pr-8 py-2 border border-line-strong rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 appearance-none bg-surface w-full sm:w-48 cursor-pointer"
               value={state.selectedCourse}
               onChange={(e) => setState((prev) => ({ ...prev, selectedCourse: e.target.value }))}
             >
@@ -107,21 +107,21 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
         </div>
       </div>
 
-      <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-surface rounded-3xl shadow-sm border border-line overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
-            <thead className="bg-gray-50 text-gray-500 font-bold text-xs uppercase">
+            <thead className="bg-surface-2 text-content-muted font-bold text-xs uppercase">
               <tr>
                 <th className="px-6 py-4">សិស្ស (Name)</th>
                 <th className="px-6 py-4">វគ្គសិក្សា (Course Title)</th>
                 <th className="px-6 py-4 text-right">ស្ថានភាព (Status)</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-line">
               {filteredEnrollments.length === 0 ? (
                 <tr>
                   <td colSpan={3} className="px-6 py-16 text-center">
-                    <div className="flex flex-col items-center justify-center text-gray-400">
+                    <div className="flex flex-col items-center justify-center text-content-faint">
                       <BookOpen className="h-12 w-12 mb-3 opacity-20" />
                       <p>មិនទាន់មានទិន្នន័យ។</p>
                     </div>
@@ -131,7 +131,7 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
                 filteredEnrollments.map((item) => (
                   <tr
                     key={item.id}
-                    className="hover:bg-gray-50 transition-colors cursor-pointer group"
+                    className="hover:bg-surface-2 transition-colors cursor-pointer group"
                     onClick={() => setState((prev) => ({ ...prev, selectedEnrollment: item }))}
                   >
                     <td className="px-6 py-4">
@@ -139,13 +139,13 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
                         <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 border border-blue-100 group-hover:bg-blue-100 transition-colors">
                           <User className="h-4 w-4" />
                         </div>
-                        <div className="font-bold text-gray-900 group-hover:text-primary transition-colors">
+                        <div className="font-bold text-content group-hover:text-primary transition-colors">
                           {item.studentName}
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-gray-700 font-medium line-clamp-1">
+                      <div className="text-content-soft font-medium line-clamp-1">
                         {item.courseTitle}
                       </div>
                     </td>
@@ -181,14 +181,14 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
       {/* Detail Modal */}
       {state.selectedEnrollment && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm animate-fade-in">
-          <div className="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl animate-scale-in">
-            <div className="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-              <h3 className="font-bold text-gray-900 text-lg">ព័ត៌មានលម្អិត (Details)</h3>
+          <div className="bg-surface rounded-2xl w-full max-w-md overflow-hidden shadow-2xl animate-scale-in">
+            <div className="bg-surface-2 px-6 py-4 border-b border-line flex justify-between items-center">
+              <h3 className="font-bold text-content text-lg">ព័ត៌មានលម្អិត (Details)</h3>
               <button
                 type="button"
                 aria-label="Close"
                 onClick={() => setState((prev) => ({ ...prev, selectedEnrollment: null }))}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-content-faint hover:text-content-muted"
               >
                 <X className="h-6 w-6" />
               </button>
@@ -201,33 +201,35 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
                   {state.selectedEnrollment.studentName?.charAt(0) || <User />}
                 </div>
                 <div>
-                  <h4 className="text-lg font-bold text-gray-900">
+                  <h4 className="text-lg font-bold text-content">
                     {state.selectedEnrollment.studentName}
                   </h4>
                   <a
                     href={`tel:${state.selectedEnrollment.studentPhone}`}
-                    className="flex items-center text-sm text-gray-500 hover:text-primary mt-1 font-medium bg-gray-50 px-2 py-1 rounded w-fit"
+                    className="flex items-center text-sm text-content-muted hover:text-primary mt-1 font-medium bg-surface-2 px-2 py-1 rounded w-fit"
                   >
                     <Phone className="h-3.5 w-3.5 mr-1.5" /> {state.selectedEnrollment.studentPhone}
                   </a>
                 </div>
               </div>
 
-              <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 space-y-3">
+              <div className="bg-surface-2 rounded-xl p-4 border border-line space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-xs font-bold text-gray-500 uppercase">វគ្គសិក្សា</span>
-                  <span className="text-sm font-bold text-gray-900 text-right">
+                  <span className="text-xs font-bold text-content-muted uppercase">វគ្គសិក្សា</span>
+                  <span className="text-sm font-bold text-content text-right">
                     {state.selectedEnrollment.courseTitle}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-xs font-bold text-gray-500 uppercase">កាលបរិច្ឆេទ</span>
-                  <span className="text-sm text-gray-700 flex items-center">
+                  <span className="text-xs font-bold text-content-muted uppercase">
+                    កាលបរិច្ឆេទ
+                  </span>
+                  <span className="text-sm text-content-soft flex items-center">
                     <Clock className="h-3.5 w-3.5 mr-1" /> {state.selectedEnrollment.createdAt}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-xs font-bold text-gray-500 uppercase">ស្ថានភាព</span>
+                  <span className="text-xs font-bold text-content-muted uppercase">ស្ថានភាព</span>
                   <span
                     className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                       state.selectedEnrollment.status === 'Pending'
@@ -264,7 +266,7 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
                     type="button"
                     onClick={() => handleAction(state.selectedEnrollment!.id, 'Rejected')}
                     disabled={!!state.processingId}
-                    className="bg-white border border-red-200 text-red-600 font-bold py-3 rounded-xl hover:bg-red-50 transition-all active:scale-95 flex items-center justify-center"
+                    className="bg-surface border border-red-200 text-red-600 font-bold py-3 rounded-xl hover:bg-red-50 transition-all active:scale-95 flex items-center justify-center"
                   >
                     <X className="h-5 w-5 mr-2" />
                     បដិសេធ (Reject)
@@ -285,12 +287,12 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
                     )}
                     បញ្ចប់វគ្គសិក្សា (Mark Completed)
                   </button>
-                  <p className="text-center text-xs text-gray-400 mt-2">
+                  <p className="text-center text-xs text-content-faint mt-2">
                     ចុចដើម្បីបញ្ចប់វគ្គសិក្សា និងផ្តល់សញ្ញាបត្រដល់សិស្ស។
                   </p>
                 </div>
               ) : (
-                <div className="text-center text-gray-400 text-sm italic pt-2 bg-gray-50 p-3 rounded-xl border border-gray-100">
+                <div className="text-center text-content-faint text-sm italic pt-2 bg-surface-2 p-3 rounded-xl border border-line">
                   {state.selectedEnrollment.status === 'Completed'
                     ? 'វគ្គសិក្សានេះបានបញ្ចប់ហើយ។ (Completed)'
                     : 'ការចុះឈ្មោះនេះត្រូវបានបដិសេធ។'}

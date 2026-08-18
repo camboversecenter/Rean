@@ -32,14 +32,14 @@ const LeaderboardPage: React.FC = () => {
   const restUsers = users.slice(3);
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20 pt-8 px-4 font-sans">
+    <div className="min-h-screen bg-surface-2 pb-20 pt-8 px-4 font-sans">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-10 animate-fade-in">
-          <h1 className="text-3xl font-bold text-gray-900 flex items-center justify-center mb-2">
+          <h1 className="text-3xl font-bold text-content flex items-center justify-center mb-2">
             <Award className="h-8 w-8 mr-3 text-yellow-500 fill-yellow-500" />
             តារាងពិន្ទុ (Leaderboard)
           </h1>
-          <p className="text-gray-500">ទទួលស្គាល់សិស្សដែលមានភាពសកម្មបំផុតនៅលើ REAN</p>
+          <p className="text-content-muted">ទទួលស្គាល់សិស្សដែលមានភាពសកម្មបំផុតនៅលើ REAN</p>
         </div>
 
         {/* Top 3 Podium */}
@@ -60,23 +60,23 @@ const LeaderboardPage: React.FC = () => {
                       users[1].avatar_url ||
                       `https://ui-avatars.com/api/?name=${users[1].full_name}`
                     }
-                    className="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-gray-300 shadow-lg object-cover"
+                    className="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-line-strong shadow-lg object-cover"
                     alt="2nd"
                   />
                   <div className="absolute -bottom-3 inset-x-0 flex justify-center">
-                    <span className="bg-gray-300 text-white text-xs md:text-sm font-bold px-2.5 py-0.5 rounded-full shadow-sm ring-2 ring-white">
+                    <span className="bg-line-strong text-white text-xs md:text-sm font-bold px-2.5 py-0.5 rounded-full shadow-sm ring-2 ring-white">
                       2nd
                     </span>
                   </div>
                 </div>
                 <div className="text-center mb-2 mt-2">
-                  <p className="font-bold text-gray-900 text-sm md:text-base line-clamp-1">
+                  <p className="font-bold text-content text-sm md:text-base line-clamp-1">
                     {users[1].full_name}
                   </p>
-                  <p className="text-xs text-gray-500 font-mono">{users[1].lifetime_xp} XP</p>
+                  <p className="text-xs text-content-muted font-mono">{users[1].lifetime_xp} XP</p>
                 </div>
                 <div className="w-full bg-gradient-to-t from-gray-200 to-gray-100 h-24 md:h-32 rounded-t-xl shadow-sm border-t border-white/50 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-white/30 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="absolute inset-0 bg-surface/30 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 </div>
               </Link>
             )}
@@ -106,7 +106,7 @@ const LeaderboardPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="text-center mb-2 mt-4">
-                  <p className="font-bold text-gray-900 text-base md:text-lg line-clamp-1">
+                  <p className="font-bold text-content text-base md:text-lg line-clamp-1">
                     {users[0].full_name}
                   </p>
                   <p className="text-xs text-yellow-600 font-bold font-mono bg-yellow-50 px-2 py-0.5 rounded-full">
@@ -115,7 +115,7 @@ const LeaderboardPage: React.FC = () => {
                 </div>
                 <div className="w-full bg-gradient-to-t from-yellow-400 to-yellow-300 h-36 md:h-48 rounded-t-2xl shadow-lg border-t border-yellow-200 relative overflow-hidden">
                   <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-                  <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="absolute inset-0 bg-surface/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 </div>
               </Link>
             )}
@@ -142,13 +142,13 @@ const LeaderboardPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="text-center mb-2 mt-2">
-                  <p className="font-bold text-gray-900 text-sm md:text-base line-clamp-1">
+                  <p className="font-bold text-content text-sm md:text-base line-clamp-1">
                     {users[2].full_name}
                   </p>
-                  <p className="text-xs text-gray-500 font-mono">{users[2].lifetime_xp} XP</p>
+                  <p className="text-xs text-content-muted font-mono">{users[2].lifetime_xp} XP</p>
                 </div>
                 <div className="w-full bg-gradient-to-t from-orange-200 to-orange-100 h-20 md:h-24 rounded-t-xl shadow-sm border-t border-white/50 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-white/30 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="absolute inset-0 bg-surface/30 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 </div>
               </Link>
             )}
@@ -164,36 +164,36 @@ const LeaderboardPage: React.FC = () => {
                 <Link
                   to={`/profile/${user.id}`}
                   key={user.id}
-                  className="flex items-center p-3 md:p-4 rounded-xl border border-gray-100 bg-white shadow-sm hover:shadow-md transition-all group"
+                  className="flex items-center p-3 md:p-4 rounded-xl border border-line bg-surface shadow-sm hover:shadow-md transition-all group"
                 >
-                  <div className="w-8 md:w-10 font-bold text-gray-400 text-center mr-2 md:mr-4 font-mono text-lg">
+                  <div className="w-8 md:w-10 font-bold text-content-faint text-center mr-2 md:mr-4 font-mono text-lg">
                     #{rank}
                   </div>
                   <div className="relative mr-3 md:mr-4">
                     <img
                       src={user.avatar_url || `https://ui-avatars.com/api/?name=${user.full_name}`}
-                      className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-200 object-cover border border-gray-100"
+                      className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-line-strong object-cover border border-line"
                       alt={user.full_name}
                     />
                     {user.role === 'tutor' && (
-                      <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-0.5">
+                      <div className="absolute -bottom-1 -right-1 bg-surface rounded-full p-0.5">
                         <ShieldCheck className="h-3 w-3 md:h-4 md:w-4 text-green-500" />
                       </div>
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-bold text-gray-900 text-sm md:text-base truncate group-hover:text-primary transition-colors">
+                    <h4 className="font-bold text-content text-sm md:text-base truncate group-hover:text-primary transition-colors">
                       {user.full_name}
                     </h4>
-                    <p className="text-xs text-gray-500 truncate capitalize">
+                    <p className="text-xs text-content-muted truncate capitalize">
                       {user.role || 'Student'}
                     </p>
                   </div>
                   <div className="text-right">
-                    <span className="font-bold text-gray-900 text-sm md:text-base block">
+                    <span className="font-bold text-content text-sm md:text-base block">
                       {user.lifetime_xp} XP
                     </span>
-                    <span className="text-[10px] text-gray-400 bg-gray-50 px-2 py-0.5 rounded-full inline-block mt-1">
+                    <span className="text-[10px] text-content-faint bg-surface-2 px-2 py-0.5 rounded-full inline-block mt-1">
                       Lvl {Math.floor((user.lifetime_xp || 0) / 100) + 1}
                     </span>
                   </div>
@@ -204,7 +204,7 @@ const LeaderboardPage: React.FC = () => {
         )}
 
         {users.length === 0 && (
-          <div className="text-center py-20 text-gray-400">
+          <div className="text-center py-20 text-content-faint">
             <p>មិនទាន់មានទិន្នន័យ។</p>
           </div>
         )}

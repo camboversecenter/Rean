@@ -152,7 +152,7 @@ const CreatorDashboard: React.FC = () => {
 
   if (state.view === 'editor') {
     return (
-      <div className="min-h-screen bg-gray-50 pb-24 pt-6 px-4">
+      <div className="min-h-screen bg-surface-2 pb-24 pt-6 px-4">
         <MissionForm
           initialMission={state.currentMission}
           currentUserId={state.currentUserId}
@@ -176,30 +176,30 @@ const CreatorDashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20 pt-6 px-4">
+    <div className="min-h-screen bg-surface-2 pb-20 pt-6 px-4">
       <div className="max-w-5xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 flex items-center">
+            <h1 className="text-2xl font-bold text-content flex items-center">
               <Zap className="h-6 w-6 mr-2 text-secondary fill-secondary" />
               ស្ទូឌីយោអ្នកបង្កើត (Creator Studio)
             </h1>
-            <p className="text-sm text-gray-500 mt-1">គ្រប់គ្រងបេសកកម្ម និងរង្វាន់របស់អ្នក។</p>
+            <p className="text-sm text-content-muted mt-1">គ្រប់គ្រងបេសកកម្ម និងរង្វាន់របស់អ្នក។</p>
           </div>
         </div>
 
-        <div className="flex space-x-4 mb-8 border-b border-gray-200">
+        <div className="flex space-x-4 mb-8 border-b border-line-strong">
           <button
             type="button"
             onClick={() => setState((s) => ({ ...s, dashboardTab: 'missions' }))}
-            className={`pb-3 px-2 text-sm font-bold border-b-2 transition-colors flex items-center ${state.dashboardTab === 'missions' ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+            className={`pb-3 px-2 text-sm font-bold border-b-2 transition-colors flex items-center ${state.dashboardTab === 'missions' ? 'border-gray-900 text-content' : 'border-transparent text-content-muted hover:text-content-soft'}`}
           >
             <Target className="h-4 w-4 mr-2" /> បេសកកម្ម
           </button>
           <button
             type="button"
             onClick={() => setState((s) => ({ ...s, dashboardTab: 'rewards' }))}
-            className={`pb-3 px-2 text-sm font-bold border-b-2 transition-colors flex items-center ${state.dashboardTab === 'rewards' ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+            className={`pb-3 px-2 text-sm font-bold border-b-2 transition-colors flex items-center ${state.dashboardTab === 'rewards' ? 'border-gray-900 text-content' : 'border-transparent text-content-muted hover:text-content-soft'}`}
           >
             <Gift className="h-4 w-4 mr-2" /> រង្វាន់
           </button>
@@ -224,9 +224,9 @@ const CreatorDashboard: React.FC = () => {
             </div>
 
             {state.missions.length === 0 ? (
-              <div className="text-center py-16 bg-white rounded-3xl border border-dashed border-gray-300">
+              <div className="text-center py-16 bg-surface rounded-3xl border border-dashed border-line-strong">
                 <Target className="h-16 w-16 mx-auto mb-4 text-gray-200" />
-                <h3 className="font-bold text-gray-900 text-lg">មិនទាន់មានបេសកកម្ម</h3>
+                <h3 className="font-bold text-content text-lg">មិនទាន់មានបេសកកម្ម</h3>
                 <button
                   type="button"
                   onClick={handleCreateNewMission}
@@ -245,14 +245,14 @@ const CreatorDashboard: React.FC = () => {
                   return (
                     <div
                       key={m.id}
-                      className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all group flex flex-col relative"
+                      className="bg-surface rounded-2xl shadow-sm border border-line overflow-hidden hover:shadow-md transition-all group flex flex-col relative"
                     >
                       <div
                         className={`absolute top-2 left-2 px-2 py-1 rounded text-[10px] font-bold z-10 ${isOwner ? 'bg-black/60 text-white' : 'bg-green-500 text-white'}`}
                       >
                         {isOwner ? 'Owner' : 'Teacher'}
                       </div>
-                      <div className="relative h-40 bg-gray-100">
+                      <div className="relative h-40 bg-surface-3">
                         <img
                           src={m.thumbnail || placeholderImage(400, 200, 'Mission')}
                           alt={m.title}
@@ -263,7 +263,7 @@ const CreatorDashboard: React.FC = () => {
                             <button
                               type="button"
                               onClick={() => handleEditMission(m)}
-                              className="bg-white p-2 rounded-full shadow-sm hover:text-blue-600"
+                              className="bg-surface p-2 rounded-full shadow-sm hover:text-blue-600"
                               title="Edit"
                             >
                               <Edit className="h-4 w-4" />
@@ -272,7 +272,7 @@ const CreatorDashboard: React.FC = () => {
                               <button
                                 type="button"
                                 onClick={() => handleDeleteMission(m.id)}
-                                className="bg-white p-2 rounded-full shadow-sm hover:text-red-600"
+                                className="bg-surface p-2 rounded-full shadow-sm hover:text-red-600"
                                 title="Delete"
                               >
                                 <Trash2 className="h-4 w-4" />
@@ -283,22 +283,22 @@ const CreatorDashboard: React.FC = () => {
                       </div>
                       <div className="p-5 flex-1 flex flex-col">
                         <div className="flex items-center gap-2 mb-2">
-                          <span className="text-[10px] font-bold uppercase tracking-wider bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                          <span className="text-[10px] font-bold uppercase tracking-wider bg-surface-3 text-content-muted px-2 py-1 rounded">
                             {m.level}
                           </span>
-                          <span className="text-[10px] font-bold uppercase tracking-wider bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                          <span className="text-[10px] font-bold uppercase tracking-wider bg-surface-3 text-content-muted px-2 py-1 rounded">
                             {m.modules?.length || 0} Modules
                           </span>
                         </div>
-                        <h3 className="font-bold text-gray-900 mb-1 line-clamp-1">{m.title}</h3>
-                        <p className="text-xs text-gray-500 line-clamp-2 mb-4 flex-1">
+                        <h3 className="font-bold text-content mb-1 line-clamp-1">{m.title}</h3>
+                        <p className="text-xs text-content-muted line-clamp-2 mb-4 flex-1">
                           {m.description}
                         </p>
                         <div className="grid grid-cols-2 gap-2 mt-auto">
                           <button
                             type="button"
                             onClick={() => handleManageMission(m)}
-                            className="bg-gray-100 text-gray-700 py-2 rounded-lg font-bold text-xs flex items-center justify-center hover:bg-gray-200 transition-colors"
+                            className="bg-surface-3 text-content-soft py-2 rounded-lg font-bold text-xs flex items-center justify-center hover:bg-line-strong transition-colors"
                           >
                             <Users className="h-3.5 w-3.5 mr-1.5" /> គ្រប់គ្រង
                           </button>

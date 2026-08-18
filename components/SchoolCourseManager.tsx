@@ -220,7 +220,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
     return (
       <div className="space-y-6 animate-fade-in">
         <div className="flex justify-between items-center">
-          <h3 className="font-bold text-gray-900 text-lg">វគ្គសិក្សាជំនាញខ្លី (Short Courses)</h3>
+          <h3 className="font-bold text-content text-lg">វគ្គសិក្សាជំនាញខ្លី (Short Courses)</h3>
           <button
             type="button"
             onClick={handleCreateNew}
@@ -230,10 +230,10 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
           </button>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="bg-surface rounded-3xl shadow-sm border border-line overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
-              <thead className="bg-gray-50 text-gray-500 font-bold text-xs uppercase border-b border-gray-100">
+              <thead className="bg-surface-2 text-content-muted font-bold text-xs uppercase border-b border-line">
                 <tr>
                   <th className="px-6 py-4">វគ្គសិក្សា</th>
                   <th className="px-6 py-4 text-center">អ្នកចុះឈ្មោះ</th>
@@ -241,11 +241,11 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                   <th className="px-6 py-4 text-right">សកម្មភាព</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-line">
                 {courses.length === 0 ? (
                   <tr>
                     <td colSpan={4} className="px-6 py-16 text-center">
-                      <div className="flex flex-col items-center justify-center text-gray-400">
+                      <div className="flex flex-col items-center justify-center text-content-faint">
                         <BookOpen className="h-12 w-12 mb-3 opacity-20" />
                         <p>មិនទាន់មានវគ្គសិក្សាខ្លីនៅឡើយទេ។</p>
                       </div>
@@ -253,10 +253,10 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                   </tr>
                 ) : (
                   courses.map((course) => (
-                    <tr key={course.id} className="hover:bg-gray-50 transition-colors group">
+                    <tr key={course.id} className="hover:bg-surface-2 transition-colors group">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 rounded-lg bg-gray-100 flex-shrink-0 overflow-hidden border border-gray-200">
+                          <div className="w-12 h-12 rounded-lg bg-surface-3 flex-shrink-0 overflow-hidden border border-line-strong">
                             {course.coverImage ? (
                               <img
                                 src={course.coverImage}
@@ -270,10 +270,10 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                             )}
                           </div>
                           <div>
-                            <h4 className="font-bold text-gray-900 group-hover:text-primary transition-colors">
+                            <h4 className="font-bold text-content group-hover:text-primary transition-colors">
                               {course.title}
                             </h4>
-                            <span className="text-[10px] text-gray-400 font-medium bg-gray-100 px-2 py-0.5 rounded">
+                            <span className="text-[10px] text-content-faint font-medium bg-surface-3 px-2 py-0.5 rounded">
                               {course.category || 'General'}
                             </span>
                           </div>
@@ -281,10 +281,10 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                       </td>
                       <td className="px-6 py-4 text-center">
                         <div className="inline-flex flex-col items-center">
-                          <span className="text-sm font-bold text-gray-900 mb-1">
+                          <span className="text-sm font-bold text-content mb-1">
                             {course.enrolledCount || 0}/{course.maxSeats || 20}
                           </span>
-                          <div className="w-20 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                          <div className="w-20 h-1.5 bg-surface-3 rounded-full overflow-hidden">
                             <div
                               className={`h-full rounded-full ${
                                 (course.enrolledCount || 0) >= (course.maxSeats || 20)
@@ -302,7 +302,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                         <button
                           type="button"
                           onClick={() => handleToggleList(course)}
-                          className={`p-2 rounded-xl transition-colors ${course.isListed ? 'text-green-600 hover:bg-green-50' : 'text-gray-400 hover:bg-gray-100'}`}
+                          className={`p-2 rounded-xl transition-colors ${course.isListed ? 'text-green-600 hover:bg-green-50' : 'text-content-faint hover:bg-surface-3'}`}
                           title={
                             course.isListed ? 'Visible (Click to hide)' : 'Hidden (Click to show)'
                           }
@@ -319,7 +319,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                           <button
                             type="button"
                             onClick={() => handleEdit(course)}
-                            className="p-2 text-gray-400 hover:text-blue-600 bg-gray-50 hover:bg-blue-50 rounded-xl transition-all"
+                            className="p-2 text-content-faint hover:text-blue-600 bg-surface-2 hover:bg-blue-50 rounded-xl transition-all"
                             title="Edit"
                           >
                             <Edit className="h-4 w-4" />
@@ -327,7 +327,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                           <button
                             type="button"
                             onClick={() => handleDelete(course.id)}
-                            className="p-2 text-gray-400 hover:text-red-600 bg-gray-50 hover:bg-red-50 rounded-xl transition-all"
+                            className="p-2 text-content-faint hover:text-red-600 bg-surface-2 hover:bg-red-50 rounded-xl transition-all"
                             title="Delete"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -347,17 +347,17 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
 
   // EDITOR VIEW
   return (
-    <div className="animate-fade-in bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-      <div className="p-4 md:p-6 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-gray-50/50">
+    <div className="animate-fade-in bg-surface rounded-3xl shadow-sm border border-line overflow-hidden">
+      <div className="p-4 md:p-6 border-b border-line flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-surface-2/50">
         <div className="flex items-center w-full md:w-auto">
           <button
             type="button"
             onClick={handleCancel}
-            className="mr-3 p-2 hover:bg-gray-200 rounded-full transition-colors flex-shrink-0"
+            className="mr-3 p-2 hover:bg-line-strong rounded-full transition-colors flex-shrink-0"
           >
-            <ChevronLeft className="h-5 w-5 text-gray-500" />
+            <ChevronLeft className="h-5 w-5 text-content-muted" />
           </button>
-          <h3 className="font-bold text-lg md:text-xl text-gray-900 truncate">
+          <h3 className="font-bold text-lg md:text-xl text-content truncate">
             {editingCourse?.id ? 'កែប្រែវគ្គសិក្សា' : 'បន្ថែមវគ្គសិក្សាថ្មី'}
           </h3>
         </div>
@@ -374,7 +374,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                   : null,
               }))
             }
-            className={`flex-1 md:flex-none justify-center px-4 py-2 rounded-lg text-sm font-bold flex items-center transition-colors ${editingCourse?.isListed ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-600'}`}
+            className={`flex-1 md:flex-none justify-center px-4 py-2 rounded-lg text-sm font-bold flex items-center transition-colors ${editingCourse?.isListed ? 'bg-green-100 text-green-700' : 'bg-line-strong text-content-muted'}`}
           >
             {editingCourse?.isListed ? (
               <Eye className="h-4 w-4 mr-2" />
@@ -387,7 +387,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
           <button
             type="button"
             onClick={handleCancel}
-            className="flex-1 md:flex-none px-4 py-2 text-gray-500 font-bold hover:bg-gray-100 rounded-lg text-sm"
+            className="flex-1 md:flex-none px-4 py-2 text-content-muted font-bold hover:bg-surface-3 rounded-lg text-sm"
           >
             បោះបង់
           </button>
@@ -413,7 +413,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
           <div className="space-y-6">
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="text-xs font-bold text-gray-400 uppercase">
+                <label className="text-xs font-bold text-content-faint uppercase">
                   រូបភាពគម្រប (Cover)
                 </label>
                 <button
@@ -430,7 +430,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                   AI Imagine
                 </button>
               </div>
-              <div className="relative aspect-video bg-gray-100 rounded-2xl overflow-hidden border border-dashed border-gray-300 flex items-center justify-center group cursor-pointer">
+              <div className="relative aspect-video bg-surface-3 rounded-2xl overflow-hidden border border-dashed border-line-strong flex items-center justify-center group cursor-pointer">
                 {coverBase64 || coverFile || editingCourse?.coverImage ? (
                   <img
                     src={
@@ -447,7 +447,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                   <Camera className="h-8 w-8 text-gray-300" />
                 )}
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <div className="bg-white p-2 rounded-full shadow-lg">
+                  <div className="bg-surface p-2 rounded-full shadow-lg">
                     <Camera className="h-5 w-5 text-primary" />
                   </div>
                 </div>
@@ -471,13 +471,13 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
               <div>
                 <label
                   htmlFor="course-category"
-                  className="block text-xs font-bold text-gray-500 mb-1 flex items-center"
+                  className="block text-xs font-bold text-content-muted mb-1 flex items-center"
                 >
                   <Tag className="h-3 w-3 mr-1" /> ប្រភេទវគ្គសិក្សា
                 </label>
                 <input
                   id="course-category"
-                  className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full p-3 bg-surface-2 border border-line-strong rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
                   value={editingCourse?.category || ''}
                   onChange={(e) =>
                     setState((prev) => ({
@@ -491,13 +491,13 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
               <div>
                 <label
                   htmlFor="course-instructor"
-                  className="block text-xs font-bold text-gray-500 mb-1 flex items-center"
+                  className="block text-xs font-bold text-content-muted mb-1 flex items-center"
                 >
                   <User className="h-3 w-3 mr-1" /> គ្រូបង្រៀន (Instructor)
                 </label>
                 <input
                   id="course-instructor"
-                  className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full p-3 bg-surface-2 border border-line-strong rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
                   value={editingCourse?.instructorName || ''}
                   onChange={(e) =>
                     setState((prev) => ({
@@ -517,13 +517,13 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
               <div className="md:col-span-2">
                 <label
                   htmlFor="course-title"
-                  className="block text-xs font-bold text-gray-500 mb-1 flex items-center"
+                  className="block text-xs font-bold text-content-muted mb-1 flex items-center"
                 >
                   <Layout className="h-3 w-3 mr-1" /> ចំណងជើងវគ្គសិក្សា
                 </label>
                 <input
                   id="course-title"
-                  className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl font-bold focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full p-3 bg-surface-2 border border-line-strong rounded-xl font-bold focus:ring-2 focus:ring-primary/20 outline-none"
                   value={editingCourse?.title || ''}
                   onChange={(e) =>
                     setState((prev) => ({
@@ -537,14 +537,14 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
               <div>
                 <label
                   htmlFor="course-start"
-                  className="block text-xs font-bold text-gray-500 mb-1 flex items-center"
+                  className="block text-xs font-bold text-content-muted mb-1 flex items-center"
                 >
                   <Calendar className="h-3 w-3 mr-1" /> ថ្ងៃចាប់ផ្តើម
                 </label>
                 <input
                   id="course-start"
                   type="date"
-                  className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full p-3 bg-surface-2 border border-line-strong rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
                   value={editingCourse?.startDate || ''}
                   onChange={(e) =>
                     setState((prev) => ({
@@ -557,14 +557,14 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
               <div>
                 <label
                   htmlFor="course-deadline"
-                  className="block text-xs font-bold text-gray-500 mb-1 flex items-center"
+                  className="block text-xs font-bold text-content-muted mb-1 flex items-center"
                 >
                   <AlertCircle className="h-3 w-3 mr-1" /> ផុតកំណត់ទទួលពាក្យ
                 </label>
                 <input
                   id="course-deadline"
                   type="date"
-                  className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full p-3 bg-surface-2 border border-line-strong rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
                   value={editingCourse?.deadline || ''}
                   onChange={(e) =>
                     setState((prev) => ({
@@ -577,13 +577,13 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
               <div>
                 <label
                   htmlFor="course-duration"
-                  className="block text-xs font-bold text-gray-500 mb-1 flex items-center"
+                  className="block text-xs font-bold text-content-muted mb-1 flex items-center"
                 >
                   <Clock className="h-3 w-3 mr-1" /> រយៈពេល (ឧ. ៣ ខែ)
                 </label>
                 <input
                   id="course-duration"
-                  className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full p-3 bg-surface-2 border border-line-strong rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
                   value={editingCourse?.duration || ''}
                   onChange={(e) =>
                     setState((prev) => ({
@@ -597,13 +597,13 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
               <div>
                 <label
                   htmlFor="course-schedule"
-                  className="block text-xs font-bold text-gray-500 mb-1 flex items-center"
+                  className="block text-xs font-bold text-content-muted mb-1 flex items-center"
                 >
                   <MapPin className="h-3 w-3 mr-1" /> កាលវិភាគសិក្សា
                 </label>
                 <input
                   id="course-schedule"
-                  className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full p-3 bg-surface-2 border border-line-strong rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
                   value={editingCourse?.schedule || ''}
                   onChange={(e) =>
                     setState((prev) => ({
@@ -617,14 +617,14 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
               <div>
                 <label
                   htmlFor="course-price"
-                  className="block text-xs font-bold text-gray-500 mb-1 flex items-center"
+                  className="block text-xs font-bold text-content-muted mb-1 flex items-center"
                 >
                   <DollarSign className="h-3 w-3 mr-1" /> តម្លៃ (រៀល)
                 </label>
                 <input
                   id="course-price"
                   type="number"
-                  className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl font-bold focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full p-3 bg-surface-2 border border-line-strong rounded-xl font-bold focus:ring-2 focus:ring-primary/20 outline-none"
                   value={editingCourse?.price || 0}
                   onChange={(e) =>
                     setState((prev) => ({
@@ -640,14 +640,14 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
               <div>
                 <label
                   htmlFor="course-maxSeats"
-                  className="block text-xs font-bold text-gray-500 mb-1 flex items-center"
+                  className="block text-xs font-bold text-content-muted mb-1 flex items-center"
                 >
                   <Users className="h-3 w-3 mr-1" /> ចំនួនសិស្សអតិបរមា
                 </label>
                 <input
                   id="course-maxSeats"
                   type="number"
-                  className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full p-3 bg-surface-2 border border-line-strong rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none"
                   value={editingCourse?.maxSeats || 20}
                   onChange={(e) =>
                     setState((prev) => ({
@@ -661,13 +661,15 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                 />
               </div>
               <div className="md:col-span-2">
-                <label className="block text-xs font-bold text-gray-500 mb-1">ទម្រង់សិក្សា</label>
+                <label className="block text-xs font-bold text-content-muted mb-1">
+                  ទម្រង់សិក្សា
+                </label>
                 <div className="flex gap-4">
                   {['Online', 'On-Campus', 'Hybrid'].map((fmt) => (
                     <label
                       htmlFor={`fmt-${fmt}`}
                       key={fmt}
-                      className="flex-1 flex items-center justify-center p-3 rounded-xl border border-gray-200 bg-gray-50 cursor-pointer hover:bg-gray-100 has-[:checked]:bg-primary/5 has-[:checked]:border-primary transition-all"
+                      className="flex-1 flex items-center justify-center p-3 rounded-xl border border-line-strong bg-surface-2 cursor-pointer hover:bg-surface-3 has-[:checked]:bg-primary/5 has-[:checked]:border-primary transition-all"
                     >
                       <input
                         id={`fmt-${fmt}`}
@@ -683,7 +685,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                         }
                       />
                       <span
-                        className={`text-xs font-bold ${editingCourse?.format === fmt ? 'text-primary' : 'text-gray-500'}`}
+                        className={`text-xs font-bold ${editingCourse?.format === fmt ? 'text-primary' : 'text-content-muted'}`}
                       >
                         {fmt}
                       </span>
@@ -695,18 +697,18 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
           </div>
         </div>
 
-        <hr className="border-gray-100" />
+        <hr className="border-line" />
 
         <div>
           <label
             htmlFor="course-desc"
-            className="block text-xs font-bold text-gray-500 mb-2 flex items-center"
+            className="block text-xs font-bold text-content-muted mb-2 flex items-center"
           >
             <BookOpen className="h-3 w-3 mr-1" /> ការពិពណ៌នាវគ្គសិក្សា (Description)
           </label>
           <textarea
             id="course-desc"
-            className="w-full p-4 bg-gray-50 border border-gray-200 rounded-2xl h-32 text-sm focus:ring-2 focus:ring-primary/20 outline-none resize-none leading-relaxed"
+            className="w-full p-4 bg-surface-2 border border-line-strong rounded-2xl h-32 text-sm focus:ring-2 focus:ring-primary/20 outline-none resize-none leading-relaxed"
             value={editingCourse?.description || ''}
             onChange={(e) =>
               setState((prev) => ({
@@ -723,7 +725,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
           <div className="flex justify-between items-center mb-2">
             <label
               htmlFor="course-syllabus"
-              className="block text-xs font-bold text-gray-500 flex items-center"
+              className="block text-xs font-bold text-content-muted flex items-center"
             >
               <Zap className="h-3 w-3 mr-1 text-purple-600" /> កម្មវិធីសិក្សា (Syllabus)
             </label>
@@ -743,7 +745,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
           </div>
           <textarea
             id="course-syllabus"
-            className="w-full p-4 bg-gray-50 border border-gray-200 rounded-2xl h-56 text-sm focus:ring-2 focus:ring-primary/20 outline-none resize-none leading-relaxed font-mono"
+            className="w-full p-4 bg-surface-2 border border-line-strong rounded-2xl h-56 text-sm focus:ring-2 focus:ring-primary/20 outline-none resize-none leading-relaxed font-mono"
             value={syllabusText}
             onChange={(e) => setState((prev) => ({ ...prev, syllabusText: e.target.value }))}
             placeholder="បញ្ចូលមេរៀនសង្ខេប ឬប្រើ AI ដើម្បីជួយរៀបចំ..."

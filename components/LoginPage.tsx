@@ -42,8 +42,8 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12 font-sans">
-      <div className="max-w-md w-full bg-white rounded-3xl shadow-xl p-6 md:p-10 text-center border border-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-surface-2 px-4 py-12 font-sans">
+      <div className="max-w-md w-full bg-surface rounded-3xl shadow-xl p-6 md:p-10 text-center border border-line">
         {/* Logo */}
         <div className="flex justify-center mb-8">
           <div className="bg-primary p-4 rounded-2xl shadow-lg shadow-primary/30 transform rotate-3">
@@ -51,10 +51,10 @@ const LoginPage: React.FC = () => {
           </div>
         </div>
 
-        <h1 className="text-3xl font-bold text-gray-900 mb-3 font-['Kantumruy_Pro'] tracking-tight">
+        <h1 className="text-3xl font-bold text-content mb-3 font-['Kantumruy_Pro'] tracking-tight">
           REAN - រៀន
         </h1>
-        <p className="text-gray-500 mb-8 leading-relaxed">
+        <p className="text-content-muted mb-8 leading-relaxed">
           ថ្នាលអប់រំសម្រាប់អ្នកសិក្សាជំនាន់ថ្មី។
           <br />
           ចូលប្រើប្រាស់ដើម្បីចាប់ផ្តើម។
@@ -74,7 +74,7 @@ const LoginPage: React.FC = () => {
           type="button"
           onClick={handleLogin}
           aria-label="បន្តជាមួយ Google"
-          className="w-full flex items-center justify-center gap-3 bg-white border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-800 font-bold py-4 px-6 rounded-2xl transition-all transform active:scale-[0.98] group"
+          className="w-full flex items-center justify-center gap-3 bg-surface border-2 border-line-strong hover:border-line-strong hover:bg-surface-2 text-content font-bold py-4 px-6 rounded-2xl transition-all transform active:scale-[0.98] group"
         >
           <img
             src="https://www.svgrepo.com/show/475656/google-color.svg"

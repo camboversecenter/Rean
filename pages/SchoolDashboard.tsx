@@ -124,11 +124,13 @@ const SchoolDashboard: React.FC = () => {
 
   if (!state.school) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
-        <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 text-center max-w-md w-full">
+      <div className="min-h-screen bg-surface-2 flex flex-col items-center justify-center p-4">
+        <div className="bg-surface p-8 rounded-3xl shadow-sm border border-line text-center max-w-md w-full">
           <Building2 className="h-16 w-16 mx-auto text-gray-200 mb-4" />
-          <h2 className="text-xl font-bold text-gray-900 mb-2">មិនទាន់មានព័ត៌មានសាលារៀន</h2>
-          <p className="text-gray-500 text-sm mb-6">អ្នកមិនទាន់បានបង្កើតទំព័រសាលារៀននៅឡើយទេ។</p>
+          <h2 className="text-xl font-bold text-content mb-2">មិនទាន់មានព័ត៌មានសាលារៀន</h2>
+          <p className="text-content-muted text-sm mb-6">
+            អ្នកមិនទាន់បានបង្កើតទំព័រសាលារៀននៅឡើយទេ។
+          </p>
           <button
             type="button"
             onClick={handleCreateSchool}
@@ -148,11 +150,11 @@ const SchoolDashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-surface-2 pb-20">
       {/* Nav Bar */}
-      <div className="bg-white border-b border-gray-200 px-4 py-3 sticky top-0 z-30 shadow-sm">
+      <div className="bg-surface border-b border-line-strong px-4 py-3 sticky top-0 z-30 shadow-sm">
         <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-lg font-bold text-gray-900 flex items-center">
+          <h1 className="text-lg font-bold text-content flex items-center">
             <Building2 className="h-5 w-5 mr-2 text-primary" />
             គ្រប់គ្រងសាលា
           </h1>
@@ -173,7 +175,7 @@ const SchoolDashboard: React.FC = () => {
               type="button"
               key={tab.id}
               onClick={() => setState((s) => ({ ...s, activeTab: tab.id as any }))}
-              className={`flex items-center px-5 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap transition-all ${state.activeTab === tab.id ? 'bg-primary text-white shadow-lg' : 'bg-white text-gray-500 border border-gray-100 hover:bg-gray-50'}`}
+              className={`flex items-center px-5 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap transition-all ${state.activeTab === tab.id ? 'bg-primary text-white shadow-lg' : 'bg-surface text-content-muted border border-line hover:bg-surface-2'}`}
             >
               <tab.icon className="h-4 w-4 mr-2" /> {tab.label}
             </button>

@@ -1,4 +1,6 @@
 import {
+  Sun,
+  Moon,
   BookOpen,
   Search,
   Menu,
@@ -157,4 +159,6 @@ export {
   FlaskConical as Experiment,
   Github,
   Code2,
+  Sun,
+  Moon,
 };

@@ -24,15 +24,15 @@ const ReactionBar: React.FC<ReactionBarProps> = ({
       case 'bulb':
         return isSelected
           ? 'bg-yellow-100 text-yellow-700 border border-yellow-200'
-          : 'text-gray-500 hover:bg-yellow-50 hover:text-yellow-600';
+          : 'text-content-muted hover:bg-yellow-50 hover:text-yellow-600';
       case 'heart':
         return isSelected
           ? 'bg-pink-100 text-pink-600 border border-pink-200'
-          : 'text-gray-500 hover:bg-pink-50 hover:text-pink-500';
+          : 'text-content-muted hover:bg-pink-50 hover:text-pink-500';
       case 'thumb':
         return isSelected
           ? 'bg-blue-100 text-blue-600 border border-blue-200'
-          : 'text-gray-500 hover:bg-blue-50 hover:text-blue-500';
+          : 'text-content-muted hover:bg-blue-50 hover:text-blue-500';
     }
   };
 

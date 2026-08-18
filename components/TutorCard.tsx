@@ -12,7 +12,7 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
   return (
     <Link
       to={`/tutor/${tutor.id}`}
-      className="block bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-3 hover:shadow-md transition-shadow group"
+      className="block bg-surface rounded-xl shadow-sm border border-line overflow-hidden mb-3 hover:shadow-md transition-shadow group"
     >
       <div className="flex p-3">
         {/* Avatar */}
@@ -23,7 +23,7 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
             className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-sm"
           />
           {tutor.isVerified && (
-            <div className="absolute bottom-0 right-0 bg-white rounded-full p-0.5">
+            <div className="absolute bottom-0 right-0 bg-surface rounded-full p-0.5">
               <CheckCircle className="h-4 w-4 text-blue-500 fill-white" />
             </div>
           )}
@@ -33,16 +33,16 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
         <div className="flex-1 min-w-0">
           <div className="flex justify-between items-start">
             <div>
-              <h3 className="font-bold text-gray-900 truncate flex items-center">
+              <h3 className="font-bold text-content truncate flex items-center">
                 {tutor.fullName || 'គ្រូបង្រៀន'}
               </h3>
-              <p className="text-xs text-gray-500 mb-1">{tutor.experience}</p>
+              <p className="text-xs text-content-muted mb-1">{tutor.experience}</p>
             </div>
             <div className="text-right">
               <span className="text-sm font-bold text-primary">
                 {formatRiel(tutor.hourlyRate || 0)}
               </span>
-              <span className="text-[10px] text-gray-400 block">/ម៉ោង</span>
+              <span className="text-[10px] text-content-faint block">/ម៉ោង</span>
             </div>
           </div>
 
@@ -50,15 +50,15 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
             {(tutor.subjects || []).slice(0, 3).map((sub) => (
               <span
                 key={sub}
-                className="bg-gray-100 text-gray-600 text-[10px] px-1.5 py-0.5 rounded"
+                className="bg-surface-3 text-content-muted text-[10px] px-1.5 py-0.5 rounded"
               >
                 {sub}
               </span>
             ))}
           </div>
 
-          <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-50">
-            <div className="flex items-center space-x-1 text-xs text-gray-500">
+          <div className="flex items-center justify-between mt-2 pt-2 border-t border-line">
+            <div className="flex items-center space-x-1 text-xs text-content-muted">
               <GraduationCap className="h-3 w-3" />
               <span>{(tutor.grades || [])[0] || 'គ្រប់កម្រិត'}</span>
             </div>

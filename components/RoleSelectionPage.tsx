@@ -77,11 +77,11 @@ const RoleSelectionPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-sans">
+    <div className="min-h-screen bg-surface-2 flex items-center justify-center p-4 font-sans">
       <div className="max-w-2xl w-full py-6">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">តើអ្នកជានរណា?</h1>
-          <p className="text-gray-500 text-sm max-w-xs mx-auto">
+          <h1 className="text-2xl font-bold text-content mb-2">តើអ្នកជានរណា?</h1>
+          <p className="text-content-muted text-sm max-w-xs mx-auto">
             ជ្រើសរើសតួនាទីរបស់អ្នកដើម្បីបន្ត។ អ្នកមិនអាចផ្លាស់ប្តូរនៅពេលក្រោយបានទេ។
           </p>
         </div>
@@ -105,10 +105,10 @@ const RoleSelectionPage: React.FC = () => {
               onClick={() => setState((s) => ({ ...s, selectedRole: role.id }))}
               aria-pressed={selectedRole === role.id}
               aria-label={`ជ្រើសរើសតួនាទី ${role.title}`}
-              className={`relative cursor-pointer bg-white p-5 rounded-2xl border-2 transition-all active:scale-[0.98] text-left w-full ${
+              className={`relative cursor-pointer bg-surface p-5 rounded-2xl border-2 transition-all active:scale-[0.98] text-left w-full ${
                 selectedRole === role.id
                   ? 'border-primary shadow-lg ring-1 ring-primary'
-                  : 'border-gray-100 shadow-sm hover:border-gray-300'
+                  : 'border-line shadow-sm hover:border-line-strong'
               }`}
             >
               <div className="flex items-center justify-between mb-3">
@@ -122,18 +122,18 @@ const RoleSelectionPage: React.FC = () => {
                 )}
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 text-base">{role.title}</h3>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-1">
+                <h3 className="font-bold text-content text-base">{role.title}</h3>
+                <p className="text-[10px] font-bold text-content-faint uppercase tracking-wide mb-1">
                   {role.subtitle}
                 </p>
-                <p className="text-sm text-gray-500 leading-relaxed">{role.description}</p>
+                <p className="text-sm text-content-muted leading-relaxed">{role.description}</p>
               </div>
             </button>
           ))}
         </div>
 
         {/* Floating Bottom Button for Mobile, Static for Desktop */}
-        <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 md:static md:bg-transparent md:border-none md:p-2 z-10">
+        <div className="fixed bottom-0 left-0 right-0 p-4 bg-surface border-t border-line md:static md:bg-transparent md:border-none md:p-2 z-10">
           <div className="max-w-2xl mx-auto">
             <button
               type="button"

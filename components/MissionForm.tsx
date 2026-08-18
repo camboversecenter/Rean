@@ -248,7 +248,7 @@ const MissionForm: React.FC<MissionFormProps> = ({
         <button
           type="button"
           onClick={onCancel}
-          className="text-gray-500 font-bold flex items-center hover:text-gray-900 text-sm"
+          className="text-content-muted font-bold flex items-center hover:text-content text-sm"
         >
           <ChevronLeft className="h-4 w-4 mr-1" /> ត្រឡប់ក្រោយ
         </button>
@@ -279,9 +279,9 @@ const MissionForm: React.FC<MissionFormProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-1 space-y-6">
           {/* Thumbnail */}
-          <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
-            <h3 className="font-bold text-gray-900 mb-4">រូបភាព (Thumbnail)</h3>
-            <div className="relative aspect-video bg-gray-100 rounded-xl overflow-hidden border border-gray-200 group mb-3">
+          <div className="bg-surface p-5 rounded-2xl shadow-sm border border-line">
+            <h3 className="font-bold text-content mb-4">រូបភាព (Thumbnail)</h3>
+            <div className="relative aspect-video bg-surface-3 rounded-xl overflow-hidden border border-line-strong group mb-3">
               {thumbnailBase64 || thumbnailFile || currentMission.thumbnail ? (
                 <img
                   src={
@@ -295,7 +295,7 @@ const MissionForm: React.FC<MissionFormProps> = ({
                   alt="Thumbnail"
                 />
               ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center text-gray-400">
+                <div className="w-full h-full flex flex-col items-center justify-center text-content-faint">
                   <ImageIcon className="h-8 w-8 mb-2" />
                   <span className="text-xs">No Image</span>
                 </div>
@@ -303,7 +303,7 @@ const MissionForm: React.FC<MissionFormProps> = ({
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
                 <label
                   htmlFor="thumbnail-upload"
-                  className="bg-white text-gray-800 px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer hover:bg-gray-100"
+                  className="bg-surface text-content px-3 py-1.5 rounded-lg text-xs font-bold cursor-pointer hover:bg-surface-3"
                 >
                   Upload
                   <input
@@ -332,8 +332,8 @@ const MissionForm: React.FC<MissionFormProps> = ({
           </div>
 
           {/* Mentor */}
-          <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
-            <h3 className="font-bold text-gray-900 mb-4 flex items-center">
+          <div className="bg-surface p-5 rounded-2xl shadow-sm border border-line">
+            <h3 className="font-bold text-content mb-4 flex items-center">
               <ShieldCheck className="h-4 w-4 mr-2 text-primary" />
               គ្រូទទួលបន្ទុក
             </h3>
@@ -343,7 +343,7 @@ const MissionForm: React.FC<MissionFormProps> = ({
                   <div className="bg-green-50 p-3 rounded-xl border border-green-100 flex items-center justify-between">
                     <div>
                       <p className="text-xs text-green-700 font-bold uppercase mb-1">បានចាត់តាំង</p>
-                      <p className="font-bold text-gray-900 text-sm">{currentMission.mentor}</p>
+                      <p className="font-bold text-content text-sm">{currentMission.mentor}</p>
                     </div>
                     <button
                       type="button"
@@ -369,7 +369,7 @@ const MissionForm: React.FC<MissionFormProps> = ({
                     </label>
                     <input
                       id="teacherEmail"
-                      className="w-full p-2 border border-gray-200 rounded-lg text-sm"
+                      className="w-full p-2 border border-line-strong rounded-lg text-sm"
                       placeholder="អ៊ីមែលគ្រូ"
                       value={teacherEmail}
                       onChange={(e) =>
@@ -392,10 +392,10 @@ const MissionForm: React.FC<MissionFormProps> = ({
                 )}
               </>
             ) : (
-              <div className="bg-gray-50 p-3 rounded-xl border border-gray-200">
-                <p className="text-xs text-gray-500 mb-1">គ្រូទទួលបន្ទុក</p>
-                <p className="font-bold text-gray-900 text-sm">{currentMission.mentor || 'None'}</p>
-                <p className="text-[10px] text-gray-400 mt-2 italic flex items-center">
+              <div className="bg-surface-2 p-3 rounded-xl border border-line-strong">
+                <p className="text-xs text-content-muted mb-1">គ្រូទទួលបន្ទុក</p>
+                <p className="font-bold text-content text-sm">{currentMission.mentor || 'None'}</p>
+                <p className="text-[10px] text-content-faint mt-2 italic flex items-center">
                   <X className="h-3 w-3 mr-1" /> Read Only
                 </p>
               </div>
@@ -403,18 +403,18 @@ const MissionForm: React.FC<MissionFormProps> = ({
           </div>
 
           {/* Settings */}
-          <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 space-y-4">
-            <h3 className="font-bold text-gray-900 mb-2 flex items-center">
+          <div className="bg-surface p-5 rounded-2xl shadow-sm border border-line space-y-4">
+            <h3 className="font-bold text-content mb-2 flex items-center">
               <Layout className="h-4 w-4 mr-2 text-primary" />
               ការកំណត់បេសកកម្ម
             </h3>
             <div>
-              <label htmlFor="category" className="block text-xs font-bold text-gray-500 mb-1">
+              <label htmlFor="category" className="block text-xs font-bold text-content-muted mb-1">
                 ប្រភេទ (Category)
               </label>
               <select
                 id="category"
-                className="w-full p-2 border border-gray-200 rounded-lg text-sm"
+                className="w-full p-2 border border-line-strong rounded-lg text-sm"
                 value={currentMission.category}
                 onChange={(e) =>
                   setState((prev) => ({
@@ -435,13 +435,16 @@ const MissionForm: React.FC<MissionFormProps> = ({
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label htmlFor="squadSize" className="block text-xs font-bold text-gray-500 mb-1">
+                <label
+                  htmlFor="squadSize"
+                  className="block text-xs font-bold text-content-muted mb-1"
+                >
                   ចំនួនសិស្សក្នុងក្រុម
                 </label>
                 <input
                   id="squadSize"
                   type="number"
-                  className="w-full p-2 border border-gray-200 rounded-lg text-sm"
+                  className="w-full p-2 border border-line-strong rounded-lg text-sm"
                   value={currentMission.squadSize}
                   onChange={(e) =>
                     setState((prev) => ({
@@ -458,13 +461,13 @@ const MissionForm: React.FC<MissionFormProps> = ({
               <div>
                 <label
                   htmlFor="squadCreation"
-                  className="block text-xs font-bold text-gray-500 mb-1"
+                  className="block text-xs font-bold text-content-muted mb-1"
                 >
                   របៀបបង្កើតក្រុម
                 </label>
                 <select
                   id="squadCreation"
-                  className="w-full p-2 border border-gray-200 rounded-lg text-sm"
+                  className="w-full p-2 border border-line-strong rounded-lg text-sm"
                   value={currentMission.squadCreation}
                   onChange={(e) =>
                     setState((prev) => ({
@@ -484,13 +487,13 @@ const MissionForm: React.FC<MissionFormProps> = ({
             <div>
               <label
                 htmlFor="enrollmentType"
-                className="block text-xs font-bold text-gray-500 mb-1"
+                className="block text-xs font-bold text-content-muted mb-1"
               >
                 ប្រភេទការចុះឈ្មោះ
               </label>
               <select
                 id="enrollmentType"
-                className="w-full p-2 border border-gray-200 rounded-lg text-sm"
+                className="w-full p-2 border border-line-strong rounded-lg text-sm"
                 value={currentMission.enrollmentType}
                 onChange={(e) =>
                   setState((prev) => ({
@@ -507,7 +510,7 @@ const MissionForm: React.FC<MissionFormProps> = ({
               </select>
             </div>
             {/* Enable Plagiarism Check Toggle */}
-            <div className="pt-2 border-t border-gray-100">
+            <div className="pt-2 border-t border-line">
               <label
                 htmlFor="plagiarismCheck"
                 className="flex items-center space-x-2 cursor-pointer"
@@ -527,32 +530,35 @@ const MissionForm: React.FC<MissionFormProps> = ({
                     }))
                   }
                 />
-                <span className="text-xs font-bold text-gray-700">
+                <span className="text-xs font-bold text-content-soft">
                   Enable Plagiarism Check (AI)
                 </span>
               </label>
-              <p className="text-[10px] text-gray-400 mt-1 pl-6">
+              <p className="text-[10px] text-content-faint mt-1 pl-6">
                 If enabled, student submissions will be checked for similarity against others.
               </p>
             </div>
           </div>
 
           {/* Payment & Community */}
-          <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
-            <h3 className="font-bold text-gray-900 mb-4 flex items-center">
+          <div className="bg-surface p-5 rounded-2xl shadow-sm border border-line">
+            <h3 className="font-bold text-content mb-4 flex items-center">
               <DollarSign className="h-4 w-4 mr-2 text-green-600" />
               ការទូទាត់ & សហគមន៍
             </h3>
             <div className="space-y-4">
               <div>
-                <label htmlFor="khqrUpload" className="block text-xs font-bold text-gray-500 mb-1">
+                <label
+                  htmlFor="khqrUpload"
+                  className="block text-xs font-bold text-content-muted mb-1"
+                >
                   KHQR (សម្រាប់បង់ប្រាក់)
                 </label>
                 {currentMission.paymentQrUrl ? (
                   <div className="relative group w-24 h-24 mb-2">
                     <img
                       src={currentMission.paymentQrUrl}
-                      className="w-full h-full object-cover rounded-lg border border-gray-200"
+                      className="w-full h-full object-cover rounded-lg border border-line-strong"
                       alt="QR"
                     />
                     <button
@@ -576,20 +582,20 @@ const MissionForm: React.FC<MissionFormProps> = ({
                     onChange={(e) =>
                       setState((prev) => ({ ...prev, qrFile: e.target.files?.[0] || null }))
                     }
-                    className="block w-full text-xs text-gray-500 file:mr-2 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+                    className="block w-full text-xs text-content-muted file:mr-2 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
                   />
                 )}
               </div>
               <div>
                 <label
                   htmlFor="paymentInstruction"
-                  className="block text-xs font-bold text-gray-500 mb-1"
+                  className="block text-xs font-bold text-content-muted mb-1"
                 >
                   ណែនាំបង់ប្រាក់
                 </label>
                 <input
                   id="paymentInstruction"
-                  className="w-full p-2 border border-gray-200 rounded-lg text-sm"
+                  className="w-full p-2 border border-line-strong rounded-lg text-sm"
                   value={currentMission.paymentInstruction || ''}
                   onChange={(e) =>
                     setState((prev) => ({
@@ -606,13 +612,13 @@ const MissionForm: React.FC<MissionFormProps> = ({
               <div>
                 <label
                   htmlFor="telegramLink"
-                  className="block text-xs font-bold text-gray-500 mb-1"
+                  className="block text-xs font-bold text-content-muted mb-1"
                 >
                   Telegram Group Link
                 </label>
                 <input
                   id="telegramLink"
-                  className="w-full p-2 border border-gray-200 rounded-lg text-sm text-blue-600"
+                  className="w-full p-2 border border-line-strong rounded-lg text-sm text-blue-600"
                   value={currentMission.telegramGroupLink || ''}
                   onChange={(e) =>
                     setState((prev) => ({
@@ -629,18 +635,21 @@ const MissionForm: React.FC<MissionFormProps> = ({
 
         <div className="md:col-span-2 space-y-6">
           {/* Basic Info */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
-            <h3 className="font-bold text-gray-900 mb-2 flex items-center">
+          <div className="bg-surface p-6 rounded-2xl shadow-sm border border-line space-y-4">
+            <h3 className="font-bold text-content mb-2 flex items-center">
               <BookOpen className="h-4 w-4 mr-2 text-primary" />
               ព័ត៌មានលម្អិត
             </h3>
             <div>
-              <label htmlFor="missionTitle" className="block text-xs font-bold text-gray-500 mb-1">
+              <label
+                htmlFor="missionTitle"
+                className="block text-xs font-bold text-content-muted mb-1"
+              >
                 ចំណងជើងបេសកកម្ម
               </label>
               <input
                 id="missionTitle"
-                className="w-full p-3 border border-gray-200 rounded-xl text-base font-bold focus:ring-2 focus:ring-primary/20 outline-none"
+                className="w-full p-3 border border-line-strong rounded-xl text-base font-bold focus:ring-2 focus:ring-primary/20 outline-none"
                 value={currentMission.title}
                 onChange={(e) =>
                   setState((prev) => ({
@@ -655,13 +664,13 @@ const MissionForm: React.FC<MissionFormProps> = ({
               <div>
                 <label
                   htmlFor="missionLevel"
-                  className="block text-xs font-bold text-gray-500 mb-1"
+                  className="block text-xs font-bold text-content-muted mb-1"
                 >
                   កម្រិតជំនាញ
                 </label>
                 <select
                   id="missionLevel"
-                  className="w-full p-3 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20"
+                  className="w-full p-3 border border-line-strong rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20"
                   value={currentMission.level}
                   onChange={(e) =>
                     setState((prev) => ({
@@ -678,14 +687,14 @@ const MissionForm: React.FC<MissionFormProps> = ({
               <div>
                 <label
                   htmlFor="missionPrice"
-                  className="block text-xs font-bold text-gray-500 mb-1"
+                  className="block text-xs font-bold text-content-muted mb-1"
                 >
                   តម្លៃ (រៀល)
                 </label>
                 <input
                   id="missionPrice"
                   type="number"
-                  className="w-full p-3 border border-gray-200 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20"
+                  className="w-full p-3 border border-line-strong rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20"
                   value={currentMission.price}
                   onChange={(e) =>
                     setState((prev) => ({
@@ -700,13 +709,13 @@ const MissionForm: React.FC<MissionFormProps> = ({
             <div>
               <label
                 htmlFor="missionDescription"
-                className="block text-xs font-bold text-gray-500 mb-1"
+                className="block text-xs font-bold text-content-muted mb-1"
               >
                 បរិយាយ (Description)
               </label>
               <textarea
                 id="missionDescription"
-                className="w-full p-3 border border-gray-200 rounded-xl text-sm h-32 resize-none focus:ring-2 focus:ring-primary/20 outline-none"
+                className="w-full p-3 border border-line-strong rounded-xl text-sm h-32 resize-none focus:ring-2 focus:ring-primary/20 outline-none"
                 value={currentMission.description}
                 onChange={(e) =>
                   setState((prev) => ({
@@ -721,13 +730,13 @@ const MissionForm: React.FC<MissionFormProps> = ({
           </div>
 
           {/* Modules */}
-          <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+          <div className="bg-surface-2 p-6 rounded-2xl border border-line-strong">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="font-bold text-gray-900">កម្មវិធីសិក្សា (Modules)</h3>
+              <h3 className="font-bold text-content">កម្មវិធីសិក្សា (Modules)</h3>
               <button
                 type="button"
                 onClick={addModule}
-                className="bg-white text-gray-700 px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-bold hover:bg-gray-100 flex items-center"
+                className="bg-surface text-content-soft px-3 py-1.5 rounded-lg border border-line-strong text-xs font-bold hover:bg-surface-3 flex items-center"
               >
                 <Plus className="h-3 w-3 mr-1" /> Add Module
               </button>
@@ -745,7 +754,7 @@ const MissionForm: React.FC<MissionFormProps> = ({
                 />
               ))}
               {currentMission.modules?.length === 0 && (
-                <div className="text-center py-10 text-gray-400 bg-white rounded-xl border border-dashed border-gray-300">
+                <div className="text-center py-10 text-content-faint bg-surface rounded-xl border border-dashed border-line-strong">
                   <p className="text-sm">No modules added yet.</p>
                 </div>
               )}
@@ -756,16 +765,16 @@ const MissionForm: React.FC<MissionFormProps> = ({
 
       {showAiModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl animate-scale-in">
+          <div className="bg-surface rounded-2xl p-6 w-full max-w-sm shadow-2xl animate-scale-in">
             <h3 className="font-bold text-lg mb-4 flex items-center">
               <Brain className="h-5 w-5 mr-2 text-purple-600" /> AI Mission Architect
             </h3>
-            <p className="text-sm text-gray-600 mb-4">
+            <p className="text-sm text-content-muted mb-4">
               Describe the mission topic, and AI will generate the structure, modules, and thumbnail
               for you.
             </p>
             <textarea
-              className="w-full p-3 border border-gray-200 rounded-xl text-sm h-24 mb-4 focus:ring-2 focus:ring-purple-200 outline-none"
+              className="w-full p-3 border border-line-strong rounded-xl text-sm h-24 mb-4 focus:ring-2 focus:ring-purple-200 outline-none"
               placeholder="e.g. A comprehensive guide to Python for Data Science..."
               value={aiPrompt}
               onChange={(e) => setState((prev) => ({ ...prev, aiPrompt: e.target.value }))}
@@ -774,7 +783,7 @@ const MissionForm: React.FC<MissionFormProps> = ({
               <button
                 type="button"
                 onClick={() => setState((prev) => ({ ...prev, showAiModal: false }))}
-                className="px-4 py-2 text-gray-500 font-bold text-sm"
+                className="px-4 py-2 text-content-muted font-bold text-sm"
               >
                 Cancel
               </button>
@@ -942,14 +951,14 @@ const ModuleEditor: React.FC<{
   };
 
   return (
-    <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm mb-4 transition-all">
+    <div className="bg-surface p-4 rounded-xl border border-line-strong shadow-sm mb-4 transition-all">
       <div
         className="flex justify-between items-center cursor-pointer select-none"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center gap-3">
           <div
-            className={`p-1 rounded-full ${isExpanded ? 'bg-primary/10 text-primary' : 'bg-gray-100 text-gray-400'}`}
+            className={`p-1 rounded-full ${isExpanded ? 'bg-primary/10 text-primary' : 'bg-surface-3 text-content-faint'}`}
           >
             {isExpanded ? (
               <ChevronDown className="h-4 w-4" />
@@ -958,10 +967,10 @@ const ModuleEditor: React.FC<{
             )}
           </div>
           <div>
-            <span className="font-bold text-gray-500 text-xs uppercase block">
+            <span className="font-bold text-content-muted text-xs uppercase block">
               Module {index + 1}
             </span>
-            <span className="font-bold text-gray-900 text-sm">
+            <span className="font-bold text-content text-sm">
               {module.title || 'Untitled Module'}
             </span>
           </div>
@@ -993,7 +1002,7 @@ const ModuleEditor: React.FC<{
               e.stopPropagation();
               onDelete(index);
             }}
-            className="text-gray-400 hover:text-red-600 p-2 hover:bg-red-50 rounded-full transition-colors"
+            className="text-content-faint hover:text-red-600 p-2 hover:bg-red-50 rounded-full transition-colors"
             title="Delete Module"
           >
             <Trash2 className="h-4 w-4" />
@@ -1002,17 +1011,17 @@ const ModuleEditor: React.FC<{
       </div>
 
       {isExpanded && (
-        <div className="space-y-4 mt-4 pt-4 border-t border-gray-100 animate-fade-in">
+        <div className="space-y-4 mt-4 pt-4 border-t border-line animate-fade-in">
           <div>
             <label
               htmlFor={`mod-title-${index}`}
-              className="block text-xs font-bold text-gray-400 mb-1 uppercase"
+              className="block text-xs font-bold text-content-faint mb-1 uppercase"
             >
               Title
             </label>
             <input
               id={`mod-title-${index}`}
-              className="w-full p-3 border border-gray-200 rounded-lg text-sm font-bold focus:ring-2 focus:ring-primary/20 outline-none"
+              className="w-full p-3 border border-line-strong rounded-lg text-sm font-bold focus:ring-2 focus:ring-primary/20 outline-none"
               placeholder="Module Title"
               value={module.title}
               onChange={(e) => onChange(index, 'title', e.target.value)}
@@ -1027,13 +1036,13 @@ const ModuleEditor: React.FC<{
             <div>
               <label
                 htmlFor={`mod-objective-${index}`}
-                className="block text-xs font-bold text-gray-400 mb-1 uppercase"
+                className="block text-xs font-bold text-content-faint mb-1 uppercase"
               >
                 Objective
               </label>
               <textarea
                 id={`mod-objective-${index}`}
-                className="w-full p-3 border border-gray-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary/20 outline-none resize-none min-h-[80px]"
+                className="w-full p-3 border border-line-strong rounded-lg text-sm bg-surface focus:ring-2 focus:ring-primary/20 outline-none resize-none min-h-[80px]"
                 placeholder="What the student will be able to do after this lesson"
                 value={module.objective || ''}
                 onChange={(e) => onChange(index, 'objective', e.target.value)}
@@ -1043,13 +1052,13 @@ const ModuleEditor: React.FC<{
             <div>
               <label
                 htmlFor={`mod-keypoints-${index}`}
-                className="block text-xs font-bold text-gray-400 mb-1 uppercase"
+                className="block text-xs font-bold text-content-faint mb-1 uppercase"
               >
                 Key points, one per line
               </label>
               <textarea
                 id={`mod-keypoints-${index}`}
-                className="w-full p-3 border border-gray-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary/20 outline-none resize-none min-h-[90px]"
+                className="w-full p-3 border border-line-strong rounded-lg text-sm bg-surface focus:ring-2 focus:ring-primary/20 outline-none resize-none min-h-[90px]"
                 placeholder={
                   'The main idea to remember\nA trick that makes it easier\nA common mistake to avoid'
                 }
@@ -1064,17 +1073,17 @@ const ModuleEditor: React.FC<{
             <div className="flex justify-between items-center mb-1">
               <label
                 htmlFor={`mod-task-${index}`}
-                className="block text-xs font-bold text-gray-400 uppercase"
+                className="block text-xs font-bold text-content-faint uppercase"
               >
                 Task
               </label>
-              <span className="text-[10px] text-gray-400">
+              <span className="text-[10px] text-content-faint">
                 Shown on the Practice tab, above the workspace
               </span>
             </div>
             <textarea
               id={`mod-task-${index}`}
-              className="w-full p-3 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 outline-none resize-none min-h-[100px]"
+              className="w-full p-3 border border-line-strong rounded-lg text-sm focus:ring-2 focus:ring-primary/20 outline-none resize-none min-h-[100px]"
               placeholder="The assignment the student has to hand in"
               value={module.task}
               onChange={(e) => onChange(index, 'task', e.target.value)}
@@ -1085,13 +1094,13 @@ const ModuleEditor: React.FC<{
             <div>
               <label
                 htmlFor={`mod-persona-${index}`}
-                className="block text-xs font-bold text-gray-400 mb-1 uppercase"
+                className="block text-xs font-bold text-content-faint mb-1 uppercase"
               >
                 AI Persona
               </label>
               <textarea
                 id={`mod-persona-${index}`}
-                className="w-full p-3 border border-gray-200 rounded-lg text-xs focus:ring-2 focus:ring-primary/20 outline-none resize-none min-h-[120px]"
+                className="w-full p-3 border border-line-strong rounded-lg text-xs focus:ring-2 focus:ring-primary/20 outline-none resize-none min-h-[120px]"
                 placeholder="AI Persona"
                 value={module.aiPersona}
                 onChange={(e) => onChange(index, 'aiPersona', e.target.value)}
@@ -1101,13 +1110,13 @@ const ModuleEditor: React.FC<{
             <div>
               <label
                 htmlFor={`mod-prompt-${index}`}
-                className="block text-xs font-bold text-gray-400 mb-1 uppercase"
+                className="block text-xs font-bold text-content-faint mb-1 uppercase"
               >
                 Initial Greeting
               </label>
               <textarea
                 id={`mod-prompt-${index}`}
-                className="w-full p-3 border border-gray-200 rounded-lg text-xs focus:ring-2 focus:ring-primary/20 outline-none resize-none min-h-[120px]"
+                className="w-full p-3 border border-line-strong rounded-lg text-xs focus:ring-2 focus:ring-primary/20 outline-none resize-none min-h-[120px]"
                 placeholder="Initial AI Greeting"
                 value={module.initialPrompt}
                 onChange={(e) => onChange(index, 'initialPrompt', e.target.value)}
@@ -1118,13 +1127,13 @@ const ModuleEditor: React.FC<{
           <div>
             <label
               htmlFor={`mod-theory-${index}`}
-              className="block text-xs font-bold text-gray-400 mb-1 uppercase"
+              className="block text-xs font-bold text-content-faint mb-1 uppercase"
             >
               Theory Prompt
             </label>
             <textarea
               id={`mod-theory-${index}`}
-              className="w-full p-3 border border-gray-200 rounded-lg text-xs focus:ring-2 focus:ring-primary/20 outline-none resize-none min-h-[100px]"
+              className="w-full p-3 border border-line-strong rounded-lg text-xs focus:ring-2 focus:ring-primary/20 outline-none resize-none min-h-[100px]"
               placeholder="Theory Prompt"
               value={module.theoryPrompt || ''}
               onChange={(e) => onChange(index, 'theoryPrompt', e.target.value)}
@@ -1132,17 +1141,17 @@ const ModuleEditor: React.FC<{
             <CharCounter current={module.theoryPrompt?.length || 0} limit={THEORY_LIMIT} />
           </div>
 
-          <div className="mt-4 border-t border-gray-100 pt-4">
+          <div className="mt-4 border-t border-line pt-4">
             <label
               htmlFor={`mod-sim-${index}`}
-              className="block text-xs font-bold text-gray-400 mb-1 uppercase flex items-center gap-1"
+              className="block text-xs font-bold text-content-faint mb-1 uppercase flex items-center gap-1"
             >
               <Experiment className="h-3 w-3" /> Simulation Configuration
             </label>
             <div className="flex gap-2">
               <select
                 id={`mod-sim-${index}`}
-                className="w-1/3 p-3 border border-gray-200 rounded-lg text-xs font-bold bg-gray-50 focus:ring-2 focus:ring-primary/20 outline-none"
+                className="w-1/3 p-3 border border-line-strong rounded-lg text-xs font-bold bg-surface-2 focus:ring-2 focus:ring-primary/20 outline-none"
                 value={module.simulationConfig?.type || 'phet'}
                 onChange={(e) => handleSimulationTypeChange(e.target.value as any)}
               >
@@ -1155,7 +1164,7 @@ const ModuleEditor: React.FC<{
               </label>
               <input
                 id={`mod-sim-url-${index}`}
-                className="flex-1 p-3 border border-gray-200 rounded-lg text-xs font-mono text-blue-600 focus:ring-2 focus:ring-primary/20 outline-none"
+                className="flex-1 p-3 border border-line-strong rounded-lg text-xs font-mono text-blue-600 focus:ring-2 focus:ring-primary/20 outline-none"
                 placeholder={
                   module.simulationConfig?.type === 'wokwi'
                     ? 'https://wokwi.com/projects/...'
@@ -1166,7 +1175,7 @@ const ModuleEditor: React.FC<{
               />
             </div>
             {module.simulationConfig?.type === 'wokwi' && (
-              <p className="text-[10px] text-gray-400 mt-1 italic">
+              <p className="text-[10px] text-content-faint mt-1 italic">
                 Paste the Wokwi Project URL (e.g. https://wokwi.com/projects/305568836183138882). It
                 will auto-convert to embed.
               </p>

@@ -309,11 +309,11 @@ const TutorDashboard: React.FC = () => {
     );
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="min-h-screen bg-surface-2 pb-24">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-20 shadow-sm">
+      <div className="bg-surface border-b border-line-strong sticky top-0 z-20 shadow-sm">
         <div className="container mx-auto px-4 h-16 flex justify-between items-center">
-          <h1 className="text-xl font-bold text-gray-900 flex items-center">
+          <h1 className="text-xl font-bold text-content flex items-center">
             <GraduationCap className="h-6 w-6 mr-2 text-primary" />
             <span>Tutor Dashboard</span>
           </h1>
@@ -352,7 +352,7 @@ const TutorDashboard: React.FC = () => {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="font-bold text-gray-900">ស្ថានភាពលើទីផ្សារ (Marketplace Status)</h2>
+                <h2 className="font-bold text-content">ស្ថានភាពលើទីផ្សារ (Marketplace Status)</h2>
                 <span
                   className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${
                     profile.is_listed ? 'bg-green-500 text-white' : 'bg-amber-500 text-white'
@@ -361,7 +361,7 @@ const TutorDashboard: React.FC = () => {
                   {profile.is_listed ? 'Live' : 'Hidden'}
                 </span>
               </div>
-              <p className="text-sm text-gray-600 mt-0.5">
+              <p className="text-sm text-content-muted mt-0.5">
                 {profile.is_listed
                   ? 'សិស្សអាចស្វែងរក និងកក់ម៉ោងសិក្សាជាមួយអ្នកបានជាសាធារណៈ។'
                   : 'ប្រវត្តិរូបរបស់អ្នកត្រូវបានលាក់។ សិស្សថ្មីមិនអាចស្វែងរកអ្នកឃើញឡើយ។'}
@@ -369,9 +369,9 @@ const TutorDashboard: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 bg-white/50 p-2 rounded-2xl border border-white/50 backdrop-blur-sm">
+          <div className="flex items-center gap-3 bg-surface/50 p-2 rounded-2xl border border-white/50 backdrop-blur-sm">
             <span
-              className={`text-xs font-bold ${profile.is_listed ? 'text-gray-400' : 'text-amber-600'}`}
+              className={`text-xs font-bold ${profile.is_listed ? 'text-content-faint' : 'text-amber-600'}`}
             >
               លាក់
             </span>
@@ -381,17 +381,17 @@ const TutorDashboard: React.FC = () => {
               disabled={toggling}
               aria-label={profile.is_listed ? 'Hide Profile' : 'Publish Profile'}
               className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors focus:outline-none ring-offset-2 focus:ring-2 focus:ring-primary/20 ${
-                profile.is_listed ? 'bg-green-50' : 'bg-gray-300'
+                profile.is_listed ? 'bg-green-50' : 'bg-line-strong'
               }`}
             >
               <span
-                className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform duration-200 ease-in-out ${
+                className={`inline-block h-5 w-5 transform rounded-full bg-surface transition-transform duration-200 ease-in-out ${
                   profile.is_listed ? 'translate-x-6' : 'translate-x-1'
                 }`}
               />
             </button>
             <span
-              className={`text-xs font-bold ${profile.is_listed ? 'text-green-600' : 'text-gray-400'}`}
+              className={`text-xs font-bold ${profile.is_listed ? 'text-green-600' : 'text-content-faint'}`}
             >
               ផ្សាយ
             </span>
@@ -400,44 +400,44 @@ const TutorDashboard: React.FC = () => {
 
         {/* Stats Overview */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-          <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-            <p className="text-xs text-gray-500 font-bold uppercase">សិស្សសរុប</p>
-            <p className="text-2xl font-bold text-gray-900">{bookings.length}</p>
+          <div className="bg-surface p-4 rounded-2xl shadow-sm border border-line">
+            <p className="text-xs text-content-muted font-bold uppercase">សិស្សសរុប</p>
+            <p className="text-2xl font-bold text-content">{bookings.length}</p>
           </div>
-          <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-            <p className="text-xs text-gray-500 font-bold uppercase">សំណើថ្មី</p>
+          <div className="bg-surface p-4 rounded-2xl shadow-sm border border-line">
+            <p className="text-xs text-content-muted font-bold uppercase">សំណើថ្មី</p>
             <p className="text-2xl font-bold text-orange-500">{pendingBookings.length}</p>
           </div>
-          <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-            <p className="text-xs text-gray-500 font-bold uppercase">ថ្នាក់សកម្ម</p>
+          <div className="bg-surface p-4 rounded-2xl shadow-sm border border-line">
+            <p className="text-xs text-content-muted font-bold uppercase">ថ្នាក់សកម្ម</p>
             <p className="text-2xl font-bold text-green-600">{activeBookings.length}</p>
           </div>
-          <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-            <p className="text-xs text-gray-500 font-bold uppercase">Job Market</p>
+          <div className="bg-surface p-4 rounded-2xl shadow-sm border border-line">
+            <p className="text-xs text-content-muted font-bold uppercase">Job Market</p>
             <p className="text-2xl font-bold text-blue-600">{requests.length}</p>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="bg-gray-100/50 p-1.5 rounded-2xl flex gap-1 mb-8 w-full md:w-auto md:inline-flex border border-gray-200">
+        <div className="bg-surface-3/50 p-1.5 rounded-2xl flex gap-1 mb-8 w-full md:w-auto md:inline-flex border border-line-strong">
           <button
             type="button"
             onClick={() => setActiveTab('profile')}
-            className={`flex-1 md:flex-none px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center ${activeTab === 'profile' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+            className={`flex-1 md:flex-none px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center ${activeTab === 'profile' ? 'bg-surface text-content shadow-sm' : 'text-content-muted hover:text-content-soft'}`}
           >
             <User className="h-4 w-4 mr-2" /> ប្រវត្តិរូប
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('bookings')}
-            className={`flex-1 md:flex-none px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center ${activeTab === 'bookings' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+            className={`flex-1 md:flex-none px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center ${activeTab === 'bookings' ? 'bg-surface text-content shadow-sm' : 'text-content-muted hover:text-content-soft'}`}
           >
             <Calendar className="h-4 w-4 mr-2" /> ការកក់ ({pendingBookings.length})
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('jobs')}
-            className={`flex-1 md:flex-none px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center ${activeTab === 'jobs' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+            className={`flex-1 md:flex-none px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center ${activeTab === 'jobs' ? 'bg-surface text-content shadow-sm' : 'text-content-muted hover:text-content-soft'}`}
           >
             <Briefcase className="h-4 w-4 mr-2" /> ការងារថ្មី
           </button>
@@ -450,9 +450,9 @@ const TutorDashboard: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Left Col: Basic Info */}
               <div className="lg:col-span-1 space-y-6">
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 text-center">
+                <div className="bg-surface rounded-2xl shadow-sm border border-line p-6 text-center">
                   <div className="relative inline-block mb-4">
-                    <div className="w-24 h-24 rounded-full bg-gray-100 p-1 border border-gray-200 mx-auto">
+                    <div className="w-24 h-24 rounded-full bg-surface-3 p-1 border border-line-strong mx-auto">
                       <img
                         src={
                           profile.avatarUrl ||
@@ -463,8 +463,8 @@ const TutorDashboard: React.FC = () => {
                       />
                     </div>
                   </div>
-                  <h3 className="font-bold text-lg text-gray-900">{profile.fullName}</h3>
-                  <p className="text-xs text-gray-500 mb-4">
+                  <h3 className="font-bold text-lg text-content">{profile.fullName}</h3>
+                  <p className="text-xs text-content-muted mb-4">
                     {profile.id ? 'Verified Tutor' : 'New Tutor'}
                   </p>
 
@@ -472,16 +472,16 @@ const TutorDashboard: React.FC = () => {
                     <div>
                       <label
                         htmlFor="hourlyRate"
-                        className="block text-xs font-bold text-gray-500 mb-1"
+                        className="block text-xs font-bold text-content-muted mb-1"
                       >
                         តម្លៃម៉ោង (Riel)
                       </label>
                       <div className="relative">
-                        <DollarSign className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                        <DollarSign className="absolute left-3 top-3 h-4 w-4 text-content-faint" />
                         <input
                           id="hourlyRate"
                           type="number"
-                          className="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                          className="w-full pl-9 pr-4 py-2.5 bg-surface-2 border border-line-strong rounded-xl text-sm font-bold text-content focus:outline-none focus:ring-2 focus:ring-primary/20"
                           value={profile.hourlyRate}
                           onChange={(e) =>
                             setProfile({ ...profile, hourlyRate: parseInt(e.target.value) })
@@ -492,15 +492,15 @@ const TutorDashboard: React.FC = () => {
                     <div>
                       <label
                         htmlFor="location"
-                        className="block text-xs font-bold text-gray-500 mb-1"
+                        className="block text-xs font-bold text-content-muted mb-1"
                       >
                         ទីតាំង
                       </label>
                       <div className="relative">
-                        <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                        <MapPin className="absolute left-3 top-3 h-4 w-4 text-content-faint" />
                         <input
                           id="location"
-                          className="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                          className="w-full pl-9 pr-4 py-2.5 bg-surface-2 border border-line-strong rounded-xl text-sm text-content focus:outline-none focus:ring-2 focus:ring-primary/20"
                           value={profile.location || ''}
                           onChange={(e) => setProfile({ ...profile, location: e.target.value })}
                         />
@@ -509,15 +509,15 @@ const TutorDashboard: React.FC = () => {
                     <div>
                       <label
                         htmlFor="phoneContact"
-                        className="block text-xs font-bold text-gray-500 mb-1"
+                        className="block text-xs font-bold text-content-muted mb-1"
                       >
                         លេខទូរស័ព្ទ
                       </label>
                       <div className="relative">
-                        <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                        <Phone className="absolute left-3 top-3 h-4 w-4 text-content-faint" />
                         <input
                           id="phoneContact"
-                          className="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                          className="w-full pl-9 pr-4 py-2.5 bg-surface-2 border border-line-strong rounded-xl text-sm text-content focus:outline-none focus:ring-2 focus:ring-primary/20"
                           value={profile.phoneContact || ''}
                           onChange={(e) => setProfile({ ...profile, phoneContact: e.target.value })}
                         />
@@ -529,9 +529,9 @@ const TutorDashboard: React.FC = () => {
 
               {/* Right Col: Teaching Details */}
               <div className="lg:col-span-2 space-y-6">
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <div className="bg-surface rounded-2xl shadow-sm border border-line p-6">
                   <div className="flex justify-between items-center mb-4">
-                    <h3 className="font-bold text-gray-900 flex items-center">
+                    <h3 className="font-bold text-content flex items-center">
                       <ImageIcon className="h-5 w-5 mr-2 text-primary" /> រូបភាពគម្រប (Cover Image)
                     </h3>
                     <button
@@ -548,7 +548,7 @@ const TutorDashboard: React.FC = () => {
                       AI Generate
                     </button>
                   </div>
-                  <div className="relative aspect-[3/1] bg-gray-100 rounded-xl overflow-hidden border border-dashed border-gray-300 flex items-center justify-center group cursor-pointer">
+                  <div className="relative aspect-[3/1] bg-surface-3 rounded-xl overflow-hidden border border-dashed border-line-strong flex items-center justify-center group cursor-pointer">
                     {coverBase64 || coverFile || profile.coverImage ? (
                       <img
                         src={
@@ -562,13 +562,13 @@ const TutorDashboard: React.FC = () => {
                         alt="Cover Preview"
                       />
                     ) : (
-                      <div className="text-center text-gray-400">
+                      <div className="text-center text-content-faint">
                         <Camera className="h-8 w-8 mx-auto mb-2" />
                         <span className="text-xs">ចុចដើម្បីដាក់រូបភាព (Click to Upload)</span>
                       </div>
                     )}
                     <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <div className="bg-white p-2 rounded-full shadow-lg">
+                      <div className="bg-surface p-2 rounded-full shadow-lg">
                         <Camera className="h-5 w-5 text-primary" />
                       </div>
                     </div>
@@ -585,37 +585,37 @@ const TutorDashboard: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                  <h3 className="font-bold text-gray-900 mb-4 flex items-center">
+                <div className="bg-surface rounded-2xl shadow-sm border border-line p-6">
+                  <h3 className="font-bold text-content mb-4 flex items-center">
                     <BookOpen className="h-5 w-5 mr-2 text-primary" /> ព័ត៌មានបង្រៀន
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
                       <label
                         htmlFor="subjectsInput"
-                        className="block text-xs font-bold text-gray-500 mb-1"
+                        className="block text-xs font-bold text-content-muted mb-1"
                       >
                         មុខវិជ្ជា (Subjects)
                       </label>
                       <input
                         id="subjectsInput"
-                        className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        className="w-full p-3 bg-surface-2 border border-line-strong rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
                         value={subjectsInput}
                         onChange={(e) => setSubjectsInput(e.target.value)}
                         placeholder="Math, English, Physics..."
                       />
-                      <p className="text-[10px] text-gray-400 mt-1">បំបែកដោយសញ្ញាក្បៀស (,)</p>
+                      <p className="text-[10px] text-content-faint mt-1">បំបែកដោយសញ្ញាក្បៀស (,)</p>
                     </div>
                     <div>
                       <label
                         htmlFor="gradesInput"
-                        className="block text-xs font-bold text-gray-500 mb-1"
+                        className="block text-xs font-bold text-content-muted mb-1"
                       >
                         កម្រិត (Grades)
                       </label>
                       <input
                         id="gradesInput"
-                        className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        className="w-full p-3 bg-surface-2 border border-line-strong rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
                         value={gradesInput}
                         onChange={(e) => setGradesInput(e.target.value)}
                         placeholder="Grade 10, Grade 12, Adult..."
@@ -623,7 +623,7 @@ const TutorDashboard: React.FC = () => {
                     </div>
                   </div>
                   <fieldset className="mb-4">
-                    <legend className="block text-xs font-bold text-gray-500 mb-1">
+                    <legend className="block text-xs font-bold text-content-muted mb-1">
                       ទម្រង់បង្រៀន
                     </legend>
                     <div className="flex gap-4">
@@ -641,7 +641,7 @@ const TutorDashboard: React.FC = () => {
                             checked={profile.teachingMode === mode}
                             onChange={() => setProfile({ ...profile, teachingMode: mode as any })}
                           />
-                          <span className="text-sm text-gray-700">
+                          <span className="text-sm text-content-soft">
                             {mode === 'Online' ? 'អនឡាញ' : mode === 'Home' ? 'តាមផ្ទះ' : 'ទាំងពីរ'}
                           </span>
                         </label>
@@ -651,13 +651,13 @@ const TutorDashboard: React.FC = () => {
                   <div>
                     <label
                       htmlFor="experience"
-                      className="block text-xs font-bold text-gray-500 mb-1"
+                      className="block text-xs font-bold text-content-muted mb-1"
                     >
                       បទពិសោធន៍ (Experience)
                     </label>
                     <input
                       id="experience"
-                      className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                      className="w-full p-3 bg-surface-2 border border-line-strong rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
                       value={profile.experience || ''}
                       onChange={(e) => setProfile({ ...profile, experience: e.target.value })}
                       placeholder="Ex: 5 years teaching Math at High School"
@@ -665,14 +665,14 @@ const TutorDashboard: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                  <h3 className="font-bold text-gray-900 mb-4 flex items-center">
+                <div className="bg-surface rounded-2xl shadow-sm border border-line p-6">
+                  <h3 className="font-bold text-content mb-4 flex items-center">
                     <FileText className="h-5 w-5 mr-2 text-primary" />{' '}
                     <label htmlFor="bio">អំពីខ្ញុំ (Bio)</label>
                   </h3>
                   <textarea
                     id="bio"
-                    className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm h-32 resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 leading-relaxed"
+                    className="w-full p-4 bg-surface-2 border border-line-strong rounded-xl text-sm h-32 resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 leading-relaxed"
                     value={profile.bio || ''}
                     onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
                     placeholder="ណែនាំខ្លួនអ្នក និងវិធីសាស្រ្តបង្រៀនរបស់អ្នក..."
@@ -689,14 +689,14 @@ const TutorDashboard: React.FC = () => {
               {/* Pending Section */}
               {pendingBookings.length > 0 && (
                 <div>
-                  <h3 className="font-bold text-gray-800 mb-4 flex items-center">
+                  <h3 className="font-bold text-content mb-4 flex items-center">
                     <Clock className="h-5 w-5 mr-2 text-orange-500" /> សំណើថ្មី (Pending)
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {pendingBookings.map((b) => (
                       <div
                         key={b.id}
-                        className="bg-white rounded-2xl shadow-sm border-l-4 border-orange-400 p-5 hover:shadow-md transition-shadow"
+                        className="bg-surface rounded-2xl shadow-sm border-l-4 border-orange-400 p-5 hover:shadow-md transition-shadow"
                       >
                         <div className="flex justify-between items-start mb-3">
                           <div className="flex items-center gap-3">
@@ -705,12 +705,12 @@ const TutorDashboard: React.FC = () => {
                                 b.studentAvatar ||
                                 `https://ui-avatars.com/api/?name=${b.studentName}`
                               }
-                              className="w-10 h-10 rounded-full bg-gray-200"
+                              className="w-10 h-10 rounded-full bg-line-strong"
                               alt="Avatar"
                             />
                             <div>
-                              <h4 className="font-bold text-gray-900">{b.studentName}</h4>
-                              <p className="text-xs text-gray-500">
+                              <h4 className="font-bold text-content">{b.studentName}</h4>
+                              <p className="text-xs text-content-muted">
                                 {new Date(b.createdAt).toLocaleDateString()}
                               </p>
                             </div>
@@ -720,21 +720,21 @@ const TutorDashboard: React.FC = () => {
                           </span>
                         </div>
 
-                        <div className="bg-gray-50 p-3 rounded-xl mb-4 text-sm text-gray-700 space-y-1">
+                        <div className="bg-surface-2 p-3 rounded-xl mb-4 text-sm text-content-soft space-y-1">
                           <p>
-                            <span className="font-bold text-gray-500 text-xs uppercase w-20 inline-block">
+                            <span className="font-bold text-content-muted text-xs uppercase w-20 inline-block">
                               Subject:
                             </span>{' '}
                             {b.subject}
                           </p>
                           <p>
-                            <span className="font-bold text-gray-500 text-xs uppercase w-20 inline-block">
+                            <span className="font-bold text-content-muted text-xs uppercase w-20 inline-block">
                               Time:
                             </span>{' '}
                             {b.scheduledTime}
                           </p>
                           {b.locationNotes && (
-                            <p className="italic text-gray-500 border-t border-gray-200 pt-2 mt-2">
+                            <p className="italic text-content-muted border-t border-line-strong pt-2 mt-2">
                               "{b.locationNotes}"
                             </p>
                           )}
@@ -751,7 +751,7 @@ const TutorDashboard: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => handleBookingAction(b.id, 'Rejected')}
-                            className="flex-1 bg-white border border-gray-200 text-red-600 font-bold py-2 rounded-lg text-xs hover:bg-red-50 transition-colors"
+                            className="flex-1 bg-surface border border-line-strong text-red-600 font-bold py-2 rounded-lg text-xs hover:bg-red-50 transition-colors"
                           >
                             បដិសេធ (Reject)
                           </button>
@@ -764,12 +764,12 @@ const TutorDashboard: React.FC = () => {
 
               {/* Active & Past Section */}
               <div>
-                <h3 className="font-bold text-gray-800 mb-4 flex items-center">
+                <h3 className="font-bold text-content mb-4 flex items-center">
                   <CheckCircle className="h-5 w-5 mr-2 text-green-600" /> ថ្នាក់រៀន (Active &
                   History)
                 </h3>
                 {activeBookings.length === 0 && pastBookings.length === 0 && (
-                  <div className="text-center py-10 bg-white rounded-2xl border border-dashed border-gray-300 text-gray-400">
+                  <div className="text-center py-10 bg-surface rounded-2xl border border-dashed border-line-strong text-content-faint">
                     មិនទាន់មានថ្នាក់រៀនទេ។
                   </div>
                 )}
@@ -777,22 +777,22 @@ const TutorDashboard: React.FC = () => {
                   {[...activeBookings, ...pastBookings].map((b) => (
                     <div
                       key={b.id}
-                      className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex flex-col md:flex-row items-center gap-4"
+                      className="bg-surface rounded-xl shadow-sm border border-line p-4 flex flex-col md:flex-row items-center gap-4"
                     >
                       <div className="flex items-center gap-4 flex-1 w-full">
                         <div
-                          className={`w-2 h-12 rounded-full ${b.status === 'Accepted' ? 'bg-green-500' : 'bg-gray-300'}`}
+                          className={`w-2 h-12 rounded-full ${b.status === 'Accepted' ? 'bg-green-500' : 'bg-line-strong'}`}
                         ></div>
                         <img
                           src={
                             b.studentAvatar || `https://ui-avatars.com/api/?name=${b.studentName}`
                           }
-                          className="w-10 h-10 rounded-full bg-gray-200"
+                          className="w-10 h-10 rounded-full bg-line-strong"
                           alt="Avatar"
                         />
                         <div>
-                          <h4 className="font-bold text-gray-900">{b.studentName}</h4>
-                          <p className="text-xs text-gray-500">
+                          <h4 className="font-bold text-content">{b.studentName}</h4>
+                          <p className="text-xs text-content-muted">
                             {b.subject} • {b.scheduledTime}
                           </p>
                         </div>
@@ -805,7 +805,7 @@ const TutorDashboard: React.FC = () => {
                               ? 'bg-green-100 text-green-700'
                               : b.status === 'Completed'
                                 ? 'bg-blue-100 text-blue-700'
-                                : 'bg-gray-100 text-gray-500'
+                                : 'bg-surface-3 text-content-muted'
                           }`}
                         >
                           {b.status}
@@ -830,20 +830,20 @@ const TutorDashboard: React.FC = () => {
           {activeTab === 'jobs' && (
             <div>
               <div className="flex justify-between items-center mb-6">
-                <h3 className="font-bold text-gray-900 flex items-center">
+                <h3 className="font-bold text-content flex items-center">
                   <Briefcase className="h-5 w-5 mr-2 text-primary" /> សំណើសិស្សថ្មីៗ (New Requests)
                 </h3>
                 <button
                   type="button"
-                  className="bg-white p-2 rounded-lg border border-gray-200 shadow-sm text-gray-600 hover:text-primary"
+                  className="bg-surface p-2 rounded-lg border border-line-strong shadow-sm text-content-muted hover:text-primary"
                 >
                   <Filter className="h-4 w-4" />
                 </button>
               </div>
 
               {requests.length === 0 ? (
-                <div className="text-center py-16 bg-white rounded-3xl border border-dashed border-gray-300">
-                  <p className="text-gray-400 mb-2">មិនទាន់មានសំណើសិស្សថ្មីទេ។</p>
+                <div className="text-center py-16 bg-surface rounded-3xl border border-dashed border-line-strong">
+                  <p className="text-content-faint mb-2">មិនទាន់មានសំណើសិស្សថ្មីទេ។</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -865,11 +865,11 @@ const TutorDashboard: React.FC = () => {
       {/* Apply Modal */}
       {showApplyModal && selectedRequest && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl w-full max-w-sm p-6 animate-scale-in shadow-2xl">
+          <div className="bg-surface rounded-2xl w-full max-w-sm p-6 animate-scale-in shadow-2xl">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="font-bold text-lg text-gray-900">ដាក់ពាក្យបង្រៀន</h3>
+              <h3 className="font-bold text-lg text-content">ដាក់ពាក្យបង្រៀន</h3>
               <button type="button" onClick={() => setShowApplyModal(false)}>
-                <X className="h-5 w-5 text-gray-400" />
+                <X className="h-5 w-5 text-content-faint" />
               </button>
             </div>
 
@@ -885,13 +885,13 @@ const TutorDashboard: React.FC = () => {
               <div>
                 <label
                   htmlFor="applyMessage"
-                  className="block text-xs font-bold text-gray-500 mb-1"
+                  className="block text-xs font-bold text-content-muted mb-1"
                 >
                   សារខ្លីៗ (Message)
                 </label>
                 <textarea
                   id="applyMessage"
-                  className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm h-32 focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none"
+                  className="w-full p-3 bg-surface border border-line-strong rounded-xl text-sm h-32 focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none"
                   placeholder="ណែនាំខ្លួនអ្នក និងមូលហេតុដែលសិស្សគួរជ្រើសរើសអ្នក..."
                   value={applyMessage}
                   onChange={(e) => setApplyMessage(e.target.value)}

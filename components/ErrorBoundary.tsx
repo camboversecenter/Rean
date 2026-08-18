@@ -27,18 +27,18 @@ class ErrorBoundary extends Component<Props, State> {
   public render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-          <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md text-center border border-red-100">
+        <div className="min-h-screen flex items-center justify-center bg-surface-2 p-4">
+          <div className="bg-surface rounded-2xl shadow-xl p-8 max-w-md text-center border border-red-100">
             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <AlertCircle className="h-8 w-8 text-red-600" />
             </div>
-            <h1 className="text-xl font-bold text-gray-900 mb-2">
+            <h1 className="text-xl font-bold text-content mb-2">
               មានបញ្ហាបច្ចេកទេស (Something went wrong)
             </h1>
-            <p className="text-gray-500 text-sm mb-6">
+            <p className="text-content-muted text-sm mb-6">
               កម្មវិធីបានជួបបញ្ហាដែលមិនរំពឹងទុក។ សូមព្យាយាមផ្ទុកទំព័រឡើងវិញ។
               <br />
-              <span className="text-xs font-mono bg-gray-100 px-2 py-1 rounded mt-2 inline-block max-w-full truncate">
+              <span className="text-xs font-mono bg-surface-3 px-2 py-1 rounded mt-2 inline-block max-w-full truncate">
                 {this.state.error?.message}
               </span>
             </p>

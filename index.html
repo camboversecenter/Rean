@@ -76,8 +76,24 @@
     </style>
     <!-- Pyodide for Client-Side Python Execution (used by CodeEditor) -->
     <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+    <script>
+      // Applies the saved theme before the first paint. Without this the page
+      // renders light and then snaps to dark once React mounts, which reads as
+      // a flash on every navigation. Kept inline and dependency free so it runs
+      // before the bundle is even fetched.
+      // The key and the light default must match components/ThemeProvider.tsx.
+      (function () {
+        try {
+          if (localStorage.getItem('rean-theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {
+          /* private mode: fall through to light */
+        }
+      })();
+    </script>
   </head>
-  <body class="bg-gray-50 text-gray-900">
+  <body class="bg-surface-2 text-content-soft">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>

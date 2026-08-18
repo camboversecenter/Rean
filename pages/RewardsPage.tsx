@@ -213,45 +213,45 @@ const RewardsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20 pt-6 px-4">
+    <div className="min-h-screen bg-surface-2 pb-20 pt-6 px-4">
       <div className="max-w-5xl mx-auto">
         {/* Header with Balance */}
         <div className="bg-gray-900 rounded-2xl p-6 text-white mb-6 shadow-xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-8 bg-white/5 rounded-full -mr-4 -mt-4"></div>
+          <div className="absolute top-0 right-0 p-8 bg-surface/5 rounded-full -mr-4 -mt-4"></div>
           <div className="relative z-10">
-            <p className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">
+            <p className="text-content-faint text-xs font-bold uppercase tracking-wider mb-1">
               សមតុល្យរបស់អ្នក (Balance)
             </p>
             <h1 className="text-4xl font-bold flex items-center">
               {profile?.spendable_points || 0}{' '}
               <span className="text-lg ml-2 text-yellow-400">ពិន្ទុ</span>
             </h1>
-            <p className="text-sm text-gray-400 mt-2">
+            <p className="text-sm text-content-faint mt-2">
               ប្រើពិន្ទុដើម្បីដូរយករង្វាន់ និងការបញ្ចុះតម្លៃ។
             </p>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="flex bg-white rounded-xl p-1 shadow-sm border border-gray-100 mb-6">
+        <div className="flex bg-surface rounded-xl p-1 shadow-sm border border-line mb-6">
           <button
             type="button"
             onClick={() => setActiveTab('shop')}
-            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'shop' ? 'bg-gray-900 text-white shadow' : 'text-gray-500 hover:text-gray-900'}`}
+            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'shop' ? 'bg-gray-900 text-white shadow' : 'text-content-muted hover:text-content'}`}
           >
             ហាង (Shop)
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('inventory')}
-            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'inventory' ? 'bg-gray-900 text-white shadow' : 'text-gray-500 hover:text-gray-900'}`}
+            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'inventory' ? 'bg-gray-900 text-white shadow' : 'text-content-muted hover:text-content'}`}
           >
             របស់ខ្ញុំ (My)
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('history')}
-            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'history' ? 'bg-gray-900 text-white shadow' : 'text-gray-500 hover:text-gray-900'}`}
+            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'history' ? 'bg-gray-900 text-white shadow' : 'text-content-muted hover:text-content'}`}
           >
             ប្រវត្តិ (History)
           </button>
@@ -262,7 +262,7 @@ const RewardsPage: React.FC = () => {
           <>
             <div className="mb-4 flex items-center gap-2">
               <Gift className="h-5 w-5 text-primary" />
-              <h2 className="font-bold text-gray-900 text-lg">ប្រអប់សំណាង</h2>
+              <h2 className="font-bold text-content text-lg">ប្រអប់សំណាង</h2>
             </div>
 
             {loading ? (
@@ -270,7 +270,7 @@ const RewardsPage: React.FC = () => {
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
               </div>
             ) : boxes.length === 0 ? (
-              <div className="text-center py-10 text-gray-400 bg-white rounded-xl border border-dashed border-gray-200">
+              <div className="text-center py-10 text-content-faint bg-surface rounded-xl border border-dashed border-line-strong">
                 <p>មិនទាន់មានរង្វាន់នៅឡើយទេ។</p>
               </div>
             ) : (
@@ -278,7 +278,7 @@ const RewardsPage: React.FC = () => {
                 {boxes.map((item) => (
                   <div
                     key={item.id}
-                    className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center gap-4 hover:shadow-md transition-shadow relative overflow-hidden"
+                    className="bg-surface rounded-2xl p-4 shadow-sm border border-line flex items-center gap-4 hover:shadow-md transition-shadow relative overflow-hidden"
                   >
                     <div className="w-16 h-16 rounded-xl flex items-center justify-center text-3xl shadow-inner bg-purple-50 text-purple-600 overflow-hidden">
                       {item.cover_image ? (
@@ -292,8 +292,8 @@ const RewardsPage: React.FC = () => {
                       )}
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-bold text-gray-900">{item.title}</h3>
-                      <p className="text-xs text-gray-500 line-clamp-1">{item.description}</p>
+                      <h3 className="font-bold text-content">{item.title}</h3>
+                      <p className="text-xs text-content-muted line-clamp-1">{item.description}</p>
                       {item.items && item.items.length > 0 && (
                         <p className="text-[10px] text-purple-600 font-bold mt-1 bg-purple-50 inline-block px-1.5 rounded">
                           មាន {item.items.length} រង្វាន់ក្នុងប្រអប់
@@ -307,7 +307,7 @@ const RewardsPage: React.FC = () => {
                       className={`px-4 py-2 rounded-xl font-bold text-sm shadow-sm transition-transform active:scale-95 ${
                         (profile?.spendable_points || 0) >= item.price_points
                           ? 'bg-primary text-white hover:bg-primary/90'
-                          : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          : 'bg-surface-3 text-content-faint cursor-not-allowed'
                       }`}
                     >
                       {opening === item.id ? (
@@ -330,28 +330,28 @@ const RewardsPage: React.FC = () => {
           <div className="animate-fade-in">
             <div className="mb-4 flex items-center gap-2">
               <CheckCircle className="h-5 w-5 text-green-600" />
-              <h2 className="font-bold text-gray-900 text-lg">ប្រវត្តិឈ្នះរង្វាន់</h2>
+              <h2 className="font-bold text-content text-lg">ប្រវត្តិឈ្នះរង្វាន់</h2>
             </div>
 
             {myClaims.length === 0 ? (
-              <div className="text-center py-12 bg-white rounded-xl border border-dashed border-gray-200">
+              <div className="text-center py-12 bg-surface rounded-xl border border-dashed border-line-strong">
                 <Gift className="h-10 w-10 text-gray-300 mx-auto mb-2" />
-                <p className="text-gray-500">អ្នកមិនទាន់មានរង្វាន់ទេ។</p>
+                <p className="text-content-muted">អ្នកមិនទាន់មានរង្វាន់ទេ។</p>
               </div>
             ) : (
               <div className="space-y-3">
                 {myClaims.map((claim) => (
                   <div
                     key={claim.id}
-                    className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between"
+                    className="bg-surface p-4 rounded-xl border border-line shadow-sm flex items-center justify-between"
                   >
                     <div className="flex items-center gap-3">
                       <div className="bg-green-50 p-2 rounded-lg text-green-600">
                         <Gift className="h-6 w-6" />
                       </div>
                       <div>
-                        <h4 className="font-bold text-gray-900">{claim.reward_detail}</h4>
-                        <p className="text-xs text-gray-500">
+                        <h4 className="font-bold text-content">{claim.reward_detail}</h4>
+                        <p className="text-xs text-content-muted">
                           ពីប្រអប់: {claim.box_title} • {claim.created_at}
                         </p>
                       </div>
@@ -376,24 +376,24 @@ const RewardsPage: React.FC = () => {
         {activeTab === 'history' && (
           <div className="animate-fade-in">
             <div className="mb-4 flex items-center gap-2">
-              <Clock className="h-5 w-5 text-gray-600" />
-              <h2 className="font-bold text-gray-900 text-lg">ប្រវត្តិប្រតិបត្តិការ</h2>
+              <Clock className="h-5 w-5 text-content-muted" />
+              <h2 className="font-bold text-content text-lg">ប្រវត្តិប្រតិបត្តិការ</h2>
             </div>
 
             {pointHistory.length === 0 && !historyLoading ? (
-              <div className="text-center py-12 bg-white rounded-xl border border-dashed border-gray-200 text-gray-400">
+              <div className="text-center py-12 bg-surface rounded-xl border border-dashed border-line-strong text-content-faint">
                 គ្មានប្រវត្តិ។
               </div>
             ) : (
-              <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+              <div className="bg-surface rounded-xl border border-line overflow-hidden">
                 {pointHistory.map((tx) => (
                   <div
                     key={tx.id}
-                    className="p-4 border-b border-gray-50 last:border-0 flex justify-between items-center hover:bg-gray-50"
+                    className="p-4 border-b border-line last:border-0 flex justify-between items-center hover:bg-surface-2"
                   >
                     <div>
-                      <p className="font-bold text-gray-800 text-sm">{tx.reason}</p>
-                      <p className="text-[10px] text-gray-400">
+                      <p className="font-bold text-content text-sm">{tx.reason}</p>
+                      <p className="text-[10px] text-content-faint">
                         {new Date(tx.created_at).toLocaleString()}
                       </p>
                     </div>
@@ -414,7 +414,7 @@ const RewardsPage: React.FC = () => {
                   type="button"
                   onClick={handleHistoryLoadMore}
                   disabled={historyLoading}
-                  className="bg-white border border-gray-200 text-gray-600 text-xs font-bold py-2 px-4 rounded-lg shadow-sm hover:bg-gray-50 disabled:opacity-50 flex items-center justify-center mx-auto"
+                  className="bg-surface border border-line-strong text-content-muted text-xs font-bold py-2 px-4 rounded-lg shadow-sm hover:bg-surface-2 disabled:opacity-50 flex items-center justify-center mx-auto"
                 >
                   {historyLoading ? (
                     <Loader2 className="h-3 w-3 animate-spin mr-1" />

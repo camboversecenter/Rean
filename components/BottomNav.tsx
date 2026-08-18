@@ -12,7 +12,7 @@ const NAV_ITEMS = [
 
 const BottomNav: React.FC = () => {
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 pb-safe z-40 md:hidden">
+    <div className="fixed bottom-0 left-0 right-0 bg-surface border-t border-line-strong pb-safe z-40 md:hidden">
       <div className="flex justify-around items-center h-16">
         {NAV_ITEMS.map((item) => (
           <NavLink
@@ -21,7 +21,7 @@ const BottomNav: React.FC = () => {
             aria-label={item.label}
             className={({ isActive }) =>
               `flex flex-col items-center justify-center w-full h-full space-y-1 ${
-                isActive ? 'text-primary' : 'text-gray-400 hover:text-gray-600'
+                isActive ? 'text-primary' : 'text-content-faint hover:text-content-muted'
               }`
             }
           >

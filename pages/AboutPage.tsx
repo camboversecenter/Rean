@@ -277,7 +277,7 @@ const TeamAvatar: React.FC<{ name: string; photo?: string }> = ({ name, photo })
         alt={name}
         onError={() => setFailed(true)}
         loading="lazy"
-        className="h-24 w-24 rounded-full object-cover bg-gray-100 ring-4 ring-white shadow-md"
+        className="h-24 w-24 rounded-full object-cover bg-surface-3 ring-4 ring-white shadow-md"
       />
     );
   }
@@ -333,13 +333,13 @@ const PartnerLogo: React.FC<{ name: string; initials: string; logo?: string }> =
 
 const AboutPage: React.FC = () => {
   return (
-    <div className="bg-white font-['Kantumruy_Pro']">
+    <div className="bg-surface font-['Kantumruy_Pro']">
       {/* ===== HERO ===== */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary via-accent to-[#0B4F49] text-white">
-        <div className="absolute top-0 right-0 -mt-24 -mr-24 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute top-0 right-0 -mt-24 -mr-24 w-96 h-96 bg-surface/10 rounded-full blur-3xl pointer-events-none"></div>
 
         <div className="relative max-w-4xl mx-auto px-4 py-16 md:py-20 text-center animate-fade-in">
-          <span className="inline-flex items-center bg-white/15 backdrop-blur-sm text-white text-xs font-semibold px-4 py-1.5 rounded-full mb-6">
+          <span className="inline-flex items-center bg-surface/15 backdrop-blur-sm text-white text-xs font-semibold px-4 py-1.5 rounded-full mb-6">
             <Sparkles className="h-3.5 w-3.5 mr-2 text-secondary" />
             អំពីយើង (About REAN)
           </span>
@@ -359,7 +359,7 @@ const AboutPage: React.FC = () => {
               href={SITE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center bg-white/10 backdrop-blur-sm border border-white/30 px-4 py-2 rounded-xl hover:bg-white/20 transition-colors"
+              className="inline-flex items-center bg-surface/10 backdrop-blur-sm border border-white/30 px-4 py-2 rounded-xl hover:bg-surface/20 transition-colors"
             >
               <Globe className="h-4 w-4 mr-2" /> rean.camboverse.world
             </a>
@@ -367,7 +367,7 @@ const AboutPage: React.FC = () => {
               href={REPO_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center bg-white/10 backdrop-blur-sm border border-white/30 px-4 py-2 rounded-xl hover:bg-white/20 transition-colors"
+              className="inline-flex items-center bg-surface/10 backdrop-blur-sm border border-white/30 px-4 py-2 rounded-xl hover:bg-surface/20 transition-colors"
             >
               <Github className="h-4 w-4 mr-2" /> Open source on GitHub
             </a>
@@ -378,11 +378,11 @@ const AboutPage: React.FC = () => {
       {/* ===== MISSION ===== */}
       <section className="max-w-4xl mx-auto px-4 py-14 md:py-16">
         <div className="text-center mb-10">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-3">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-content mb-3">
             បេសកកម្មរបស់យើង (Our mission)
           </h2>
         </div>
-        <div className="prose prose-gray max-w-none text-gray-600 leading-relaxed space-y-4">
+        <div className="prose prose-gray max-w-none text-content-muted leading-relaxed space-y-4">
           <p>
             REAN exists so that anyone in Cambodia can keep learning without paying for it. Students
             learn by doing: they work through project-based missions, an AI tutor teaches and grades
@@ -398,13 +398,13 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* ===== WHAT REAN OFFERS ===== */}
-      <section className="bg-gray-50 py-14 md:py-16">
+      <section className="bg-surface-2 py-14 md:py-16">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-3">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-content mb-3">
               អ្វីដែល REAN ផ្តល់ជូន (What REAN offers)
             </h2>
-            <p className="text-gray-500 max-w-2xl mx-auto">
+            <p className="text-content-muted max-w-2xl mx-auto">
               The platform is built around {FEATURES.length} areas.
             </p>
           </div>
@@ -413,16 +413,16 @@ const AboutPage: React.FC = () => {
             {FEATURES.map((f) => (
               <div
                 key={f.en}
-                className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all"
+                className="bg-surface border border-line rounded-2xl p-5 shadow-sm hover:shadow-md transition-all"
               >
                 <div
                   className={`w-11 h-11 rounded-xl flex items-center justify-center mb-3 ${f.color}`}
                 >
                   <f.icon className="h-5 w-5" />
                 </div>
-                <h3 className="font-bold text-gray-900 text-sm mb-2">{f.title}</h3>
-                <p className="text-xs text-gray-600 leading-relaxed mb-2">{f.desc}</p>
-                <p className="text-[11px] text-gray-400 leading-relaxed">{f.en}</p>
+                <h3 className="font-bold text-content text-sm mb-2">{f.title}</h3>
+                <p className="text-xs text-content-muted leading-relaxed mb-2">{f.desc}</p>
+                <p className="text-[11px] text-content-faint leading-relaxed">{f.en}</p>
               </div>
             ))}
           </div>
@@ -441,14 +441,14 @@ const AboutPage: React.FC = () => {
             <strong>Points</strong> are the currency you spend on AI features.
           </p>
           <div className="grid sm:grid-cols-2 gap-4 text-sm">
-            <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-4">
+            <div className="bg-surface/15 backdrop-blur-sm rounded-2xl p-4">
               <p className="font-bold mb-1">ការទទួលបាន (Earning)</p>
               <p className="text-orange-50 leading-relaxed">
                 Points come from posting questions, writing helpful replies, collecting likes,
                 having an answer accepted, and the daily Lucky Drop. Daily limits keep it fair.
               </p>
             </div>
-            <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-4">
+            <div className="bg-surface/15 backdrop-blur-sm rounded-2xl p-4">
               <p className="font-bold mb-1">ការចំណាយ (Spending)</p>
               <p className="text-orange-50 leading-relaxed">
                 Points go on AI features: chat, answer evaluation, lesson generation, image
@@ -460,10 +460,10 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* ===== TECH STACK ===== */}
-      <section className="bg-gray-50 py-14 md:py-16">
+      <section className="bg-surface-2 py-14 md:py-16">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-3">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-content mb-3">
               បច្ចេកវិទ្យា (Tech stack)
             </h2>
           </div>
@@ -471,14 +471,14 @@ const AboutPage: React.FC = () => {
             {TECH_STACK.map((t) => (
               <div
                 key={t.label}
-                className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm flex items-start gap-4"
+                className="bg-surface border border-line rounded-2xl p-5 shadow-sm flex items-start gap-4"
               >
                 <div className="w-10 h-10 rounded-xl bg-teal-50 text-primary flex items-center justify-center flex-shrink-0">
                   <t.icon className="h-5 w-5" />
                 </div>
                 <div className="min-w-0">
-                  <p className="font-bold text-gray-900 text-sm">{t.label}</p>
-                  <p className="text-sm text-gray-600 leading-relaxed">{t.value}</p>
+                  <p className="font-bold text-content text-sm">{t.label}</p>
+                  <p className="text-sm text-content-muted leading-relaxed">{t.value}</p>
                 </div>
               </div>
             ))}
@@ -489,37 +489,37 @@ const AboutPage: React.FC = () => {
       {/* ===== OPEN SOURCE & LICENSE ===== */}
       <section className="max-w-4xl mx-auto px-4 py-14 md:py-16">
         <div className="text-center mb-10">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-3">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-content mb-3">
             កម្មវិធីប្រភពបើកចំហ (Open source)
           </h2>
-          <p className="text-gray-500 max-w-2xl mx-auto">
+          <p className="text-content-muted max-w-2xl mx-auto">
             REAN is a community project. The source code is public and anyone may read, run, and
             build on it.
           </p>
         </div>
 
         <div className="grid sm:grid-cols-3 gap-4 mb-8">
-          <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+          <div className="bg-surface border border-line rounded-2xl p-5 shadow-sm">
             <Code2 className="h-6 w-6 text-primary mb-3" />
-            <p className="font-bold text-gray-900 text-sm mb-1">Application code</p>
-            <p className="text-sm text-gray-600 leading-relaxed">
+            <p className="font-bold text-content text-sm mb-1">Application code</p>
+            <p className="text-sm text-content-muted leading-relaxed">
               Licensed under the <strong>Apache License 2.0</strong>. Anyone may use, modify, and
               redistribute it, including commercially, as long as the license and copyright notices
               stay in place.
             </p>
           </div>
-          <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+          <div className="bg-surface border border-line rounded-2xl p-5 shadow-sm">
             <FileText className="h-6 w-6 text-indigo-500 mb-3" />
-            <p className="font-bold text-gray-900 text-sm mb-1">Documentation</p>
-            <p className="text-sm text-gray-600 leading-relaxed">
+            <p className="font-bold text-content text-sm mb-1">Documentation</p>
+            <p className="text-sm text-content-muted leading-relaxed">
               Written content is licensed under{' '}
               <strong>Creative Commons Attribution-ShareAlike 4.0</strong> (CC BY-SA 4.0).
             </p>
           </div>
-          <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+          <div className="bg-surface border border-line rounded-2xl p-5 shadow-sm">
             <ShieldCheck className="h-6 w-6 text-amber-500 mb-3" />
-            <p className="font-bold text-gray-900 text-sm mb-1">Name and logo</p>
-            <p className="text-sm text-gray-600 leading-relaxed">
+            <p className="font-bold text-content text-sm mb-1">Name and logo</p>
+            <p className="text-sm text-content-muted leading-relaxed">
               The REAN name and logo are trademarks and are <strong>not</strong> covered by the code
               license. Forks must use a different name.
             </p>
@@ -531,7 +531,7 @@ const AboutPage: React.FC = () => {
             href={REPO_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center bg-white border border-gray-200 text-gray-700 font-bold px-6 py-3 rounded-xl hover:bg-gray-50 transition-colors"
+            className="inline-flex items-center bg-surface border border-line-strong text-content-soft font-bold px-6 py-3 rounded-xl hover:bg-surface-2 transition-colors"
           >
             <Github className="h-4 w-4 mr-2" /> View the source
           </a>
@@ -541,10 +541,10 @@ const AboutPage: React.FC = () => {
       {/* ===== TEAM ===== */}
       <section className="max-w-5xl mx-auto px-4 py-14 md:py-16">
         <div className="text-center mb-10">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-3">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-content mb-3">
             ក្រុមការងាររបស់យើង (Meet the team)
           </h2>
-          <p className="text-gray-500 max-w-2xl mx-auto">
+          <p className="text-content-muted max-w-2xl mx-auto">
             REAN is built by a team of {TEAM_SIZE}. A few profiles are still being filled in.
           </p>
         </div>
@@ -555,7 +555,7 @@ const AboutPage: React.FC = () => {
           {TEAM.map((member) => (
             <div key={member.name} className="w-32 flex flex-col items-center text-center">
               <TeamAvatar name={member.name} photo={member.photo} />
-              <p className="font-bold text-gray-900 text-sm mt-4">{member.name}</p>
+              <p className="font-bold text-content text-sm mt-4">{member.name}</p>
               {member.role && (
                 <p className="text-xs text-primary font-medium mt-0.5">{member.role}</p>
               )}
@@ -566,7 +566,7 @@ const AboutPage: React.FC = () => {
                       href={member.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gray-400 hover:text-primary transition-colors"
+                      className="text-content-faint hover:text-primary transition-colors"
                       aria-label={`${member.name} on GitHub`}
                     >
                       <Github className="h-4 w-4" />
@@ -577,7 +577,7 @@ const AboutPage: React.FC = () => {
                       href={member.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gray-400 hover:text-primary transition-colors"
+                      className="text-content-faint hover:text-primary transition-colors"
                       aria-label={`${member.name} on LinkedIn`}
                     >
                       <Globe className="h-4 w-4" />
@@ -591,13 +591,13 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* ===== PARTNERS ===== */}
-      <section className="bg-gray-50 py-14 md:py-16">
+      <section className="bg-surface-2 py-14 md:py-16">
         <div className="max-w-5xl mx-auto px-4">
           <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-3">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-content mb-3">
               ដៃគូ និងអ្នកគាំទ្រ (Partners and supporters)
             </h2>
-            <p className="text-gray-500 max-w-2xl mx-auto">
+            <p className="text-content-muted max-w-2xl mx-auto">
               REAN is incubated by the CamboVerse Center at the National University of Management.
             </p>
           </div>
@@ -609,17 +609,17 @@ const AboutPage: React.FC = () => {
                 href={p.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col items-center text-center"
+                className="bg-surface border border-line rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col items-center text-center"
               >
                 <div className="h-20 w-full flex items-center justify-center mb-4">
                   <PartnerLogo name={p.name} initials={p.initials} logo={p.logo} />
                 </div>
-                <p className="font-bold text-gray-900 text-sm mb-1">{p.name}</p>
+                <p className="font-bold text-content text-sm mb-1">{p.name}</p>
                 <p className="text-[11px] font-bold text-primary uppercase tracking-wide mb-2">
                   {p.role}
                 </p>
-                <p className="text-xs text-gray-500 leading-relaxed">{p.desc}</p>
-                <span className="mt-3 text-xs font-bold text-gray-400 inline-flex items-center">
+                <p className="text-xs text-content-muted leading-relaxed">{p.desc}</p>
+                <span className="mt-3 text-xs font-bold text-content-faint inline-flex items-center">
                   <Globe className="h-3 w-3 mr-1" />
                   {new URL(p.url).hostname.replace(/^www\./, '')}
                 </span>
@@ -630,13 +630,13 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* ===== CONTACT AND SUPPORT ===== */}
-      <section className="bg-white border-t border-gray-100">
+      <section className="bg-surface border-t border-line">
         <div className="max-w-5xl mx-auto px-4 py-14 md:py-16">
           <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-3">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-content mb-3">
               ទាក់ទង និងជំនួយ (Contact and support)
             </h2>
-            <p className="text-gray-500 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-content-muted max-w-2xl mx-auto leading-relaxed">
               Stuck on a mission, found a bug, or want to work with us? Here is how to reach the
               team.
             </p>
@@ -654,24 +654,24 @@ const AboutPage: React.FC = () => {
                   className={`group flex flex-col p-5 rounded-2xl border transition-all hover:-translate-y-0.5 ${
                     c.primary
                       ? 'bg-primary text-white border-primary shadow-lg hover:bg-accent'
-                      : 'bg-gray-50 border-gray-100 hover:bg-white hover:shadow-md'
+                      : 'bg-surface-2 border-line hover:bg-surface hover:shadow-md'
                   }`}
                 >
                   <span
                     className={`h-11 w-11 rounded-xl flex items-center justify-center mb-4 ${
-                      c.primary ? 'bg-white/20' : 'bg-white border border-gray-100'
+                      c.primary ? 'bg-surface/20' : 'bg-surface border border-line'
                     }`}
                   >
                     <Icon className={`h-5 w-5 ${c.primary ? 'text-white' : 'text-primary'}`} />
                   </span>
                   <span
-                    className={`font-bold mb-1 ${c.primary ? 'text-white' : 'text-gray-900'} flex items-center`}
+                    className={`font-bold mb-1 ${c.primary ? 'text-white' : 'text-content'} flex items-center`}
                   >
                     {c.title}
                     <ChevronRight className="h-4 w-4 ml-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
                   </span>
                   <span
-                    className={`text-sm leading-relaxed ${c.primary ? 'text-white/90' : 'text-gray-500'}`}
+                    className={`text-sm leading-relaxed ${c.primary ? 'text-white/90' : 'text-content-muted'}`}
                   >
                     {c.desc}
                   </span>
@@ -680,7 +680,7 @@ const AboutPage: React.FC = () => {
             })}
           </div>
 
-          <p className="text-center text-xs text-gray-400 mt-8 leading-relaxed">
+          <p className="text-center text-xs text-content-faint mt-8 leading-relaxed">
             Please do not post security problems publicly. Use the security link above so the issue
             can be fixed before it becomes known.
           </p>
@@ -710,7 +710,7 @@ const AboutPage: React.FC = () => {
               href={`${REPO_URL}/blob/main/CONTRIBUTING.md`}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center bg-white/10 border border-white/20 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-white/20 transition-all active:scale-95"
+              className="w-full sm:w-auto inline-flex items-center justify-center bg-surface/10 border border-white/20 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-surface/20 transition-all active:scale-95"
             >
               <Code2 className="h-5 w-5 mr-2" /> Contributing guide
             </a>

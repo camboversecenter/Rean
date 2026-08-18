@@ -43,17 +43,17 @@ const ShortCourseCard: React.FC<ShortCourseCardProps> = ({
       <Link
         to={`/course/${course.id}`}
         onClick={onClick}
-        className="block bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg transition-all active:scale-[0.99] cursor-pointer group h-full flex flex-col"
+        className="block bg-surface rounded-xl border border-line shadow-sm overflow-hidden hover:shadow-lg transition-all active:scale-[0.99] cursor-pointer group h-full flex flex-col"
       >
         {/* Big Cover Photo */}
-        <div className="relative aspect-[16/9] bg-gray-200 overflow-hidden">
+        <div className="relative aspect-[16/9] bg-line-strong overflow-hidden">
           <img
             src={course.coverImage || placeholderImage(640, 360, 'Course')}
             alt={course.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
           <div className="absolute top-2 left-2">
-            <span className="bg-white/95 backdrop-blur-md px-2 py-1 rounded-md text-[10px] font-bold text-primary shadow-sm border border-gray-100">
+            <span className="bg-surface/95 backdrop-blur-md px-2 py-1 rounded-md text-[10px] font-bold text-primary shadow-sm border border-line">
               {course.category || 'វគ្គសិក្សាខ្លី'}
             </span>
           </div>
@@ -67,24 +67,24 @@ const ShortCourseCard: React.FC<ShortCourseCardProps> = ({
         {/* Content */}
         <div className="p-4 flex flex-col flex-grow">
           <div className="mb-2">
-            <h3 className="font-bold text-gray-900 leading-tight line-clamp-2 text-base mb-1 group-hover:text-primary transition-colors">
+            <h3 className="font-bold text-content leading-tight line-clamp-2 text-base mb-1 group-hover:text-primary transition-colors">
               {course.title}
             </h3>
             {schoolName && (
-              <p className="text-xs text-gray-500 font-medium flex items-center">
+              <p className="text-xs text-content-muted font-medium flex items-center">
                 <Building2 className="h-3.5 w-3.5 mr-1" /> {schoolName}
               </p>
             )}
           </div>
 
           <div className="space-y-2 mt-auto">
-            <div className="flex items-center text-xs text-gray-500">
-              <CalendarDays className="h-3.5 w-3.5 mr-2 text-gray-400" />
+            <div className="flex items-center text-xs text-content-muted">
+              <CalendarDays className="h-3.5 w-3.5 mr-2 text-content-faint" />
               <span className="truncate">ចាប់ផ្តើម៖ {course.startDate}</span>
             </div>
 
-            <div className="flex justify-between items-center pt-3 border-t border-gray-50 mt-3">
-              <span className="bg-gray-50 text-gray-600 text-[10px] font-bold px-2 py-1 rounded-md flex items-center border border-gray-100">
+            <div className="flex justify-between items-center pt-3 border-t border-line mt-3">
+              <span className="bg-surface-2 text-content-muted text-[10px] font-bold px-2 py-1 rounded-md flex items-center border border-line">
                 {course.format === 'Online' ? (
                   <Monitor className="h-3 w-3 mr-1" />
                 ) : (
@@ -114,7 +114,7 @@ const ShortCourseCard: React.FC<ShortCourseCardProps> = ({
           className={`absolute top-2 right-2 p-1.5 rounded-full shadow-md z-10 transition-colors ${
             isSelected
               ? 'bg-primary text-white ring-2 ring-white'
-              : 'bg-white/90 text-gray-400 hover:text-primary'
+              : 'bg-surface/90 text-content-faint hover:text-primary'
           }`}
           title="Compare"
         >

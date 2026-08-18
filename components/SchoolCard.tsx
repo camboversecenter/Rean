@@ -41,9 +41,9 @@ const SchoolCard: React.FC<SchoolCardProps> = ({ school }) => {
   return (
     <Link
       to={`/school/${school.id}`}
-      className="block bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-4 hover:shadow-md transition-shadow group"
+      className="block bg-surface rounded-xl shadow-sm border border-line overflow-hidden mb-4 hover:shadow-md transition-shadow group"
     >
-      <div className="relative h-32 bg-gray-200">
+      <div className="relative h-32 bg-line-strong">
         <img
           src={school.coverImage || placeholderImage(800, 400, 'School')}
           alt={school.name}
@@ -67,16 +67,16 @@ const SchoolCard: React.FC<SchoolCardProps> = ({ school }) => {
       </div>
       <div className="p-4 relative">
         {/* Logo overlapping cover */}
-        <div className="absolute -top-10 left-4 bg-white p-1 rounded-xl shadow-md">
+        <div className="absolute -top-10 left-4 bg-surface p-1 rounded-xl shadow-md">
           <img
             src={school.logo || placeholderImage(150, 150, 'Logo')}
             alt={`${school.name} logo`}
-            className="w-16 h-16 rounded-lg object-contain bg-white"
+            className="w-16 h-16 rounded-lg object-contain bg-surface"
           />
         </div>
 
         <div className="mt-8">
-          <h3 className="text-lg font-bold text-gray-900 leading-tight mb-1">{school.name}</h3>
+          <h3 className="text-lg font-bold text-content leading-tight mb-1">{school.name}</h3>
 
           {/* Recruitment Focus */}
           {primaryAdmission ? (
@@ -93,11 +93,13 @@ const SchoolCard: React.FC<SchoolCardProps> = ({ school }) => {
               )}
             </div>
           ) : (
-            <p className="text-xs text-gray-400 mt-2 mb-3">មិនមានការជ្រើសរើសសិស្សនៅពេលនេះទេ។</p>
+            <p className="text-xs text-content-faint mt-2 mb-3">
+              មិនមានការជ្រើសរើសសិស្សនៅពេលនេះទេ។
+            </p>
           )}
 
           <div className="flex flex-wrap gap-2 mb-1">
-            <span className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-md flex items-center">
+            <span className="bg-surface-3 text-content-muted text-xs px-2 py-1 rounded-md flex items-center">
               <Building2 className="h-3 w-3 mr-1" /> {getSchoolTypeKH(school.type)}
             </span>
             {hasScholarships && (

@@ -17,7 +17,7 @@ const CharCounter: React.FC<CharCounterProps> = ({ current, limit, className = '
           ? 'text-red-500 font-bold animate-pulse'
           : isWarning
             ? 'text-amber-500 font-medium'
-            : 'text-gray-400'
+            : 'text-content-faint'
       } ${className}`}
     >
       {current.toLocaleString()} / {limit.toLocaleString()}

@@ -171,19 +171,21 @@ const ExplorePage: React.FC = () => {
   };
 
   return (
-    <div className="pb-28 px-4 pt-4 bg-gray-50 min-h-screen">
+    <div className="pb-28 px-4 pt-4 bg-surface-2 min-h-screen">
       <div className="max-w-5xl mx-auto">
         <div className="mb-6">
-          <h1 className="text-xl font-bold text-gray-900 mb-2">រុករកការសិក្សា (Explore)</h1>
-          <p className="text-xs text-gray-500">បេសកកម្ម (រៀនតាមរយៈការអនុវត្ត) & វគ្គសិក្សាខ្លី</p>
+          <h1 className="text-xl font-bold text-content mb-2">រុករកការសិក្សា (Explore)</h1>
+          <p className="text-xs text-content-muted">
+            បេសកកម្ម (រៀនតាមរយៈការអនុវត្ត) & វគ្គសិក្សាខ្លី
+          </p>
         </div>
 
         {/* Type Toggle */}
-        <div className="flex p-1 bg-gray-200 rounded-xl mb-6 shadow-inner">
+        <div className="flex p-1 bg-line-strong rounded-xl mb-6 shadow-inner">
           <button
             type="button"
             onClick={() => setState((prev) => ({ ...prev, viewType: 'mission' }))}
-            className={`flex-1 py-3 text-xs font-bold rounded-lg transition-all ${viewType === 'mission' ? 'bg-white shadow-sm text-primary' : 'text-gray-500'}`}
+            className={`flex-1 py-3 text-xs font-bold rounded-lg transition-all ${viewType === 'mission' ? 'bg-surface shadow-sm text-primary' : 'text-content-muted'}`}
           >
             <div className="flex items-center justify-center">
               <Target className="h-4 w-4 mr-2" />
@@ -193,7 +195,7 @@ const ExplorePage: React.FC = () => {
           <button
             type="button"
             onClick={() => setState((prev) => ({ ...prev, viewType: 'short-course' }))}
-            className={`flex-1 py-3 text-xs font-bold rounded-lg transition-all ${viewType === 'short-course' ? 'bg-white shadow-sm text-primary' : 'text-gray-500'}`}
+            className={`flex-1 py-3 text-xs font-bold rounded-lg transition-all ${viewType === 'short-course' ? 'bg-surface shadow-sm text-primary' : 'text-content-muted'}`}
           >
             <div className="flex items-center justify-center">
               <BookOpen className="h-4 w-4 mr-2" />
@@ -210,7 +212,7 @@ const ExplorePage: React.FC = () => {
             className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold transition-all ${
               selectedCategory === 'All'
                 ? 'bg-gray-800 text-white'
-                : 'bg-white border border-gray-200 text-gray-600'
+                : 'bg-surface border border-line-strong text-content-muted'
             }`}
           >
             ទាំងអស់
@@ -223,7 +225,7 @@ const ExplorePage: React.FC = () => {
               className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold transition-all ${
                 selectedCategory === cat
                   ? 'bg-gray-800 text-white'
-                  : 'bg-white border border-gray-200 text-gray-600'
+                  : 'bg-surface border border-line-strong text-content-muted'
               }`}
             >
               {cat}
@@ -233,14 +235,14 @@ const ExplorePage: React.FC = () => {
 
         {/* Extra Filters for Short Courses */}
         {viewType === 'short-course' && (
-          <div className="mb-6 p-4 bg-white rounded-xl border border-gray-100 shadow-sm">
-            <div className="flex items-center gap-2 mb-3 text-xs font-bold text-gray-400 uppercase tracking-wide">
+          <div className="mb-6 p-4 bg-surface rounded-xl border border-line shadow-sm">
+            <div className="flex items-center gap-2 mb-3 text-xs font-bold text-content-faint uppercase tracking-wide">
               <Filter className="h-3 w-3" /> តម្រង (Filters)
             </div>
             <div className="flex flex-wrap gap-4">
               {/* Format Filter */}
               <div className="flex items-center space-x-2">
-                <label htmlFor="format-filter" className="text-xs font-bold text-gray-700">
+                <label htmlFor="format-filter" className="text-xs font-bold text-content-soft">
                   ទម្រង់៖
                 </label>
                 <select
@@ -249,7 +251,7 @@ const ExplorePage: React.FC = () => {
                   onChange={(e) =>
                     setState((prev) => ({ ...prev, formatFilter: e.target.value as any }))
                   }
-                  className="bg-gray-50 border border-gray-200 text-gray-700 text-xs rounded-lg focus:ring-primary focus:border-primary block p-2 outline-none"
+                  className="bg-surface-2 border border-line-strong text-content-soft text-xs rounded-lg focus:ring-primary focus:border-primary block p-2 outline-none"
                 >
                   <option value="All">ទាំងអស់</option>
                   <option value="Online">អនឡាញ</option>
@@ -272,7 +274,7 @@ const ExplorePage: React.FC = () => {
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {missions.length === 0 && (
-                    <div className="col-span-full text-center py-10 text-gray-500 bg-white rounded-xl border border-dashed border-gray-200">
+                    <div className="col-span-full text-center py-10 text-content-muted bg-surface rounded-xl border border-dashed border-line-strong">
                       មិនមានបេសកកម្មក្នុងផ្នែកនេះទេ។
                     </div>
                   )}
@@ -285,7 +287,7 @@ const ExplorePage: React.FC = () => {
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {courses.length === 0 && (
-                    <div className="col-span-full text-center py-10 text-gray-500 bg-white rounded-xl border border-dashed border-gray-200">
+                    <div className="col-span-full text-center py-10 text-content-muted bg-surface rounded-xl border border-dashed border-line-strong">
                       មិនមានវគ្គសិក្សាតាមការស្វែងរកទេ។
                     </div>
                   )}
@@ -309,7 +311,7 @@ const ExplorePage: React.FC = () => {
                   type="button"
                   onClick={handleLoadMore}
                   disabled={loadingMore}
-                  className="bg-white border border-gray-200 text-gray-600 font-bold py-2 px-6 rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-50 flex items-center text-sm"
+                  className="bg-surface border border-line-strong text-content-muted font-bold py-2 px-6 rounded-full shadow-sm hover:bg-surface-2 disabled:opacity-50 flex items-center text-sm"
                 >
                   {loadingMore ? (
                     <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -339,7 +341,7 @@ const ExplorePage: React.FC = () => {
                   />
                 ))}
                 {compareList.length < 2 && (
-                  <div className="w-8 h-8 rounded-full border border-gray-800 bg-gray-800 flex items-center justify-center text-xs text-gray-500">
+                  <div className="w-8 h-8 rounded-full border border-gray-800 bg-gray-800 flex items-center justify-center text-xs text-content-muted">
                     ?
                   </div>
                 )}
@@ -356,7 +358,7 @@ const ExplorePage: React.FC = () => {
                 <Brain className="h-3 w-3 mr-1" /> AI ប្រៀបធៀប ({AI_COSTS.CHAT} Pt)
               </button>
             ) : (
-              <span className="text-xs text-gray-400">ជ្រើសរើស 1 ទៀត</span>
+              <span className="text-xs text-content-faint">ជ្រើសរើស 1 ទៀត</span>
             )}
 
             <button
@@ -373,17 +375,17 @@ const ExplorePage: React.FC = () => {
       {/* Comparison Result Modal */}
       {showCompareModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl w-full max-w-lg max-h-[85vh] flex flex-col shadow-2xl animate-scale-in">
-            <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50 rounded-t-2xl">
+          <div className="bg-surface rounded-2xl w-full max-w-lg max-h-[85vh] flex flex-col shadow-2xl animate-scale-in">
+            <div className="p-4 border-b border-line flex justify-between items-center bg-surface-2 rounded-t-2xl">
               <div className="flex items-center gap-2">
                 <Zap className="h-5 w-5 text-secondary fill-secondary" />
-                <h3 className="font-bold text-gray-900">ការប្រៀបធៀបដោយ AI</h3>
+                <h3 className="font-bold text-content">ការប្រៀបធៀបដោយ AI</h3>
               </div>
               <button
                 type="button"
                 onClick={() => setState((prev) => ({ ...prev, showCompareModal: false }))}
               >
-                <X className="h-5 w-5 text-gray-400" />
+                <X className="h-5 w-5 text-content-faint" />
               </button>
             </div>
 
@@ -391,23 +393,23 @@ const ExplorePage: React.FC = () => {
               {analyzing ? (
                 <div className="flex flex-col items-center justify-center py-10 text-center">
                   <Loader2 className="h-10 w-10 text-primary animate-spin mb-4" />
-                  <h4 className="font-bold text-gray-800 mb-2">កំពុងវិភាគ...</h4>
-                  <p className="text-sm text-gray-500">
+                  <h4 className="font-bold text-content mb-2">កំពុងវិភាគ...</h4>
+                  <p className="text-sm text-content-muted">
                     សុភាទន្សាយកំពុងអានព័ត៌មានលម្អិតជំនួសអ្នក...
                   </p>
                 </div>
               ) : (
                 <div className="space-y-6">
-                  <div className="flex gap-4 border-b border-gray-100 pb-6">
+                  <div className="flex gap-4 border-b border-line pb-6">
                     {compareList.map((c) => (
                       <div key={c.id} className="flex-1">
                         <img
                           src={c.coverImage || placeholderImage(300, 200, 'Course')}
-                          className="w-full h-24 object-cover rounded-lg mb-2 bg-gray-100"
+                          className="w-full h-24 object-cover rounded-lg mb-2 bg-surface-3"
                           alt="Cover"
                         />
-                        <h4 className="font-bold text-xs text-gray-900 line-clamp-2">{c.title}</h4>
-                        <p className="text-[10px] text-gray-500">{c.schoolName}</p>
+                        <h4 className="font-bold text-xs text-content line-clamp-2">{c.title}</h4>
+                        <p className="text-[10px] text-content-muted">{c.schoolName}</p>
                       </div>
                     ))}
                   </div>
@@ -418,7 +420,7 @@ const ExplorePage: React.FC = () => {
               )}
             </div>
 
-            <div className="p-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
+            <div className="p-4 border-t border-line bg-surface-2 rounded-b-2xl">
               <button
                 type="button"
                 onClick={() => setState((prev) => ({ ...prev, showCompareModal: false }))}
