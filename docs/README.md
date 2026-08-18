@@ -14,6 +14,14 @@ Start here to understand who uses REAN and what each role can do.
 - [User Roles](./user-roles.md) covers the five roles: Student, Tutor, School,
   Business (Partner), and Admin.
 
+## Guides
+
+Practical, task-focused documents for people using the platform rather than building it.
+
+- [Creating Lessons](./creating-lessons.md) is the guide for teachers and content
+  creators: how a mission is structured, how to turn a textbook chapter into modules,
+  what to write in every field, and how to write formulas so they render as real maths.
+
 ## Features
 
 Each feature has its own document with a description, the people it serves, the main
