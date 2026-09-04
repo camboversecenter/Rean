@@ -353,7 +353,7 @@ const CommunityFeed: React.FC = () => {
 
             <div className="flex gap-3 mb-1">
               {isAnonymous ? (
-                <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 rounded-full bg-gray-800 dark:bg-line-strong flex items-center justify-center flex-shrink-0">
                   <Ghost className="h-5 w-5 text-white" />
                 </div>
               ) : (
@@ -402,7 +402,7 @@ const CommunityFeed: React.FC = () => {
                   onClick={() => setIsAnonymous(!isAnonymous)}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${
                     isAnonymous
-                      ? 'bg-gray-800 text-white border-gray-800 shadow-md'
+                      ? 'bg-gray-800 dark:bg-line-strong text-white border-gray-800 dark:border-line-strong shadow-md'
                       : 'bg-surface text-content-muted border-line-strong hover:bg-surface-2'
                   }`}
                   title="សួរដោយអនាមិក (Ask Anonymously)"
@@ -463,7 +463,7 @@ const CommunityFeed: React.FC = () => {
                 onClick={() => setSortBy('latest')}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${
                   sortBy === 'latest'
-                    ? 'bg-blue-100 text-blue-700 border-blue-200'
+                    ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800'
                     : 'bg-surface text-content-muted border-line-strong'
                 }`}
               >
@@ -474,7 +474,7 @@ const CommunityFeed: React.FC = () => {
                 onClick={() => setSortBy('trending')}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${
                   sortBy === 'trending'
-                    ? 'bg-orange-100 text-orange-700 border-orange-200'
+                    ? 'bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300 border-orange-200 dark:border-orange-800'
                     : 'bg-surface text-content-muted border-line-strong'
                 }`}
               >
@@ -486,7 +486,7 @@ const CommunityFeed: React.FC = () => {
                 onClick={() => setSortBy('bounty')}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${
                   sortBy === 'bounty'
-                    ? 'bg-yellow-100 text-yellow-800 border-yellow-200'
+                    ? 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-300 border-yellow-200 dark:border-yellow-800'
                     : 'bg-surface text-content-muted border-line-strong'
                 }`}
               >
@@ -565,7 +565,7 @@ const CommunityFeed: React.FC = () => {
                       {(post.bounty_points || 0) > 0 && (
                         <div
                           className={`absolute top-0 right-0 text-white text-[10px] font-bold px-2 py-1 rounded-bl-xl shadow-sm z-10 ${
-                            isSolved ? 'bg-gray-400' : 'bg-yellow-400'
+                            isSolved ? 'bg-gray-400 dark:bg-line-strong' : 'bg-yellow-400'
                           }`}
                         >
                           {isSolved ? '🏁 Claimed' : `🏆 ${post.bounty_points} Pts`}
@@ -608,7 +608,7 @@ const CommunityFeed: React.FC = () => {
                             key={reply.id}
                             className={`ml-8 mt-2 pl-3 py-1.5 border-l-2 relative ${
                               reply.accepted
-                                ? 'border-green-500 bg-green-50/30 rounded-r-lg'
+                                ? 'border-green-500 bg-green-50/30 dark:bg-green-900/20 rounded-r-lg'
                                 : reply.isAI
                                   ? 'border-primary bg-primary/5 rounded-r-lg'
                                   : 'border-line-strong'

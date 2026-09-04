@@ -267,7 +267,7 @@ const DocumentationPage: React.FC = () => {
           {/* 3. ECONOMY SYSTEM */}
           <section
             id="economy"
-            className="bg-surface rounded-3xl shadow-lg shadow-gray-200/50 border border-line overflow-hidden relative"
+            className="bg-surface rounded-3xl shadow-lg dark:shadow-surface-3/20/50 border border-line overflow-hidden relative"
           >
             <div className="absolute top-0 right-0 p-32 bg-yellow-50 rounded-full blur-3xl -mr-16 -mt-16 opacity-50"></div>
 

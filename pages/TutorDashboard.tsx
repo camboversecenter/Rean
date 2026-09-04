@@ -340,8 +340,8 @@ const TutorDashboard: React.FC = () => {
         <div
           className={`mb-8 p-5 rounded-3xl border-2 transition-all duration-300 flex flex-col md:flex-row justify-between items-center gap-4 ${
             profile.is_listed
-              ? 'bg-green-50 border-green-100 shadow-sm'
-              : 'bg-amber-50 border-amber-100 shadow-sm'
+              ? 'bg-green-50 dark:bg-green-900/30 border-green-100 dark:border-green-800 shadow-sm'
+              : 'bg-amber-50 dark:bg-amber-900/30 border-amber-100 dark:border-amber-800 shadow-sm'
           }`}
         >
           <div className="flex items-center gap-4">
@@ -381,7 +381,7 @@ const TutorDashboard: React.FC = () => {
               disabled={toggling}
               aria-label={profile.is_listed ? 'Hide Profile' : 'Publish Profile'}
               className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors focus:outline-none ring-offset-2 focus:ring-2 focus:ring-primary/20 ${
-                profile.is_listed ? 'bg-green-50' : 'bg-line-strong'
+                profile.is_listed ? 'bg-green-50 dark:bg-green-900/50' : 'bg-line-strong'
               }`}
             >
               <span
@@ -538,7 +538,7 @@ const TutorDashboard: React.FC = () => {
                       type="button"
                       onClick={handleGenerateCover}
                       disabled={isGeneratingCover}
-                      className="text-[10px] font-bold text-purple-600 bg-purple-50 px-3 py-1.5 rounded-lg flex items-center hover:bg-purple-100 transition-colors"
+                      className="text-[10px] font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/50 px-3 py-1.5 rounded-lg flex items-center hover:bg-purple-100 dark:hover:bg-purple-900/70 transition-colors"
                     >
                       {isGeneratingCover ? (
                         <Loader2 className="h-3 w-3 animate-spin mr-1" />
@@ -715,7 +715,7 @@ const TutorDashboard: React.FC = () => {
                               </p>
                             </div>
                           </div>
-                          <span className="bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-1 rounded">
+                          <span className="bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300 text-[10px] font-bold px-2 py-1 rounded">
                             New Request
                           </span>
                         </div>
@@ -802,9 +802,9 @@ const TutorDashboard: React.FC = () => {
                         <span
                           className={`text-[10px] font-bold px-3 py-1 rounded-full ${
                             b.status === 'Accepted'
-                              ? 'bg-green-100 text-green-700'
+                              ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
                               : b.status === 'Completed'
-                                ? 'bg-blue-100 text-blue-700'
+                                ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
                                 : 'bg-surface-3 text-content-muted'
                           }`}
                         >
@@ -813,7 +813,7 @@ const TutorDashboard: React.FC = () => {
                         {b.status === 'Accepted' && (
                           <Link
                             to={`/classroom/${b.id}`}
-                            className="bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center hover:bg-black transition-colors"
+                            className="bg-gray-900 dark:bg-surface-3 text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center hover:bg-black transition-colors"
                           >
                             <Video className="h-3 w-3 mr-2" /> ចូលថ្នាក់ (Classroom)
                           </Link>
@@ -873,10 +873,10 @@ const TutorDashboard: React.FC = () => {
               </button>
             </div>
 
-            <div className="bg-blue-50 p-3 rounded-xl mb-4 border border-blue-100">
-              <p className="text-xs text-blue-500 font-bold uppercase mb-1">TO:</p>
-              <p className="font-bold text-blue-900 text-sm">{selectedRequest.name}</p>
-              <p className="text-xs text-blue-700 mt-1">
+            <div className="bg-blue-50 dark:bg-blue-900/30 p-3 rounded-xl mb-4 border border-blue-100 dark:border-blue-800">
+              <p className="text-xs text-blue-500 dark:text-blue-400 font-bold uppercase mb-1">TO:</p>
+              <p className="font-bold text-blue-900 dark:text-blue-200 text-sm">{selectedRequest.name}</p>
+              <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
                 {selectedRequest.subject} • {selectedRequest.grade}
               </p>
             </div>
@@ -902,7 +902,7 @@ const TutorDashboard: React.FC = () => {
                 type="button"
                 onClick={handleSubmitApplication}
                 disabled={applying || !applyMessage.trim()}
-                className="w-full bg-gray-900 text-white font-bold py-3 rounded-xl shadow-lg flex items-center justify-center hover:bg-black transition-colors disabled:opacity-50"
+                className="w-full bg-gray-900 dark:bg-surface-3 text-white font-bold py-3 rounded-xl shadow-lg flex items-center justify-center hover:bg-black transition-colors disabled:opacity-50"
               >
                 {applying ? (
                   <Loader2 className="h-4 w-4 animate-spin" />

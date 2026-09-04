@@ -133,8 +133,8 @@ const SchoolForm: React.FC<SchoolFormProps> = ({ school, isSaving, onSave }) => 
         <div
           className={`p-4 rounded-2xl border-2 flex flex-col sm:flex-row justify-between items-center gap-4 transition-all ${
             state.formData.isPublished
-              ? 'bg-green-50 border-green-100'
-              : 'bg-amber-50 border-amber-100'
+              ? 'bg-green-50 dark:bg-green-900/30 border-green-100 dark:border-green-800'
+              : 'bg-amber-50 dark:bg-amber-900/30 border-amber-100 dark:border-amber-800'
           }`}
         >
           <div className="flex items-center gap-4">
@@ -151,7 +151,7 @@ const SchoolForm: React.FC<SchoolFormProps> = ({ school, isSaving, onSave }) => 
               <h3 className="font-bold text-content flex items-center gap-2">
                 ស្ថានភាពសាលា (Visibility)
                 <span
-                  className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${state.formData.isPublished ? 'bg-green-200 text-green-800' : 'bg-amber-200 text-amber-800'}`}
+                  className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${state.formData.isPublished ? 'bg-green-200 dark:bg-green-900/50 text-green-800 dark:text-green-300' : 'bg-amber-200 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300'}`}
                 >
                   {state.formData.isPublished ? 'Published' : 'Draft / Hidden'}
                 </span>
@@ -366,9 +366,9 @@ const SchoolForm: React.FC<SchoolFormProps> = ({ school, isSaving, onSave }) => 
             <button
               type="button"
               onClick={() => openAiModal('cover')}
-              className="text-[10px] font-bold text-purple-600 flex items-center bg-purple-50 px-2 py-1 rounded-lg hover:bg-purple-100 transition-colors"
+              className="text-[10px] font-bold text-purple-600 dark:text-purple-300 flex items-center bg-purple-50 dark:bg-purple-900/50 px-2 py-1 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-800/50 transition-colors"
             >
-              <Zap className="h-3 w-3 mr-1 fill-purple-600" /> AI Designer
+              <Zap className="h-3 w-3 mr-1 fill-purple-600 dark:fill-purple-300" /> AI Designer
             </button>
           </div>
           <div className="relative aspect-video rounded-2xl bg-surface-2 overflow-hidden border border-dashed border-line-strong flex items-center justify-center group">
@@ -415,9 +415,9 @@ const SchoolForm: React.FC<SchoolFormProps> = ({ school, isSaving, onSave }) => 
             <button
               type="button"
               onClick={() => openAiModal('logo')}
-              className="text-[10px] font-bold text-purple-600 flex items-center bg-purple-50 px-2 py-1 rounded-lg hover:bg-purple-100 transition-colors"
+              className="text-[10px] font-bold text-purple-600 dark:text-purple-300 flex items-center bg-purple-50 dark:bg-purple-900/50 px-2 py-1 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-800/50 transition-colors"
             >
-              <Zap className="h-3 w-3 mr-1 fill-purple-600" /> AI Architect
+              <Zap className="h-3 w-3 mr-1 fill-purple-600 dark:fill-purple-300" /> AI Architect
             </button>
           </div>
           <div className="w-24 h-24 mx-auto relative rounded-2xl bg-surface-2 border border-dashed border-line-strong flex items-center justify-center group overflow-hidden">

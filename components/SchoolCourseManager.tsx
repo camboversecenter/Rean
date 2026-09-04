@@ -264,7 +264,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                                 alt="Course"
                               />
                             ) : (
-                              <div className="w-full h-full flex items-center justify-center text-gray-300">
+                              <div className="w-full h-full flex items-center justify-center text-content-faint">
                                 <BookOpen className="h-5 w-5" />
                               </div>
                             )}
@@ -302,7 +302,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                         <button
                           type="button"
                           onClick={() => handleToggleList(course)}
-                          className={`p-2 rounded-xl transition-colors ${course.isListed ? 'text-green-600 hover:bg-green-50' : 'text-content-faint hover:bg-surface-3'}`}
+                          className={`p-2 rounded-xl transition-colors ${course.isListed ? 'text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30' : 'text-content-faint hover:bg-surface-3'}`}
                           title={
                             course.isListed ? 'Visible (Click to hide)' : 'Hidden (Click to show)'
                           }
@@ -319,7 +319,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                           <button
                             type="button"
                             onClick={() => handleEdit(course)}
-                            className="p-2 text-content-faint hover:text-blue-600 bg-surface-2 hover:bg-blue-50 rounded-xl transition-all"
+                            className="p-2 text-content-faint hover:text-blue-600 dark:hover:text-blue-400 bg-surface-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-xl transition-all"
                             title="Edit"
                           >
                             <Edit className="h-4 w-4" />
@@ -327,7 +327,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                           <button
                             type="button"
                             onClick={() => handleDelete(course.id)}
-                            className="p-2 text-content-faint hover:text-red-600 bg-surface-2 hover:bg-red-50 rounded-xl transition-all"
+                            className="p-2 text-content-faint hover:text-red-600 dark:hover:text-red-400 bg-surface-2 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-xl transition-all"
                             title="Delete"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -374,7 +374,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                   : null,
               }))
             }
-            className={`flex-1 md:flex-none justify-center px-4 py-2 rounded-lg text-sm font-bold flex items-center transition-colors ${editingCourse?.isListed ? 'bg-green-100 text-green-700' : 'bg-line-strong text-content-muted'}`}
+            className={`flex-1 md:flex-none justify-center px-4 py-2 rounded-lg text-sm font-bold flex items-center transition-colors ${editingCourse?.isListed ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300' : 'bg-line-strong text-content-muted'}`}
           >
             {editingCourse?.isListed ? (
               <Eye className="h-4 w-4 mr-2" />
@@ -420,7 +420,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                   type="button"
                   onClick={handleGenerateCourseImage}
                   disabled={generatingImage}
-                  className="text-[10px] font-bold text-purple-600 bg-purple-50 px-2 py-1 rounded-lg flex items-center hover:bg-purple-100"
+                  className="text-[10px] font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/50 px-2 py-1 rounded-lg flex items-center hover:bg-purple-100 dark:hover:bg-purple-900/70"
                 >
                   {generatingImage ? (
                     <Loader2 className="h-3 w-3 animate-spin mr-1" />
@@ -444,7 +444,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                     alt="Preview"
                   />
                 ) : (
-                  <Camera className="h-8 w-8 text-gray-300" />
+                  <Camera className="h-8 w-8 text-content-faint" />
                 )}
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <div className="bg-surface p-2 rounded-full shadow-lg">
@@ -733,7 +733,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
               type="button"
               onClick={handleGenerateSyllabus}
               disabled={generatingSyllabus}
-              className="text-[10px] font-bold text-purple-600 flex items-center bg-purple-50 px-3 py-1.5 rounded-lg hover:bg-purple-100 transition-colors"
+              className="text-[10px] font-bold text-purple-600 dark:text-purple-400 flex items-center bg-purple-50 dark:bg-purple-900/50 px-3 py-1.5 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/70 transition-colors"
             >
               {generatingSyllabus ? (
                 <Loader2 className="h-3 w-3 animate-spin mr-1" />

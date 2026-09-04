@@ -73,3 +73,15 @@
     padding-bottom: env(safe-area-inset-bottom);
   }
 }
+
+/* KaTeX uses hardcoded black text; inherit the page color in dark mode. */
+.dark .katex,
+.dark .katex .mord,
+.dark .katex .mbin,
+.dark .katex .mrel,
+.dark .katex .mopen,
+.dark .katex .mclose,
+.dark .katex .mpunct,
+.dark .katex .minner {
+  color: inherit;
+}

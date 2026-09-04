@@ -22,42 +22,42 @@ import {
 const FEATURES = [
   {
     icon: Target,
-    color: 'bg-red-50 text-red-500',
+    color: 'bg-red-50 dark:bg-red-900/50 text-red-600 dark:text-red-300',
     title: 'បេសកកម្មសិក្សា (Missions)',
     desc: 'រៀនតាមរយៈគម្រោងជាក់ស្តែង។ ធ្វើកិច្ចការ ដាក់ស្នើ និងទទួលការវាយតម្លៃពី AI ភ្លាមៗ។',
     en: 'Project-based learning with AI grading.',
   },
   {
     icon: Bot,
-    color: 'bg-teal-50 text-primary',
+    color: 'bg-teal-50 dark:bg-teal-900/50 text-primary',
     title: 'គ្រូ AI (Kru Rean)',
     desc: 'ជំនួយការ AI ដែលបង្រៀន ឆ្លើយសំណួរ និងជួយអ្នករៀនគ្រប់ពេលវេលា។',
     en: 'A Gemini-powered AI tutor, available 24/7.',
   },
   {
     icon: Building2,
-    color: 'bg-purple-50 text-purple-600',
+    color: 'bg-purple-50 dark:bg-purple-900/50 text-purple-600 dark:text-purple-300',
     title: 'សាលារៀន (Schools)',
     desc: 'ស្វែងរកសាលា ការជ្រើសរើសសិស្សថ្មី អាហារូបករណ៍ និងវគ្គសិក្សាខ្លីៗ។',
     en: 'Discover schools, admissions, and scholarships.',
   },
   {
     icon: Users,
-    color: 'bg-orange-50 text-orange-500',
+    color: 'bg-orange-50 dark:bg-orange-900/50 text-orange-600 dark:text-orange-300',
     title: 'គ្រូបង្រៀន (Tutors)',
     desc: 'ស្វែងរក និងកក់គ្រូបង្រៀនឯកជនតាមមុខវិជ្ជាដែលអ្នកចង់រៀន។',
     en: 'Find and book private tutors by subject.',
   },
   {
     icon: Zap,
-    color: 'bg-yellow-50 text-yellow-600',
+    color: 'bg-yellow-50 dark:bg-yellow-900/50 text-yellow-600 dark:text-yellow-300',
     title: 'សហគមន៍ (Lazy Learning)',
     desc: 'សួរសំណួរ ឆ្លើយ និងជួយគ្នាទៅវិញទៅមក។ សន្សំពិន្ទុ និងកេរ្តិ៍ឈ្មោះ។',
     en: 'A Q&A community where helping earns rewards.',
   },
   {
     icon: Gift,
-    color: 'bg-pink-50 text-pink-500',
+    color: 'bg-pink-50 dark:bg-pink-900/50 text-pink-500 dark:text-pink-300',
     title: 'ពិន្ទុ និងរង្វាន់ (Rewards)',
     desc: 'ទទួលបានពិន្ទុពីការរៀន ឡើងកម្រិត បើកប្រអប់អាថ៌កំបាំង និងប្តូរយករង្វាន់។',
     en: 'Earn points, level up, and redeem rewards.',
@@ -268,10 +268,10 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* ===== FINAL CTA ===== */}
-      <section className="bg-gray-900 text-white">
+      <section className="bg-gray-900 dark:bg-surface-3 text-white">
         <div className="max-w-4xl mx-auto px-4 py-16 md:py-20 text-center">
           <h2 className="text-3xl md:text-4xl font-extrabold mb-4">ត្រៀមខ្លួនចាប់ផ្តើមហើយឬនៅ?</h2>
-          <p className="text-gray-300 mb-8 max-w-xl mx-auto">
+          <p className="text-content-faint dark:text-content-soft mb-8 max-w-xl mx-auto">
             Join REAN today — free, and built for learners in Cambodia.
           </p>
           <Link

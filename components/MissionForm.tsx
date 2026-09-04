@@ -256,7 +256,7 @@ const MissionForm: React.FC<MissionFormProps> = ({
           <button
             type="button"
             onClick={() => setState((prev) => ({ ...prev, showAiModal: true }))}
-            className="bg-purple-100 text-purple-700 px-4 py-2 rounded-lg font-bold flex items-center hover:bg-purple-200 transition-colors text-sm"
+            className="bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 px-4 py-2 rounded-lg font-bold flex items-center hover:bg-purple-200 dark:hover:bg-purple-900/70 transition-colors text-sm"
           >
             <Brain className="h-4 w-4 mr-2" /> AI បង្កើត
           </button>
@@ -340,9 +340,9 @@ const MissionForm: React.FC<MissionFormProps> = ({
             {isOwner ? (
               <>
                 {currentMission.mentorId ? (
-                  <div className="bg-green-50 p-3 rounded-xl border border-green-100 flex items-center justify-between">
+                  <div className="bg-green-50 dark:bg-green-900/30 p-3 rounded-xl border border-green-100 dark:border-green-800 flex items-center justify-between">
                     <div>
-                      <p className="text-xs text-green-700 font-bold uppercase mb-1">បានចាត់តាំង</p>
+                      <p className="text-xs text-green-700 dark:text-green-300 font-bold uppercase mb-1">បានចាត់តាំង</p>
                       <p className="font-bold text-content text-sm">{currentMission.mentor}</p>
                     </div>
                     <button
@@ -380,7 +380,7 @@ const MissionForm: React.FC<MissionFormProps> = ({
                       type="button"
                       onClick={handleAssignTeacher}
                       disabled={assigningTeacher || !teacherEmail.trim()}
-                      className="w-full bg-gray-900 text-white py-2 rounded-lg text-xs font-bold hover:bg-black transition-colors disabled:opacity-50"
+                      className="w-full bg-gray-900 dark:bg-surface-3 text-white py-2 rounded-lg text-xs font-bold hover:bg-black transition-colors disabled:opacity-50"
                     >
                       {assigningTeacher ? (
                         <Loader2 className="h-3 w-3 animate-spin mx-auto" />
@@ -985,7 +985,7 @@ const ModuleEditor: React.FC<{
                 handleAutoGenerate();
               }}
               disabled={generating}
-              className="p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors flex items-center gap-1 text-xs font-bold"
+              className="p-2 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/30 rounded-lg transition-colors flex items-center gap-1 text-xs font-bold"
               title="Auto Generate Content"
             >
               {generating ? (
@@ -1002,7 +1002,7 @@ const ModuleEditor: React.FC<{
               e.stopPropagation();
               onDelete(index);
             }}
-            className="text-content-faint hover:text-red-600 p-2 hover:bg-red-50 rounded-full transition-colors"
+            className="text-content-faint hover:text-red-600 dark:hover:text-red-400 p-2 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-full transition-colors"
             title="Delete Module"
           >
             <Trash2 className="h-4 w-4" />
@@ -1029,8 +1029,8 @@ const ModuleEditor: React.FC<{
             <CharCounter current={module.title.length} limit={MODULE_TITLE_LIMIT} />
           </div>
 
-          <div className="bg-indigo-50/60 border border-indigo-100 rounded-xl p-3 space-y-4">
-            <p className="text-[10px] font-bold text-indigo-700 uppercase tracking-wide">
+          <div className="bg-indigo-50/60 dark:bg-indigo-900/30 border border-indigo-100 dark:border-indigo-800 rounded-xl p-3 space-y-4">
+            <p className="text-[10px] font-bold text-indigo-700 dark:text-indigo-300 uppercase tracking-wide">
               Lesson brief (shown to students on the Summary tab)
             </p>
             <div>

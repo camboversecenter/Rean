@@ -17,7 +17,7 @@ const ROLES: {
     subtitle: 'Learner',
     description: 'ស្វែងរកសាលា, ស្វែងរកគ្រូ និងរៀនជំនាញថ្មីៗ។',
     icon: User,
-    color: 'bg-blue-100 text-blue-600',
+    color: 'bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300',
   },
   {
     id: 'tutor',
@@ -25,7 +25,7 @@ const ROLES: {
     subtitle: 'Educator',
     description: 'បង្កើតប្រវត្តិរូបបង្រៀន និងទទួលសិស្ស។',
     icon: GraduationCap,
-    color: 'bg-green-100 text-green-600',
+    color: 'bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-300',
   },
   {
     id: 'school',
@@ -33,7 +33,7 @@ const ROLES: {
     subtitle: 'Institution',
     description: 'គ្រប់គ្រងទំព័រសាលា និងជ្រើសរើសសិស្សថ្មី។',
     icon: Building2,
-    color: 'bg-purple-100 text-purple-600',
+    color: 'bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-300',
   },
   {
     id: 'business',
@@ -41,7 +41,7 @@ const ROLES: {
     subtitle: 'Partner',
     description: 'បង្កើត Missions និងជ្រើសរើសបុគ្គលិក។',
     icon: Briefcase,
-    color: 'bg-orange-100 text-orange-600',
+    color: 'bg-orange-100 dark:bg-orange-900/50 text-orange-600 dark:text-orange-300',
   },
 ];
 
@@ -88,7 +88,7 @@ const RoleSelectionPage: React.FC = () => {
 
         {errorMsg && (
           <div
-            className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-2xl flex items-start mx-2"
+            className="mb-6 bg-red-50 dark:bg-red-900/50 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 px-4 py-3 rounded-2xl flex items-start mx-2"
             role="alert"
           >
             <AlertCircle className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" aria-hidden="true" />

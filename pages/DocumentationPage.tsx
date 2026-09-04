@@ -37,7 +37,7 @@ const DocumentationPage: React.FC = () => {
             id="roles"
             className="bg-surface rounded-3xl shadow-sm border border-line overflow-hidden"
           >
-            <div className="bg-gradient-to-r from-gray-50 to-white p-6 border-b border-line">
+            <div className="bg-gradient-to-r from-gray-50 dark:from-surface-2 to-white dark:to-surface p-6 border-b border-line">
               <h2 className="text-xl font-bold text-content flex items-center">
                 <span className="bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold shadow-lg shadow-primary/30">
                   1
@@ -47,27 +47,27 @@ const DocumentationPage: React.FC = () => {
             </div>
             <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
               <RoleCard
-                icon={<User className="h-6 w-6 text-blue-600" />}
+                icon={<User className="h-6 w-6 text-blue-600 dark:text-blue-400" />}
                 title="សិស្ស (Student)"
-                color="bg-blue-50"
+                color="bg-blue-50 dark:bg-blue-900/50"
                 desc="អ្នកសិក្សាទូទៅ។ អាចចុះឈ្មោះរៀនវគ្គសិក្សា ស្វែងរកគ្រូ សួរក្នុងសហគមន៍ និងបំពេញបេសកកម្ម។"
               />
               <RoleCard
-                icon={<GraduationCap className="h-6 w-6 text-green-600" />}
+                icon={<GraduationCap className="h-6 w-6 text-green-600 dark:text-green-400" />}
                 title="គ្រូបង្រៀន (Tutor)"
-                color="bg-green-50"
+                color="bg-green-50 dark:bg-green-900/50"
                 desc="អ្នកជំនាញឯករាជ្យ។ អាចបង្កើតប្រវត្តិរូបបង្រៀន (Profile) កំណត់តម្លៃម៉ោង និងទទួលការកក់ពីសិស្ស។"
               />
               <RoleCard
-                icon={<Building2 className="h-6 w-6 text-purple-600" />}
+                icon={<Building2 className="h-6 w-6 text-purple-600 dark:text-purple-400" />}
                 title="សាលារៀន (School)"
-                color="bg-purple-50"
+                color="bg-purple-50 dark:bg-purple-900/50"
                 desc="ស្ថាប័នអប់រំ។ អាចបង្កើតទំព័រសាលា គ្រប់គ្រងការចុះឈ្មោះ (Admission) និងវគ្គសិក្សាខ្លី។"
               />
               <RoleCard
-                icon={<Briefcase className="h-6 w-6 text-orange-600" />}
+                icon={<Briefcase className="h-6 w-6 text-orange-600 dark:text-orange-400" />}
                 title="ដៃគូ/ក្រុមហ៊ុន (Partner)"
-                color="bg-orange-50"
+                color="bg-orange-50 dark:bg-orange-900/50"
                 desc="ក្រុមហ៊ុនដែលចង់ស្វែងរកបុគ្គលិក។ អាចបង្កើត 'បេសកកម្ម' ដើម្បីស្វែងរកអ្នកមានសមត្ថភាពពិតប្រាកដ។"
               />
             </div>
@@ -85,9 +85,9 @@ const DocumentationPage: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Function 1: Admissions */}
               <FunctionCard
-                icon={<Building2 className="h-6 w-6 text-blue-600" />}
+                icon={<Building2 className="h-6 w-6 text-blue-600 dark:text-blue-400" />}
                 title="ទីផ្សារសាលារៀន (Admission Market)"
-                color="bg-blue-50"
+                color="bg-blue-50 dark:bg-blue-900/50"
               >
                 <ul className="space-y-3 text-sm text-content-muted mt-2">
                   <li className="flex items-start">
@@ -133,9 +133,9 @@ const DocumentationPage: React.FC = () => {
 
               {/* Function 3: Tutor Market */}
               <FunctionCard
-                icon={<Users className="h-6 w-6 text-green-600" />}
+                icon={<Users className="h-6 w-6 text-green-600 dark:text-green-400" />}
                 title="ទីផ្សារគ្រូបង្រៀន (Tutor Market)"
-                color="bg-green-50"
+                color="bg-green-50 dark:bg-green-900/50"
               >
                 <ul className="space-y-3 text-sm text-content-muted mt-2">
                   <li className="flex items-start">
@@ -159,7 +159,7 @@ const DocumentationPage: React.FC = () => {
               <FunctionCard
                 icon={<Target className="h-6 w-6 text-red-600" />}
                 title="បេសកកម្ម (Missions)"
-                color="bg-red-50"
+                color="bg-red-50 dark:bg-red-900/50"
               >
                 <p className="text-xs font-bold text-red-500 uppercase tracking-wider mb-2">
                   Project-Based Learning
@@ -186,7 +186,7 @@ const DocumentationPage: React.FC = () => {
               <FunctionCard
                 icon={<Zap className="h-6 w-6 text-yellow-600" />}
                 title="សហគមន៍ (Lazy Learning)"
-                color="bg-yellow-50"
+                color="bg-yellow-50 dark:bg-yellow-900/50"
               >
                 <ul className="space-y-3 text-sm text-content-muted mt-2">
                   <li className="flex items-start">
@@ -210,7 +210,7 @@ const DocumentationPage: React.FC = () => {
               <FunctionCard
                 icon={<Brain className="h-6 w-6 text-teal-600" />}
                 title="សុភាទន្សាយ (AI Assistant)"
-                color="bg-teal-50"
+                color="bg-teal-50 dark:bg-teal-900/50"
               >
                 <ul className="space-y-3 text-sm text-content-muted mt-2">
                   <li className="flex items-start">
@@ -235,9 +235,9 @@ const DocumentationPage: React.FC = () => {
           {/* 3. ECONOMY SYSTEM */}
           <section
             id="economy"
-            className="bg-surface rounded-3xl shadow-lg shadow-gray-200/50 border border-line overflow-hidden relative"
+            className="bg-surface rounded-3xl shadow-lg dark:shadow-surface-3/20/50 border border-line overflow-hidden relative"
           >
-            <div className="absolute top-0 right-0 p-32 bg-yellow-50 rounded-full blur-3xl -mr-16 -mt-16 opacity-50"></div>
+            <div className="absolute top-0 right-0 p-32 bg-yellow-50 dark:bg-yellow-900/20 rounded-full blur-3xl -mr-16 -mt-16 opacity-50"></div>
 
             <div className="bg-surface p-6 border-b border-line relative z-10">
               <h2 className="text-xl font-bold text-content flex items-center">
@@ -253,15 +253,15 @@ const DocumentationPage: React.FC = () => {
 
             <div className="p-6 relative z-10">
               {/* NEW: Anti-Farming Notice */}
-              <div className="bg-red-50 border border-red-100 rounded-xl p-4 mb-8 flex items-start gap-3">
-                <div className="bg-red-100 p-2 rounded-lg text-red-600 mt-0.5">
+              <div className="bg-red-50 dark:bg-red-900/30 border border-red-100 dark:border-red-800 rounded-xl p-4 mb-8 flex items-start gap-3">
+                <div className="bg-red-100 dark:bg-red-900/50 p-2 rounded-lg text-red-600 dark:text-red-400 mt-0.5">
                   <ShieldCheck className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-red-900">
+                  <h4 className="text-sm font-bold text-red-900 dark:text-red-300">
                     Anti-Farming Policy (Zero-Sum + AI Audit)
                   </h4>
-                  <p className="text-xs text-red-700 leading-relaxed mt-1">
+                  <p className="text-xs text-red-700 dark:text-red-400 leading-relaxed mt-1">
                     ដើម្បីការពារការក្លែងបន្លំ (Farming) ប្រព័ន្ធប្រើប្រាស់{' '}
                     <strong>AI Quality Gate</strong>។ រាល់ចម្លើយនឹងត្រូវបានដាក់ពិន្ទុដោយ AI
                     ដោយស្វ័យប្រវត្តិ។ អ្នកនឹងទទួលបានពិន្ទុតែនៅពេលពិន្ទុគុណភាព <strong>≥ 70</strong>{' '}
@@ -275,23 +275,23 @@ const DocumentationPage: React.FC = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                 {/* XP CARD */}
-                <div className="bg-gradient-to-br from-yellow-50 to-orange-50 p-6 rounded-2xl border border-yellow-200 shadow-sm">
+                <div className="bg-gradient-to-br from-yellow-50 dark:from-yellow-900/30 to-orange-50 dark:to-orange-900/20 p-6 rounded-2xl border border-yellow-200 dark:border-yellow-800 shadow-sm">
                   <div className="flex items-center mb-4">
-                    <div className="p-3 bg-yellow-100 rounded-full text-yellow-700 mr-3 shadow-sm">
+                    <div className="p-3 bg-yellow-100 dark:bg-yellow-900/50 rounded-full text-yellow-700 dark:text-yellow-300 mr-3 shadow-sm">
                       <Award className="h-6 w-6" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-yellow-900 text-lg">XP (បទពិសោធន៍)</h3>
-                      <span className="text-[10px] uppercase font-bold bg-yellow-200 text-yellow-800 px-2 py-0.5 rounded">
+                      <h3 className="font-bold text-yellow-900 dark:text-yellow-200 text-lg">XP (បទពិសោធន៍)</h3>
+                      <span className="text-[10px] uppercase font-bold bg-yellow-200 dark:bg-yellow-900/70 text-yellow-800 dark:text-yellow-300 px-2 py-0.5 rounded">
                         Reputation
                       </span>
                     </div>
                   </div>
-                  <p className="text-sm text-yellow-800 leading-relaxed mb-4">
+                  <p className="text-sm text-yellow-800 dark:text-yellow-300 leading-relaxed mb-4">
                     ជារង្វាន់សម្រាប់ភាពសកម្មរបស់អ្នក។ XP កំណត់ <strong>កម្រិត (Level)</strong>{' '}
                     និងចំណាត់ថ្នាក់របស់អ្នកក្នុង Leaderboard។
                   </p>
-                  <div className="bg-surface/60 p-3 rounded-xl space-y-2 text-xs font-medium text-yellow-900">
+                  <div className="bg-surface/60 p-3 rounded-xl space-y-2 text-xs font-medium text-yellow-900 dark:text-yellow-200">
                     <div className="flex justify-between">
                       <span>• មិនអាចចាយបាន</span> <span>🚫</span>
                     </div>
@@ -305,22 +305,22 @@ const DocumentationPage: React.FC = () => {
                 </div>
 
                 {/* POINTS CARD */}
-                <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-2xl border border-green-200 shadow-sm">
+                <div className="bg-gradient-to-br from-green-50 dark:from-green-900/30 to-emerald-50 dark:to-emerald-900/20 p-6 rounded-2xl border border-green-200 dark:border-green-800 shadow-sm">
                   <div className="flex items-center mb-4">
-                    <div className="p-3 bg-green-100 rounded-full text-green-700 mr-3 shadow-sm">
+                    <div className="p-3 bg-green-100 dark:bg-green-900/50 rounded-full text-green-700 dark:text-green-300 mr-3 shadow-sm">
                       <Gift className="h-6 w-6" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-green-900 text-lg">Points (ពិន្ទុ)</h3>
-                      <span className="text-[10px] uppercase font-bold bg-green-200 text-green-800 px-2 py-0.5 rounded">
+                      <h3 className="font-bold text-green-900 dark:text-green-200 text-lg">Points (ពិន្ទុ)</h3>
+                      <span className="text-[10px] uppercase font-bold bg-green-200 dark:bg-green-900/70 text-green-800 dark:text-green-300 px-2 py-0.5 rounded">
                         Currency
                       </span>
                     </div>
                   </div>
-                  <p className="text-sm text-green-800 leading-relaxed mb-4">
+                  <p className="text-sm text-green-800 dark:text-green-300 leading-relaxed mb-4">
                     ជារូបិយប័ណ្ណឌីជីថលក្នុង App។ អ្នកអាចប្រើវាដើម្បីទិញសេវាកម្ម ឬដូរយករង្វាន់។
                   </p>
-                  <div className="bg-surface/60 p-3 rounded-xl space-y-2 text-xs font-medium text-green-900">
+                  <div className="bg-surface/60 p-3 rounded-xl space-y-2 text-xs font-medium text-green-900 dark:text-green-200">
                     <div className="flex justify-between">
                       <span>• អាចចាយបាន</span> <span>💰</span>
                     </div>
@@ -352,7 +352,7 @@ const DocumentationPage: React.FC = () => {
                       <td className="p-4 text-center text-content-faint">0</td>
                       <td className="p-4 text-right text-content-muted">5 ដង/ថ្ងៃ</td>
                     </tr>
-                    <tr className="hover:bg-surface-2 bg-green-50/20">
+                    <tr className="hover:bg-surface-2 bg-green-50/20 dark:bg-green-900/10">
                       <td className="p-4 font-medium text-content">ឆ្លើយតបដែលមានប្រយោជន៍</td>
                       <td className="p-4 text-center font-bold text-yellow-600">+2 XP</td>
                       <td className="p-4 text-center font-bold text-green-600">+1 Point</td>
@@ -366,7 +366,7 @@ const DocumentationPage: React.FC = () => {
                       <td className="p-4 text-center text-content-faint italic">Bounty Only*</td>
                       <td className="p-4 text-right text-content-muted">គ្មានកំណត់</td>
                     </tr>
-                    <tr className="hover:bg-surface-2 bg-yellow-50/30">
+                    <tr className="hover:bg-surface-2 bg-yellow-50/30 dark:bg-yellow-900/10">
                       <td className="p-4 font-medium text-content">ឈ្នះ Bounty (ចម្លើយល្អបំផុត)</td>
                       <td className="p-4 text-center text-content-faint">-</td>
                       <td className="p-4 text-center font-bold text-green-600">Varies</td>

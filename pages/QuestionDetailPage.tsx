@@ -326,7 +326,7 @@ const QuestionDetailPage: React.FC = () => {
           type="button"
           onClick={handleBookmark}
           aria-label="Bookmark"
-          className={`p-2 rounded-full transition-colors ${bookmarked ? 'bg-blue-50 text-blue-600' : 'text-content-faint hover:bg-surface-3'}`}
+          className={`p-2 rounded-full transition-colors ${bookmarked ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300' : 'text-content-faint hover:bg-surface-3'}`}
         >
           <Bookmark className={`h-5 w-5 ${bookmarked ? 'fill-blue-600' : ''}`} />
         </button>
@@ -356,7 +356,7 @@ const QuestionDetailPage: React.FC = () => {
             </div>
             {/* Fix: Explicitly check > 0 to prevent rendering '0' */}
             {(post.bounty_points || 0) > 0 && (
-              <div className="ml-auto bg-yellow-100 text-yellow-800 text-xs font-bold px-3 py-1 rounded-full border border-yellow-200">
+              <div className="ml-auto bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-300 text-xs font-bold px-3 py-1 rounded-full border border-yellow-200 dark:border-yellow-800">
                 🏆 {post.bounty_points} Pts
               </div>
             )}
@@ -400,16 +400,16 @@ const QuestionDetailPage: React.FC = () => {
               key={reply.id}
               className={`bg-surface rounded-xl p-4 shadow-sm border ${
                 reply.accepted
-                  ? 'border-green-500 ring-1 ring-green-500 bg-green-50/10'
+                  ? 'border-green-500 ring-1 ring-green-500 bg-green-50/10 dark:bg-green-900/20'
                   : reply.isAI
-                    ? 'border-blue-100 bg-blue-50/20'
+                    ? 'border-blue-100 dark:border-blue-800 bg-blue-50/20 dark:bg-blue-900/20'
                     : 'border-line'
               }`}
             >
               <div className="flex justify-between items-start mb-2">
                 <div className="flex items-center gap-2">
                   {reply.isAI ? (
-                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center">
                       <span className="text-lg">🐰</span>
                     </div>
                   ) : (

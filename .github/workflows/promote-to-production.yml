@@ -1,0 +1,77 @@
+name: Promote to Production
+
+# Publishes the live site. Work is integrated on `main`; the live site
+# (rean.camboverse.world) follows the `Production` branch in Cloudflare Pages.
+# This is the deliberate "go live" gate: run it from the Actions tab when a
+# release is ready.
+#
+# How to use:
+#   1. GitHub → Actions → "Promote to Production" → Run workflow.
+#   2. Leave "ref" as main (or enter a specific commit/branch to publish).
+#   3. It fast-forwards Production to that commit; Cloudflare deploys it.
+#
+# It is fast-forward only. If the chosen ref is not strictly ahead of the
+# current Production, it fails instead of rewriting production history, so a
+# stale or divergent commit can never overwrite what is live.
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Branch or commit to publish to Production'
+        required: false
+        default: 'main'
+
+# Never let two promotions race each other.
+concurrency:
+  group: promote-production
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate and fast-forward Production
+        env:
+          SRC: ${{ github.event.inputs.ref }}
+        run: |
+          set -euo pipefail
+          SRC="${SRC:-main}"
+
+          git fetch origin "$SRC" Production 2>/dev/null || git fetch origin "$SRC"
+
+          # Resolve the source commit, whether it is a branch or a raw SHA.
+          SRC_SHA="$(git rev-parse "origin/$SRC" 2>/dev/null || git rev-parse "$SRC")"
+          echo "Source:     $SRC -> $SRC_SHA"
+
+          if git rev-parse --verify -q origin/Production >/dev/null; then
+            PROD_SHA="$(git rev-parse origin/Production)"
+            echo "Production: $PROD_SHA"
+
+            if [ "$PROD_SHA" = "$SRC_SHA" ]; then
+              echo "Production is already at this commit. Nothing to promote."
+              exit 0
+            fi
+
+            # Refuse anything that is not a clean fast-forward.
+            if ! git merge-base --is-ancestor "$PROD_SHA" "$SRC_SHA"; then
+              echo "::error::'$SRC' is not ahead of Production. Refusing a non-fast-forward promotion so live history is never rewritten. Merge the changes into '$SRC' first."
+              exit 1
+            fi
+
+            echo "Fast-forward is safe. Commits going live:"
+            git log --oneline "$PROD_SHA..$SRC_SHA"
+          else
+            echo "Production branch does not exist yet; creating it."
+          fi
+
+          git push origin "$SRC_SHA:refs/heads/Production"
+          echo "Promoted $SRC ($SRC_SHA) to Production. Cloudflare will deploy it shortly."
