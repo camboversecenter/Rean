@@ -352,12 +352,12 @@ const MissionManager: React.FC<MissionManagerProps> = ({
               aria-label="Update Status"
               className={`text-[10px] font-bold px-2 py-1 rounded-lg border-0 focus:ring-2 focus:ring-primary/20 cursor-pointer outline-none ${
                 e.status === 'In Progress'
-                  ? 'bg-green-100 text-green-700'
+                  ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
                   : e.status === 'Pending'
-                    ? 'bg-orange-100 text-orange-700'
+                    ? 'bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300'
                     : e.status === 'Completed'
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'bg-red-100 text-red-700'
+                      ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
+                      : 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300'
               }`}
               value={e.status}
               onChange={(ev) => handleUpdateStatus(e.id, ev.target.value)}
@@ -454,7 +454,7 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                   ev.stopPropagation();
                   setState((prev) => ({ ...prev, selectedStudentId: e.id }));
                 }}
-                className="flex items-center text-xs font-bold text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-colors"
+                className="flex items-center text-xs font-bold text-blue-600 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-200 bg-blue-50 dark:bg-blue-900/50 hover:bg-blue-100 dark:hover:bg-blue-900/70 px-3 py-1.5 rounded-lg transition-colors"
               >
                 <FileText className="h-3 w-3 mr-1.5" />
                 Gradebook
@@ -714,7 +714,7 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                     <button
                       type="button"
                       onClick={() => handleViewReceipt(selectedStudent.paymentReceiptUrl!)}
-                      className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded flex items-center hover:bg-blue-100 transition-colors"
+                      className="text-[10px] font-bold text-blue-600 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/50 px-2 py-1 rounded flex items-center hover:bg-blue-100 dark:hover:bg-blue-900/70 transition-colors"
                     >
                       <Eye className="h-3 w-3 mr-1" /> Receipt
                     </button>
@@ -722,9 +722,9 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                   <span
                     className={`text-[10px] font-bold px-2 py-1 rounded ${
                       selectedStudent.paymentStatus === 'paid'
-                        ? 'bg-green-100 text-green-700'
+                        ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
                         : selectedStudent.paymentStatus === 'pending'
-                          ? 'bg-orange-100 text-orange-700'
+                          ? 'bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300'
                           : 'bg-surface-3 text-content-muted'
                     }`}
                   >
@@ -752,7 +752,7 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                 return (
                   <div
                     key={m.id}
-                    className={`border rounded-xl p-4 transition-colors ${isPassed ? 'bg-green-50/50 border-green-100' : 'bg-surface border-line hover:border-line-strong'}`}
+                    className={`border rounded-xl p-4 transition-colors ${isPassed ? 'bg-green-50/50 dark:bg-green-900/20 border-green-100 dark:border-green-800' : 'bg-surface border-line hover:border-line-strong'}`}
                   >
                     <div className="flex justify-between items-center mb-2">
                       <div className="flex items-center gap-3">
@@ -762,7 +762,7 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                           {isPassed ? <CheckCircle className="h-3 w-3" /> : idx + 1}
                         </div>
                         <h5
-                          className={`font-bold text-sm ${isPassed ? 'text-green-900' : 'text-content'}`}
+                          className={`font-bold text-sm ${isPassed ? 'text-green-900 dark:text-green-300' : 'text-content'}`}
                         >
                           {m.title}
                         </h5>
@@ -774,7 +774,7 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                           onClick={() => handleOpenReview(selectedStudent, m.id)}
                           className={`px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition-all flex items-center ${
                             isPassed
-                              ? 'bg-surface text-green-600 border border-green-200 hover:bg-green-50'
+                              ? 'bg-surface text-green-600 dark:text-green-400 border border-green-200 dark:border-green-800 hover:bg-green-50 dark:hover:bg-green-900/30'
                               : 'bg-primary text-white hover:bg-primary/90'
                           }`}
                         >
@@ -790,7 +790,7 @@ const MissionManager: React.FC<MissionManagerProps> = ({
 
                     {/* Quick Summary if Passed */}
                     {isPassed && detail?.feedback && (
-                      <div className="ml-9 text-xs text-green-700 bg-green-100/50 p-2 rounded-lg border border-green-100">
+                      <div className="ml-9 text-xs text-green-700 dark:text-green-300 bg-green-100/50 dark:bg-green-900/30 p-2 rounded-lg border border-green-100 dark:border-green-800">
                         <p className="line-clamp-2">{detail.feedback.replace(/\*\*/g, '')}</p>
                       </div>
                     )}
@@ -853,7 +853,7 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                 type="button"
                 onClick={() => handleSubmitReview('active')}
                 disabled={isSubmittingReview}
-                className="px-5 py-2.5 bg-yellow-100 text-yellow-800 font-bold rounded-xl hover:bg-yellow-200 disabled:opacity-50"
+                className="px-5 py-2.5 bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-300 font-bold rounded-xl hover:bg-yellow-200 dark:hover:bg-yellow-900/70 disabled:opacity-50"
               >
                 Request Changes
               </button>

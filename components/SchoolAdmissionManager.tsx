@@ -170,9 +170,9 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
               <span
                 className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
                   adm.status === 'Open'
-                    ? 'bg-green-100 text-green-700'
+                    ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
                     : adm.status === 'Closing Soon'
-                      ? 'bg-orange-100 text-orange-700'
+                      ? 'bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300'
                       : 'bg-surface-3 text-content-muted'
                 }`}
               >
@@ -182,9 +182,9 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
 
             <div className="space-y-3">
               {/* Scholarship list within admission */}
-              <div className="bg-yellow-50 rounded-xl p-3 border border-yellow-100">
+              <div className="bg-yellow-50 dark:bg-yellow-900/30 rounded-xl p-3 border border-yellow-100 dark:border-yellow-800">
                 <div className="flex justify-between items-center mb-2">
-                  <h5 className="text-[10px] font-bold text-yellow-800 uppercase flex items-center">
+                  <h5 className="text-[10px] font-bold text-yellow-800 dark:text-yellow-300 uppercase flex items-center">
                     <Award className="h-3 w-3 mr-1" /> អាហារូបករណ៍
                   </h5>
                   <button
@@ -192,14 +192,14 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
                     onClick={() =>
                       setScholarshipForm((prev) => ({ ...prev, show: true, admissionId: adm.id }))
                     }
-                    className="text-[10px] font-bold text-yellow-700 hover:underline"
+                    className="text-[10px] font-bold text-yellow-700 dark:text-yellow-400 hover:underline"
                   >
                     បន្ថែម
                   </button>
                 </div>
                 <div className="space-y-1">
                   {adm.scholarships.length === 0 && (
-                    <p className="text-[10px] text-yellow-600 italic">គ្មានអាហារូបករណ៍</p>
+                    <p className="text-[10px] text-yellow-600 dark:text-yellow-400 italic">គ្មានអាហារូបករណ៍</p>
                   )}
                   {adm.scholarships.map((sch) => (
                     <div

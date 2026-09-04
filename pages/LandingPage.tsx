@@ -29,7 +29,7 @@ const FEATURES = [
   },
   {
     icon: Bot,
-    color: 'bg-teal-50 text-primary',
+    color: 'bg-teal-50 dark:bg-teal-900/50 text-primary',
     title: 'គ្រូ AI (Kru Rean)',
     desc: 'ជំនួយការ AI ដែលបង្រៀន ឆ្លើយសំណួរ និងជួយអ្នករៀនគ្រប់ពេលវេលា។',
     en: 'A Gemini-powered AI tutor, available 24/7.',
@@ -50,14 +50,14 @@ const FEATURES = [
   },
   {
     icon: Zap,
-    color: 'bg-yellow-50 text-yellow-600',
+    color: 'bg-yellow-50 dark:bg-yellow-900/50 text-yellow-600 dark:text-yellow-300',
     title: 'សហគមន៍ (Lazy Learning)',
     desc: 'សួរសំណួរ ឆ្លើយ និងជួយគ្នាទៅវិញទៅមក។ សន្សំពិន្ទុ និងកេរ្តិ៍ឈ្មោះ។',
     en: 'A Q&A community where helping earns rewards.',
   },
   {
     icon: Gift,
-    color: 'bg-pink-50 text-pink-500',
+    color: 'bg-pink-50 dark:bg-pink-900/50 text-pink-500 dark:text-pink-300',
     title: 'ពិន្ទុ និងរង្វាន់ (Rewards)',
     desc: 'ទទួលបានពិន្ទុពីការរៀន ឡើងកម្រិត បើកប្រអប់អាថ៌កំបាំង និងប្តូរយករង្វាន់។',
     en: 'Earn points, level up, and redeem rewards.',

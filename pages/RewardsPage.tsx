@@ -295,7 +295,7 @@ const RewardsPage: React.FC = () => {
                       <h3 className="font-bold text-content">{item.title}</h3>
                       <p className="text-xs text-content-muted line-clamp-1">{item.description}</p>
                       {item.items && item.items.length > 0 && (
-                        <p className="text-[10px] text-purple-600 font-bold mt-1 bg-purple-50 inline-block px-1.5 rounded">
+                        <p className="text-[10px] text-purple-600 dark:text-purple-400 font-bold mt-1 bg-purple-50 dark:bg-purple-900/50 inline-block px-1.5 rounded">
                           មាន {item.items.length} រង្វាន់ក្នុងប្រអប់
                         </p>
                       )}
@@ -346,7 +346,7 @@ const RewardsPage: React.FC = () => {
                     className="bg-surface p-4 rounded-xl border border-line shadow-sm flex items-center justify-between"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="bg-green-50 p-2 rounded-lg text-green-600">
+                      <div className="bg-green-50 dark:bg-green-900/50 p-2 rounded-lg text-green-600 dark:text-green-400">
                         <Gift className="h-6 w-6" />
                       </div>
                       <div>
@@ -359,8 +359,8 @@ const RewardsPage: React.FC = () => {
                     <span
                       className={`text-[10px] font-bold px-2 py-1 rounded ${
                         claim.status === 'Fulfilled'
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-yellow-100 text-yellow-700'
+                          ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
+                          : 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300'
                       }`}
                     >
                       {claim.status}

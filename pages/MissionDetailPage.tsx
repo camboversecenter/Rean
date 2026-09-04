@@ -300,7 +300,7 @@ const MissionDetailPage: React.FC = () => {
               </div>
 
               {missionState.pending ? (
-                <div className="w-full bg-orange-50 border border-orange-100 text-orange-700 p-4 rounded-xl text-center mb-4">
+                <div className="w-full bg-orange-50 dark:bg-orange-900/30 border border-orange-100 dark:border-orange-800 text-orange-700 dark:text-orange-300 p-4 rounded-xl text-center mb-4">
                   <Clock className="h-8 w-8 mx-auto mb-2 text-orange-400" />
                   <h4 className="font-bold text-sm mb-1">កំពុងរង់ចាំការអនុញ្ញាត</h4>
                   <p className="text-xs">
@@ -393,7 +393,7 @@ const MissionDetailPage: React.FC = () => {
 
               {/* Instructions */}
               {mission.paymentInstruction && (
-                <div className="bg-blue-50 p-3 rounded-lg text-sm text-blue-800 border border-blue-100">
+                <div className="bg-blue-50 dark:bg-blue-900/30 p-3 rounded-lg text-sm text-blue-800 dark:text-blue-300 border border-blue-100 dark:border-blue-800">
                   <p className="font-bold text-xs uppercase mb-1 opacity-70">ការណែនាំ៖</p>
                   {mission.paymentInstruction}
                 </div>
@@ -418,12 +418,12 @@ const MissionDetailPage: React.FC = () => {
                     }
                   />
                   <div
-                    className={`border-2 border-dashed rounded-xl p-4 flex flex-col items-center justify-center transition-colors ${paymentState.receipt ? 'border-green-500 bg-green-50' : 'border-line-strong hover:bg-surface-2'}`}
+                    className={`border-2 border-dashed rounded-xl p-4 flex flex-col items-center justify-center transition-colors ${paymentState.receipt ? 'border-green-500 bg-green-50 dark:bg-green-900/30' : 'border-line-strong hover:bg-surface-2'}`}
                   >
                     {paymentState.receipt ? (
                       <>
                         <CheckCircle className="h-8 w-8 text-green-500 mb-2" />
-                        <p className="text-xs font-bold text-green-700">
+                        <p className="text-xs font-bold text-green-700 dark:text-green-300">
                           {paymentState.receipt.name}
                         </p>
                       </>

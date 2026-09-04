@@ -271,8 +271,8 @@ const SchoolDetailPage: React.FC = () => {
                         <span
                           className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
                             adm.status === 'Open'
-                              ? 'bg-green-100 text-green-700'
-                              : 'bg-orange-100 text-orange-700'
+                              ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
+                              : 'bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300'
                           }`}
                         >
                           {adm.status === 'Open' ? 'កំពុងទទួល' : 'ជិតចប់'}
@@ -310,15 +310,15 @@ const SchoolDetailPage: React.FC = () => {
 
                   {/* Scholarships */}
                   {adm.scholarships.length > 0 && (
-                    <div className="bg-yellow-50 rounded-lg p-3 mb-4 border border-yellow-100">
-                      <h4 className="text-xs font-bold text-yellow-800 flex items-center mb-2">
+                    <div className="bg-yellow-50 dark:bg-yellow-900/30 rounded-lg p-3 mb-4 border border-yellow-100 dark:border-yellow-800">
+                      <h4 className="text-xs font-bold text-yellow-800 dark:text-yellow-300 flex items-center mb-2">
                         <Award className="h-3.5 w-3.5 mr-1" /> អាហារូបករណ៍ដែលមាន (Scholarships)
                       </h4>
                       <div className="space-y-1">
                         {adm.scholarships.map((sch) => (
                           <div key={sch.id} className="flex justify-between items-center text-xs">
                             <span className="text-content-soft">{sch.title}</span>
-                            <span className="font-bold text-green-600 bg-surface px-1.5 py-0.5 rounded shadow-sm border border-green-100">
+                            <span className="font-bold text-green-600 dark:text-green-400 bg-surface px-1.5 py-0.5 rounded shadow-sm border border-green-100 dark:border-green-800">
                               {sch.discount}
                             </span>
                           </div>

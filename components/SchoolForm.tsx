@@ -133,8 +133,8 @@ const SchoolForm: React.FC<SchoolFormProps> = ({ school, isSaving, onSave }) => 
         <div
           className={`p-4 rounded-2xl border-2 flex flex-col sm:flex-row justify-between items-center gap-4 transition-all ${
             state.formData.isPublished
-              ? 'bg-green-50 border-green-100'
-              : 'bg-amber-50 border-amber-100'
+              ? 'bg-green-50 dark:bg-green-900/30 border-green-100 dark:border-green-800'
+              : 'bg-amber-50 dark:bg-amber-900/30 border-amber-100 dark:border-amber-800'
           }`}
         >
           <div className="flex items-center gap-4">

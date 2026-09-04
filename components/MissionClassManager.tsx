@@ -78,7 +78,7 @@ const MissionClassManager: React.FC<MissionClassManagerProps> = ({
               <button
                 type="button"
                 onClick={() => handleDeleteClass(c.id)}
-                className="p-2 text-content-faint hover:text-red-500 hover:bg-red-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
+                className="p-2 text-content-faint hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
                 title="Delete Class"
                 aria-label={`Delete Class ${c.title}`}
               >

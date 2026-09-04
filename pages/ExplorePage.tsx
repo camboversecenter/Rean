@@ -413,7 +413,7 @@ const ExplorePage: React.FC = () => {
                       </div>
                     ))}
                   </div>
-                  <div className="bg-blue-50/50 p-4 rounded-xl border border-blue-50">
+                  <div className="bg-blue-50/50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-50 dark:border-blue-800">
                     <MarkdownText content={comparisonResult} />
                   </div>
                 </div>

@@ -262,7 +262,7 @@ const HomePage: React.FC = () => {
                 </div>
                 <Link
                   to="/community"
-                  className="relative z-10 bg-surface text-orange-600 font-bold py-3 px-6 rounded-xl shadow-md hover:bg-yellow-50 transition-colors flex items-center whitespace-nowrap active:scale-95 transform"
+                  className="relative z-10 bg-surface text-orange-600 dark:text-orange-400 font-bold py-3 px-6 rounded-xl shadow-md hover:bg-yellow-50 dark:hover:bg-yellow-900/30 transition-colors flex items-center whitespace-nowrap active:scale-95 transform"
                 >
                   <MessageCircle className="h-5 w-5 mr-2" /> ចូលសហគមន៍
                 </Link>
@@ -301,7 +301,7 @@ const HomePage: React.FC = () => {
             </section>
 
             {/* Short Courses Grid (Desktop) / Carousel (Mobile) */}
-            <section className="mb-8 bg-blue-50 py-6 md:rounded-3xl">
+            <section className="mb-8 bg-blue-50 dark:bg-blue-900/20 py-6 md:rounded-3xl">
               <div className="px-4 md:px-6">
                 <div className="flex items-center justify-between mb-3">
                   <h2 className="font-bold text-content text-lg flex items-center">

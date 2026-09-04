@@ -239,7 +239,7 @@ const MysteryBoxManager: React.FC = () => {
               key={box.id}
               className="bg-surface rounded-2xl shadow-sm border border-line overflow-hidden hover:shadow-md transition-all group"
             >
-              <div className="relative h-40 bg-purple-50 flex items-center justify-center overflow-hidden">
+              <div className="relative h-40 bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center overflow-hidden">
                 {box.cover_image ? (
                   <img
                     src={box.cover_image}
@@ -253,7 +253,7 @@ const MysteryBoxManager: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handleDeleteBox(box.id)}
-                    className="bg-surface p-2 rounded-full text-red-500 shadow-sm hover:bg-red-50"
+                    className="bg-surface p-2 rounded-full text-red-500 shadow-sm hover:bg-red-50 dark:hover:bg-red-900/30"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -439,7 +439,7 @@ const MysteryBoxManager: React.FC = () => {
                     type="button"
                     onClick={handleGenerateRewardImage}
                     disabled={state.isGenerating}
-                    className="text-[10px] bg-indigo-50 text-indigo-600 font-bold px-2 py-1 rounded flex items-center hover:bg-indigo-100"
+                    className="text-[10px] bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 font-bold px-2 py-1 rounded flex items-center hover:bg-indigo-100 dark:hover:bg-indigo-900/70"
                   >
                     {state.isGenerating ? (
                       <Loader2 className="h-3 w-3 animate-spin" />
