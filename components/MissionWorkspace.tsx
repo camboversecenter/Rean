@@ -702,8 +702,8 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
     const basePrompt = getTheoryPromptText();
     const langInstruction =
       lessonLanguage === 'km'
-        ? 'OUTPUT IN KHMER LANGUAGE ONLY (ភាសាខ្មែរ). Explain clearly and concisely. Use LaTeX $$..$$ for formulas.'
-        : 'OUTPUT IN ENGLISH LANGUAGE ONLY. Explain clearly and concisely. Use LaTeX $$..$$ for formulas.';
+        ? 'OUTPUT IN KHMER LANGUAGE ONLY (ភាសាខ្មែរ). Explain clearly and concisely. MATH FORMATTING: the app renders LaTeX through KaTeX. Write every formula, equation, fraction, exponent, root, limit, integral, or summation as LaTeX. Use $...$ for inline math and $$...$$ for display math on its own line. CRITICAL: do NOT escape the dollar signs (write $x^2$, never \\$x^2\\$).'
+        : 'OUTPUT IN ENGLISH LANGUAGE ONLY. Explain clearly and concisely. MATH FORMATTING: the app renders LaTeX through KaTeX. Write every formula, equation, fraction, exponent, root, limit, integral, or summation as LaTeX. Use $...$ for inline math and $$...$$ for display math on its own line. CRITICAL: do NOT escape the dollar signs (write $x^2$, never \\$x^2\\$).';
 
     const prompt = `${basePrompt}\n\nIMPORTANT: ${langInstruction}`;
 
