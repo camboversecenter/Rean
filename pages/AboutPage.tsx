@@ -382,7 +382,7 @@ const AboutPage: React.FC = () => {
             បេសកកម្មរបស់យើង (Our mission)
           </h2>
         </div>
-        <div className="prose prose-gray max-w-none text-content-muted leading-relaxed space-y-4">
+        <div className="prose prose-gray dark:prose-invert max-w-none text-content-muted leading-relaxed space-y-4">
           <p>
             REAN exists so that anyone in Cambodia can keep learning without paying for it. Students
             learn by doing: they work through project-based missions, an AI tutor teaches and grades

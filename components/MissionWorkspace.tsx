@@ -1136,7 +1136,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                         បង្កើតថ្មី
                       </button>
                     </div>
-                    <div className="prose prose-blue max-w-none">
+                    <div className="prose prose-blue dark:prose-invert max-w-none">
                       <MarkdownText content={generatedLessons[activeModuleId]} />
                     </div>
                     <div className="mt-8 pt-6 border-t border-line flex justify-end">
