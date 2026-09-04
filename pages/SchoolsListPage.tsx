@@ -112,7 +112,7 @@ const SchoolsListPage: React.FC = () => {
         <div>
           {state.loading ? (
             <div className="flex justify-center py-10">
-              <Loader2 className="h-8 w-8 animate-spin text-gray-300" />
+              <Loader2 className="h-8 w-8 animate-spin text-content-faint" />
             </div>
           ) : state.schools.length > 0 ? (
             <>

@@ -202,7 +202,7 @@ const MissionDetailPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-surface-2 pb-20">
       {/* Hero */}
-      <div className="relative h-64 md:h-80 bg-gray-900">
+      <div className="relative h-64 md:h-80 bg-gray-900 dark:bg-surface-3">
         <img
           src={mission.thumbnail || placeholderImage(1200, 600, 'Mission')}
           alt={mission.title}
@@ -227,7 +227,7 @@ const MissionDetailPage: React.FC = () => {
             <Share2 className="h-5 w-5" />
           </button>
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 dark:from-surface-3 via-transparent to-transparent"></div>
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
           <div className="container mx-auto max-w-4xl">
             <span className="inline-block px-3 py-1 bg-primary text-white text-xs font-bold rounded-lg mb-3 uppercase tracking-wide shadow-lg shadow-primary/30">
@@ -236,7 +236,7 @@ const MissionDetailPage: React.FC = () => {
             <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight shadow-sm">
               {mission.title}
             </h1>
-            <div className="flex items-center text-gray-300 text-sm font-medium gap-6">
+            <div className="flex items-center text-content-faint dark:text-content-soft text-sm font-medium gap-6">
               <span className="flex items-center">
                 <Users2 className="h-4 w-4 mr-2" /> ក្រុមសិស្ស {mission.squadSize} នាក់
               </span>
@@ -289,7 +289,7 @@ const MissionDetailPage: React.FC = () => {
 
           {/* Right Sidebar (Action Card) */}
           <div className="md:col-span-1">
-            <div className="bg-surface rounded-2xl p-6 shadow-lg shadow-gray-200/50 border border-line sticky top-24">
+            <div className="bg-surface rounded-2xl p-6 shadow-lg dark:shadow-surface-3/20/50 border border-line sticky top-24">
               <div className="mb-6 text-center">
                 <p className="text-sm text-content-muted font-bold uppercase tracking-wider mb-1">
                   តម្លៃសរុប (Total Price)
@@ -300,7 +300,7 @@ const MissionDetailPage: React.FC = () => {
               </div>
 
               {missionState.pending ? (
-                <div className="w-full bg-orange-50 border border-orange-100 text-orange-700 p-4 rounded-xl text-center mb-4">
+                <div className="w-full bg-orange-50 dark:bg-orange-900/30 border border-orange-100 dark:border-orange-800 text-orange-700 dark:text-orange-300 p-4 rounded-xl text-center mb-4">
                   <Clock className="h-8 w-8 mx-auto mb-2 text-orange-400" />
                   <h4 className="font-bold text-sm mb-1">កំពុងរង់ចាំការអនុញ្ញាត</h4>
                   <p className="text-xs">
@@ -323,7 +323,7 @@ const MissionDetailPage: React.FC = () => {
                   className={`w-full text-white font-bold py-4 rounded-xl shadow-xl hover:scale-105 transition-transform flex items-center justify-center mb-4 group ${
                     mission.price > 0
                       ? 'bg-gradient-to-r from-emerald-600 to-green-500 shadow-emerald-200'
-                      : 'bg-gray-900 shadow-gray-900/20'
+                      : 'bg-gray-900 dark:bg-surface-3 shadow-gray-900/20 dark:shadow-surface-3/20'
                   }`}
                 >
                   {paymentState.joining ? (
@@ -393,7 +393,7 @@ const MissionDetailPage: React.FC = () => {
 
               {/* Instructions */}
               {mission.paymentInstruction && (
-                <div className="bg-blue-50 p-3 rounded-lg text-sm text-blue-800 border border-blue-100">
+                <div className="bg-blue-50 dark:bg-blue-900/30 p-3 rounded-lg text-sm text-blue-800 dark:text-blue-300 border border-blue-100 dark:border-blue-800">
                   <p className="font-bold text-xs uppercase mb-1 opacity-70">ការណែនាំ៖</p>
                   {mission.paymentInstruction}
                 </div>
@@ -418,18 +418,18 @@ const MissionDetailPage: React.FC = () => {
                     }
                   />
                   <div
-                    className={`border-2 border-dashed rounded-xl p-4 flex flex-col items-center justify-center transition-colors ${paymentState.receipt ? 'border-green-500 bg-green-50' : 'border-line-strong hover:bg-surface-2'}`}
+                    className={`border-2 border-dashed rounded-xl p-4 flex flex-col items-center justify-center transition-colors ${paymentState.receipt ? 'border-green-500 bg-green-50 dark:bg-green-900/30' : 'border-line-strong hover:bg-surface-2'}`}
                   >
                     {paymentState.receipt ? (
                       <>
                         <CheckCircle className="h-8 w-8 text-green-500 mb-2" />
-                        <p className="text-xs font-bold text-green-700">
+                        <p className="text-xs font-bold text-green-700 dark:text-green-300">
                           {paymentState.receipt.name}
                         </p>
                       </>
                     ) : (
                       <>
-                        <Image className="h-8 w-8 text-gray-300 mb-2" />
+                        <Image className="h-8 w-8 text-content-faint mb-2" />
                         <p className="text-xs text-content-muted">ចុចដើម្បីបញ្ចូលរូបភាព</p>
                       </>
                     )}

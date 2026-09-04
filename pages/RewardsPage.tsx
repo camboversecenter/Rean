@@ -216,7 +216,7 @@ const RewardsPage: React.FC = () => {
     <div className="min-h-screen bg-surface-2 pb-20 pt-6 px-4">
       <div className="max-w-5xl mx-auto">
         {/* Header with Balance */}
-        <div className="bg-gray-900 rounded-2xl p-6 text-white mb-6 shadow-xl relative overflow-hidden">
+        <div className="bg-gray-900 dark:bg-surface-3 rounded-2xl p-6 text-white mb-6 shadow-xl relative overflow-hidden">
           <div className="absolute top-0 right-0 p-8 bg-surface/5 rounded-full -mr-4 -mt-4"></div>
           <div className="relative z-10">
             <p className="text-content-faint text-xs font-bold uppercase tracking-wider mb-1">
@@ -237,21 +237,21 @@ const RewardsPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setActiveTab('shop')}
-            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'shop' ? 'bg-gray-900 text-white shadow' : 'text-content-muted hover:text-content'}`}
+            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'shop' ? 'bg-gray-900 dark:bg-surface-3 text-white shadow' : 'text-content-muted hover:text-content'}`}
           >
             ហាង (Shop)
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('inventory')}
-            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'inventory' ? 'bg-gray-900 text-white shadow' : 'text-content-muted hover:text-content'}`}
+            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'inventory' ? 'bg-gray-900 dark:bg-surface-3 text-white shadow' : 'text-content-muted hover:text-content'}`}
           >
             របស់ខ្ញុំ (My)
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('history')}
-            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'history' ? 'bg-gray-900 text-white shadow' : 'text-content-muted hover:text-content'}`}
+            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'history' ? 'bg-gray-900 dark:bg-surface-3 text-white shadow' : 'text-content-muted hover:text-content'}`}
           >
             ប្រវត្តិ (History)
           </button>
@@ -280,7 +280,7 @@ const RewardsPage: React.FC = () => {
                     key={item.id}
                     className="bg-surface rounded-2xl p-4 shadow-sm border border-line flex items-center gap-4 hover:shadow-md transition-shadow relative overflow-hidden"
                   >
-                    <div className="w-16 h-16 rounded-xl flex items-center justify-center text-3xl shadow-inner bg-purple-50 text-purple-600 overflow-hidden">
+                    <div className="w-16 h-16 rounded-xl flex items-center justify-center text-3xl shadow-inner bg-purple-50 dark:bg-purple-900/50 text-purple-600 dark:text-purple-300 overflow-hidden">
                       {item.cover_image ? (
                         <img
                           src={item.cover_image}
@@ -295,7 +295,7 @@ const RewardsPage: React.FC = () => {
                       <h3 className="font-bold text-content">{item.title}</h3>
                       <p className="text-xs text-content-muted line-clamp-1">{item.description}</p>
                       {item.items && item.items.length > 0 && (
-                        <p className="text-[10px] text-purple-600 font-bold mt-1 bg-purple-50 inline-block px-1.5 rounded">
+                        <p className="text-[10px] text-purple-600 dark:text-purple-400 font-bold mt-1 bg-purple-50 dark:bg-purple-900/50 inline-block px-1.5 rounded">
                           មាន {item.items.length} រង្វាន់ក្នុងប្រអប់
                         </p>
                       )}
@@ -335,7 +335,7 @@ const RewardsPage: React.FC = () => {
 
             {myClaims.length === 0 ? (
               <div className="text-center py-12 bg-surface rounded-xl border border-dashed border-line-strong">
-                <Gift className="h-10 w-10 text-gray-300 mx-auto mb-2" />
+                <Gift className="h-10 w-10 text-content-faint mx-auto mb-2" />
                 <p className="text-content-muted">អ្នកមិនទាន់មានរង្វាន់ទេ។</p>
               </div>
             ) : (
@@ -346,7 +346,7 @@ const RewardsPage: React.FC = () => {
                     className="bg-surface p-4 rounded-xl border border-line shadow-sm flex items-center justify-between"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="bg-green-50 p-2 rounded-lg text-green-600">
+                      <div className="bg-green-50 dark:bg-green-900/50 p-2 rounded-lg text-green-600 dark:text-green-400">
                         <Gift className="h-6 w-6" />
                       </div>
                       <div>
@@ -359,8 +359,8 @@ const RewardsPage: React.FC = () => {
                     <span
                       className={`text-[10px] font-bold px-2 py-1 rounded ${
                         claim.status === 'Fulfilled'
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-yellow-100 text-yellow-700'
+                          ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
+                          : 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300'
                       }`}
                     >
                       {claim.status}

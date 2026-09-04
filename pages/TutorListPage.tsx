@@ -225,7 +225,7 @@ const TutorListPage: React.FC = () => {
                   onClick={() => setState((st) => ({ ...st, subjectFilter: s }))}
                   className={`whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all border ${
                     state.subjectFilter === s
-                      ? 'bg-gray-900 text-white border-gray-900'
+                      ? 'bg-gray-900 dark:bg-surface-3 text-white border-gray-900'
                       : 'bg-surface text-content-muted border-line-strong hover:border-line-strong'
                   }`}
                 >
@@ -246,7 +246,7 @@ const TutorListPage: React.FC = () => {
             {state.tutors.length === 0 && (
               <div className="col-span-full flex flex-col items-center justify-center py-16 text-center bg-surface rounded-2xl border border-dashed border-line-strong">
                 <div className="bg-surface-2 p-4 rounded-full mb-3">
-                  <Search className="h-8 w-8 text-gray-300" />
+                  <Search className="h-8 w-8 text-content-faint" />
                 </div>
                 <h3 className="text-content font-bold mb-1">មិនមានគ្រូបង្រៀនទេ</h3>
                 <p className="text-content-muted text-xs">
@@ -369,7 +369,7 @@ const TutorListPage: React.FC = () => {
                 type="button"
                 onClick={handleSubmitApplication}
                 disabled={state.applying || !state.applyMessage.trim()}
-                className="w-full bg-gray-900 text-white font-bold py-3 rounded-xl shadow-lg flex items-center justify-center hover:bg-black transition-colors disabled:opacity-50"
+                className="w-full bg-gray-900 dark:bg-surface-3 text-white font-bold py-3 rounded-xl shadow-lg flex items-center justify-center hover:bg-black transition-colors disabled:opacity-50"
               >
                 {state.applying ? (
                   <Loader2 className="h-4 w-4 animate-spin" />

@@ -60,56 +60,56 @@ const CONTACT_CHANNELS = [
 const FEATURES = [
   {
     icon: Target,
-    color: 'bg-red-50 text-red-500',
+    color: 'bg-red-50 dark:bg-red-900/50 text-red-600 dark:text-red-300',
     title: 'បេសកកម្មសិក្សា (Missions)',
     desc: 'វគ្គសិក្សាតាមគម្រោង បែងចែកជាមេរៀនតូចៗ។ សិស្សរៀនពី AI ធ្វើកិច្ចការ រួចដាក់ស្នើសម្រាប់ការវាយតម្លៃ។',
     en: 'Project-based courses with modules, squads, classes, and AI grading.',
   },
   {
     icon: Building2,
-    color: 'bg-purple-50 text-purple-600',
+    color: 'bg-purple-50 dark:bg-purple-900/50 text-purple-600 dark:text-purple-300',
     title: 'សាលារៀន (Schools)',
     desc: 'ប្រវត្តិរូបសាលា ការជ្រើសរើសសិស្សថ្មី ការគ្រប់គ្រងការចុះឈ្មោះ និងអាហារូបករណ៍។',
     en: 'School profiles, admissions, enrollments, inquiries, and scholarships.',
   },
   {
     icon: Users,
-    color: 'bg-orange-50 text-orange-500',
+    color: 'bg-orange-50 dark:bg-orange-900/50 text-orange-600 dark:text-orange-300',
     title: 'គ្រូបង្រៀន (Tutors)',
     desc: 'ប្រវត្តិរូបគ្រូ ការកក់ម៉ោងរៀន និងសំណើពីសិស្ស។',
     en: 'Tutor profiles, bookings, and requests from students looking for a tutor.',
   },
   {
     icon: BookOpen,
-    color: 'bg-blue-50 text-blue-600',
+    color: 'bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300',
     title: 'វគ្គសិក្សាខ្លី (Short Courses)',
     desc: 'ទីផ្សារវគ្គសិក្សាខ្លីៗ សម្រាប់ការរៀនរហ័ស។',
     en: 'Shorter courses for quick, focused learning, alongside the full missions.',
   },
   {
     icon: Bot,
-    color: 'bg-teal-50 text-primary',
+    color: 'bg-teal-50 dark:bg-teal-900/50 text-primary',
     title: 'គ្រូ AI (Kru Rean)',
     desc: 'ជំនួយការ AI ដែលបង្រៀន ឆ្លើយសំណួរ វាយតម្លៃកិច្ចការ និងមានមុខងារសន្ទនាដោយសំឡេង។',
     en: 'A Gemini-powered chat tutor, plus a live voice tutor.',
   },
   {
     icon: Zap,
-    color: 'bg-yellow-50 text-yellow-600',
+    color: 'bg-yellow-50 dark:bg-yellow-900/50 text-yellow-600 dark:text-yellow-300',
     title: 'សហគមន៍ (Lazy Learning)',
     desc: 'ថ្នាលសួរឆ្លើយ ដែលមានប្រតិកម្ម ចម្លើយដែលទទួលយក និងរង្វាន់ជម្រុញ។',
     en: 'A Q&A feed with reactions, accepted answers, and bounties.',
   },
   {
     icon: Gift,
-    color: 'bg-pink-50 text-pink-500',
+    color: 'bg-pink-50 dark:bg-pink-900/50 text-pink-500 dark:text-pink-300',
     title: 'ពិន្ទុ និងរង្វាន់ (Rewards)',
     desc: 'តារាងចំណាត់ថ្នាក់ សមិទ្ធិផល ប្រអប់អាថ៌កំបាំង និងការប្តូរយករង្វាន់។',
     en: 'Leaderboards, achievements, mystery boxes, and redeemable rewards.',
   },
   {
     icon: ShieldCheck,
-    color: 'bg-green-50 text-green-600',
+    color: 'bg-green-50 dark:bg-green-900/50 text-green-600 dark:text-green-300',
     title: 'តួនាទី និងសុវត្ថិភាព (Roles & Auth)',
     desc: 'ចូលប្រើដោយគណនី Google និងជ្រើសរើសតួនាទី មុនពេលចាប់ផ្តើមប្រើប្រាស់។',
     en: 'Google sign-in, role selection, and a dashboard for each role.',
@@ -688,13 +688,13 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* ===== CONTRIBUTE / CTA ===== */}
-      <section className="bg-gray-900 text-white">
+      <section className="bg-gray-900 dark:bg-surface-3 text-white">
         <div className="max-w-4xl mx-auto px-4 py-14 md:py-16 text-center">
           <GraduationCap className="h-10 w-10 mx-auto mb-4 text-secondary" />
           <h2 className="text-2xl md:text-3xl font-extrabold mb-4">
             ចូលរួមជាមួយយើង (Get involved)
           </h2>
-          <p className="text-gray-300 mb-8 max-w-xl mx-auto leading-relaxed">
+          <p className="text-content-faint dark:text-content-soft mb-8 max-w-xl mx-auto leading-relaxed">
             Contributions of code, documentation, translations, and ideas are all welcome. You can
             also support REAN through donations, grants, and training partnerships.
           </p>

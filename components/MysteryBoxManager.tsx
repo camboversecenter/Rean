@@ -182,7 +182,7 @@ const MysteryBoxManager: React.FC = () => {
   if (state.loading) {
     return (
       <div className="flex justify-center py-12">
-        <Loader2 className="animate-spin text-gray-300 h-8 w-8" />
+        <Loader2 className="animate-spin text-content-faint h-8 w-8" />
       </div>
     );
   }
@@ -211,7 +211,7 @@ const MysteryBoxManager: React.FC = () => {
           <button
             type="button"
             onClick={handleCreateBox}
-            className="bg-gray-900 text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center shadow-lg shadow-gray-200 hover:scale-105 transition-transform"
+            className="bg-gray-900 dark:bg-surface-3 text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center shadow-lg dark:shadow-surface-3/20 hover:scale-105 transition-transform"
           >
             <Plus className="h-4 w-4 mr-2" /> បង្កើតរង្វាន់ថ្មី
           </button>
@@ -222,7 +222,7 @@ const MysteryBoxManager: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {state.mysteryBoxes.length === 0 && (
             <div className="col-span-full text-center py-16 bg-surface rounded-3xl border border-dashed border-line-strong">
-              <Gift className="h-16 w-16 mx-auto mb-4 text-gray-200" />
+              <Gift className="h-16 w-16 mx-auto mb-4 text-content-muted" />
               <h3 className="font-bold text-content text-lg">មិនទាន់មានរង្វាន់</h3>
               <p className="text-content-muted mb-6">បង្កើតប្រអប់សំណាងដំបូងរបស់អ្នក។</p>
               <button
@@ -239,7 +239,7 @@ const MysteryBoxManager: React.FC = () => {
               key={box.id}
               className="bg-surface rounded-2xl shadow-sm border border-line overflow-hidden hover:shadow-md transition-all group"
             >
-              <div className="relative h-40 bg-purple-50 flex items-center justify-center overflow-hidden">
+              <div className="relative h-40 bg-purple-50 dark:bg-purple-900/30 flex items-center justify-center overflow-hidden">
                 {box.cover_image ? (
                   <img
                     src={box.cover_image}
@@ -253,7 +253,7 @@ const MysteryBoxManager: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handleDeleteBox(box.id)}
-                    className="bg-surface p-2 rounded-full text-red-500 shadow-sm hover:bg-red-50"
+                    className="bg-surface p-2 rounded-full text-red-500 shadow-sm hover:bg-red-50 dark:hover:bg-red-900/30"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -439,7 +439,7 @@ const MysteryBoxManager: React.FC = () => {
                     type="button"
                     onClick={handleGenerateRewardImage}
                     disabled={state.isGenerating}
-                    className="text-[10px] bg-indigo-50 text-indigo-600 font-bold px-2 py-1 rounded flex items-center hover:bg-indigo-100"
+                    className="text-[10px] bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 font-bold px-2 py-1 rounded flex items-center hover:bg-indigo-100 dark:hover:bg-indigo-900/70"
                   >
                     {state.isGenerating ? (
                       <Loader2 className="h-3 w-3 animate-spin" />
@@ -464,7 +464,7 @@ const MysteryBoxManager: React.FC = () => {
                       alt="Box Cover"
                     />
                   ) : (
-                    <ImageIcon className="h-8 w-8 text-gray-300" />
+                    <ImageIcon className="h-8 w-8 text-content-faint" />
                   )}
                   <input
                     id="boxImage"
@@ -515,7 +515,7 @@ const MysteryBoxManager: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleAddItem}
-                    className="bg-gray-900 text-white px-3 rounded-lg hover:bg-black"
+                    className="bg-gray-900 dark:bg-surface-3 text-white px-3 rounded-lg hover:bg-black"
                   >
                     <Plus className="h-4 w-4" />
                   </button>

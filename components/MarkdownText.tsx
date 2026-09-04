@@ -45,6 +45,14 @@ const HighlightRenderer: React.FC<{ children: React.ReactNode }> = ({ children }
   );
 };
 
+const unescapeMathDelimiters = (text: string): string => {
+  // AI models (Gemini) often escape $ as \$ in their output.  Markdown
+  // treats \$ as a literal dollar-sign, so remark-math never sees a math
+  // delimiter and formulas render as raw LaTeX text.  Undo the escaping
+  // so the math pipeline can detect $...$ and $$...$$ normally.
+  return text.replace(/\\\$/g, '$');
+};
+
 const MarkdownText: React.FC<MarkdownTextProps> = ({ content, className = '' }) => {
   return (
     <div
@@ -94,7 +102,7 @@ const MarkdownText: React.FC<MarkdownTextProps> = ({ content, className = '' }) 
           ),
         }}
       >
-        {content}
+        {unescapeMathDelimiters(content)}
       </ReactMarkdown>
     </div>
   );

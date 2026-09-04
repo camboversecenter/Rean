@@ -211,7 +211,7 @@ const ExplorePage: React.FC = () => {
             onClick={() => setState((prev) => ({ ...prev, selectedCategory: 'All' }))}
             className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold transition-all ${
               selectedCategory === 'All'
-                ? 'bg-gray-800 text-white'
+                ? 'bg-gray-800 dark:bg-line-strong text-white'
                 : 'bg-surface border border-line-strong text-content-muted'
             }`}
           >
@@ -224,7 +224,7 @@ const ExplorePage: React.FC = () => {
               onClick={() => setState((prev) => ({ ...prev, selectedCategory: cat }))}
               className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold transition-all ${
                 selectedCategory === cat
-                  ? 'bg-gray-800 text-white'
+                  ? 'bg-gray-800 dark:bg-line-strong text-white'
                   : 'bg-surface border border-line-strong text-content-muted'
               }`}
             >
@@ -329,19 +329,19 @@ const ExplorePage: React.FC = () => {
       {/* Floating Compare Bar */}
       {compareList.length > 0 && (
         <div className="fixed bottom-20 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-96 z-40">
-          <div className="bg-gray-900 text-white rounded-2xl p-4 shadow-2xl flex items-center justify-between border border-gray-700">
+          <div className="bg-gray-900 dark:bg-surface-3 text-white rounded-2xl p-4 shadow-2xl flex items-center justify-between border border-gray-700 dark:border-line-strong">
             <div className="flex items-center gap-3">
               <div className="flex -space-x-2">
                 {compareList.map((c) => (
                   <img
                     key={c.id}
                     src={c.coverImage || placeholderImage(50, 50)}
-                    className="w-8 h-8 rounded-full border border-gray-800 object-cover"
+                    className="w-8 h-8 rounded-full border border-gray-800 dark:border-line-strong object-cover"
                     alt="cover"
                   />
                 ))}
                 {compareList.length < 2 && (
-                  <div className="w-8 h-8 rounded-full border border-gray-800 bg-gray-800 flex items-center justify-center text-xs text-content-muted">
+                  <div className="w-8 h-8 rounded-full border border-gray-800 dark:border-line-strong bg-gray-800 dark:bg-line-strong flex items-center justify-center text-xs text-content-muted">
                     ?
                   </div>
                 )}
@@ -364,7 +364,7 @@ const ExplorePage: React.FC = () => {
             <button
               type="button"
               onClick={() => setState((prev) => ({ ...prev, compareList: [] }))}
-              className="absolute -top-2 -right-2 bg-gray-700 rounded-full p-1 text-gray-300"
+              className="absolute -top-2 -right-2 bg-gray-700 dark:bg-line-strong rounded-full p-1 text-content-faint dark:text-content-muted"
             >
               <X className="h-3 w-3" />
             </button>
@@ -413,7 +413,7 @@ const ExplorePage: React.FC = () => {
                       </div>
                     ))}
                   </div>
-                  <div className="bg-blue-50/50 p-4 rounded-xl border border-blue-50">
+                  <div className="bg-blue-50/50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-50 dark:border-blue-800">
                     <MarkdownText content={comparisonResult} />
                   </div>
                 </div>
@@ -424,7 +424,7 @@ const ExplorePage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setState((prev) => ({ ...prev, showCompareModal: false }))}
-                className="w-full bg-gray-900 text-white font-bold py-3 rounded-xl"
+                className="w-full bg-gray-900 dark:bg-surface-3 text-white font-bold py-3 rounded-xl"
               >
                 បិទ (Close)
               </button>

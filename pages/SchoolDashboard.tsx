@@ -126,7 +126,7 @@ const SchoolDashboard: React.FC = () => {
     return (
       <div className="min-h-screen bg-surface-2 flex flex-col items-center justify-center p-4">
         <div className="bg-surface p-8 rounded-3xl shadow-sm border border-line text-center max-w-md w-full">
-          <Building2 className="h-16 w-16 mx-auto text-gray-200 mb-4" />
+          <Building2 className="h-16 w-16 mx-auto text-content-muted mb-4" />
           <h2 className="text-xl font-bold text-content mb-2">មិនទាន់មានព័ត៌មានសាលារៀន</h2>
           <p className="text-content-muted text-sm mb-6">
             អ្នកមិនទាន់បានបង្កើតទំព័រសាលារៀននៅឡើយទេ។

@@ -181,7 +181,7 @@ const HomePage: React.FC = () => {
                   filteredSchools.map((s) => <SchoolCard key={s.id} school={s} />)
                 ) : (
                   <div className="col-span-full text-center py-20 bg-surface rounded-2xl border border-dashed border-line-strong">
-                    <Building2 className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                    <Building2 className="h-12 w-12 mx-auto mb-3 text-content-faint" />
                     <p className="text-content-muted">មិនមានសាលាដែលអ្នកស្វែងរកទេ។</p>
                   </div>
                 )}
@@ -194,7 +194,7 @@ const HomePage: React.FC = () => {
                   filteredMissions.map((m) => <MissionCard key={m.id} mission={m} />)
                 ) : (
                   <div className="col-span-full text-center py-20 bg-surface rounded-2xl border border-dashed border-line-strong">
-                    <Target className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                    <Target className="h-12 w-12 mx-auto mb-3 text-content-faint" />
                     <p className="text-content-muted">មិនមានបេសកកម្មដែលអ្នកស្វែងរកទេ។</p>
                   </div>
                 )}
@@ -207,7 +207,7 @@ const HomePage: React.FC = () => {
                   filteredTutors.map((t) => <TutorCard key={t.id} tutor={t} />)
                 ) : (
                   <div className="col-span-full text-center py-20 bg-surface rounded-2xl border border-dashed border-line-strong">
-                    <Users className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                    <Users className="h-12 w-12 mx-auto mb-3 text-content-faint" />
                     <p className="text-content-muted">មិនមានគ្រូបង្រៀនដែលអ្នកស្វែងរកទេ។</p>
                   </div>
                 )}
@@ -231,7 +231,7 @@ const HomePage: React.FC = () => {
 
               {state.loading ? (
                 <div className="flex justify-center py-8">
-                  <Loader2 className="animate-spin text-gray-300" />
+                  <Loader2 className="animate-spin text-content-faint" />
                 </div>
               ) : state.missions.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -262,7 +262,7 @@ const HomePage: React.FC = () => {
                 </div>
                 <Link
                   to="/community"
-                  className="relative z-10 bg-surface text-orange-600 font-bold py-3 px-6 rounded-xl shadow-md hover:bg-yellow-50 transition-colors flex items-center whitespace-nowrap active:scale-95 transform"
+                  className="relative z-10 bg-surface text-orange-600 dark:text-orange-400 font-bold py-3 px-6 rounded-xl shadow-md hover:bg-yellow-50 dark:hover:bg-yellow-900/30 transition-colors flex items-center whitespace-nowrap active:scale-95 transform"
                 >
                   <MessageCircle className="h-5 w-5 mr-2" /> ចូលសហគមន៍
                 </Link>
@@ -290,7 +290,7 @@ const HomePage: React.FC = () => {
               <div className="px-4 md:px-0 grid grid-cols-1 md:grid-cols-2 gap-4">
                 {state.loading ? (
                   <div className="col-span-2 flex justify-center py-8">
-                    <Loader2 className="animate-spin text-gray-300" />
+                    <Loader2 className="animate-spin text-content-faint" />
                   </div>
                 ) : (
                   state.schools
@@ -301,7 +301,7 @@ const HomePage: React.FC = () => {
             </section>
 
             {/* Short Courses Grid (Desktop) / Carousel (Mobile) */}
-            <section className="mb-8 bg-blue-50 py-6 md:rounded-3xl">
+            <section className="mb-8 bg-blue-50 dark:bg-blue-900/20 py-6 md:rounded-3xl">
               <div className="px-4 md:px-6">
                 <div className="flex items-center justify-between mb-3">
                   <h2 className="font-bold text-content text-lg flex items-center">
@@ -345,7 +345,7 @@ const HomePage: React.FC = () => {
               <div className="px-4 md:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 {state.loading ? (
                   <div className="col-span-2 flex justify-center py-8">
-                    <Loader2 className="animate-spin text-gray-300" />
+                    <Loader2 className="animate-spin text-content-faint" />
                   </div>
                 ) : state.tutors.length > 0 ? (
                   state.tutors

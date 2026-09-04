@@ -136,7 +136,7 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 border border-blue-100 group-hover:bg-blue-100 transition-colors">
+                        <div className="w-8 h-8 rounded-full bg-blue-50 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-800 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/70 transition-colors">
                           <User className="h-4 w-4" />
                         </div>
                         <div className="font-bold text-content group-hover:text-primary transition-colors">
@@ -153,12 +153,12 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
                       <span
                         className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                           item.status === 'Pending'
-                            ? 'bg-orange-100 text-orange-700 border border-orange-200'
+                            ? 'bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800'
                             : item.status === 'Approved'
-                              ? 'bg-blue-100 text-blue-700 border border-blue-200'
+                              ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800'
                               : item.status === 'Completed'
-                                ? 'bg-green-100 text-green-700 border border-green-200'
-                                : 'bg-red-100 text-red-700 border border-red-200'
+                                ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800'
+                                : 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800'
                         }`}
                       >
                         {item.status === 'Pending'
@@ -197,7 +197,7 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
             <div className="p-6 space-y-6">
               {/* Student Info */}
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-xl font-bold">
+                <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 text-xl font-bold">
                   {state.selectedEnrollment.studentName?.charAt(0) || <User />}
                 </div>
                 <div>
@@ -233,12 +233,12 @@ const SchoolEnrollmentManager: React.FC<SchoolEnrollmentManagerProps> = ({
                   <span
                     className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                       state.selectedEnrollment.status === 'Pending'
-                        ? 'bg-orange-100 text-orange-700'
+                        ? 'bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300'
                         : state.selectedEnrollment.status === 'Approved'
-                          ? 'bg-blue-100 text-blue-700'
+                          ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
                           : state.selectedEnrollment.status === 'Completed'
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-red-100 text-red-700'
+                            ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
+                            : 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300'
                     }`}
                   >
                     {state.selectedEnrollment.status}

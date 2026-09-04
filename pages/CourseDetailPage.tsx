@@ -146,7 +146,7 @@ const CourseDetailPage: React.FC = () => {
   return (
     <div className="bg-surface-2 min-h-screen pb-10">
       {/* --- HERO IMAGE --- */}
-      <div className="relative h-64 md:h-80 bg-gray-900">
+      <div className="relative h-64 md:h-80 bg-gray-900 dark:bg-surface-3">
         <img
           src={course.coverImage || placeholderImage(1200, 600, 'Course')}
           alt="Course Cover"
@@ -184,7 +184,7 @@ const CourseDetailPage: React.FC = () => {
             </h1>
             <Link
               to={`/school/${course.school.id}`}
-              className="flex items-center text-gray-200 hover:text-white transition-colors w-fit"
+              className="flex items-center text-content-muted hover:text-white transition-colors w-fit"
             >
               <img
                 src={course.school.logo}
@@ -199,7 +199,7 @@ const CourseDetailPage: React.FC = () => {
 
       {/* --- MAIN INFO CARD --- */}
       <div className="max-w-5xl mx-auto px-4 -mt-4 relative z-10">
-        <div className="bg-surface rounded-xl shadow-lg shadow-gray-200/50 border border-line p-5">
+        <div className="bg-surface rounded-xl shadow-lg dark:shadow-surface-3/20/50 border border-line p-5">
           <div className="flex flex-wrap gap-y-3 gap-x-6 text-sm text-content-muted mb-5">
             <div className="flex items-center">
               <Calendar className="h-4 w-4 mr-2 text-primary" />
@@ -286,11 +286,11 @@ const CourseDetailPage: React.FC = () => {
             {!isExpired && (
               <div className="md:hidden text-right">
                 {remainingSeats <= 10 && remainingSeats > 0 ? (
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-red-50 text-red-600 text-xs font-bold border border-red-100 animate-pulse">
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-red-50 dark:bg-red-900/50 text-red-600 dark:text-red-300 text-xs font-bold border border-red-100 animate-pulse">
                     <AlertCircle className="h-3 w-3 mr-1" /> នៅសល់តែ {remainingSeats} កន្លែង!
                   </span>
                 ) : (
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-green-50 text-green-600 text-xs font-bold border border-green-100">
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-green-50 dark:bg-green-900/50 text-green-600 dark:text-green-300 text-xs font-bold border border-green-100">
                     <CheckCircle className="h-3 w-3 mr-1" /> កំពុងទទួលពាក្យ
                   </span>
                 )}
@@ -363,14 +363,14 @@ const CourseDetailPage: React.FC = () => {
               <div className="bg-surface rounded-xl p-6 border border-line shadow-sm">
                 <h3 className="font-bold text-content mb-4 text-lg">កាលវិភាគ & ទីតាំង</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-blue-50 text-blue-800 p-4 rounded-xl text-sm font-medium flex items-start">
+                  <div className="bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 p-4 rounded-xl text-sm font-medium flex items-start">
                     <Clock className="h-5 w-5 mr-3 mt-0.5 flex-shrink-0" />
                     <div>
                       <span className="block font-bold mb-1">កាលវិភាគប្រចាំសប្តាហ៍</span>
                       {course.schedule}
                     </div>
                   </div>
-                  <div className="bg-purple-50 text-purple-800 p-4 rounded-xl text-sm font-medium flex items-start">
+                  <div className="bg-purple-50 dark:bg-purple-900/50 text-purple-600 dark:text-purple-300 p-4 rounded-xl text-sm font-medium flex items-start">
                     <MapPin className="h-5 w-5 mr-3 mt-0.5 flex-shrink-0" />
                     <div>
                       <span className="block font-bold mb-1">ម៉ោងសិក្សា / ទម្រង់</span>
@@ -407,7 +407,7 @@ const CourseDetailPage: React.FC = () => {
                 ))
               ) : (
                 <div className="text-center py-12 bg-surface rounded-xl border border-line border-dashed">
-                  <BookOpen className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                  <BookOpen className="h-12 w-12 mx-auto mb-3 text-content-faint" />
                   <p className="text-content-muted font-medium">
                     កម្មវិធីសិក្សាលម្អិតនឹងមកដល់ឆាប់ៗនេះ។
                   </p>

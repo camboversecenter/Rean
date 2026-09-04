@@ -62,7 +62,7 @@ const LoginPage: React.FC = () => {
 
         {errorMessage && (
           <div
-            className="mb-6 bg-red-50 border border-red-100 text-red-600 px-4 py-4 rounded-2xl flex items-center text-left animate-pulse-once"
+            className="mb-6 bg-red-50 dark:bg-red-900/30 border border-red-100 dark:border-red-800 text-red-600 dark:text-red-400 px-4 py-4 rounded-2xl flex items-center text-left animate-pulse-once"
             role="alert"
           >
             <AlertCircle className="h-5 w-5 mr-3 flex-shrink-0" aria-hidden="true" />
@@ -91,7 +91,7 @@ const LoginPage: React.FC = () => {
               target="_blank"
               rel="noreferrer"
               aria-label="Telegram Community"
-              className="inline-flex items-center justify-center px-4 py-2 bg-blue-50 rounded-full text-[10px] text-blue-600 font-bold hover:bg-blue-100 transition-colors border border-blue-100"
+              className="inline-flex items-center justify-center px-4 py-2 bg-blue-50 dark:bg-blue-900/50 rounded-full text-[10px] text-blue-600 dark:text-blue-300 font-bold hover:bg-blue-100 dark:hover:bg-blue-900/70 transition-colors border border-blue-100 dark:border-blue-800"
             >
               <Send
                 className="h-3 w-3 mr-1.5 rotate-45 transform -translate-y-[1px]"
@@ -101,7 +101,7 @@ const LoginPage: React.FC = () => {
             </a>
           </div>
           <div className="pt-2">
-            <span className="text-[10px] text-gray-300 font-mono">Ver 0.01 (Beta)</span>
+            <span className="text-[10px] text-content-faint font-mono">Ver 0.01 (Beta)</span>
           </div>
         </div>
       </div>
