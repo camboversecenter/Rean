@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ThemeToggle from './ThemeToggle';
 import {
-  BookOpen,
   Search,
   User as UserIcon,
   Bell,
@@ -148,9 +147,7 @@ const Header: React.FC = () => {
               </button>
             ) : (
               <Link to="/" className="flex items-center space-x-2" aria-label="Home">
-                <div className="bg-primary p-1 rounded-lg">
-                  <BookOpen className="h-5 w-5 text-white" />
-                </div>
+                <img src="/icons/icon-192.png" alt="REAN Logo" className="h-8 w-8 rounded-lg" />
                 <span className="text-xl font-bold text-primary tracking-tight">REAN</span>
               </Link>
             )}
@@ -397,9 +394,7 @@ const Header: React.FC = () => {
                   className="flex items-center space-x-2"
                   onClick={() => setState((prev) => ({ ...prev, showMobileMenu: false }))}
                 >
-                  <div className="bg-primary p-1.5 rounded-xl shadow-sm">
-                    <BookOpen className="h-5 w-5 text-white" />
-                  </div>
+                  <img src="/icons/icon-192.png" alt="REAN Logo" className="h-8 w-8 rounded-xl shadow-sm" />
                   <span className="text-lg font-bold text-primary tracking-tight">REAN - រៀន</span>
                 </Link>
                 <button

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { signInWithGoogle } from '../services/authService';
-import { BookOpen, AlertCircle, Send } from './Icons';
+import { AlertCircle, Send } from './Icons';
 import { TELEGRAM_COMMUNITY_URL } from '../constants';
 
 const getInitialError = (): string | null => {
@@ -46,9 +46,7 @@ const LoginPage: React.FC = () => {
       <div className="max-w-md w-full bg-surface rounded-3xl shadow-xl p-6 md:p-10 text-center border border-line">
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <div className="bg-primary p-4 rounded-2xl shadow-lg shadow-primary/30 transform rotate-3">
-            <BookOpen className="h-10 w-10 text-white" aria-hidden="true" />
-          </div>
+          <img src="/icons/icon-192.png" alt="REAN Logo" className="h-20 w-20 rounded-2xl shadow-lg shadow-primary/30" />
         </div>
 
         <h1 className="text-3xl font-bold text-content mb-3 font-['Kantumruy_Pro'] tracking-tight">
