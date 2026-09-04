@@ -36,7 +36,7 @@ const SchoolInquiryManager: React.FC<SchoolInquiryManagerProps> = ({ inquiries, 
 
       {inquiries.length === 0 ? (
         <div className="text-center py-16 bg-surface rounded-3xl border border-dashed border-line-strong">
-          <MessageCircle className="h-12 w-12 mx-auto text-gray-200 mb-3" />
+          <MessageCircle className="h-12 w-12 mx-auto text-content-muted mb-3" />
           <p className="text-content-faint">មិនទាន់មានសំណួរពីសិស្សនៅឡើយទេ។</p>
         </div>
       ) : (
@@ -100,7 +100,7 @@ const SchoolInquiryManager: React.FC<SchoolInquiryManagerProps> = ({ inquiries, 
                     type="button"
                     onClick={() => handleMarkContacted(item.id)}
                     disabled={updatingId === item.id}
-                    className="w-full md:w-auto bg-gray-900 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center justify-center shadow-lg active:scale-95 transition-all disabled:opacity-50"
+                    className="w-full md:w-auto bg-gray-900 dark:bg-surface-3 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center justify-center shadow-lg active:scale-95 transition-all disabled:opacity-50"
                   >
                     {updatingId === item.id ? (
                       <Loader2 className="h-3.5 w-3.5 animate-spin mr-2" />

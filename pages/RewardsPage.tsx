@@ -216,7 +216,7 @@ const RewardsPage: React.FC = () => {
     <div className="min-h-screen bg-surface-2 pb-20 pt-6 px-4">
       <div className="max-w-5xl mx-auto">
         {/* Header with Balance */}
-        <div className="bg-gray-900 rounded-2xl p-6 text-white mb-6 shadow-xl relative overflow-hidden">
+        <div className="bg-gray-900 dark:bg-surface-3 rounded-2xl p-6 text-white mb-6 shadow-xl relative overflow-hidden">
           <div className="absolute top-0 right-0 p-8 bg-surface/5 rounded-full -mr-4 -mt-4"></div>
           <div className="relative z-10">
             <p className="text-content-faint text-xs font-bold uppercase tracking-wider mb-1">
@@ -237,21 +237,21 @@ const RewardsPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setActiveTab('shop')}
-            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'shop' ? 'bg-gray-900 text-white shadow' : 'text-content-muted hover:text-content'}`}
+            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'shop' ? 'bg-gray-900 dark:bg-surface-3 text-white shadow' : 'text-content-muted hover:text-content'}`}
           >
             ហាង (Shop)
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('inventory')}
-            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'inventory' ? 'bg-gray-900 text-white shadow' : 'text-content-muted hover:text-content'}`}
+            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'inventory' ? 'bg-gray-900 dark:bg-surface-3 text-white shadow' : 'text-content-muted hover:text-content'}`}
           >
             របស់ខ្ញុំ (My)
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('history')}
-            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'history' ? 'bg-gray-900 text-white shadow' : 'text-content-muted hover:text-content'}`}
+            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all ${activeTab === 'history' ? 'bg-gray-900 dark:bg-surface-3 text-white shadow' : 'text-content-muted hover:text-content'}`}
           >
             ប្រវត្តិ (History)
           </button>
@@ -335,7 +335,7 @@ const RewardsPage: React.FC = () => {
 
             {myClaims.length === 0 ? (
               <div className="text-center py-12 bg-surface rounded-xl border border-dashed border-line-strong">
-                <Gift className="h-10 w-10 text-gray-300 mx-auto mb-2" />
+                <Gift className="h-10 w-10 text-content-faint mx-auto mb-2" />
                 <p className="text-content-muted">អ្នកមិនទាន់មានរង្វាន់ទេ។</p>
               </div>
             ) : (

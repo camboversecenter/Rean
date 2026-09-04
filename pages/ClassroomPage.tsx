@@ -369,7 +369,7 @@ const ClassroomPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => handleLogSession('Note')}
-                className="p-2 bg-gray-900 text-white rounded-lg"
+                className="p-2 bg-gray-900 dark:bg-surface-3 text-white rounded-lg"
               >
                 <Send className="h-4 w-4" />
               </button>
@@ -438,7 +438,7 @@ const ClassroomPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setSubmittingHwId(hw.id)}
-                        className="text-xs bg-gray-900 text-white px-3 py-2 rounded-lg font-bold w-full"
+                        className="text-xs bg-gray-900 dark:bg-surface-3 text-white px-3 py-2 rounded-lg font-bold w-full"
                       >
                         ដាក់កិច្ចការ (Submit)
                       </button>

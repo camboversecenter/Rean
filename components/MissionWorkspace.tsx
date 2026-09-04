@@ -1284,7 +1284,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                           ? 'bg-green-500 text-white'
                           : isFailedAttempt
                             ? 'bg-orange-500 text-white hover:bg-orange-600'
-                            : 'bg-gray-900 text-white'
+                            : 'bg-gray-900 dark:bg-surface-3 text-white'
                       } disabled:opacity-50`}
                     >
                       {isEvaluating ? (

@@ -353,7 +353,7 @@ const CommunityFeed: React.FC = () => {
 
             <div className="flex gap-3 mb-1">
               {isAnonymous ? (
-                <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 rounded-full bg-gray-800 dark:bg-line-strong flex items-center justify-center flex-shrink-0">
                   <Ghost className="h-5 w-5 text-white" />
                 </div>
               ) : (
@@ -402,7 +402,7 @@ const CommunityFeed: React.FC = () => {
                   onClick={() => setIsAnonymous(!isAnonymous)}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${
                     isAnonymous
-                      ? 'bg-gray-800 text-white border-gray-800 shadow-md'
+                      ? 'bg-gray-800 dark:bg-line-strong text-white border-gray-800 dark:border-line-strong shadow-md'
                       : 'bg-surface text-content-muted border-line-strong hover:bg-surface-2'
                   }`}
                   title="សួរដោយអនាមិក (Ask Anonymously)"
@@ -565,7 +565,7 @@ const CommunityFeed: React.FC = () => {
                       {(post.bounty_points || 0) > 0 && (
                         <div
                           className={`absolute top-0 right-0 text-white text-[10px] font-bold px-2 py-1 rounded-bl-xl shadow-sm z-10 ${
-                            isSolved ? 'bg-gray-400' : 'bg-yellow-400'
+                            isSolved ? 'bg-gray-400 dark:bg-line-strong' : 'bg-yellow-400'
                           }`}
                         >
                           {isSolved ? '🏁 Claimed' : `🏆 ${post.bounty_points} Pts`}

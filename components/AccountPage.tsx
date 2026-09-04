@@ -251,7 +251,7 @@ const AccountPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="absolute bottom-1 right-1 bg-gray-900 text-white p-2 rounded-full shadow-lg hover:scale-105 transition-transform border-2 border-white"
+                className="absolute bottom-1 right-1 bg-gray-900 dark:bg-surface-3 text-white p-2 rounded-full shadow-lg hover:scale-105 transition-transform border-2 border-white"
                 title="Change Photo"
                 aria-label="Change Photo"
               >
@@ -506,7 +506,7 @@ const AccountPage: React.FC = () => {
                       {booking.status === 'Accepted' && (
                         <Link
                           to={`/classroom/${booking.id}`}
-                          className="text-xs bg-gray-900 text-white px-4 py-2 rounded-xl font-bold hover:bg-black transition-colors flex items-center"
+                          className="text-xs bg-gray-900 dark:bg-surface-3 text-white px-4 py-2 rounded-xl font-bold hover:bg-black transition-colors flex items-center"
                         >
                           ចូលថ្នាក់ <ChevronRight className="h-3 w-3 ml-1" />
                         </Link>
@@ -563,7 +563,7 @@ const AccountPage: React.FC = () => {
 
               {achievements.length === 0 ? (
                 <div className="text-center py-6">
-                  <Award className="h-10 w-10 text-gray-200 mx-auto mb-2" />
+                  <Award className="h-10 w-10 text-content-muted mx-auto mb-2" />
                   <p className="text-xs text-content-faint">មិនទាន់មានសមិទ្ធិផល។</p>
                 </div>
               ) : (
@@ -620,7 +620,7 @@ const AccountPage: React.FC = () => {
                   type="button"
                   onClick={handleSave}
                   disabled={saving}
-                  className="w-full bg-gray-900 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center text-sm"
+                  className="w-full bg-gray-900 dark:bg-surface-3 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center text-sm"
                 >
                   {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : 'រក្សាទុក (Save)'}
                 </button>

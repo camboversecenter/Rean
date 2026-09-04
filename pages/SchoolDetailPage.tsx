@@ -253,7 +253,7 @@ const SchoolDetailPage: React.FC = () => {
           <div className="space-y-6">
             {activeAdmissions.length === 0 && (
               <div className="text-center py-10 bg-surface rounded-xl border border-line-strong">
-                <AlertCircle className="h-10 w-10 text-gray-300 mx-auto mb-2" />
+                <AlertCircle className="h-10 w-10 text-content-faint mx-auto mb-2" />
                 <p className="text-content-muted">មិនមានការជ្រើសរើសសិស្សនៅពេលនេះទេ។</p>
               </div>
             )}

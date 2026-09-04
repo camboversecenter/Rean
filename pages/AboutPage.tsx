@@ -688,13 +688,13 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* ===== CONTRIBUTE / CTA ===== */}
-      <section className="bg-gray-900 text-white">
+      <section className="bg-gray-900 dark:bg-surface-3 text-white">
         <div className="max-w-4xl mx-auto px-4 py-14 md:py-16 text-center">
           <GraduationCap className="h-10 w-10 mx-auto mb-4 text-secondary" />
           <h2 className="text-2xl md:text-3xl font-extrabold mb-4">
             ចូលរួមជាមួយយើង (Get involved)
           </h2>
-          <p className="text-gray-300 mb-8 max-w-xl mx-auto leading-relaxed">
+          <p className="text-content-faint dark:text-content-soft mb-8 max-w-xl mx-auto leading-relaxed">
             Contributions of code, documentation, translations, and ideas are all welcome. You can
             also support REAN through donations, grants, and training partnerships.
           </p>

@@ -222,7 +222,7 @@ const TutorDetailPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleOpenBooking}
-                className="w-full bg-gray-900 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-black transition-transform active:scale-95"
+                className="w-full bg-gray-900 dark:bg-surface-3 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-black transition-transform active:scale-95"
               >
                 កក់ម៉ោងសិក្សា
               </button>

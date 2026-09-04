@@ -101,7 +101,7 @@ const LoginPage: React.FC = () => {
             </a>
           </div>
           <div className="pt-2">
-            <span className="text-[10px] text-gray-300 font-mono">Ver 0.01 (Beta)</span>
+            <span className="text-[10px] text-content-faint font-mono">Ver 0.01 (Beta)</span>
           </div>
         </div>
       </div>

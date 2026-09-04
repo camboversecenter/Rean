@@ -151,7 +151,7 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {admissions.length === 0 && (
           <div className="col-span-full py-12 text-center bg-surface rounded-3xl border border-dashed border-line-strong">
-            <GraduationCap className="h-12 w-12 mx-auto text-gray-200 mb-3" />
+            <GraduationCap className="h-12 w-12 mx-auto text-content-muted mb-3" />
             <p className="text-content-muted">មិនទាន់មានការជ្រើសរើសសិស្សទេ។</p>
           </div>
         )}

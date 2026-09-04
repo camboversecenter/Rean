@@ -181,7 +181,7 @@ const HomePage: React.FC = () => {
                   filteredSchools.map((s) => <SchoolCard key={s.id} school={s} />)
                 ) : (
                   <div className="col-span-full text-center py-20 bg-surface rounded-2xl border border-dashed border-line-strong">
-                    <Building2 className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                    <Building2 className="h-12 w-12 mx-auto mb-3 text-content-faint" />
                     <p className="text-content-muted">មិនមានសាលាដែលអ្នកស្វែងរកទេ។</p>
                   </div>
                 )}
@@ -194,7 +194,7 @@ const HomePage: React.FC = () => {
                   filteredMissions.map((m) => <MissionCard key={m.id} mission={m} />)
                 ) : (
                   <div className="col-span-full text-center py-20 bg-surface rounded-2xl border border-dashed border-line-strong">
-                    <Target className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                    <Target className="h-12 w-12 mx-auto mb-3 text-content-faint" />
                     <p className="text-content-muted">មិនមានបេសកកម្មដែលអ្នកស្វែងរកទេ។</p>
                   </div>
                 )}
@@ -207,7 +207,7 @@ const HomePage: React.FC = () => {
                   filteredTutors.map((t) => <TutorCard key={t.id} tutor={t} />)
                 ) : (
                   <div className="col-span-full text-center py-20 bg-surface rounded-2xl border border-dashed border-line-strong">
-                    <Users className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                    <Users className="h-12 w-12 mx-auto mb-3 text-content-faint" />
                     <p className="text-content-muted">មិនមានគ្រូបង្រៀនដែលអ្នកស្វែងរកទេ។</p>
                   </div>
                 )}
@@ -231,7 +231,7 @@ const HomePage: React.FC = () => {
 
               {state.loading ? (
                 <div className="flex justify-center py-8">
-                  <Loader2 className="animate-spin text-gray-300" />
+                  <Loader2 className="animate-spin text-content-faint" />
                 </div>
               ) : state.missions.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -290,7 +290,7 @@ const HomePage: React.FC = () => {
               <div className="px-4 md:px-0 grid grid-cols-1 md:grid-cols-2 gap-4">
                 {state.loading ? (
                   <div className="col-span-2 flex justify-center py-8">
-                    <Loader2 className="animate-spin text-gray-300" />
+                    <Loader2 className="animate-spin text-content-faint" />
                   </div>
                 ) : (
                   state.schools
@@ -345,7 +345,7 @@ const HomePage: React.FC = () => {
               <div className="px-4 md:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 {state.loading ? (
                   <div className="col-span-2 flex justify-center py-8">
-                    <Loader2 className="animate-spin text-gray-300" />
+                    <Loader2 className="animate-spin text-content-faint" />
                   </div>
                 ) : state.tutors.length > 0 ? (
                   state.tutors

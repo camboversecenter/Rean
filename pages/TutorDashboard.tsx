@@ -813,7 +813,7 @@ const TutorDashboard: React.FC = () => {
                         {b.status === 'Accepted' && (
                           <Link
                             to={`/classroom/${b.id}`}
-                            className="bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center hover:bg-black transition-colors"
+                            className="bg-gray-900 dark:bg-surface-3 text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center hover:bg-black transition-colors"
                           >
                             <Video className="h-3 w-3 mr-2" /> ចូលថ្នាក់ (Classroom)
                           </Link>
@@ -902,7 +902,7 @@ const TutorDashboard: React.FC = () => {
                 type="button"
                 onClick={handleSubmitApplication}
                 disabled={applying || !applyMessage.trim()}
-                className="w-full bg-gray-900 text-white font-bold py-3 rounded-xl shadow-lg flex items-center justify-center hover:bg-black transition-colors disabled:opacity-50"
+                className="w-full bg-gray-900 dark:bg-surface-3 text-white font-bold py-3 rounded-xl shadow-lg flex items-center justify-center hover:bg-black transition-colors disabled:opacity-50"
               >
                 {applying ? (
                   <Loader2 className="h-4 w-4 animate-spin" />

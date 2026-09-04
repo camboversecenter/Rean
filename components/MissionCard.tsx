@@ -138,7 +138,7 @@ const MissionCard: React.FC<MissionCardProps> = ({ mission, compact = false }) =
               >
                 {mission.price === 0 ? 'Free' : formatRiel(mission.price)}
               </span>
-              <ChevronRight className="h-4 w-4 text-gray-300 group-hover:text-primary transition-colors" />
+              <ChevronRight className="h-4 w-4 text-content-faint group-hover:text-primary transition-colors" />
             </div>
           </div>
         </div>

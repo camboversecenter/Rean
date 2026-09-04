@@ -110,7 +110,7 @@ const MissionClassManager: React.FC<MissionClassManagerProps> = ({
             type="button"
             onClick={handleCreateClass}
             disabled={state.isCreating || !state.title.trim()}
-            className="bg-gray-900 text-white p-2.5 rounded-xl hover:bg-black transition-colors disabled:opacity-50 shadow-md flex items-center justify-center min-w-[44px]"
+            className="bg-gray-900 dark:bg-surface-3 text-white p-2.5 rounded-xl hover:bg-black transition-colors disabled:opacity-50 shadow-md flex items-center justify-center min-w-[44px]"
             aria-label="Create Class"
           >
             {state.isCreating ? (

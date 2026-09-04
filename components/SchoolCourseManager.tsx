@@ -264,7 +264,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                                 alt="Course"
                               />
                             ) : (
-                              <div className="w-full h-full flex items-center justify-center text-gray-300">
+                              <div className="w-full h-full flex items-center justify-center text-content-faint">
                                 <BookOpen className="h-5 w-5" />
                               </div>
                             )}
@@ -444,7 +444,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
                     alt="Preview"
                   />
                 ) : (
-                  <Camera className="h-8 w-8 text-gray-300" />
+                  <Camera className="h-8 w-8 text-content-faint" />
                 )}
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <div className="bg-surface p-2 rounded-full shadow-lg">

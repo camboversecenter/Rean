@@ -57,7 +57,7 @@ const SchoolCard: React.FC<SchoolCardProps> = ({ school }) => {
                 ? 'bg-green-500 text-white'
                 : statusLabel === 'ជិតចប់'
                   ? 'bg-orange-500 text-white'
-                  : 'bg-gray-500 text-white'
+                  : 'bg-gray-500 dark:bg-line-strong text-white'
             }`}
           >
             {isClosingSoon && <AlertCircle className="h-3 w-3 mr-1" />}

@@ -622,7 +622,7 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                       {loading ? (
                         <tr>
                           <td colSpan={7} className="text-center py-20">
-                            <Loader2 className="animate-spin h-8 w-8 mx-auto text-gray-300" />
+                            <Loader2 className="animate-spin h-8 w-8 mx-auto text-content-faint" />
                           </td>
                         </tr>
                       ) : displayEnrollments.length === 0 ? (
@@ -658,7 +658,7 @@ const MissionManager: React.FC<MissionManagerProps> = ({
             <button
               type="button"
               onClick={() => setViewState((prev: any) => ({ ...prev, viewingReceipt: null }))}
-              className="absolute -top-12 right-0 text-white flex items-center hover:text-gray-300 transition-colors"
+              className="absolute -top-12 right-0 text-white flex items-center hover:text-content-faint transition-colors"
             >
               <X className="h-8 w-8" />
             </button>

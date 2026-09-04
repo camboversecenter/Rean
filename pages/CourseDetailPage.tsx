@@ -146,7 +146,7 @@ const CourseDetailPage: React.FC = () => {
   return (
     <div className="bg-surface-2 min-h-screen pb-10">
       {/* --- HERO IMAGE --- */}
-      <div className="relative h-64 md:h-80 bg-gray-900">
+      <div className="relative h-64 md:h-80 bg-gray-900 dark:bg-surface-3">
         <img
           src={course.coverImage || placeholderImage(1200, 600, 'Course')}
           alt="Course Cover"
@@ -184,7 +184,7 @@ const CourseDetailPage: React.FC = () => {
             </h1>
             <Link
               to={`/school/${course.school.id}`}
-              className="flex items-center text-gray-200 hover:text-white transition-colors w-fit"
+              className="flex items-center text-content-muted hover:text-white transition-colors w-fit"
             >
               <img
                 src={course.school.logo}
@@ -199,7 +199,7 @@ const CourseDetailPage: React.FC = () => {
 
       {/* --- MAIN INFO CARD --- */}
       <div className="max-w-5xl mx-auto px-4 -mt-4 relative z-10">
-        <div className="bg-surface rounded-xl shadow-lg shadow-gray-200/50 border border-line p-5">
+        <div className="bg-surface rounded-xl shadow-lg dark:shadow-surface-3/20/50 border border-line p-5">
           <div className="flex flex-wrap gap-y-3 gap-x-6 text-sm text-content-muted mb-5">
             <div className="flex items-center">
               <Calendar className="h-4 w-4 mr-2 text-primary" />
@@ -407,7 +407,7 @@ const CourseDetailPage: React.FC = () => {
                 ))
               ) : (
                 <div className="text-center py-12 bg-surface rounded-xl border border-line border-dashed">
-                  <BookOpen className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                  <BookOpen className="h-12 w-12 mx-auto mb-3 text-content-faint" />
                   <p className="text-content-muted font-medium">
                     កម្មវិធីសិក្សាលម្អិតនឹងមកដល់ឆាប់ៗនេះ។
                   </p>

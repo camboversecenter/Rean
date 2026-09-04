@@ -380,7 +380,7 @@ const MissionForm: React.FC<MissionFormProps> = ({
                       type="button"
                       onClick={handleAssignTeacher}
                       disabled={assigningTeacher || !teacherEmail.trim()}
-                      className="w-full bg-gray-900 text-white py-2 rounded-lg text-xs font-bold hover:bg-black transition-colors disabled:opacity-50"
+                      className="w-full bg-gray-900 dark:bg-surface-3 text-white py-2 rounded-lg text-xs font-bold hover:bg-black transition-colors disabled:opacity-50"
                     >
                       {assigningTeacher ? (
                         <Loader2 className="h-3 w-3 animate-spin mx-auto" />
