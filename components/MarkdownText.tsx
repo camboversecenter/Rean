@@ -56,7 +56,7 @@ const unescapeMathDelimiters = (text: string): string => {
 const MarkdownText: React.FC<MarkdownTextProps> = ({ content, className = '' }) => {
   return (
     <div
-      className={`prose prose-sm max-w-none prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-li:my-0 ${className} prose-strong:font-bold prose-strong:inherit`}
+      className={`prose prose-sm dark:prose-invert max-w-none prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-li:my-0 ${className} prose-strong:font-bold prose-strong:inherit`}
     >
       <ReactMarkdown
         remarkPlugins={[remarkMath]}
