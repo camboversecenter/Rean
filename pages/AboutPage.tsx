@@ -60,28 +60,28 @@ const CONTACT_CHANNELS = [
 const FEATURES = [
   {
     icon: Target,
-    color: 'bg-red-50 text-red-500',
+    color: 'bg-red-50 dark:bg-red-900/50 text-red-600 dark:text-red-300',
     title: 'បេសកកម្មសិក្សា (Missions)',
     desc: 'វគ្គសិក្សាតាមគម្រោង បែងចែកជាមេរៀនតូចៗ។ សិស្សរៀនពី AI ធ្វើកិច្ចការ រួចដាក់ស្នើសម្រាប់ការវាយតម្លៃ។',
     en: 'Project-based courses with modules, squads, classes, and AI grading.',
   },
   {
     icon: Building2,
-    color: 'bg-purple-50 text-purple-600',
+    color: 'bg-purple-50 dark:bg-purple-900/50 text-purple-600 dark:text-purple-300',
     title: 'សាលារៀន (Schools)',
     desc: 'ប្រវត្តិរូបសាលា ការជ្រើសរើសសិស្សថ្មី ការគ្រប់គ្រងការចុះឈ្មោះ និងអាហារូបករណ៍។',
     en: 'School profiles, admissions, enrollments, inquiries, and scholarships.',
   },
   {
     icon: Users,
-    color: 'bg-orange-50 text-orange-500',
+    color: 'bg-orange-50 dark:bg-orange-900/50 text-orange-600 dark:text-orange-300',
     title: 'គ្រូបង្រៀន (Tutors)',
     desc: 'ប្រវត្តិរូបគ្រូ ការកក់ម៉ោងរៀន និងសំណើពីសិស្ស។',
     en: 'Tutor profiles, bookings, and requests from students looking for a tutor.',
   },
   {
     icon: BookOpen,
-    color: 'bg-blue-50 text-blue-600',
+    color: 'bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300',
     title: 'វគ្គសិក្សាខ្លី (Short Courses)',
     desc: 'ទីផ្សារវគ្គសិក្សាខ្លីៗ សម្រាប់ការរៀនរហ័ស។',
     en: 'Shorter courses for quick, focused learning, alongside the full missions.',
@@ -109,7 +109,7 @@ const FEATURES = [
   },
   {
     icon: ShieldCheck,
-    color: 'bg-green-50 text-green-600',
+    color: 'bg-green-50 dark:bg-green-900/50 text-green-600 dark:text-green-300',
     title: 'តួនាទី និងសុវត្ថិភាព (Roles & Auth)',
     desc: 'ចូលប្រើដោយគណនី Google និងជ្រើសរើសតួនាទី មុនពេលចាប់ផ្តើមប្រើប្រាស់។',
     en: 'Google sign-in, role selection, and a dashboard for each role.',

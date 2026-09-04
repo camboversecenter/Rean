@@ -22,7 +22,7 @@ import {
 const FEATURES = [
   {
     icon: Target,
-    color: 'bg-red-50 text-red-500',
+    color: 'bg-red-50 dark:bg-red-900/50 text-red-600 dark:text-red-300',
     title: 'បេសកកម្មសិក្សា (Missions)',
     desc: 'រៀនតាមរយៈគម្រោងជាក់ស្តែង។ ធ្វើកិច្ចការ ដាក់ស្នើ និងទទួលការវាយតម្លៃពី AI ភ្លាមៗ។',
     en: 'Project-based learning with AI grading.',
@@ -36,14 +36,14 @@ const FEATURES = [
   },
   {
     icon: Building2,
-    color: 'bg-purple-50 text-purple-600',
+    color: 'bg-purple-50 dark:bg-purple-900/50 text-purple-600 dark:text-purple-300',
     title: 'សាលារៀន (Schools)',
     desc: 'ស្វែងរកសាលា ការជ្រើសរើសសិស្សថ្មី អាហារូបករណ៍ និងវគ្គសិក្សាខ្លីៗ។',
     en: 'Discover schools, admissions, and scholarships.',
   },
   {
     icon: Users,
-    color: 'bg-orange-50 text-orange-500',
+    color: 'bg-orange-50 dark:bg-orange-900/50 text-orange-600 dark:text-orange-300',
     title: 'គ្រូបង្រៀន (Tutors)',
     desc: 'ស្វែងរក និងកក់គ្រូបង្រៀនឯកជនតាមមុខវិជ្ជាដែលអ្នកចង់រៀន។',
     en: 'Find and book private tutors by subject.',

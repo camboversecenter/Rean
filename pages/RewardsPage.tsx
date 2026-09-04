@@ -280,7 +280,7 @@ const RewardsPage: React.FC = () => {
                     key={item.id}
                     className="bg-surface rounded-2xl p-4 shadow-sm border border-line flex items-center gap-4 hover:shadow-md transition-shadow relative overflow-hidden"
                   >
-                    <div className="w-16 h-16 rounded-xl flex items-center justify-center text-3xl shadow-inner bg-purple-50 text-purple-600 overflow-hidden">
+                    <div className="w-16 h-16 rounded-xl flex items-center justify-center text-3xl shadow-inner bg-purple-50 dark:bg-purple-900/50 text-purple-600 dark:text-purple-300 overflow-hidden">
                       {item.cover_image ? (
                         <img
                           src={item.cover_image}

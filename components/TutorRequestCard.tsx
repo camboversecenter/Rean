@@ -35,7 +35,7 @@ const TutorRequestCard: React.FC<TutorRequestCardProps> = ({
           <h3 className="text-sm font-bold text-content flex items-center">{request.subject}</h3>
           <p className="text-xs text-primary font-medium mt-0.5">{request.grade}</p>
         </div>
-        <span className="bg-green-50 text-green-700 text-xs font-bold px-2 py-1 rounded-lg">
+        <span className="bg-green-50 dark:bg-green-900/50 text-green-600 dark:text-green-300 text-xs font-bold px-2 py-1 rounded-lg">
           {getFormattedBudget(request.budget)}
         </span>
       </div>
@@ -61,7 +61,7 @@ const TutorRequestCard: React.FC<TutorRequestCardProps> = ({
         <button
           type="button"
           onClick={() => onDelete && onDelete(request.id)}
-          className="w-full mt-3 py-2 bg-red-50 text-red-600 font-bold text-xs rounded-lg hover:bg-red-100 transition-colors flex items-center justify-center"
+          className="w-full mt-3 py-2 bg-red-50 dark:bg-red-900/50 text-red-600 dark:text-red-300 font-bold text-xs rounded-lg hover:bg-red-100 transition-colors flex items-center justify-center"
         >
           <Trash2 className="h-3.5 w-3.5 mr-2" /> លុបសំណើ (Delete)
         </button>

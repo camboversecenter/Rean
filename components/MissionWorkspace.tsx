@@ -930,7 +930,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                     <ul className="space-y-3">
                       {keyPoints.map((point, idx) => (
                         <li key={point} className="flex items-start">
-                          <span className="w-6 h-6 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0 mr-3 text-[11px] font-bold">
+                          <span className="w-6 h-6 rounded-full bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 flex items-center justify-center flex-shrink-0 mr-3 text-[11px] font-bold">
                             {idx + 1}
                           </span>
                           <div className="text-sm text-content-soft leading-relaxed min-w-0">

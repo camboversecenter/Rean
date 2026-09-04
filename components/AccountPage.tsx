@@ -278,7 +278,7 @@ const AccountPage: React.FC = () => {
               </h1>
               <p className="text-sm text-content-muted font-medium mb-2">{profile?.email}</p>
               <div className="flex items-center justify-center md:justify-start gap-2">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 uppercase tracking-wide border border-blue-100">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 uppercase tracking-wide border border-blue-100">
                   {profile?.role || 'Guest'}
                 </span>
               </div>

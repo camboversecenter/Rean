@@ -234,7 +234,7 @@ const TutorDetailPage: React.FC = () => {
                 {state.tutor.subjects?.map((s) => (
                   <span
                     key={s}
-                    className="bg-blue-50 text-blue-700 px-3 py-1 rounded-lg text-sm font-medium"
+                    className="bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 px-3 py-1 rounded-lg text-sm font-medium"
                   >
                     {s}
                   </span>

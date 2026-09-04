@@ -381,7 +381,7 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                     <button
                       type="button"
                       onClick={() => handleViewReceipt(e.paymentReceiptUrl!)}
-                      className="p-1 bg-blue-50 text-blue-600 rounded hover:bg-blue-100"
+                      className="p-1 bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 rounded hover:bg-blue-100"
                       title="View Receipt"
                     >
                       <Eye className="h-3 w-3" />
@@ -390,7 +390,7 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                   <button
                     type="button"
                     onClick={() => handleApprovePayment(e.id)}
-                    className="p-1 bg-green-50 text-green-600 rounded hover:bg-green-100"
+                    className="p-1 bg-green-50 dark:bg-green-900/50 text-green-600 dark:text-green-300 rounded hover:bg-green-100"
                     title="Approve"
                   >
                     <CheckCircle className="h-3 w-3" />
@@ -398,7 +398,7 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                   <button
                     type="button"
                     onClick={() => handleRejectPayment(e.id)}
-                    className="p-1 bg-red-50 text-red-600 rounded hover:bg-red-100"
+                    className="p-1 bg-red-50 dark:bg-red-900/50 text-red-600 dark:text-red-300 rounded hover:bg-red-100"
                     title="Reject"
                   >
                     <X className="h-3 w-3" />

@@ -205,7 +205,7 @@ const Header: React.FC = () => {
             {/* Tutor Market Link */}
             <Link
               to="/tutors"
-              className={`p-2 rounded-full transition-colors ${isTutorMarket ? 'bg-blue-50 text-blue-600' : 'text-content-faint hover:text-blue-600'}`}
+              className={`p-2 rounded-full transition-colors ${isTutorMarket ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300' : 'text-content-faint hover:text-blue-600'}`}
               title="Tutor Market"
               aria-label="Tutor Market"
             >
@@ -305,7 +305,7 @@ const Header: React.FC = () => {
                 {isSchool && (
                   <Link
                     to="/school/dashboard"
-                    className={`p-2 rounded-full transition-colors ${isSchoolDash ? 'bg-blue-50 text-blue-600' : 'text-content-faint hover:text-blue-600'}`}
+                    className={`p-2 rounded-full transition-colors ${isSchoolDash ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300' : 'text-content-faint hover:text-blue-600'}`}
                     title="School Management"
                     aria-label="School Management"
                   >
@@ -329,7 +329,7 @@ const Header: React.FC = () => {
                 {isTutor && (
                   <Link
                     to="/tutor/dashboard"
-                    className={`p-2 rounded-full transition-colors ${isTutorDash ? 'bg-green-50 text-green-600' : 'text-content-faint hover:text-green-600'}`}
+                    className={`p-2 rounded-full transition-colors ${isTutorDash ? 'bg-green-50 dark:bg-green-900/50 text-green-600 dark:text-green-300' : 'text-content-faint hover:text-green-600'}`}
                     title="Tutor Dashboard"
                     aria-label="Tutor Dashboard"
                   >
@@ -608,7 +608,7 @@ const Header: React.FC = () => {
                         to="/school/dashboard"
                         className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                           isSchoolDash
-                            ? 'bg-blue-50 text-blue-600 font-bold'
+                            ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 font-bold'
                             : 'text-content-soft hover:bg-surface-3'
                         }`}
                       >
@@ -642,7 +642,7 @@ const Header: React.FC = () => {
                         to="/tutor/dashboard"
                         className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                           isTutorDash
-                            ? 'bg-green-50 text-green-600 font-bold'
+                            ? 'bg-green-50 dark:bg-green-900/50 text-green-600 dark:text-green-300 font-bold'
                             : 'text-content-soft hover:bg-surface-3'
                         }`}
                       >

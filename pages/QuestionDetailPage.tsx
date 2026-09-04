@@ -326,7 +326,7 @@ const QuestionDetailPage: React.FC = () => {
           type="button"
           onClick={handleBookmark}
           aria-label="Bookmark"
-          className={`p-2 rounded-full transition-colors ${bookmarked ? 'bg-blue-50 text-blue-600' : 'text-content-faint hover:bg-surface-3'}`}
+          className={`p-2 rounded-full transition-colors ${bookmarked ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300' : 'text-content-faint hover:bg-surface-3'}`}
         >
           <Bookmark className={`h-5 w-5 ${bookmarked ? 'fill-blue-600' : ''}`} />
         </button>

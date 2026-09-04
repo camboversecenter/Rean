@@ -435,7 +435,7 @@ const SchoolDetailPage: React.FC = () => {
 
             <div className="p-4 space-y-4">
               {modalState.targetAdmission && (
-                <div className="bg-blue-50 text-blue-800 text-xs px-3 py-2 rounded-lg font-medium">
+                <div className="bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 text-xs px-3 py-2 rounded-lg font-medium">
                   ទាក់ទងនឹង៖ {modalState.targetAdmission.title}
                 </div>
               )}
