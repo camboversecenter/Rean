@@ -725,8 +725,8 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
       {showCompletionModal && (
         <div className="absolute inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fade-in">
           <div className="bg-surface rounded-3xl max-w-sm w-full p-8 text-center shadow-2xl animate-bounce-in">
-            <div className="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Award className="h-10 w-10 text-yellow-600" />
+            <div className="w-20 h-20 bg-yellow-100 dark:bg-yellow-900/50 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Award className="h-10 w-10 text-yellow-600 dark:text-yellow-400" />
             </div>
             <h2 className="text-2xl font-bold text-content mb-2">អបអរសាទរ!</h2>
             <p className="text-content-muted mb-6">
@@ -896,19 +896,19 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                       មេរៀនទី {activeModuleIndex + 1} / {mission.modules.length}
                     </span>
                     {activeModule.simulationConfig && (
-                      <span className="text-[11px] font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-full">
+                      <span className="text-[11px] font-bold text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-purple-900/50 px-2.5 py-1 rounded-full">
                         មានពិសោធន៍ (Lab)
                       </span>
                     )}
                     {moduleStatus[activeModuleId] === 'completed' && (
-                      <span className="text-[11px] font-bold text-green-700 bg-green-50 px-2.5 py-1 rounded-full">
+                      <span className="text-[11px] font-bold text-green-700 dark:text-green-300 bg-green-50 dark:bg-green-900/50 px-2.5 py-1 rounded-full">
                         បានបញ្ចប់
                       </span>
                     )}
                   </div>
                   <h2 className="text-xl font-bold text-content mb-4">{activeModule.title}</h2>
-                  <div className="bg-indigo-50 text-indigo-900 p-4 rounded-xl flex items-start">
-                    <BookOpen className="h-5 w-5 mr-3 mt-0.5 flex-shrink-0 text-indigo-500" />
+                  <div className="bg-indigo-50 dark:bg-indigo-900/50 text-indigo-900 dark:text-indigo-100 p-4 rounded-xl flex items-start">
+                    <BookOpen className="h-5 w-5 mr-3 mt-0.5 flex-shrink-0 text-indigo-500 dark:text-indigo-400" />
                     <div className="min-w-0">
                       <span className="block font-bold mb-1 uppercase text-xs tracking-wider">
                         តើអ្នកនឹងរៀនអ្វីខ្លះ (What you will learn)
@@ -977,15 +977,15 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                 </div>
 
                 {/* TIPS */}
-                <div className="bg-amber-50 border border-amber-100 rounded-2xl p-5">
-                  <h3 className="font-bold text-amber-900 mb-3 flex items-center">
-                    <Lightbulb className="h-5 w-5 mr-2 text-amber-600" />
+                <div className="bg-amber-50 dark:bg-amber-900/50 border border-amber-100 dark:border-amber-800 rounded-2xl p-5">
+                  <h3 className="font-bold text-amber-900 dark:text-amber-100 mb-3 flex items-center">
+                    <Lightbulb className="h-5 w-5 mr-2 text-amber-600 dark:text-amber-400" />
                     គន្លឹះសម្រាប់មេរៀននេះ (Tips)
                   </h3>
                   <ul className="space-y-2">
                     {lessonTips.map((tip) => (
-                      <li key={tip} className="flex items-start text-sm text-amber-900/90">
-                        <span className="mr-2 mt-0.5 text-amber-500 flex-shrink-0">•</span>
+                      <li key={tip} className="flex items-start text-sm text-amber-900/90 dark:text-amber-100/90">
+                        <span className="mr-2 mt-0.5 text-amber-500 dark:text-amber-400 flex-shrink-0">•</span>
                         <span className="leading-relaxed">{tip}</span>
                       </li>
                     ))}
@@ -1031,12 +1031,12 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                 />
 
                 {activeModule.simulationConfig.instructions && (
-                  <div className="bg-purple-50 border border-purple-100 rounded-2xl p-4">
-                    <h3 className="font-bold text-purple-900 mb-2 flex items-center text-sm">
-                      <Experiment className="h-4 w-4 mr-2 text-purple-600" />
+                  <div className="bg-purple-50 dark:bg-purple-900/50 border border-purple-100 dark:border-purple-800 rounded-2xl p-4">
+                    <h3 className="font-bold text-purple-900 dark:text-purple-100 mb-2 flex items-center text-sm">
+                      <Experiment className="h-4 w-4 mr-2 text-purple-600 dark:text-purple-400" />
                       ការណែនាំពិសោធន៍ (Lab Instructions)
                     </h3>
-                    <div className="text-sm text-purple-900/90 leading-relaxed">
+                    <div className="text-sm text-purple-900/90 dark:text-purple-100/90 leading-relaxed">
                       <MarkdownText content={activeModule.simulationConfig.instructions} />
                     </div>
                   </div>
@@ -1151,8 +1151,8 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                   </div>
                 ) : (
                   <div className="flex-1 flex flex-col items-center justify-center text-center p-8 bg-surface rounded-2xl shadow-sm border border-line">
-                    <div className="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center mb-6">
-                      <Brain className="h-10 w-10 text-indigo-500" />
+                    <div className="w-20 h-20 bg-indigo-50 dark:bg-indigo-900/50 rounded-full flex items-center justify-center mb-6">
+                      <Brain className="h-10 w-10 text-indigo-500 dark:text-indigo-400" />
                     </div>
                     <h2 className="text-2xl font-bold text-content mb-2">ដោះសោចំណេះដឹង</h2>
                     <p className="text-content-muted mb-6 max-w-md">
@@ -1163,14 +1163,14 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                       <button
                         type="button"
                         onClick={() => setLessonLanguage('km')}
-                        className={`px-6 py-3 rounded-xl font-bold border transition-all ${lessonLanguage === 'km' ? 'bg-indigo-50 border-indigo-200 text-indigo-700' : 'bg-surface border-line-strong text-content-muted hover:bg-surface-2'}`}
+                        className={`px-6 py-3 rounded-xl font-bold border transition-all ${lessonLanguage === 'km' ? 'bg-indigo-50 dark:bg-indigo-900/50 border-indigo-200 dark:border-indigo-700 text-indigo-700 dark:text-indigo-300' : 'bg-surface border-line-strong text-content-muted hover:bg-surface-2'}`}
                       >
                         🇰🇭 ភាសាខ្មែរ
                       </button>
                       <button
                         type="button"
                         onClick={() => setLessonLanguage('en')}
-                        className={`px-6 py-3 rounded-xl font-bold border transition-all ${lessonLanguage === 'en' ? 'bg-indigo-50 border-indigo-200 text-indigo-700' : 'bg-surface border-line-strong text-content-muted hover:bg-surface-2'}`}
+                        className={`px-6 py-3 rounded-xl font-bold border transition-all ${lessonLanguage === 'en' ? 'bg-indigo-50 dark:bg-indigo-900/50 border-indigo-200 dark:border-indigo-700 text-indigo-700 dark:text-indigo-300' : 'bg-surface border-line-strong text-content-muted hover:bg-surface-2'}`}
                       >
                         🇬🇧 English
                       </button>
@@ -1207,7 +1207,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                 <div className="bg-surface rounded-2xl shadow-sm border border-line flex flex-col overflow-hidden">
                   {mission.enablePlagiarismCheck && (
                     <div className="p-3 bg-surface-2 border-b border-line flex justify-end items-center">
-                      <div className="flex items-center text-[10px] text-green-600 font-bold bg-green-50 px-2 py-1 rounded border border-green-100">
+                      <div className="flex items-center text-[10px] text-green-600 dark:text-green-300 font-bold bg-green-50 dark:bg-green-900/50 px-2 py-1 rounded border border-green-100 dark:border-green-800">
                         <ShieldCheck className="h-3 w-3 mr-1" />
                         Check Active
                       </div>
@@ -1322,12 +1322,12 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
 
                 {currentEvaluation && (
                   <div
-                    className={`p-4 rounded-xl border ${currentEvaluation.passed ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'} animate-scale-in`}
+                    className={`p-4 rounded-xl border ${currentEvaluation.passed ? 'bg-green-50 dark:bg-green-900/50 border-green-200 dark:border-green-800' : 'bg-red-50 dark:bg-red-900/50 border-red-200 dark:border-red-800'} animate-scale-in`}
                   >
                     <div className="flex items-start gap-4">
                       <div className="flex-1 min-w-0">
                         <h4
-                          className={`font-bold text-sm mb-2 ${currentEvaluation.passed ? 'text-green-800' : 'text-red-800'}`}
+                          className={`font-bold text-sm mb-2 ${currentEvaluation.passed ? 'text-green-800 dark:text-green-300' : 'text-red-800 dark:text-red-300'}`}
                         >
                           {currentEvaluation.passed
                             ? 'ល្អណាស់!'
@@ -1361,19 +1361,19 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                   </div>
                 </div>
 
-                <div className="bg-yellow-50 rounded-2xl shadow-sm border border-yellow-100 flex-1 flex flex-col min-h-[300px]">
-                  <div className="p-4 border-b border-yellow-100 flex items-center justify-between">
+                <div className="bg-yellow-50 dark:bg-yellow-900/50 rounded-2xl shadow-sm border border-yellow-100 dark:border-yellow-800 flex-1 flex flex-col min-h-[300px]">
+                  <div className="p-4 border-b border-yellow-100 dark:border-yellow-800 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <FileText className="h-5 w-5 text-yellow-600" />
-                      <h3 className="font-bold text-yellow-900">កំណត់ហេតុក្រុម (Squad Note)</h3>
+                      <FileText className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+                      <h3 className="font-bold text-yellow-900 dark:text-yellow-100">កំណត់ហេតុក្រុម (Squad Note)</h3>
                     </div>
                     <div className="flex items-center gap-2">
                       {isSaving ? (
-                        <span className="text-xs text-yellow-600 animate-pulse">
+                        <span className="text-xs text-yellow-600 dark:text-yellow-400 animate-pulse">
                           កំពុងរក្សាទុក...
                         </span>
                       ) : (
-                        <span className="text-xs text-yellow-600">
+                        <span className="text-xs text-yellow-600 dark:text-yellow-400">
                           បានរក្សាទុក {lastSaved ? lastSaved.toLocaleTimeString() : ''}
                         </span>
                       )}
@@ -1385,7 +1385,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                     </label>
                     <textarea
                       id="squadNoteInput"
-                      className="flex-1 bg-transparent resize-none focus:outline-none text-sm text-content placeholder-yellow-800/40"
+                      className="flex-1 bg-transparent resize-none focus:outline-none text-sm text-content placeholder-yellow-800/40 dark:placeholder-yellow-300/40"
                       placeholder="ប្រើកន្លែងនេះដើម្បីសហការគ្នា (Auto-saved)..."
                       value={squadNote}
                       onChange={(e) => handleSquadNoteChange(e.target.value)}
