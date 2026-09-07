@@ -222,7 +222,7 @@ const TutorDetailPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleOpenBooking}
-                className="w-full bg-gray-900 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-black transition-transform active:scale-95"
+                className="w-full bg-gray-900 dark:bg-surface-3 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-black transition-transform active:scale-95"
               >
                 កក់ម៉ោងសិក្សា
               </button>
@@ -234,7 +234,7 @@ const TutorDetailPage: React.FC = () => {
                 {state.tutor.subjects?.map((s) => (
                   <span
                     key={s}
-                    className="bg-blue-50 text-blue-700 px-3 py-1 rounded-lg text-sm font-medium"
+                    className="bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 px-3 py-1 rounded-lg text-sm font-medium"
                   >
                     {s}
                   </span>
@@ -272,7 +272,7 @@ const TutorDetailPage: React.FC = () => {
         <button
           type="button"
           onClick={handleOpenBooking}
-          className="w-full bg-primary text-white font-bold py-3.5 rounded-xl shadow-lg shadow-primary/20 active:scale-95 transition-transform"
+          className="w-full bg-btn-primary text-white font-bold py-3.5 rounded-xl shadow-lg shadow-primary/20 active:scale-95 transition-transform"
         >
           កក់ម៉ោងសិក្សា (Book Now)
         </button>
@@ -387,7 +387,7 @@ const TutorDetailPage: React.FC = () => {
                 type="button"
                 onClick={handleBooking}
                 disabled={state.bookingSubmitting}
-                className="w-full bg-primary text-white font-bold py-3.5 rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-colors flex items-center justify-center"
+                className="w-full bg-btn-primary text-white font-bold py-3.5 rounded-xl shadow-lg shadow-primary/20 hover:bg-btn-primary/90 transition-colors flex items-center justify-center"
               >
                 {state.bookingSubmitting ? (
                   <Loader2 className="h-5 w-5 animate-spin" />

@@ -31,6 +31,8 @@
     --c-line: 243 244 246; /* gray 100 */
     --c-line-strong: 229 231 235; /* gray 200 */
 
+    --c-btn-primary: 15 118 110; /* teal 700 — dark enough for white text */
+
     color-scheme: light;
   }
 
@@ -55,6 +57,8 @@
     --c-line: 39 49 63;
     --c-line-strong: 51 63 80;
 
+    --c-btn-primary: 13 148 136; /* teal 600 — stays dark enough for white text */
+
     color-scheme: dark;
   }
 
@@ -72,4 +76,16 @@
   .pb-safe {
     padding-bottom: env(safe-area-inset-bottom);
   }
+}
+
+/* KaTeX uses hardcoded black text; inherit the page color in dark mode. */
+.dark .katex,
+.dark .katex .mord,
+.dark .katex .mbin,
+.dark .katex .mrel,
+.dark .katex .mopen,
+.dark .katex .mclose,
+.dark .katex .mpunct,
+.dark .katex .minner {
+  color: inherit;
 }

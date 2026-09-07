@@ -209,7 +209,7 @@ const CreatorDashboard: React.FC = () => {
           <MysteryBoxManager />
         ) : state.loading ? (
           <div className="flex justify-center py-12">
-            <Loader2 className="animate-spin text-gray-300 h-8 w-8" />
+            <Loader2 className="animate-spin text-content-faint h-8 w-8" />
           </div>
         ) : (
           <>
@@ -217,7 +217,7 @@ const CreatorDashboard: React.FC = () => {
               <button
                 type="button"
                 onClick={handleCreateNewMission}
-                className="bg-gray-900 text-white px-5 py-2.5 rounded-xl font-bold shadow-lg flex items-center hover:scale-105 transition-transform text-sm"
+                className="bg-gray-900 dark:bg-surface-3 text-white px-5 py-2.5 rounded-xl font-bold shadow-lg flex items-center hover:scale-105 transition-transform text-sm"
               >
                 <Plus className="h-4 w-4 mr-2" /> បង្កើតបេសកកម្ម
               </button>
@@ -225,7 +225,7 @@ const CreatorDashboard: React.FC = () => {
 
             {state.missions.length === 0 ? (
               <div className="text-center py-16 bg-surface rounded-3xl border border-dashed border-line-strong">
-                <Target className="h-16 w-16 mx-auto mb-4 text-gray-200" />
+                <Target className="h-16 w-16 mx-auto mb-4 text-content-muted" />
                 <h3 className="font-bold text-content text-lg">មិនទាន់មានបេសកកម្ម</h3>
                 <button
                   type="button"

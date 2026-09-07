@@ -109,7 +109,7 @@ const LeaderboardPage: React.FC = () => {
                   <p className="font-bold text-content text-base md:text-lg line-clamp-1">
                     {users[0].full_name}
                   </p>
-                  <p className="text-xs text-yellow-600 font-bold font-mono bg-yellow-50 px-2 py-0.5 rounded-full">
+                  <p className="text-xs text-yellow-600 dark:text-yellow-300 font-bold font-mono bg-yellow-50 dark:bg-yellow-900/50 px-2 py-0.5 rounded-full">
                     {users[0].lifetime_xp} XP
                   </p>
                 </div>

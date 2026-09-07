@@ -31,6 +31,7 @@ export default {
         'content-faint': 'rgb(var(--c-content-faint) / <alpha-value>)', // hints
         line: 'rgb(var(--c-line) / <alpha-value>)', // subtle borders
         'line-strong': 'rgb(var(--c-line-strong) / <alpha-value>)', // visible borders
+        'btn-primary': 'rgb(var(--c-btn-primary) / <alpha-value>)', // button bg, always dark enough for white text
       },
       fontFamily: {
         sans: ['Kantumruy Pro', 'sans-serif'],

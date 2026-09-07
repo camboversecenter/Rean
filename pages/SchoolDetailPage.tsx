@@ -211,7 +211,7 @@ const SchoolDetailPage: React.FC = () => {
             <button
               type="button"
               onClick={() => openInquiryModal()}
-              className="flex-1 md:flex-none bg-primary text-white font-bold py-2.5 px-6 rounded-xl shadow-lg shadow-primary/30 active:scale-95 transition-transform flex items-center justify-center"
+              className="flex-1 md:flex-none bg-btn-primary text-white font-bold py-2.5 px-6 rounded-xl shadow-lg shadow-primary/30 active:scale-95 transition-transform flex items-center justify-center"
             >
               <MessageCircle className="h-4 w-4 mr-2" /> ទាក់ទង (Contact)
             </button>
@@ -253,7 +253,7 @@ const SchoolDetailPage: React.FC = () => {
           <div className="space-y-6">
             {activeAdmissions.length === 0 && (
               <div className="text-center py-10 bg-surface rounded-xl border border-line-strong">
-                <AlertCircle className="h-10 w-10 text-gray-300 mx-auto mb-2" />
+                <AlertCircle className="h-10 w-10 text-content-faint mx-auto mb-2" />
                 <p className="text-content-muted">មិនមានការជ្រើសរើសសិស្សនៅពេលនេះទេ។</p>
               </div>
             )}
@@ -271,8 +271,8 @@ const SchoolDetailPage: React.FC = () => {
                         <span
                           className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
                             adm.status === 'Open'
-                              ? 'bg-green-100 text-green-700'
-                              : 'bg-orange-100 text-orange-700'
+                              ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
+                              : 'bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300'
                           }`}
                         >
                           {adm.status === 'Open' ? 'កំពុងទទួល' : 'ជិតចប់'}
@@ -310,15 +310,15 @@ const SchoolDetailPage: React.FC = () => {
 
                   {/* Scholarships */}
                   {adm.scholarships.length > 0 && (
-                    <div className="bg-yellow-50 rounded-lg p-3 mb-4 border border-yellow-100">
-                      <h4 className="text-xs font-bold text-yellow-800 flex items-center mb-2">
+                    <div className="bg-yellow-50 dark:bg-yellow-900/30 rounded-lg p-3 mb-4 border border-yellow-100 dark:border-yellow-800">
+                      <h4 className="text-xs font-bold text-yellow-800 dark:text-yellow-300 flex items-center mb-2">
                         <Award className="h-3.5 w-3.5 mr-1" /> អាហារូបករណ៍ដែលមាន (Scholarships)
                       </h4>
                       <div className="space-y-1">
                         {adm.scholarships.map((sch) => (
                           <div key={sch.id} className="flex justify-between items-center text-xs">
                             <span className="text-content-soft">{sch.title}</span>
-                            <span className="font-bold text-green-600 bg-surface px-1.5 py-0.5 rounded shadow-sm border border-green-100">
+                            <span className="font-bold text-green-600 dark:text-green-400 bg-surface px-1.5 py-0.5 rounded shadow-sm border border-green-100 dark:border-green-800">
                               {sch.discount}
                             </span>
                           </div>
@@ -338,7 +338,7 @@ const SchoolDetailPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => openInquiryModal(adm, true)}
-                    className="flex-1 bg-primary text-white font-bold py-2.5 rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-colors text-sm"
+                    className="flex-1 bg-btn-primary text-white font-bold py-2.5 rounded-xl shadow-lg shadow-primary/20 hover:bg-btn-primary/90 transition-colors text-sm"
                   >
                     ចាប់អារម្មណ៍ (Interested)
                   </button>
@@ -435,7 +435,7 @@ const SchoolDetailPage: React.FC = () => {
 
             <div className="p-4 space-y-4">
               {modalState.targetAdmission && (
-                <div className="bg-blue-50 text-blue-800 text-xs px-3 py-2 rounded-lg font-medium">
+                <div className="bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 text-xs px-3 py-2 rounded-lg font-medium">
                   ទាក់ទងនឹង៖ {modalState.targetAdmission.title}
                 </div>
               )}
@@ -487,7 +487,7 @@ const SchoolDetailPage: React.FC = () => {
                 type="button"
                 onClick={handleSubmitInquiry}
                 disabled={modalState.submitting || !modalState.inquiryForm.phone}
-                className="w-full bg-primary text-white font-bold py-3 rounded-xl shadow-lg shadow-primary/20 disabled:opacity-50 disabled:shadow-none flex items-center justify-center"
+                className="w-full bg-btn-primary text-white font-bold py-3 rounded-xl shadow-lg shadow-primary/20 disabled:opacity-50 disabled:shadow-none flex items-center justify-center"
               >
                 {modalState.submitting ? (
                   <Loader2 className="h-5 w-5 animate-spin" />

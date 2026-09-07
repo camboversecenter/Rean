@@ -250,7 +250,7 @@ const LiveVoiceTutor: React.FC<LiveVoiceTutorProps> = ({ onClose }) => {
   }, [playAudioChunk]);
 
   return (
-    <div className="fixed inset-0 z-[100] bg-gray-900 flex flex-col items-center justify-center text-white p-6 animate-in fade-in zoom-in duration-300">
+    <div className="fixed inset-0 z-[100] bg-gray-900 dark:bg-surface-3 flex flex-col items-center justify-center text-white p-6 animate-in fade-in zoom-in duration-300">
       <button
         type="button"
         onClick={onClose}
@@ -269,7 +269,7 @@ const LiveVoiceTutor: React.FC<LiveVoiceTutorProps> = ({ onClose }) => {
                 ? 'border-green-400 shadow-[0_0_50px_rgba(74,222,128,0.3)]'
                 : state.status === 'error'
                   ? 'border-red-500'
-                  : 'border-gray-600'
+                  : 'border-gray-600 dark:border-line-strong'
             }`}
             style={{ transform: `scale(${1 + state.volume * 2})` }}
           >
@@ -317,7 +317,7 @@ const LiveVoiceTutor: React.FC<LiveVoiceTutorProps> = ({ onClose }) => {
 
         {state.status === 'connected' && (
           <div className="bg-surface/10 px-6 py-3 rounded-2xl backdrop-blur-sm border border-white/10">
-            <p className="text-xs text-gray-300 text-center max-w-xs">
+            <p className="text-xs text-content-faint text-center max-w-xs">
               Practice your English conversation. <br /> Try saying:{' '}
               <span className="text-white font-bold">
                 "Hello Sophea Tonsay, help me prepare for an interview."

@@ -211,7 +211,7 @@ const ClassroomPage: React.FC = () => {
               <div className="flex items-center gap-2">
                 <h1 className="font-bold text-content text-lg">{booking.subject}</h1>
                 {booking.status === 'Completed' && (
-                  <span className="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded-full font-bold">
+                  <span className="bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 text-[10px] px-2 py-0.5 rounded-full font-bold">
                     បានបញ្ចប់ (Paid)
                   </span>
                 )}
@@ -369,7 +369,7 @@ const ClassroomPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => handleLogSession('Note')}
-                className="p-2 bg-gray-900 text-white rounded-lg"
+                className="p-2 bg-gray-900 dark:bg-surface-3 text-white rounded-lg"
               >
                 <Send className="h-4 w-4" />
               </button>
@@ -397,8 +397,8 @@ const ClassroomPage: React.FC = () => {
                   <span
                     className={`text-[10px] font-bold px-2 py-1 rounded ${
                       hw.status === 'Submitted'
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-yellow-100 text-yellow-700'
+                        ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
+                        : 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300'
                     }`}
                   >
                     {hw.status === 'Submitted' ? 'បានដាក់' : 'រង់ចាំ'}
@@ -428,7 +428,7 @@ const ClassroomPage: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => handleSubmitHomework(hw.id)}
-                            className="text-xs bg-primary text-white px-3 py-1.5 rounded font-bold"
+                            className="text-xs bg-btn-primary text-white px-3 py-1.5 rounded font-bold"
                           >
                             បញ្ជូន
                           </button>
@@ -438,7 +438,7 @@ const ClassroomPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setSubmittingHwId(hw.id)}
-                        className="text-xs bg-gray-900 text-white px-3 py-2 rounded-lg font-bold w-full"
+                        className="text-xs bg-gray-900 dark:bg-surface-3 text-white px-3 py-2 rounded-lg font-bold w-full"
                       >
                         ដាក់កិច្ចការ (Submit)
                       </button>
@@ -447,9 +447,9 @@ const ClassroomPage: React.FC = () => {
                 )}
 
                 {hw.status === 'Submitted' && (
-                  <div className="bg-green-50 p-3 rounded-lg mt-3">
-                    <p className="text-xs font-bold text-green-800 mb-1">កិច្ចការសិស្ស៖</p>
-                    <p className="text-sm text-green-900">{hw.student_attachment}</p>
+                  <div className="bg-green-50 dark:bg-green-900/30 p-3 rounded-lg mt-3">
+                    <p className="text-xs font-bold text-green-800 dark:text-green-300 mb-1">កិច្ចការសិស្ស៖</p>
+                    <p className="text-sm text-green-900 dark:text-green-200">{hw.student_attachment}</p>
                   </div>
                 )}
               </div>
@@ -558,7 +558,7 @@ const ClassroomPage: React.FC = () => {
                 type="button"
                 onClick={handleSubmitReport}
                 disabled={submittingReport}
-                className="w-full bg-primary text-white font-bold py-3 rounded-xl shadow-lg flex items-center justify-center hover:bg-primary/90 transition-colors"
+                className="w-full bg-btn-primary text-white font-bold py-3 rounded-xl shadow-lg flex items-center justify-center hover:bg-btn-primary/90 transition-colors"
               >
                 {submittingReport ? (
                   <Loader2 className="h-5 w-5 animate-spin" />
@@ -601,7 +601,7 @@ const ClassroomPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleAssignHomework}
-                className="px-4 py-2 bg-primary text-white rounded-lg font-bold text-sm"
+                className="px-4 py-2 bg-btn-primary text-white rounded-lg font-bold text-sm"
               >
                 ដាក់កិច្ចការ
               </button>
