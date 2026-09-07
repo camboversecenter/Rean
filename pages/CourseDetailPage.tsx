@@ -176,7 +176,7 @@ const CourseDetailPage: React.FC = () => {
 
         <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent">
           <div className="max-w-5xl mx-auto">
-            <span className="inline-block px-2.5 py-1 bg-primary text-white text-[10px] font-bold rounded mb-3 uppercase tracking-wide">
+            <span className="inline-block px-2.5 py-1 bg-btn-primary text-white text-[10px] font-bold rounded mb-3 uppercase tracking-wide">
               {course.category || 'វគ្គសិក្សាខ្លី'}
             </span>
             <h1 className="text-2xl md:text-4xl font-bold text-white mb-3 leading-tight">
@@ -267,7 +267,7 @@ const CourseDetailPage: React.FC = () => {
                 className={`px-8 py-3 rounded-xl font-bold shadow-lg transition-all flex items-center ${
                   isExpired
                     ? 'bg-line-strong text-content-muted cursor-not-allowed shadow-none'
-                    : 'bg-primary text-white hover:bg-primary/90 active:scale-95'
+                    : 'bg-btn-primary text-white hover:bg-btn-primary/90 active:scale-95'
                 }`}
               >
                 {isExpired ? (
@@ -309,7 +309,7 @@ const CourseDetailPage: React.FC = () => {
           className={`w-full font-bold py-3.5 rounded-xl shadow-lg flex items-center justify-center transition-transform ${
             isExpired
               ? 'bg-line-strong text-content-muted cursor-not-allowed shadow-none'
-              : 'bg-primary text-white active:scale-95'
+              : 'bg-btn-primary text-white active:scale-95'
           }`}
         >
           {isExpired ? (
@@ -530,7 +530,7 @@ const CourseDetailPage: React.FC = () => {
                 type="button"
                 onClick={handleEnroll}
                 disabled={enrollState.submitting}
-                className="w-full bg-primary text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 flex justify-center items-center hover:bg-primary/90 transition-colors"
+                className="w-full bg-btn-primary text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 flex justify-center items-center hover:bg-btn-primary/90 transition-colors"
               >
                 {enrollState.submitting ? (
                   <Loader2 className="h-5 w-5 animate-spin" />

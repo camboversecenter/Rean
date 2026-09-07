@@ -571,7 +571,7 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                   <button
                     type="button"
                     onClick={() => setState((prev) => ({ ...prev, showAddStudentModal: true }))}
-                    className="bg-primary text-white px-3 py-2 rounded-xl text-sm font-bold flex items-center shadow-sm hover:bg-primary/90 transition-colors whitespace-nowrap"
+                    className="bg-btn-primary text-white px-3 py-2 rounded-xl text-sm font-bold flex items-center shadow-sm hover:bg-btn-primary/90 transition-colors whitespace-nowrap"
                   >
                     <Plus className="h-4 w-4 mr-2" /> Add Student
                   </button>
@@ -775,7 +775,7 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                           className={`px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition-all flex items-center ${
                             isPassed
                               ? 'bg-surface text-green-600 dark:text-green-400 border border-green-200 dark:border-green-800 hover:bg-green-50 dark:hover:bg-green-900/30'
-                              : 'bg-primary text-white hover:bg-primary/90'
+                              : 'bg-btn-primary text-white hover:bg-btn-primary/90'
                           }`}
                         >
                           {isPassed ? 'View Result' : 'Review & Grade'}{' '}
@@ -913,7 +913,7 @@ const MissionManager: React.FC<MissionManagerProps> = ({
                 type="button"
                 onClick={handleAddStudent}
                 disabled={isAddingStudent || !newStudentEmail.trim()}
-                className="bg-primary text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center disabled:opacity-50"
+                className="bg-btn-primary text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center disabled:opacity-50"
               >
                 {isAddingStudent ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Add'}
               </button>

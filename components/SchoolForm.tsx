@@ -203,7 +203,7 @@ const SchoolForm: React.FC<SchoolFormProps> = ({ school, isSaving, onSave }) => 
               type="button"
               onClick={handleFormSubmit}
               disabled={isSaving || state.formData.description.length > SCHOOL_DESC_LIMIT}
-              className="bg-primary text-white px-6 py-2 rounded-xl font-bold text-sm flex items-center shadow-lg disabled:opacity-50 transition-all active:scale-95"
+              className="bg-btn-primary text-white px-6 py-2 rounded-xl font-bold text-sm flex items-center shadow-lg disabled:opacity-50 transition-all active:scale-95"
             >
               {isSaving ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />

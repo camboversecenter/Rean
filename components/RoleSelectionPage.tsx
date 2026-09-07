@@ -116,7 +116,7 @@ const RoleSelectionPage: React.FC = () => {
                   <role.icon className="h-6 w-6" aria-hidden="true" />
                 </div>
                 {selectedRole === role.id && (
-                  <div className="bg-primary text-white rounded-full p-1">
+                  <div className="bg-btn-primary text-white rounded-full p-1">
                     <CheckCircle className="h-4 w-4" aria-hidden="true" />
                   </div>
                 )}
@@ -140,7 +140,7 @@ const RoleSelectionPage: React.FC = () => {
               onClick={handleConfirm}
               disabled={!selectedRole || loading}
               aria-label="បន្តទៅមុខ (Continue)"
-              className="w-full bg-primary text-white font-bold text-lg py-4 rounded-xl shadow-lg shadow-primary/30 disabled:opacity-50 disabled:shadow-none active:scale-[0.99] transition-transform flex items-center justify-center"
+              className="w-full bg-btn-primary text-white font-bold text-lg py-4 rounded-xl shadow-lg shadow-primary/30 disabled:opacity-50 disabled:shadow-none active:scale-[0.99] transition-transform flex items-center justify-center"
             >
               {loading ? (
                 <>

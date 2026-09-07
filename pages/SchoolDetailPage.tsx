@@ -211,7 +211,7 @@ const SchoolDetailPage: React.FC = () => {
             <button
               type="button"
               onClick={() => openInquiryModal()}
-              className="flex-1 md:flex-none bg-primary text-white font-bold py-2.5 px-6 rounded-xl shadow-lg shadow-primary/30 active:scale-95 transition-transform flex items-center justify-center"
+              className="flex-1 md:flex-none bg-btn-primary text-white font-bold py-2.5 px-6 rounded-xl shadow-lg shadow-primary/30 active:scale-95 transition-transform flex items-center justify-center"
             >
               <MessageCircle className="h-4 w-4 mr-2" /> ទាក់ទង (Contact)
             </button>
@@ -338,7 +338,7 @@ const SchoolDetailPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => openInquiryModal(adm, true)}
-                    className="flex-1 bg-primary text-white font-bold py-2.5 rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-colors text-sm"
+                    className="flex-1 bg-btn-primary text-white font-bold py-2.5 rounded-xl shadow-lg shadow-primary/20 hover:bg-btn-primary/90 transition-colors text-sm"
                   >
                     ចាប់អារម្មណ៍ (Interested)
                   </button>
@@ -487,7 +487,7 @@ const SchoolDetailPage: React.FC = () => {
                 type="button"
                 onClick={handleSubmitInquiry}
                 disabled={modalState.submitting || !modalState.inquiryForm.phone}
-                className="w-full bg-primary text-white font-bold py-3 rounded-xl shadow-lg shadow-primary/20 disabled:opacity-50 disabled:shadow-none flex items-center justify-center"
+                className="w-full bg-btn-primary text-white font-bold py-3 rounded-xl shadow-lg shadow-primary/20 disabled:opacity-50 disabled:shadow-none flex items-center justify-center"
               >
                 {modalState.submitting ? (
                   <Loader2 className="h-5 w-5 animate-spin" />

@@ -353,7 +353,7 @@ const ExplorePage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleAnalyzeComparison}
-                className="bg-primary text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors flex items-center animate-pulse"
+                className="bg-btn-primary text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-btn-primary/90 transition-colors flex items-center animate-pulse"
               >
                 <Brain className="h-3 w-3 mr-1" /> AI ប្រៀបធៀប ({AI_COSTS.CHAT} Pt)
               </button>

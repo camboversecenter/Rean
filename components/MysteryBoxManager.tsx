@@ -331,7 +331,7 @@ const MysteryBoxManager: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => handleFulfillClaim(claim.id)}
-                          className="bg-primary text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm hover:bg-primary/90 transition-colors"
+                          className="bg-btn-primary text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm hover:bg-btn-primary/90 transition-colors"
                         >
                           Mark Done
                         </button>
@@ -563,7 +563,7 @@ const MysteryBoxManager: React.FC = () => {
                 type="button"
                 onClick={handleSaveBox}
                 disabled={state.isSaving}
-                className="px-6 py-2 bg-primary text-white rounded-lg font-bold text-sm shadow-lg flex items-center"
+                className="px-6 py-2 bg-btn-primary text-white rounded-lg font-bold text-sm shadow-lg flex items-center"
               >
                 {state.isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : 'បង្កើតប្រអប់'}
               </button>

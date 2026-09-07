@@ -737,7 +737,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
               <button
                 type="button"
                 onClick={() => navigate('/account')}
-                className="w-full bg-primary text-white py-3 rounded-xl font-bold shadow-lg hover:bg-primary/90 transition-transform active:scale-95 flex items-center justify-center"
+                className="w-full bg-btn-primary text-white py-3 rounded-xl font-bold shadow-lg hover:bg-btn-primary/90 transition-transform active:scale-95 flex items-center justify-center"
               >
                 <Award className="h-5 w-5 mr-2" /> មើលវិញ្ញាបនបត្រ (View Profile)
               </button>
@@ -1004,7 +1004,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                     <button
                       type="button"
                       onClick={() => setActiveTab('simulation')}
-                      className="bg-primary text-white px-6 py-3 rounded-xl font-bold shadow-lg flex items-center hover:scale-105 transition-transform"
+                      className="bg-btn-primary text-white px-6 py-3 rounded-xl font-bold shadow-lg flex items-center hover:scale-105 transition-transform"
                     >
                       <Experiment className="h-4 w-4 mr-2" /> ចាប់ផ្តើមពិសោធន៍
                     </button>
@@ -1012,7 +1012,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                     <button
                       type="button"
                       onClick={() => setActiveTab('studio')}
-                      className="bg-primary text-white px-6 py-3 rounded-xl font-bold shadow-lg flex items-center hover:scale-105 transition-transform"
+                      className="bg-btn-primary text-white px-6 py-3 rounded-xl font-bold shadow-lg flex items-center hover:scale-105 transition-transform"
                     >
                       ចាប់ផ្តើមអនុវត្ត <ChevronRight className="h-4 w-4 ml-2" />
                     </button>
@@ -1108,7 +1108,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                       <button
                         type="button"
                         onClick={() => simFileInputRef.current?.click()}
-                        className="bg-primary text-white px-6 py-3 rounded-xl font-bold shadow-lg flex items-center justify-center hover:bg-primary/90 transition-transform"
+                        className="bg-btn-primary text-white px-6 py-3 rounded-xl font-bold shadow-lg flex items-center justify-center hover:bg-btn-primary/90 transition-transform"
                       >
                         <Camera className="h-5 w-5 mr-2" /> Upload Screenshot
                       </button>
@@ -1414,7 +1414,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                 className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[85%] rounded-2xl p-3 text-sm leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-surface text-content border' : 'bg-primary text-white'}`}
+                  className={`max-w-[85%] rounded-2xl p-3 text-sm leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-surface text-content border border-line' : 'bg-btn-primary text-white'}`}
                 >
                   <MarkdownText content={msg.text} />
                 </div>
@@ -1440,7 +1440,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                 type="button"
                 onClick={handleSendMessage}
                 disabled={!chatInput.trim() || isChatLoading}
-                className="absolute right-2 top-1.5 p-1.5 bg-primary text-white rounded-lg disabled:opacity-50"
+                className="absolute right-2 top-1.5 p-1.5 bg-btn-primary text-white rounded-lg disabled:opacity-50"
                 aria-label="Send Message"
               >
                 <Send className="h-4 w-4" />

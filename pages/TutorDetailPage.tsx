@@ -272,7 +272,7 @@ const TutorDetailPage: React.FC = () => {
         <button
           type="button"
           onClick={handleOpenBooking}
-          className="w-full bg-primary text-white font-bold py-3.5 rounded-xl shadow-lg shadow-primary/20 active:scale-95 transition-transform"
+          className="w-full bg-btn-primary text-white font-bold py-3.5 rounded-xl shadow-lg shadow-primary/20 active:scale-95 transition-transform"
         >
           កក់ម៉ោងសិក្សា (Book Now)
         </button>
@@ -387,7 +387,7 @@ const TutorDetailPage: React.FC = () => {
                 type="button"
                 onClick={handleBooking}
                 disabled={state.bookingSubmitting}
-                className="w-full bg-primary text-white font-bold py-3.5 rounded-xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-colors flex items-center justify-center"
+                className="w-full bg-btn-primary text-white font-bold py-3.5 rounded-xl shadow-lg shadow-primary/20 hover:bg-btn-primary/90 transition-colors flex items-center justify-center"
               >
                 {state.bookingSubmitting ? (
                   <Loader2 className="h-5 w-5 animate-spin" />

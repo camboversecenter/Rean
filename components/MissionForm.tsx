@@ -264,7 +264,7 @@ const MissionForm: React.FC<MissionFormProps> = ({
             type="button"
             onClick={() => onSave(currentMission, thumbnailFile, thumbnailBase64, qrFile)}
             disabled={isSaving || (currentMission.description?.length || 0) > DESC_LIMIT}
-            className="bg-primary text-white px-6 py-2 rounded-lg font-bold shadow-lg flex items-center hover:scale-105 transition-transform text-sm disabled:opacity-50"
+            className="bg-btn-primary text-white px-6 py-2 rounded-lg font-bold shadow-lg flex items-center hover:scale-105 transition-transform text-sm disabled:opacity-50"
           >
             {isSaving ? (
               <Loader2 className="h-4 w-4 animate-spin mr-2" />
