@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { signInWithGoogle } from '../services/authService';
 import { AlertCircle, Send } from './Icons';
 import { TELEGRAM_COMMUNITY_URL } from '../constants';
@@ -98,7 +99,12 @@ const LoginPage: React.FC = () => {
               តេឡេក្រាមសហគមន៍ (Telegram)
             </a>
           </div>
-          <div className="pt-2">
+          <div className="flex items-center gap-3 text-[10px] text-content-faint">
+            <Link to="/privacy" className="hover:text-primary transition-colors">Privacy</Link>
+            <span>|</span>
+            <Link to="/terms" className="hover:text-primary transition-colors">Terms</Link>
+          </div>
+          <div className="pt-1">
             <span className="text-[10px] text-content-faint font-mono">Ver 0.01 (Beta)</span>
           </div>
         </div>
