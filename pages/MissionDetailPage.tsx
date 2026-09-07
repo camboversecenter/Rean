@@ -230,7 +230,7 @@ const MissionDetailPage: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 dark:from-surface-3 via-transparent to-transparent"></div>
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
           <div className="container mx-auto max-w-4xl">
-            <span className="inline-block px-3 py-1 bg-primary text-white text-xs font-bold rounded-lg mb-3 uppercase tracking-wide shadow-lg shadow-primary/30">
+            <span className="inline-block px-3 py-1 bg-btn-primary text-white text-xs font-bold rounded-lg mb-3 uppercase tracking-wide shadow-lg shadow-primary/30">
               {mission.category} • {mission.level}
             </span>
             <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight shadow-sm">
@@ -441,7 +441,7 @@ const MissionDetailPage: React.FC = () => {
                 type="button"
                 onClick={() => processEnrollment(paymentState.receipt)}
                 disabled={paymentState.joining || !paymentState.receipt}
-                className="w-full bg-primary text-white font-bold py-3 rounded-xl shadow-lg disabled:opacity-50 disabled:shadow-none flex items-center justify-center"
+                className="w-full bg-btn-primary text-white font-bold py-3 rounded-xl shadow-lg disabled:opacity-50 disabled:shadow-none flex items-center justify-center"
               >
                 {paymentState.joining ? (
                   <Loader2 className="h-5 w-5 animate-spin" />

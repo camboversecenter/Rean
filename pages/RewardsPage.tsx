@@ -306,7 +306,7 @@ const RewardsPage: React.FC = () => {
                       disabled={opening !== null}
                       className={`px-4 py-2 rounded-xl font-bold text-sm shadow-sm transition-transform active:scale-95 ${
                         (profile?.spendable_points || 0) >= item.price_points
-                          ? 'bg-primary text-white hover:bg-primary/90'
+                          ? 'bg-btn-primary text-white hover:bg-btn-primary/90'
                           : 'bg-surface-3 text-content-faint cursor-not-allowed'
                       }`}
                     >

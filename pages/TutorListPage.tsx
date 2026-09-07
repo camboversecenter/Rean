@@ -199,14 +199,14 @@ const TutorListPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setState((s) => ({ ...s, activeTab: 'tutors' }))}
-            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all flex items-center justify-center ${state.activeTab === 'tutors' ? 'bg-primary text-white shadow-md' : 'text-content-muted hover:bg-surface-2'}`}
+            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all flex items-center justify-center ${state.activeTab === 'tutors' ? 'bg-btn-primary text-white shadow-md' : 'text-content-muted hover:bg-surface-2'}`}
           >
             ស្វែងរកគ្រូ (Browse Tutors)
           </button>
           <button
             type="button"
             onClick={() => setState((s) => ({ ...s, activeTab: 'requests' }))}
-            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all flex items-center justify-center ${state.activeTab === 'requests' ? 'bg-primary text-white shadow-md' : 'text-content-muted hover:bg-surface-2'}`}
+            className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all flex items-center justify-center ${state.activeTab === 'requests' ? 'bg-btn-primary text-white shadow-md' : 'text-content-muted hover:bg-surface-2'}`}
           >
             សំណើសិស្ស (Requests)
           </button>
@@ -272,7 +272,7 @@ const TutorListPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setState((s) => ({ ...s, showRequestModal: true }))}
-                  className="relative z-10 bg-primary text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center shadow-lg shadow-primary/20 active:scale-95 transition-transform"
+                  className="relative z-10 bg-btn-primary text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center shadow-lg shadow-primary/20 active:scale-95 transition-transform"
                 >
                   <Plus className="h-3.5 w-3.5 mr-1.5" /> ប្រកាសសំណើ
                 </button>
@@ -504,7 +504,7 @@ const TutorListPage: React.FC = () => {
                 type="button"
                 onClick={handleCreateRequest}
                 disabled={state.submitting}
-                className="w-full bg-primary text-white font-bold py-3.5 rounded-xl shadow-lg shadow-primary/20 active:scale-95 transition-all flex items-center justify-center"
+                className="w-full bg-btn-primary text-white font-bold py-3.5 rounded-xl shadow-lg shadow-primary/20 active:scale-95 transition-all flex items-center justify-center"
               >
                 {state.submitting ? <Loader2 className="h-5 w-5 animate-spin" /> : 'ប្រកាសសំណើ'}
               </button>

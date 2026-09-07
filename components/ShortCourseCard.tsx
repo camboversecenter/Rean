@@ -113,7 +113,7 @@ const ShortCourseCard: React.FC<ShortCourseCardProps> = ({
           }}
           className={`absolute top-2 right-2 p-1.5 rounded-full shadow-md z-10 transition-colors ${
             isSelected
-              ? 'bg-primary text-white ring-2 ring-white'
+              ? 'bg-btn-primary text-white ring-2 ring-white'
               : 'bg-surface/90 text-content-faint hover:text-primary'
           }`}
           title="Compare"

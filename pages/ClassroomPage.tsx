@@ -428,7 +428,7 @@ const ClassroomPage: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => handleSubmitHomework(hw.id)}
-                            className="text-xs bg-primary text-white px-3 py-1.5 rounded font-bold"
+                            className="text-xs bg-btn-primary text-white px-3 py-1.5 rounded font-bold"
                           >
                             បញ្ជូន
                           </button>
@@ -558,7 +558,7 @@ const ClassroomPage: React.FC = () => {
                 type="button"
                 onClick={handleSubmitReport}
                 disabled={submittingReport}
-                className="w-full bg-primary text-white font-bold py-3 rounded-xl shadow-lg flex items-center justify-center hover:bg-primary/90 transition-colors"
+                className="w-full bg-btn-primary text-white font-bold py-3 rounded-xl shadow-lg flex items-center justify-center hover:bg-btn-primary/90 transition-colors"
               >
                 {submittingReport ? (
                   <Loader2 className="h-5 w-5 animate-spin" />
@@ -601,7 +601,7 @@ const ClassroomPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleAssignHomework}
-                className="px-4 py-2 bg-primary text-white rounded-lg font-bold text-sm"
+                className="px-4 py-2 bg-btn-primary text-white rounded-lg font-bold text-sm"
               >
                 ដាក់កិច្ចការ
               </button>

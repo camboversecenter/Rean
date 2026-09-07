@@ -198,7 +198,7 @@ const LandingPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {STEPS.map((s, i) => (
               <div key={s.en} className="relative bg-surface rounded-2xl p-6 shadow-sm text-center">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white text-xs font-bold w-7 h-7 rounded-full flex items-center justify-center shadow">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-btn-primary text-white text-xs font-bold w-7 h-7 rounded-full flex items-center justify-center shadow">
                   {i + 1}
                 </div>
                 <div className="w-14 h-14 mx-auto rounded-2xl bg-teal-50 text-primary flex items-center justify-center mb-4 mt-2">

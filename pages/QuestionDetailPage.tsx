@@ -553,7 +553,7 @@ const QuestionDetailPage: React.FC = () => {
                 !replyState.content.trim() ||
                 replyState.content.length > REPLY_LIMIT
               }
-              className={`p-3 rounded-xl transition-all disabled:opacity-50 flex-shrink-0 ${isTaggingAI ? 'bg-yellow-500 hover:bg-yellow-600 text-white shadow-lg shadow-yellow-200' : 'bg-primary text-white hover:bg-primary/90'}`}
+              className={`p-3 rounded-xl transition-all disabled:opacity-50 flex-shrink-0 ${isTaggingAI ? 'bg-yellow-500 hover:bg-yellow-600 text-white shadow-lg shadow-yellow-200' : 'bg-btn-primary text-white hover:bg-btn-primary/90'}`}
               aria-label="Send reply"
             >
               {replyState.isReplying ? (

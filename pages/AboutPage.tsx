@@ -653,7 +653,7 @@ const AboutPage: React.FC = () => {
                   rel="noopener noreferrer"
                   className={`group flex flex-col p-5 rounded-2xl border transition-all hover:-translate-y-0.5 ${
                     c.primary
-                      ? 'bg-primary text-white border-primary shadow-lg hover:bg-accent'
+                      ? 'bg-btn-primary text-white border-primary shadow-lg hover:bg-accent'
                       : 'bg-surface-2 border-line hover:bg-surface hover:shadow-md'
                   }`}
                 >

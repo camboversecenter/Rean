@@ -322,7 +322,7 @@ const TutorDashboard: React.FC = () => {
               type="button"
               onClick={handleSaveProfile}
               disabled={saving || (profile.bio?.length || 0) > BIO_LIMIT}
-              className="bg-primary text-white px-5 py-2 rounded-xl font-bold text-sm flex items-center shadow-lg hover:bg-primary/90 active:scale-95 transition-all disabled:opacity-50"
+              className="bg-btn-primary text-white px-5 py-2 rounded-xl font-bold text-sm flex items-center shadow-lg hover:bg-btn-primary/90 active:scale-95 transition-all disabled:opacity-50"
             >
               {saving ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />

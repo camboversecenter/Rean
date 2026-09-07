@@ -422,7 +422,7 @@ const CommunityFeed: React.FC = () => {
                 type="button"
                 onClick={handlePost}
                 disabled={!newPostContent.trim() || isPosting || newPostContent.length > POST_LIMIT}
-                className="bg-primary text-white text-sm font-bold px-5 py-2 rounded-full flex items-center shadow-lg shadow-primary/30 disabled:opacity-50 disabled:shadow-none hover:scale-105 transition-transform"
+                className="bg-btn-primary text-white text-sm font-bold px-5 py-2 rounded-full flex items-center shadow-lg shadow-primary/30 disabled:opacity-50 disabled:shadow-none hover:scale-105 transition-transform"
               >
                 {isPosting ? (
                   'កំពុងគិត...'

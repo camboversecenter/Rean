@@ -224,7 +224,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
           <button
             type="button"
             onClick={handleCreateNew}
-            className="bg-primary text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center shadow-lg hover:scale-105 transition-transform"
+            className="bg-btn-primary text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center shadow-lg hover:scale-105 transition-transform"
           >
             <Plus className="h-4 w-4 mr-2" /> បន្ថែមវគ្គសិក្សា
           </button>
@@ -395,7 +395,7 @@ const SchoolCourseManager: React.FC<SchoolCourseManagerProps> = ({
             type="button"
             onClick={handleSaveCourse}
             disabled={saving}
-            className="flex-1 md:flex-none justify-center bg-primary text-white px-6 py-2 rounded-lg font-bold shadow-lg flex items-center disabled:opacity-50 transition-all text-sm"
+            className="flex-1 md:flex-none justify-center bg-btn-primary text-white px-6 py-2 rounded-lg font-bold shadow-lg flex items-center disabled:opacity-50 transition-all text-sm"
           >
             {saving ? (
               <Loader2 className="h-4 w-4 animate-spin mr-2" />

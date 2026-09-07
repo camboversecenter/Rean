@@ -41,7 +41,7 @@ const DocumentationPage: React.FC = () => {
           >
             <div className="bg-gradient-to-r from-gray-50 to-white p-6 border-b border-line">
               <h2 className="text-xl font-bold text-content flex items-center">
-                <span className="bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold shadow-lg shadow-primary/30">
+                <span className="bg-btn-primary text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold shadow-lg shadow-primary/30">
                   1
                 </span>
                 តួនាទីអ្នកប្រើប្រាស់ (User Roles)
@@ -78,7 +78,7 @@ const DocumentationPage: React.FC = () => {
           {/* 2. CORE FUNCTIONS */}
           <section id="functions" className="space-y-6">
             <div className="flex items-center space-x-4 px-2">
-              <span className="bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shadow-lg shadow-primary/30">
+              <span className="bg-btn-primary text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shadow-lg shadow-primary/30">
                 2
               </span>
               <h2 className="text-2xl font-bold text-content">មុខងារសំខាន់ៗ (Core Functions)</h2>
@@ -273,7 +273,7 @@ const DocumentationPage: React.FC = () => {
 
             <div className="bg-surface p-6 border-b border-line relative z-10">
               <h2 className="text-xl font-bold text-content flex items-center">
-                <span className="bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold shadow-lg shadow-primary/30">
+                <span className="bg-btn-primary text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold shadow-lg shadow-primary/30">
                   3
                 </span>
                 ប្រព័ន្ធសេដ្ឋកិច្ច (Economy & Rewards)

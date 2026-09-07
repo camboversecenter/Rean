@@ -142,7 +142,7 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
         <button
           type="button"
           onClick={() => handleOpenAdmissionModal()}
-          className="bg-primary text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center shadow-lg hover:scale-105 transition-transform"
+          className="bg-btn-primary text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center shadow-lg hover:scale-105 transition-transform"
         >
           <Plus className="h-4 w-4 mr-2" /> បន្ថែមថ្មី
         </button>
@@ -394,7 +394,7 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
                 type="button"
                 onClick={handleSaveAdmission}
                 disabled={saving}
-                className="w-full bg-primary text-white py-3 rounded-xl font-bold shadow-lg flex items-center justify-center active:scale-95 transition-transform"
+                className="w-full bg-btn-primary text-white py-3 rounded-xl font-bold shadow-lg flex items-center justify-center active:scale-95 transition-transform"
               >
                 {saving ? (
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />

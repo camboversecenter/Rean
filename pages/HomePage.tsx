@@ -146,7 +146,7 @@ const HomePage: React.FC = () => {
               ) : (
                 <button
                   type="button"
-                  className="absolute right-2 top-2 bg-primary text-white font-medium rounded-lg text-xs px-4 py-1.5 hover:bg-primary/90 transition-colors"
+                  className="absolute right-2 top-2 bg-btn-primary text-white font-medium rounded-lg text-xs px-4 py-1.5 hover:bg-btn-primary/90 transition-colors"
                 >
                   ស្វែងរក
                 </button>

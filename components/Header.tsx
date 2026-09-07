@@ -363,7 +363,7 @@ const Header: React.FC = () => {
               <Link
                 to="/login"
                 aria-label="Login"
-                className="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-primary text-white hover:bg-primary/90 transition-colors"
+                className="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-btn-primary text-white hover:bg-btn-primary/90 transition-colors"
               >
                 <UserIcon className="h-4 w-4" />
                 <span className="text-xs font-bold hidden md:inline">ចូលប្រើ (Login)</span>
@@ -676,7 +676,7 @@ const Header: React.FC = () => {
               ) : (
                 <Link
                   to="/login"
-                  className="flex items-center justify-center space-x-2 w-full py-3 px-4 bg-primary text-white font-bold text-sm rounded-xl shadow-md hover:bg-primary/90 transition-colors"
+                  className="flex items-center justify-center space-x-2 w-full py-3 px-4 bg-btn-primary text-white font-bold text-sm rounded-xl shadow-md hover:bg-btn-primary/90 transition-colors"
                 >
                   <UserIcon className="h-4 w-4" />
                   <span>ចូលប្រើ (Login with Google)</span>
