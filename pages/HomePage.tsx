@@ -5,13 +5,11 @@ import {
   Target,
   Users,
   Search,
-  Zap,
   GraduationCap,
   BookOpen,
   ChevronRight,
   Loader2,
   X,
-  MessageCircle,
   Gift,
 } from '../components/Icons';
 import SchoolCard from '../components/SchoolCard';
@@ -245,32 +243,6 @@ const HomePage: React.FC = () => {
                   <p className="text-sm">No active missions yet.</p>
                 </div>
               )}
-            </section>
-
-            {/* COMMUNITY BANNER */}
-            <section className="px-4 md:px-0 mb-8">
-              <div className="bg-gradient-to-r from-yellow-500 to-orange-500 rounded-3xl p-6 md:p-8 text-white shadow-lg relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
-                <div className="relative z-10">
-                  <h2 className="text-xl md:text-2xl font-bold mb-2 flex items-center">
-                    <Zap className="h-6 w-6 mr-2 text-yellow-100 fill-yellow-100" />
-                    Lazy Learning Community
-                  </h2>
-                  <p className="text-yellow-50 text-sm md:text-base max-w-lg leading-relaxed">
-                    ឆ្ងល់មេរៀន? សួរភ្លាម ឆ្លើយភ្លាមជាមួយ AI និងសិស្សច្បង!
-                    សន្សំពិន្ទុដើម្បីប្តូរយករង្វាន់។
-                  </p>
-                </div>
-                <Link
-                  to="/community"
-                  className="relative z-10 bg-surface text-orange-600 dark:text-orange-400 font-bold py-3 px-6 rounded-xl shadow-md hover:bg-yellow-50 dark:hover:bg-yellow-900/30 transition-colors flex items-center whitespace-nowrap active:scale-95 transform"
-                >
-                  <MessageCircle className="h-5 w-5 mr-2" /> ចូលសហគមន៍
-                </Link>
-
-                {/* Decoration */}
-                <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-surface/10 rounded-full blur-3xl pointer-events-none"></div>
-                <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-yellow-400/20 rounded-full blur-3xl pointer-events-none"></div>
-              </div>
             </section>
 
             {/* School Recruitment */}
