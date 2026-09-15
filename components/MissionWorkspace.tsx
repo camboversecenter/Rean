@@ -50,6 +50,7 @@ import {
   PLAGIARISM_MIN_CHARS,
 } from '../services/missionProgressService';
 import { uploadFile, deleteFileFromUrl } from '../services/storageService';
+import { spendPoints } from '../services/gamificationService';
 import MarkdownText from './MarkdownText';
 
 import CharCounter from './CharCounter';
@@ -158,7 +159,7 @@ const DIFFICULTY_LABELS: Record<Difficulty, { km: string; en: string }> = {
 
 interface GeneratedProblem {
   question: string;
-  answer: string;
+  hint: string;
 }
 
 const PracticeGenerator: React.FC<{
@@ -190,11 +191,12 @@ ${context}
 Rules:
 - ${difficulty === 'easy' ? 'Simple recall and basic application. One-step problems.' : difficulty === 'medium' ? 'Multi-step problems requiring analysis. Apply concepts to new situations.' : 'Challenging problems combining multiple concepts. Require critical thinking and synthesis.'}
 - Each problem must be different from the original task
-- Write problems and answers in the same language as the lesson content
+- Write problems and hints in the same language as the lesson content
+- The hint should guide the student toward the answer without giving it away. Include the key formula, method, or first step -- not the full solution.
 - For math/science, use LaTeX ($...$ inline, $$...$$ display)
 
 Return EXACTLY this JSON format, no other text:
-[{"question":"problem text here","answer":"detailed solution here"},{"question":"...","answer":"..."},{"question":"...","answer":"..."}]`;
+[{"question":"problem text here","hint":"a helpful hint here"},{"question":"...","hint":"..."},{"question":"...","hint":"..."}]`;
 
       const responseText = await chatWithAI(prompt, [], 'You are a practice problem generator. Return only valid JSON arrays.');
 
@@ -284,21 +286,28 @@ Return EXACTLY this JSON format, no other text:
                   <div className="border-t border-line">
                     {revealed[i] ? (
                       <div className="p-3">
-                        <span className="text-[10px] font-bold text-green-600 dark:text-green-400 uppercase tracking-wider">
-                          Answer
+                        <span className="text-[10px] font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">
+                          Hint
                         </span>
                         <div className="text-sm text-content leading-relaxed mt-1">
-                          <MarkdownText content={p.answer} />
+                          <MarkdownText content={p.hint} />
                         </div>
                       </div>
                     ) : (
                       <button
                         type="button"
-                        onClick={() => setRevealed((r) => ({ ...r, [i]: true }))}
-                        className="w-full p-2.5 text-xs font-bold text-primary hover:bg-surface-3 transition-colors flex items-center justify-center gap-1"
+                        onClick={async () => {
+                          const ok = await spendPoints(1, 'Practice Hint');
+                          if (!ok) {
+                            toast.error('ពិន្ទុមិនគ្រប់គ្រាន់! (Not enough Pts)');
+                            return;
+                          }
+                          setRevealed((r) => ({ ...r, [i]: true }));
+                        }}
+                        className="w-full p-2.5 text-xs font-bold text-amber-600 dark:text-amber-400 hover:bg-surface-3 transition-colors flex items-center justify-center gap-1"
                       >
                         <Lightbulb className="h-3.5 w-3.5" />
-                        Show Answer
+                        Hint (1 Pt)
                       </button>
                     )}
                   </div>
