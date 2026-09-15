@@ -220,7 +220,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
               disabled={state.isRunning || state.isPyodideLoading}
               className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 state.isRunning || state.isPyodideLoading
-                  ? 'bg-gray-600 text-gray-300 cursor-wait'
+                  ? 'bg-gray-600 dark:bg-line-strong text-content-faint cursor-wait'
                   : 'bg-green-600 text-white hover:bg-green-500 shadow-lg shadow-green-900/20'
               }`}
             >
@@ -263,7 +263,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
               <Trash2 className="h-3 w-3" /> Clear
             </button>
           </div>
-          <div className="flex-1 p-4 overflow-y-auto font-mono text-xs text-gray-300 space-y-1">
+          <div className="flex-1 p-4 overflow-y-auto font-mono text-xs text-content-faint space-y-1">
             {state.output.length === 0 ? (
               <span className="text-content-muted italic">
                 No output yet. Run the code to see results.

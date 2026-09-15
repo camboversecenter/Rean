@@ -100,7 +100,7 @@ const SchoolsListPage: React.FC = () => {
                 type="button"
                 key={t}
                 onClick={() => setState((s) => ({ ...s, filterType: t }))}
-                className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold transition-colors ${state.filterType === t ? 'bg-primary text-white' : 'bg-surface-3 text-content-muted hover:bg-line-strong'}`}
+                className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold transition-colors ${state.filterType === t ? 'bg-btn-primary text-white' : 'bg-surface-3 text-content-muted hover:bg-line-strong'}`}
               >
                 {typeMapping[t]}
               </button>
@@ -112,7 +112,7 @@ const SchoolsListPage: React.FC = () => {
         <div>
           {state.loading ? (
             <div className="flex justify-center py-10">
-              <Loader2 className="h-8 w-8 animate-spin text-gray-300" />
+              <Loader2 className="h-8 w-8 animate-spin text-content-faint" />
             </div>
           ) : state.schools.length > 0 ? (
             <>

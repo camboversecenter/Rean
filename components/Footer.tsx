@@ -41,6 +41,12 @@ const Footer: React.FC = () => {
             <Link to="/about" className="text-content-muted hover:text-primary transition-colors">
               About
             </Link>
+            <Link to="/privacy" className="text-content-muted hover:text-primary transition-colors">
+              Privacy
+            </Link>
+            <Link to="/terms" className="text-content-muted hover:text-primary transition-colors">
+              Terms
+            </Link>
             {/* Support channel. Students should be able to reach help from any
                 page, not only from the sign-in screen. */}
             <a

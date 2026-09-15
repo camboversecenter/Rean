@@ -251,7 +251,7 @@ const AccountPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="absolute bottom-1 right-1 bg-gray-900 text-white p-2 rounded-full shadow-lg hover:scale-105 transition-transform border-2 border-white"
+                className="absolute bottom-1 right-1 bg-gray-900 dark:bg-surface-3 text-white p-2 rounded-full shadow-lg hover:scale-105 transition-transform border-2 border-white"
                 title="Change Photo"
                 aria-label="Change Photo"
               >
@@ -278,7 +278,7 @@ const AccountPage: React.FC = () => {
               </h1>
               <p className="text-sm text-content-muted font-medium mb-2">{profile?.email}</p>
               <div className="flex items-center justify-center md:justify-start gap-2">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 uppercase tracking-wide border border-blue-100">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 uppercase tracking-wide border border-blue-100">
                   {profile?.role || 'Guest'}
                 </span>
               </div>
@@ -343,11 +343,11 @@ const AccountPage: React.FC = () => {
                 {isTutor && (
                   <Link
                     to="/tutor/dashboard"
-                    className="bg-surface border border-green-100 p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden"
+                    className="bg-surface border border-green-100 dark:border-green-800 p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden"
                   >
-                    <div className="absolute right-0 top-0 p-10 bg-green-50 rounded-full -mr-5 -mt-5 opacity-50 group-hover:scale-110 transition-transform"></div>
+                    <div className="absolute right-0 top-0 p-10 bg-green-50 dark:bg-green-900/30 rounded-full -mr-5 -mt-5 opacity-50 group-hover:scale-110 transition-transform"></div>
                     <div className="relative z-10">
-                      <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center text-green-600 mb-3">
+                      <div className="w-10 h-10 bg-green-100 dark:bg-green-900/50 rounded-xl flex items-center justify-center text-green-600 dark:text-green-400 mb-3">
                         <GraduationCap className="h-6 w-6" />
                       </div>
                       <h3 className="font-bold text-content">ផ្ទាំងគ្រប់គ្រងគ្រូ</h3>
@@ -360,11 +360,11 @@ const AccountPage: React.FC = () => {
                 {isCreator && (
                   <Link
                     to="/creator"
-                    className="bg-surface border border-indigo-100 p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden"
+                    className="bg-surface border border-indigo-100 dark:border-indigo-800 p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden"
                   >
-                    <div className="absolute right-0 top-0 p-10 bg-indigo-50 rounded-full -mr-5 -mt-5 opacity-50 group-hover:scale-110 transition-transform"></div>
+                    <div className="absolute right-0 top-0 p-10 bg-indigo-50 dark:bg-indigo-900/30 rounded-full -mr-5 -mt-5 opacity-50 group-hover:scale-110 transition-transform"></div>
                     <div className="relative z-10">
-                      <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600 mb-3">
+                      <div className="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/50 rounded-xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-3">
                         <Zap className="h-6 w-6 fill-indigo-600" />
                       </div>
                       <h3 className="font-bold text-content">ស្ទូឌីយោបេសកកម្ម</h3>
@@ -375,11 +375,11 @@ const AccountPage: React.FC = () => {
                 {isSchool && (
                   <Link
                     to="/school/dashboard"
-                    className="bg-surface border border-blue-100 p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden"
+                    className="bg-surface border border-blue-100 dark:border-blue-800 p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden"
                   >
-                    <div className="absolute right-0 top-0 p-10 bg-blue-50 rounded-full -mr-5 -mt-5 opacity-50 group-hover:scale-110 transition-transform"></div>
+                    <div className="absolute right-0 top-0 p-10 bg-blue-50 dark:bg-blue-900/30 rounded-full -mr-5 -mt-5 opacity-50 group-hover:scale-110 transition-transform"></div>
                     <div className="relative z-10">
-                      <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-3">
+                      <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 mb-3">
                         <Building2 className="h-6 w-6" />
                       </div>
                       <h3 className="font-bold text-content">ផ្ទាំងគ្រប់គ្រងសាលា</h3>
@@ -411,7 +411,7 @@ const AccountPage: React.FC = () => {
                             <h4 className="font-bold text-content">
                               {booking.tutorName || 'គ្រូបង្រៀន'}
                             </h4>
-                            <span className="bg-yellow-100 text-yellow-800 text-[10px] font-bold px-2 py-0.5 rounded">
+                            <span className="bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-300 text-[10px] font-bold px-2 py-0.5 rounded">
                               Applying
                             </span>
                           </div>
@@ -435,7 +435,7 @@ const AccountPage: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => handleStudentBookingAction(booking.id, 'Rejected')}
-                            className="flex-1 bg-surface border border-line-strong text-content-muted font-bold py-2 px-4 rounded-xl text-xs hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors"
+                            className="flex-1 bg-surface border border-line-strong text-content-muted font-bold py-2 px-4 rounded-xl text-xs hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-500 dark:hover:text-red-400 hover:border-red-200 dark:hover:border-red-800 transition-colors"
                           >
                             បដិសេធ (Decline)
                           </button>
@@ -506,7 +506,7 @@ const AccountPage: React.FC = () => {
                       {booking.status === 'Accepted' && (
                         <Link
                           to={`/classroom/${booking.id}`}
-                          className="text-xs bg-gray-900 text-white px-4 py-2 rounded-xl font-bold hover:bg-black transition-colors flex items-center"
+                          className="text-xs bg-gray-900 dark:bg-surface-3 text-white px-4 py-2 rounded-xl font-bold hover:bg-black transition-colors flex items-center"
                         >
                           ចូលថ្នាក់ <ChevronRight className="h-3 w-3 ml-1" />
                         </Link>
@@ -563,7 +563,7 @@ const AccountPage: React.FC = () => {
 
               {achievements.length === 0 ? (
                 <div className="text-center py-6">
-                  <Award className="h-10 w-10 text-gray-200 mx-auto mb-2" />
+                  <Award className="h-10 w-10 text-content-muted mx-auto mb-2" />
                   <p className="text-xs text-content-faint">មិនទាន់មានសមិទ្ធិផល។</p>
                 </div>
               ) : (
@@ -571,9 +571,9 @@ const AccountPage: React.FC = () => {
                   {achievements.map((item: any) => (
                     <div
                       key={item.id}
-                      className="bg-gradient-to-r from-yellow-50 to-white rounded-xl border border-yellow-100 p-3 flex items-center gap-3"
+                      className="bg-gradient-to-r from-yellow-50 dark:from-yellow-900/30 to-white dark:to-surface rounded-xl border border-yellow-100 dark:border-yellow-800 p-3 flex items-center gap-3"
                     >
-                      <div className="bg-yellow-100 text-yellow-600 w-8 h-8 rounded-full flex items-center justify-center shrink-0">
+                      <div className="bg-yellow-100 dark:bg-yellow-900/50 text-yellow-600 dark:text-yellow-400 w-8 h-8 rounded-full flex items-center justify-center shrink-0">
                         <Award className="h-4 w-4" />
                       </div>
                       <div className="min-w-0">
@@ -620,7 +620,7 @@ const AccountPage: React.FC = () => {
                   type="button"
                   onClick={handleSave}
                   disabled={saving}
-                  className="w-full bg-gray-900 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center text-sm"
+                  className="w-full bg-gray-900 dark:bg-surface-3 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center text-sm"
                 >
                   {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : 'រក្សាទុក (Save)'}
                 </button>
@@ -639,7 +639,7 @@ const AccountPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleLogout}
-                className="w-full bg-surface border border-red-100 text-red-500 font-bold py-3 rounded-xl hover:bg-red-50 transition-colors flex items-center justify-center text-sm"
+                className="w-full bg-surface border border-red-100 dark:border-red-800 text-red-500 dark:text-red-400 font-bold py-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors flex items-center justify-center text-sm"
               >
                 <LogOut className="h-4 w-4 mr-2" /> ចាកចេញ (Sign Out)
               </button>

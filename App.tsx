@@ -41,6 +41,8 @@ import MissionsDoc from './documents/MissionsDoc';
 import LazyLearningDoc from './documents/LazyLearningDoc';
 import AboutPage from './pages/AboutPage';
 import PublicProfilePage from './pages/PublicProfilePage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import TermsPage from './pages/TermsPage';
 
 // Helper to update document title based on route
 const PageTitleUpdater = () => {
@@ -57,6 +59,8 @@ const PageTitleUpdater = () => {
     else if (path.startsWith('/school/')) title = 'REAN | School Details';
     else if (path.startsWith('/mission/')) title = 'REAN | Mission';
     else if (path.startsWith('/profile/')) title = 'REAN | User Profile';
+    else if (path === '/privacy') title = 'REAN | Privacy Policy';
+    else if (path === '/terms') title = 'REAN | Terms and Conditions';
 
     document.title = title;
   }, [location]);
@@ -190,6 +194,8 @@ const AppContent: React.FC = () => {
           <Route path="/docs/missions" element={<MissionsDoc />} />
           <Route path="/docs/lazy-learning" element={<LazyLearningDoc />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/privacy" element={<PrivacyPolicyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
 
           {/* Authentication Route */}
           {/* If already logged in, /login redirects to home */}

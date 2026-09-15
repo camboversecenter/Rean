@@ -57,7 +57,7 @@ const SchoolCard: React.FC<SchoolCardProps> = ({ school }) => {
                 ? 'bg-green-500 text-white'
                 : statusLabel === 'ជិតចប់'
                   ? 'bg-orange-500 text-white'
-                  : 'bg-gray-500 text-white'
+                  : 'bg-gray-500 dark:bg-line-strong text-white'
             }`}
           >
             {isClosingSoon && <AlertCircle className="h-3 w-3 mr-1" />}
@@ -80,13 +80,13 @@ const SchoolCard: React.FC<SchoolCardProps> = ({ school }) => {
 
           {/* Recruitment Focus */}
           {primaryAdmission ? (
-            <div className="bg-blue-50 border border-blue-100 rounded-lg p-2.5 mb-3 mt-2">
-              <p className="text-xs font-bold text-blue-800 mb-1">{primaryAdmission.title}</p>
-              <p className="text-xs text-blue-600 line-clamp-1">
+            <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 rounded-lg p-2.5 mb-3 mt-2">
+              <p className="text-xs font-bold text-blue-800 dark:text-blue-300 mb-1">{primaryAdmission.title}</p>
+              <p className="text-xs text-blue-600 dark:text-blue-400 line-clamp-1">
                 {primaryAdmission.description || 'ទទួលពាក្យសម្រាប់ឆ្នាំសិក្សាថ្មី'}
               </p>
               {primaryAdmission.endDate && (
-                <div className="flex items-center mt-2 text-xs text-blue-500 font-medium">
+                <div className="flex items-center mt-2 text-xs text-blue-500 dark:text-blue-400 font-medium">
                   <Calendar className="h-3.5 w-3.5 mr-1" />
                   ផុតកំណត់: {primaryAdmission.endDate}
                 </div>
@@ -103,7 +103,7 @@ const SchoolCard: React.FC<SchoolCardProps> = ({ school }) => {
               <Building2 className="h-3 w-3 mr-1" /> {getSchoolTypeKH(school.type)}
             </span>
             {hasScholarships && (
-              <span className="bg-yellow-50 text-yellow-700 border border-yellow-100 text-xs px-2 py-1 rounded-md flex items-center font-medium">
+              <span className="bg-yellow-50 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300 border border-yellow-100 dark:border-yellow-800 text-xs px-2 py-1 rounded-md flex items-center font-medium">
                 <Award className="h-3 w-3 mr-1" /> មានអាហារូបករណ៍
               </span>
             )}

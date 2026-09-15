@@ -64,7 +64,7 @@ const TutorCard: React.FC<TutorCardProps> = ({ tutor }) => {
             </div>
 
             {/* Visual Call to Action */}
-            <span className="text-[10px] font-bold text-white bg-primary px-3 py-1.5 rounded-lg flex items-center group-hover:bg-primary/90 transition-colors shadow-sm">
+            <span className="text-[10px] font-bold text-white bg-primary px-3 py-1.5 rounded-lg flex items-center group-hover:bg-btn-primary/90 transition-colors shadow-sm">
               កក់ (Book) <ChevronRight className="h-3 w-3 ml-1" />
             </span>
           </div>
