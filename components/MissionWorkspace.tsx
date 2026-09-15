@@ -1414,7 +1414,7 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                 className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[85%] rounded-2xl p-3 text-sm leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-surface text-content border border-line' : 'bg-btn-primary text-white'}`}
+                  className={`max-w-[85%] rounded-2xl p-3 text-sm leading-relaxed ${msg.role === 'user' ? 'bg-primary/10 text-content' : 'bg-surface-3 text-content'}`}
                 >
                   <MarkdownText content={msg.text} />
                 </div>
