@@ -32,7 +32,7 @@ import {
   Sparkles,
   CheckSquare,
 } from './Icons';
-import { Mission, ChatMessage, MissionModuleStatus, SquadMember } from '../types';
+import { Mission, MissionModule, ChatMessage, MissionModuleStatus, SquadMember } from '../types';
 import {
   chatWithAI,
   evaluateSubmission,
@@ -146,6 +146,171 @@ const TaskCard: React.FC<{
     )}
   </div>
 );
+
+type Difficulty = 'easy' | 'medium' | 'hard';
+
+const PRACTICE_COSTS: Record<Difficulty, number> = { easy: 1, medium: 2, hard: 3 };
+const DIFFICULTY_LABELS: Record<Difficulty, { km: string; en: string }> = {
+  easy: { km: 'ងាយ', en: 'Easy' },
+  medium: { km: 'មធ្យម', en: 'Medium' },
+  hard: { km: 'ពិបាក', en: 'Hard' },
+};
+
+interface GeneratedProblem {
+  question: string;
+  answer: string;
+}
+
+const PracticeGenerator: React.FC<{
+  module: MissionModule;
+  missionLevel: string;
+}> = ({ module, missionLevel }) => {
+  const [difficulty, setDifficulty] = useState<Difficulty>('medium');
+  const [problems, setProblems] = useState<GeneratedProblem[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [revealed, setRevealed] = useState<Record<number, boolean>>({});
+  const [expanded, setExpanded] = useState(true);
+
+  const handleGenerate = async () => {
+    setLoading(true);
+    setRevealed({});
+    try {
+      const context = [
+        module.theoryPrompt && `Lesson content: ${module.theoryPrompt}`,
+        module.keyPoints?.length && `Key points: ${module.keyPoints.join('; ')}`,
+        module.task && `Original task: ${module.task}`,
+      ]
+        .filter(Boolean)
+        .join('\n');
+
+      const prompt = `Generate exactly 3 practice problems at ${difficulty} difficulty level for a ${missionLevel}-level student.
+
+${context}
+
+Rules:
+- ${difficulty === 'easy' ? 'Simple recall and basic application. One-step problems.' : difficulty === 'medium' ? 'Multi-step problems requiring analysis. Apply concepts to new situations.' : 'Challenging problems combining multiple concepts. Require critical thinking and synthesis.'}
+- Each problem must be different from the original task
+- Write problems and answers in the same language as the lesson content
+- For math/science, use LaTeX ($...$ inline, $$...$$ display)
+
+Return EXACTLY this JSON format, no other text:
+[{"question":"problem text here","answer":"detailed solution here"},{"question":"...","answer":"..."},{"question":"...","answer":"..."}]`;
+
+      const responseText = await chatWithAI(prompt, [], 'You are a practice problem generator. Return only valid JSON arrays.');
+
+      const jsonMatch = responseText.match(/\[[\s\S]*\]/);
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[0]);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setProblems(parsed);
+        } else {
+          toast.error('Could not parse problems. Try again.');
+        }
+      } else {
+        toast.error('Could not parse problems. Try again.');
+      }
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to generate problems');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="bg-surface rounded-2xl shadow-sm border border-line overflow-hidden">
+      <button
+        type="button"
+        onClick={() => setExpanded(!expanded)}
+        className="w-full flex items-center justify-between gap-3 p-4 text-left hover:bg-surface-2/60 transition-colors"
+      >
+        <span className="flex items-center min-w-0">
+          <Zap className="h-5 w-5 mr-2 text-amber-500 flex-shrink-0" />
+          <span className="font-bold text-content truncate">លំហាត់បន្ថែម (Practice More)</span>
+        </span>
+        <ChevronDown
+          className={`h-4 w-4 text-content-faint transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`}
+        />
+      </button>
+
+      {expanded && (
+        <div className="px-4 pb-4 space-y-4">
+          <p className="text-xs text-content-muted">
+            AI generates new problems based on this lesson. For practice only, not graded.
+          </p>
+
+          <div className="flex items-center gap-2 flex-wrap">
+            {(['easy', 'medium', 'hard'] as Difficulty[]).map((d) => (
+              <button
+                key={d}
+                type="button"
+                onClick={() => setDifficulty(d)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
+                  difficulty === d
+                    ? 'bg-primary/15 text-primary border border-primary/30'
+                    : 'bg-surface-2 text-content-muted border border-line hover:bg-surface-3'
+                }`}
+              >
+                {DIFFICULTY_LABELS[d].km} ({DIFFICULTY_LABELS[d].en})
+              </button>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={handleGenerate}
+            disabled={loading}
+            className="w-full py-2.5 rounded-xl text-sm font-bold bg-surface-3 text-content hover:bg-surface-2 border border-line transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+          >
+            {loading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Sparkles className="h-4 w-4 text-amber-500" />
+            )}
+            {loading ? 'Generating...' : `Generate Problems (${PRACTICE_COSTS[difficulty]} Pts)`}
+          </button>
+
+          {problems.length > 0 && (
+            <div className="space-y-3">
+              {problems.map((p, i) => (
+                <div key={i} className="bg-surface-2 rounded-xl border border-line overflow-hidden">
+                  <div className="p-3">
+                    <span className="text-[10px] font-bold text-primary uppercase tracking-wider">
+                      Problem {i + 1}
+                    </span>
+                    <div className="text-sm text-content leading-relaxed mt-1">
+                      <MarkdownText content={p.question} />
+                    </div>
+                  </div>
+                  <div className="border-t border-line">
+                    {revealed[i] ? (
+                      <div className="p-3">
+                        <span className="text-[10px] font-bold text-green-600 dark:text-green-400 uppercase tracking-wider">
+                          Answer
+                        </span>
+                        <div className="text-sm text-content leading-relaxed mt-1">
+                          <MarkdownText content={p.answer} />
+                        </div>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setRevealed((r) => ({ ...r, [i]: true }))}
+                        className="w-full p-2.5 text-xs font-bold text-primary hover:bg-surface-3 transition-colors flex items-center justify-center gap-1"
+                      >
+                        <Lightbulb className="h-3.5 w-3.5" />
+                        Show Answer
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
   mission,
@@ -1234,6 +1399,8 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                   expanded={taskExpanded}
                   onToggle={toggleTaskExpanded}
                 />
+
+                <PracticeGenerator module={activeModule} missionLevel={mission.level} />
 
                 <div className="bg-surface rounded-2xl shadow-sm border border-line flex flex-col overflow-hidden">
                   {mission.enablePlagiarismCheck && (
