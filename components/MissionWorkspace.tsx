@@ -59,6 +59,29 @@ import { useNavigate } from 'react-router-dom';
 
 const SUBMISSION_LIMIT = 3000;
 const SQUAD_NOTE_LIMIT = 10000;
+const CHAT_HISTORY_MAX = 50;
+
+const chatStorageKey = (missionId: string, moduleId: string) =>
+  `rean-chat:${missionId}:${moduleId}`;
+
+const loadChatHistory = (missionId: string, moduleId: string): ChatMessage[] | null => {
+  try {
+    const raw = localStorage.getItem(chatStorageKey(missionId, moduleId));
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed) || parsed.length === 0) return null;
+    return parsed.map((m: any) => ({ ...m, timestamp: new Date(m.timestamp) }));
+  } catch {
+    return null;
+  }
+};
+
+const saveChatHistory = (missionId: string, moduleId: string, msgs: ChatMessage[]) => {
+  try {
+    const trimmed = msgs.slice(-CHAT_HISTORY_MAX);
+    localStorage.setItem(chatStorageKey(missionId, moduleId), JSON.stringify(trimmed));
+  } catch {}
+};
 
 interface MissionWorkspaceProps {
   mission: Mission;
@@ -418,9 +441,10 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
 
   useEffect(() => {
     if ((!messages[activeModuleId] || messages[activeModuleId].length === 0) && !isLocked) {
+      const saved = loadChatHistory(mission.id, activeModuleId);
       setMessages((prev: any) => ({
         ...prev,
-        [activeModuleId]: [
+        [activeModuleId]: saved || [
           {
             id: 'init-' + activeModuleId,
             role: 'model',
@@ -430,7 +454,14 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
         ],
       }));
     }
-  }, [activeModuleId, isLocked, activeModule, messages, setMessages]);
+  }, [activeModuleId, isLocked, activeModule, messages, setMessages, mission.id]);
+
+  useEffect(() => {
+    const current = messages[activeModuleId];
+    if (current && current.length > 0) {
+      saveChatHistory(mission.id, activeModuleId, current);
+    }
+  }, [messages, activeModuleId, mission.id]);
 
   useEffect(() => {
     if (activeTab === 'team' && squadId && squadMembers.length === 0) {
