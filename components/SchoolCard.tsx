@@ -81,7 +81,9 @@ const SchoolCard: React.FC<SchoolCardProps> = ({ school }) => {
           {/* Recruitment Focus */}
           {primaryAdmission ? (
             <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 rounded-lg p-2.5 mb-3 mt-2">
-              <p className="text-xs font-bold text-blue-800 dark:text-blue-300 mb-1">{primaryAdmission.title}</p>
+              <p className="text-xs font-bold text-blue-800 dark:text-blue-300 mb-1">
+                {primaryAdmission.title}
+              </p>
               <p className="text-xs text-blue-600 dark:text-blue-400 line-clamp-1">
                 {primaryAdmission.description || 'ទទួលពាក្យសម្រាប់ឆ្នាំសិក្សាថ្មី'}
               </p>

@@ -23,10 +23,9 @@ const PrivacyPolicyPage: React.FC = () => (
         <section>
           <h2 className="text-lg font-bold text-content mb-3">1. Who we are</h2>
           <p>
-            REAN ({SITE_URL}) is a free, open-source educational platform operated by
-            CamboVerse Center, incubated at the National University of Management (NUM),
-            Phnom Penh, Cambodia. In this policy, "we", "us", and "our" refer to the REAN
-            project team.
+            REAN ({SITE_URL}) is a free, open-source educational platform operated by CamboVerse
+            Center, incubated at the National University of Management (NUM), Phnom Penh, Cambodia.
+            In this policy, "we", "us", and "our" refer to the REAN project team.
           </p>
         </section>
 
@@ -34,9 +33,15 @@ const PrivacyPolicyPage: React.FC = () => (
           <h2 className="text-lg font-bold text-content mb-3">2. What we collect</h2>
           <p className="mb-2">When you create an account or use the platform, we may collect:</p>
           <ul className="list-disc pl-5 space-y-1">
-            <li>Account information from your Google sign-in (name, email address, profile photo).</li>
-            <li>Content you create: mission submissions, community posts, questions, and comments.</li>
-            <li>Progress data: mission completion, XP earned, course enrollments, and quiz results.</li>
+            <li>
+              Account information from your Google sign-in (name, email address, profile photo).
+            </li>
+            <li>
+              Content you create: mission submissions, community posts, questions, and comments.
+            </li>
+            <li>
+              Progress data: mission completion, XP earned, course enrollments, and quiz results.
+            </li>
             <li>Basic usage data: pages visited, features used, and timestamps of activity.</li>
           </ul>
         </section>
@@ -44,22 +49,26 @@ const PrivacyPolicyPage: React.FC = () => (
         <section>
           <h2 className="text-lg font-bold text-content mb-3">3. How we use your data</h2>
           <ul className="list-disc pl-5 space-y-1">
-            <li>To provide and improve the learning experience (progress tracking, AI tutoring, leaderboards).</li>
+            <li>
+              To provide and improve the learning experience (progress tracking, AI tutoring,
+              leaderboards).
+            </li>
             <li>To let you participate in the community (posts, questions, reactions).</li>
             <li>To communicate important changes to the platform.</li>
             <li>To maintain security and prevent abuse.</li>
           </ul>
-          <p className="mt-2">We do not sell your personal data. We do not run advertising on the platform.</p>
+          <p className="mt-2">
+            We do not sell your personal data. We do not run advertising on the platform.
+          </p>
         </section>
 
         <section>
           <h2 className="text-lg font-bold text-content mb-3">4. AI-generated content</h2>
           <p>
-            REAN uses third-party AI services (such as Google Gemini) to generate lessons,
-            provide tutoring, and grade submissions. When you interact with AI features, the
-            text you submit and the context of your current mission may be sent to these services
-            to generate a response. We do not send your email address or account credentials to
-            AI providers.
+            REAN uses third-party AI services (such as Google Gemini) to generate lessons, provide
+            tutoring, and grade submissions. When you interact with AI features, the text you submit
+            and the context of your current mission may be sent to these services to generate a
+            response. We do not send your email address or account credentials to AI providers.
           </p>
         </section>
 
@@ -76,9 +85,15 @@ const PrivacyPolicyPage: React.FC = () => (
           <h2 className="text-lg font-bold text-content mb-3">6. Data sharing</h2>
           <p className="mb-2">We share data only in these circumstances:</p>
           <ul className="list-disc pl-5 space-y-1">
-            <li>With service providers that help run the platform (Supabase for hosting, Google for authentication, AI providers for tutoring features).</li>
+            <li>
+              With service providers that help run the platform (Supabase for hosting, Google for
+              authentication, AI providers for tutoring features).
+            </li>
             <li>When required by law or to protect the safety of our users.</li>
-            <li>Public profile information (name, avatar, XP, completed missions) is visible to other users.</li>
+            <li>
+              Public profile information (name, avatar, XP, completed missions) is visible to other
+              users.
+            </li>
           </ul>
         </section>
 
@@ -96,26 +111,25 @@ const PrivacyPolicyPage: React.FC = () => (
           <h2 className="text-lg font-bold text-content mb-3">8. Cookies and local storage</h2>
           <p>
             We use browser local storage to remember your theme preference and authentication
-            session. We do not use third-party tracking cookies or analytics services that track
-            you across other websites.
+            session. We do not use third-party tracking cookies or analytics services that track you
+            across other websites.
           </p>
         </section>
 
         <section>
           <h2 className="text-lg font-bold text-content mb-3">9. Children</h2>
           <p>
-            REAN is designed for learners of all ages in Cambodia. If you are under 13, please
-            have a parent or guardian review this policy. We do not knowingly collect data from
-            children under 13 without parental consent.
+            REAN is designed for learners of all ages in Cambodia. If you are under 13, please have
+            a parent or guardian review this policy. We do not knowingly collect data from children
+            under 13 without parental consent.
           </p>
         </section>
 
         <section>
           <h2 className="text-lg font-bold text-content mb-3">10. Changes to this policy</h2>
           <p>
-            We may update this policy from time to time. Changes will be posted on this page
-            with a revised date. Continued use of the platform after changes constitutes
-            acceptance.
+            We may update this policy from time to time. Changes will be posted on this page with a
+            revised date. Continued use of the platform after changes constitutes acceptance.
           </p>
         </section>
 

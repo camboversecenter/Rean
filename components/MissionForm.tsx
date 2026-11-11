@@ -342,7 +342,9 @@ const MissionForm: React.FC<MissionFormProps> = ({
                 {currentMission.mentorId ? (
                   <div className="bg-green-50 dark:bg-green-900/30 p-3 rounded-xl border border-green-100 dark:border-green-800 flex items-center justify-between">
                     <div>
-                      <p className="text-xs text-green-700 dark:text-green-300 font-bold uppercase mb-1">បានចាត់តាំង</p>
+                      <p className="text-xs text-green-700 dark:text-green-300 font-bold uppercase mb-1">
+                        បានចាត់តាំង
+                      </p>
                       <p className="font-bold text-content text-sm">{currentMission.mentor}</p>
                     </div>
                     <button

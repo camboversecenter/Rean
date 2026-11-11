@@ -874,8 +874,12 @@ const TutorDashboard: React.FC = () => {
             </div>
 
             <div className="bg-blue-50 dark:bg-blue-900/30 p-3 rounded-xl mb-4 border border-blue-100 dark:border-blue-800">
-              <p className="text-xs text-blue-500 dark:text-blue-400 font-bold uppercase mb-1">TO:</p>
-              <p className="font-bold text-blue-900 dark:text-blue-200 text-sm">{selectedRequest.name}</p>
+              <p className="text-xs text-blue-500 dark:text-blue-400 font-bold uppercase mb-1">
+                TO:
+              </p>
+              <p className="font-bold text-blue-900 dark:text-blue-200 text-sm">
+                {selectedRequest.name}
+              </p>
               <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
                 {selectedRequest.subject} • {selectedRequest.grade}
               </p>

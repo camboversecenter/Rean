@@ -199,7 +199,9 @@ const SchoolAdmissionManager: React.FC<SchoolAdmissionManagerProps> = ({
                 </div>
                 <div className="space-y-1">
                   {adm.scholarships.length === 0 && (
-                    <p className="text-[10px] text-yellow-600 dark:text-yellow-400 italic">គ្មានអាហារូបករណ៍</p>
+                    <p className="text-[10px] text-yellow-600 dark:text-yellow-400 italic">
+                      គ្មានអាហារូបករណ៍
+                    </p>
                   )}
                   {adm.scholarships.map((sch) => (
                     <div

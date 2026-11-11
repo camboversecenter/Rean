@@ -47,7 +47,11 @@ const LoginPage: React.FC = () => {
       <div className="max-w-md w-full bg-surface rounded-3xl shadow-xl p-6 md:p-10 text-center border border-line">
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <img src="/icons/icon-192.png" alt="REAN Logo" className="h-20 w-20 rounded-2xl shadow-lg shadow-primary/30" />
+          <img
+            src="/icons/icon-192.png"
+            alt="REAN Logo"
+            className="h-20 w-20 rounded-2xl shadow-lg shadow-primary/30"
+          />
         </div>
 
         <h1 className="text-3xl font-bold text-content mb-3 font-['Kantumruy_Pro'] tracking-tight">
@@ -100,9 +104,13 @@ const LoginPage: React.FC = () => {
             </a>
           </div>
           <div className="flex items-center gap-3 text-[10px] text-content-faint">
-            <Link to="/privacy" className="hover:text-primary transition-colors">Privacy</Link>
+            <Link to="/privacy" className="hover:text-primary transition-colors">
+              Privacy
+            </Link>
             <span>|</span>
-            <Link to="/terms" className="hover:text-primary transition-colors">Terms</Link>
+            <Link to="/terms" className="hover:text-primary transition-colors">
+              Terms
+            </Link>
           </div>
           <div className="pt-1">
             <span className="text-[10px] text-content-faint font-mono">Ver 0.01 (Beta)</span>
