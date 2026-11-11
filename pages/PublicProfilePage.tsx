@@ -127,7 +127,7 @@ const PublicProfilePage: React.FC = () => {
                 <span className="bg-surface-3 text-content-muted text-[10px] px-2 py-0.5 rounded uppercase font-bold border border-line-strong">
                   {state.profile.role || 'Student'}
                 </span>
-                <span className="bg-yellow-100 text-yellow-700 text-[10px] px-2 py-0.5 rounded font-bold border border-yellow-200">
+                <span className="bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300 text-[10px] px-2 py-0.5 rounded font-bold border border-yellow-200 dark:border-yellow-800">
                   Lvl {level}
                 </span>
               </div>

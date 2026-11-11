@@ -45,7 +45,7 @@ class ErrorBoundary extends Component<Props, State> {
             <button
               type="button"
               onClick={() => window.location.reload()}
-              className="bg-primary text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-primary/90 transition-all flex items-center justify-center w-full"
+              className="bg-btn-primary text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-btn-primary/90 transition-all flex items-center justify-center w-full"
             >
               <RefreshCw className="h-4 w-4 mr-2" /> ផ្ទុកឡើងវិញ (Reload)
             </button>

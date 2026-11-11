@@ -29,6 +29,13 @@ vi.mock('../services/storageService', () => ({
   deleteFileFromUrl: vi.fn(),
 }));
 
+vi.mock('../services/gamificationService', () => ({
+  spendPoints: vi.fn(async () => true),
+  canAfford: vi.fn(async () => true),
+  awardAction: vi.fn(),
+  GAME_RULES: {},
+}));
+
 vi.mock('canvas-confetti', () => ({ default: vi.fn() }));
 
 vi.mock('react-hot-toast', () => ({

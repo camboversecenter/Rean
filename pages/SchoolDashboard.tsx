@@ -126,7 +126,7 @@ const SchoolDashboard: React.FC = () => {
     return (
       <div className="min-h-screen bg-surface-2 flex flex-col items-center justify-center p-4">
         <div className="bg-surface p-8 rounded-3xl shadow-sm border border-line text-center max-w-md w-full">
-          <Building2 className="h-16 w-16 mx-auto text-gray-200 mb-4" />
+          <Building2 className="h-16 w-16 mx-auto text-content-muted mb-4" />
           <h2 className="text-xl font-bold text-content mb-2">មិនទាន់មានព័ត៌មានសាលារៀន</h2>
           <p className="text-content-muted text-sm mb-6">
             អ្នកមិនទាន់បានបង្កើតទំព័រសាលារៀននៅឡើយទេ។
@@ -135,7 +135,7 @@ const SchoolDashboard: React.FC = () => {
             type="button"
             onClick={handleCreateSchool}
             disabled={state.saving}
-            className="w-full bg-primary text-white py-3 rounded-xl font-bold flex items-center justify-center shadow-lg active:scale-95 disabled:opacity-50 transition-all"
+            className="w-full bg-btn-primary text-white py-3 rounded-xl font-bold flex items-center justify-center shadow-lg active:scale-95 disabled:opacity-50 transition-all"
           >
             {state.saving ? (
               <Loader2 className="h-5 w-5 animate-spin mr-2" />
@@ -175,7 +175,7 @@ const SchoolDashboard: React.FC = () => {
               type="button"
               key={tab.id}
               onClick={() => setState((s) => ({ ...s, activeTab: tab.id as any }))}
-              className={`flex items-center px-5 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap transition-all ${state.activeTab === tab.id ? 'bg-primary text-white shadow-lg' : 'bg-surface text-content-muted border border-line hover:bg-surface-2'}`}
+              className={`flex items-center px-5 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap transition-all ${state.activeTab === tab.id ? 'bg-btn-primary text-white shadow-lg' : 'bg-surface text-content-muted border border-line hover:bg-surface-2'}`}
             >
               <tab.icon className="h-4 w-4 mr-2" /> {tab.label}
             </button>

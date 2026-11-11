@@ -5,13 +5,11 @@ import {
   Target,
   Users,
   Search,
-  Zap,
   GraduationCap,
   BookOpen,
   ChevronRight,
   Loader2,
   X,
-  MessageCircle,
   Gift,
 } from '../components/Icons';
 import SchoolCard from '../components/SchoolCard';
@@ -146,7 +144,7 @@ const HomePage: React.FC = () => {
               ) : (
                 <button
                   type="button"
-                  className="absolute right-2 top-2 bg-primary text-white font-medium rounded-lg text-xs px-4 py-1.5 hover:bg-primary/90 transition-colors"
+                  className="absolute right-2 top-2 bg-btn-primary text-white font-medium rounded-lg text-xs px-4 py-1.5 hover:bg-btn-primary/90 transition-colors"
                 >
                   ស្វែងរក
                 </button>
@@ -181,7 +179,7 @@ const HomePage: React.FC = () => {
                   filteredSchools.map((s) => <SchoolCard key={s.id} school={s} />)
                 ) : (
                   <div className="col-span-full text-center py-20 bg-surface rounded-2xl border border-dashed border-line-strong">
-                    <Building2 className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                    <Building2 className="h-12 w-12 mx-auto mb-3 text-content-faint" />
                     <p className="text-content-muted">មិនមានសាលាដែលអ្នកស្វែងរកទេ។</p>
                   </div>
                 )}
@@ -194,7 +192,7 @@ const HomePage: React.FC = () => {
                   filteredMissions.map((m) => <MissionCard key={m.id} mission={m} />)
                 ) : (
                   <div className="col-span-full text-center py-20 bg-surface rounded-2xl border border-dashed border-line-strong">
-                    <Target className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                    <Target className="h-12 w-12 mx-auto mb-3 text-content-faint" />
                     <p className="text-content-muted">មិនមានបេសកកម្មដែលអ្នកស្វែងរកទេ។</p>
                   </div>
                 )}
@@ -207,7 +205,7 @@ const HomePage: React.FC = () => {
                   filteredTutors.map((t) => <TutorCard key={t.id} tutor={t} />)
                 ) : (
                   <div className="col-span-full text-center py-20 bg-surface rounded-2xl border border-dashed border-line-strong">
-                    <Users className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                    <Users className="h-12 w-12 mx-auto mb-3 text-content-faint" />
                     <p className="text-content-muted">មិនមានគ្រូបង្រៀនដែលអ្នកស្វែងរកទេ។</p>
                   </div>
                 )}
@@ -231,7 +229,7 @@ const HomePage: React.FC = () => {
 
               {state.loading ? (
                 <div className="flex justify-center py-8">
-                  <Loader2 className="animate-spin text-gray-300" />
+                  <Loader2 className="animate-spin text-content-faint" />
                 </div>
               ) : state.missions.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -245,32 +243,6 @@ const HomePage: React.FC = () => {
                   <p className="text-sm">No active missions yet.</p>
                 </div>
               )}
-            </section>
-
-            {/* COMMUNITY BANNER */}
-            <section className="px-4 md:px-0 mb-8">
-              <div className="bg-gradient-to-r from-yellow-500 to-orange-500 rounded-3xl p-6 md:p-8 text-white shadow-lg relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
-                <div className="relative z-10">
-                  <h2 className="text-xl md:text-2xl font-bold mb-2 flex items-center">
-                    <Zap className="h-6 w-6 mr-2 text-yellow-100 fill-yellow-100" />
-                    Lazy Learning Community
-                  </h2>
-                  <p className="text-yellow-50 text-sm md:text-base max-w-lg leading-relaxed">
-                    ឆ្ងល់មេរៀន? សួរភ្លាម ឆ្លើយភ្លាមជាមួយ AI និងសិស្សច្បង!
-                    សន្សំពិន្ទុដើម្បីប្តូរយករង្វាន់។
-                  </p>
-                </div>
-                <Link
-                  to="/community"
-                  className="relative z-10 bg-surface text-orange-600 font-bold py-3 px-6 rounded-xl shadow-md hover:bg-yellow-50 transition-colors flex items-center whitespace-nowrap active:scale-95 transform"
-                >
-                  <MessageCircle className="h-5 w-5 mr-2" /> ចូលសហគមន៍
-                </Link>
-
-                {/* Decoration */}
-                <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-surface/10 rounded-full blur-3xl pointer-events-none"></div>
-                <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-yellow-400/20 rounded-full blur-3xl pointer-events-none"></div>
-              </div>
             </section>
 
             {/* School Recruitment */}
@@ -290,7 +262,7 @@ const HomePage: React.FC = () => {
               <div className="px-4 md:px-0 grid grid-cols-1 md:grid-cols-2 gap-4">
                 {state.loading ? (
                   <div className="col-span-2 flex justify-center py-8">
-                    <Loader2 className="animate-spin text-gray-300" />
+                    <Loader2 className="animate-spin text-content-faint" />
                   </div>
                 ) : (
                   state.schools
@@ -301,7 +273,7 @@ const HomePage: React.FC = () => {
             </section>
 
             {/* Short Courses Grid (Desktop) / Carousel (Mobile) */}
-            <section className="mb-8 bg-blue-50 py-6 md:rounded-3xl">
+            <section className="mb-8 bg-blue-50 dark:bg-blue-900/20 py-6 md:rounded-3xl">
               <div className="px-4 md:px-6">
                 <div className="flex items-center justify-between mb-3">
                   <h2 className="font-bold text-content text-lg flex items-center">
@@ -345,7 +317,7 @@ const HomePage: React.FC = () => {
               <div className="px-4 md:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 {state.loading ? (
                   <div className="col-span-2 flex justify-center py-8">
-                    <Loader2 className="animate-spin text-gray-300" />
+                    <Loader2 className="animate-spin text-content-faint" />
                   </div>
                 ) : state.tutors.length > 0 ? (
                   state.tutors

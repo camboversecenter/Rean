@@ -36,7 +36,7 @@ const SchoolInquiryManager: React.FC<SchoolInquiryManagerProps> = ({ inquiries, 
 
       {inquiries.length === 0 ? (
         <div className="text-center py-16 bg-surface rounded-3xl border border-dashed border-line-strong">
-          <MessageCircle className="h-12 w-12 mx-auto text-gray-200 mb-3" />
+          <MessageCircle className="h-12 w-12 mx-auto text-content-muted mb-3" />
           <p className="text-content-faint">មិនទាន់មានសំណួរពីសិស្សនៅឡើយទេ។</p>
         </div>
       ) : (
@@ -47,7 +47,7 @@ const SchoolInquiryManager: React.FC<SchoolInquiryManagerProps> = ({ inquiries, 
               className="bg-surface p-5 rounded-3xl border border-line shadow-sm flex flex-col md:flex-row justify-between gap-4 hover:shadow-md transition-shadow"
             >
               <div className="flex gap-4">
-                <div className="bg-blue-50 p-3 rounded-2xl text-blue-600 h-fit flex-shrink-0">
+                <div className="bg-blue-50 dark:bg-blue-900/50 p-3 rounded-2xl text-blue-600 dark:text-blue-400 h-fit flex-shrink-0">
                   <User className="h-6 w-6" />
                 </div>
                 <div className="min-w-0">
@@ -76,7 +76,7 @@ const SchoolInquiryManager: React.FC<SchoolInquiryManagerProps> = ({ inquiries, 
                       <span className="text-[10px] font-bold text-content-faint uppercase tracking-wider">
                         ចំណាប់អារម្មណ៍លើ៖
                       </span>
-                      <span className="ml-2 text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">
+                      <span className="ml-2 text-[10px] font-bold text-blue-600 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/50 px-2 py-0.5 rounded-full border border-blue-100 dark:border-blue-800">
                         {item.admissionTitle}
                       </span>
                     </div>
@@ -88,8 +88,8 @@ const SchoolInquiryManager: React.FC<SchoolInquiryManagerProps> = ({ inquiries, 
                 <span
                   className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                     item.status === 'Pending'
-                      ? 'bg-orange-100 text-orange-700 border border-orange-200'
-                      : 'bg-green-100 text-green-700 border border-green-200'
+                      ? 'bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800'
+                      : 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800'
                   }`}
                 >
                   {item.status === 'Pending' ? 'រង់ចាំ' : 'បានទាក់ទង'}
@@ -100,7 +100,7 @@ const SchoolInquiryManager: React.FC<SchoolInquiryManagerProps> = ({ inquiries, 
                     type="button"
                     onClick={() => handleMarkContacted(item.id)}
                     disabled={updatingId === item.id}
-                    className="w-full md:w-auto bg-gray-900 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center justify-center shadow-lg active:scale-95 transition-all disabled:opacity-50"
+                    className="w-full md:w-auto bg-gray-900 dark:bg-surface-3 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center justify-center shadow-lg active:scale-95 transition-all disabled:opacity-50"
                   >
                     {updatingId === item.id ? (
                       <Loader2 className="h-3.5 w-3.5 animate-spin mr-2" />

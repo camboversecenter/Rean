@@ -32,10 +32,10 @@ const MissionCard: React.FC<MissionCardProps> = ({ mission, compact = false }) =
                 <span
                   className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide ${
                     mission.level === 'Beginner'
-                      ? 'bg-green-100 text-green-700'
+                      ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
                       : mission.level === 'Intermediate'
-                        ? 'bg-yellow-100 text-yellow-700'
-                        : 'bg-red-100 text-red-700'
+                        ? 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300'
+                        : 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300'
                   }`}
                 >
                   {mission.level}
@@ -138,7 +138,7 @@ const MissionCard: React.FC<MissionCardProps> = ({ mission, compact = false }) =
               >
                 {mission.price === 0 ? 'Free' : formatRiel(mission.price)}
               </span>
-              <ChevronRight className="h-4 w-4 text-gray-300 group-hover:text-primary transition-colors" />
+              <ChevronRight className="h-4 w-4 text-content-faint group-hover:text-primary transition-colors" />
             </div>
           </div>
         </div>

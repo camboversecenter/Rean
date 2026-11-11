@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ThemeToggle from './ThemeToggle';
 import {
-  BookOpen,
   Search,
   User as UserIcon,
   Bell,
@@ -115,7 +114,7 @@ const Header: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-surface border-b border-line shadow-sm">
-      <div className="container mx-auto px-4 max-w-5xl">
+      <div className="container mx-auto px-4 max-w-6xl">
         <div className="flex items-center justify-between h-14 md:h-16">
           {/* Left Side: Hamburger (Mobile), Back Button, or Logo */}
           <div className="flex items-center space-x-2">
@@ -148,9 +147,7 @@ const Header: React.FC = () => {
               </button>
             ) : (
               <Link to="/" className="flex items-center space-x-2" aria-label="Home">
-                <div className="bg-primary p-1 rounded-lg">
-                  <BookOpen className="h-5 w-5 text-white" />
-                </div>
+                <img src="/icons/icon-192.png" alt="REAN Logo" className="h-8 w-8 rounded-lg" />
                 <span className="text-xl font-bold text-primary tracking-tight">REAN</span>
               </Link>
             )}
@@ -197,34 +194,12 @@ const Header: React.FC = () => {
           </nav>
 
           {/* Right Side: Actions */}
-          <div className="flex items-center space-x-2">
-            {/* Theme switch. Available signed out too, so a visitor can set it
-                before they ever create an account. */}
+          <div className="flex items-center space-x-1">
             <ThemeToggle />
-
-            {/* Tutor Market Link */}
-            <Link
-              to="/tutors"
-              className={`p-2 rounded-full transition-colors ${isTutorMarket ? 'bg-blue-50 text-blue-600' : 'text-content-faint hover:text-blue-600'}`}
-              title="Tutor Market"
-              aria-label="Tutor Market"
-            >
-              <Users className="h-5 w-5" />
-            </Link>
 
             {/* Only show these if logged in */}
             {state.profile && (
               <>
-                {/* Gamification Links */}
-                <Link
-                  to="/rewards"
-                  className={`p-2 rounded-full transition-colors ${isRewards ? 'bg-pink-50 text-pink-500' : 'text-content-faint hover:text-pink-500'}`}
-                  title="Rewards"
-                  aria-label="Rewards"
-                >
-                  <Gift className="h-5 w-5 fill-current" />
-                </Link>
-
                 {/* Notifications */}
                 <div className="relative">
                   <button
@@ -291,7 +266,7 @@ const Header: React.FC = () => {
                         </div>
                         <Link
                           to="/leaderboard"
-                          className="block p-2 text-center text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors"
+                          className="block p-2 text-center text-xs font-bold text-blue-600 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/50 hover:bg-blue-100 dark:hover:bg-blue-800/50 transition-colors"
                           onClick={() => setState((prev) => ({ ...prev, showActivity: false }))}
                         >
                           មើលតារាងពិន្ទុ (Leaderboard)
@@ -300,42 +275,6 @@ const Header: React.FC = () => {
                     </>
                   )}
                 </div>
-
-                {/* School Management Link */}
-                {isSchool && (
-                  <Link
-                    to="/school/dashboard"
-                    className={`p-2 rounded-full transition-colors ${isSchoolDash ? 'bg-blue-50 text-blue-600' : 'text-content-faint hover:text-blue-600'}`}
-                    title="School Management"
-                    aria-label="School Management"
-                  >
-                    <Building2 className="h-5 w-5" />
-                  </Link>
-                )}
-
-                {/* Creator Studio Link */}
-                {canAccessStudio && (
-                  <Link
-                    to="/creator"
-                    className={`p-2 rounded-full transition-colors ${isCreator ? 'bg-indigo-50 text-indigo-600' : 'text-content-faint hover:text-indigo-600'}`}
-                    title="Mission Studio"
-                    aria-label="Mission Studio"
-                  >
-                    <Zap className="h-5 w-5 fill-current" />
-                  </Link>
-                )}
-
-                {/* Tutor Dashboard Link */}
-                {isTutor && (
-                  <Link
-                    to="/tutor/dashboard"
-                    className={`p-2 rounded-full transition-colors ${isTutorDash ? 'bg-green-50 text-green-600' : 'text-content-faint hover:text-green-600'}`}
-                    title="Tutor Dashboard"
-                    aria-label="Tutor Dashboard"
-                  >
-                    <GraduationCap className="h-5 w-5 fill-current" />
-                  </Link>
-                )}
               </>
             )}
 
@@ -343,16 +282,8 @@ const Header: React.FC = () => {
               <Link
                 to="/account"
                 aria-label="Account Profile"
-                className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity ml-1"
+                className="cursor-pointer hover:opacity-80 transition-opacity ml-1"
               >
-                <div className="hidden md:flex flex-col items-end mr-1">
-                  <span className="text-xs font-bold text-content">
-                    {state.profile.full_name || 'User'}
-                  </span>
-                  <span className="text-[10px] bg-surface-3 px-1 rounded text-content-muted uppercase">
-                    {state.profile.role || 'Guest'}
-                  </span>
-                </div>
                 <img
                   src={
                     state.profile.avatar_url ||
@@ -366,7 +297,7 @@ const Header: React.FC = () => {
               <Link
                 to="/login"
                 aria-label="Login"
-                className="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-primary text-white hover:bg-primary/90 transition-colors"
+                className="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-btn-primary text-white hover:bg-btn-primary/90 transition-colors"
               >
                 <UserIcon className="h-4 w-4" />
                 <span className="text-xs font-bold hidden md:inline">ចូលប្រើ (Login)</span>
@@ -397,9 +328,11 @@ const Header: React.FC = () => {
                   className="flex items-center space-x-2"
                   onClick={() => setState((prev) => ({ ...prev, showMobileMenu: false }))}
                 >
-                  <div className="bg-primary p-1.5 rounded-xl shadow-sm">
-                    <BookOpen className="h-5 w-5 text-white" />
-                  </div>
+                  <img
+                    src="/icons/icon-192.png"
+                    alt="REAN Logo"
+                    className="h-8 w-8 rounded-xl shadow-sm"
+                  />
                   <span className="text-lg font-bold text-primary tracking-tight">REAN - រៀន</span>
                 </Link>
                 <button
@@ -522,7 +455,7 @@ const Header: React.FC = () => {
                     <Sparkles className="h-4 w-4 text-amber-500" />
                     <span>សុភាទន្សាយ (AI Tutor)</span>
                   </div>
-                  <span className="text-xs bg-amber-100 text-amber-700 font-bold px-2 py-0.5 rounded-full">
+                  <span className="text-xs bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300 font-bold px-2 py-0.5 rounded-full">
                     AI
                   </span>
                 </Link>
@@ -608,7 +541,7 @@ const Header: React.FC = () => {
                         to="/school/dashboard"
                         className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                           isSchoolDash
-                            ? 'bg-blue-50 text-blue-600 font-bold'
+                            ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 font-bold'
                             : 'text-content-soft hover:bg-surface-3'
                         }`}
                       >
@@ -625,7 +558,7 @@ const Header: React.FC = () => {
                         to="/creator"
                         className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                           isCreator
-                            ? 'bg-indigo-50 text-indigo-600 font-bold'
+                            ? 'bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 font-bold'
                             : 'text-content-soft hover:bg-surface-3'
                         }`}
                       >
@@ -642,7 +575,7 @@ const Header: React.FC = () => {
                         to="/tutor/dashboard"
                         className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                           isTutorDash
-                            ? 'bg-green-50 text-green-600 font-bold'
+                            ? 'bg-green-50 dark:bg-green-900/50 text-green-600 dark:text-green-300 font-bold'
                             : 'text-content-soft hover:bg-surface-3'
                         }`}
                       >
@@ -672,7 +605,7 @@ const Header: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleSignOut}
-                    className="flex items-center justify-center space-x-2 w-full py-2.5 px-4 bg-red-50 border border-red-100 text-red-600 font-bold text-xs rounded-xl hover:bg-red-100 transition-colors"
+                    className="flex items-center justify-center space-x-2 w-full py-2.5 px-4 bg-red-50 dark:bg-red-900/30 border border-red-100 dark:border-red-800 text-red-600 dark:text-red-400 font-bold text-xs rounded-xl hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors"
                   >
                     <LogOut className="h-4 w-4" />
                     <span>ចាកចេញ (Log Out)</span>
@@ -681,7 +614,7 @@ const Header: React.FC = () => {
               ) : (
                 <Link
                   to="/login"
-                  className="flex items-center justify-center space-x-2 w-full py-3 px-4 bg-primary text-white font-bold text-sm rounded-xl shadow-md hover:bg-primary/90 transition-colors"
+                  className="flex items-center justify-center space-x-2 w-full py-3 px-4 bg-btn-primary text-white font-bold text-sm rounded-xl shadow-md hover:bg-btn-primary/90 transition-colors"
                 >
                   <UserIcon className="h-4 w-4" />
                   <span>ចូលប្រើ (Login with Google)</span>
