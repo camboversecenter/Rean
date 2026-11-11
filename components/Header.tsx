@@ -114,7 +114,7 @@ const Header: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-surface border-b border-line shadow-sm">
-      <div className="container mx-auto px-4 max-w-5xl">
+      <div className="container mx-auto px-4 max-w-6xl">
         <div className="flex items-center justify-between h-14 md:h-16">
           {/* Left Side: Hamburger (Mobile), Back Button, or Logo */}
           <div className="flex items-center space-x-2">
@@ -194,34 +194,12 @@ const Header: React.FC = () => {
           </nav>
 
           {/* Right Side: Actions */}
-          <div className="flex items-center space-x-2">
-            {/* Theme switch. Available signed out too, so a visitor can set it
-                before they ever create an account. */}
+          <div className="flex items-center space-x-1">
             <ThemeToggle />
-
-            {/* Tutor Market Link */}
-            <Link
-              to="/tutors"
-              className={`p-2 rounded-full transition-colors ${isTutorMarket ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300' : 'text-content-faint hover:text-blue-600'}`}
-              title="Tutor Market"
-              aria-label="Tutor Market"
-            >
-              <Users className="h-5 w-5" />
-            </Link>
 
             {/* Only show these if logged in */}
             {state.profile && (
               <>
-                {/* Gamification Links */}
-                <Link
-                  to="/rewards"
-                  className={`p-2 rounded-full transition-colors ${isRewards ? 'bg-pink-50 dark:bg-pink-900/50 text-pink-500' : 'text-content-faint hover:text-pink-500'}`}
-                  title="Rewards"
-                  aria-label="Rewards"
-                >
-                  <Gift className="h-5 w-5 fill-current" />
-                </Link>
-
                 {/* Notifications */}
                 <div className="relative">
                   <button
@@ -297,42 +275,6 @@ const Header: React.FC = () => {
                     </>
                   )}
                 </div>
-
-                {/* School Management Link */}
-                {isSchool && (
-                  <Link
-                    to="/school/dashboard"
-                    className={`p-2 rounded-full transition-colors ${isSchoolDash ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300' : 'text-content-faint hover:text-blue-600'}`}
-                    title="School Management"
-                    aria-label="School Management"
-                  >
-                    <Building2 className="h-5 w-5" />
-                  </Link>
-                )}
-
-                {/* Creator Studio Link */}
-                {canAccessStudio && (
-                  <Link
-                    to="/creator"
-                    className={`p-2 rounded-full transition-colors ${isCreator ? 'bg-indigo-50 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300' : 'text-content-faint hover:text-indigo-600'}`}
-                    title="Mission Studio"
-                    aria-label="Mission Studio"
-                  >
-                    <Zap className="h-5 w-5 fill-current" />
-                  </Link>
-                )}
-
-                {/* Tutor Dashboard Link */}
-                {isTutor && (
-                  <Link
-                    to="/tutor/dashboard"
-                    className={`p-2 rounded-full transition-colors ${isTutorDash ? 'bg-green-50 dark:bg-green-900/50 text-green-600 dark:text-green-300' : 'text-content-faint hover:text-green-600'}`}
-                    title="Tutor Dashboard"
-                    aria-label="Tutor Dashboard"
-                  >
-                    <GraduationCap className="h-5 w-5 fill-current" />
-                  </Link>
-                )}
               </>
             )}
 
@@ -340,16 +282,8 @@ const Header: React.FC = () => {
               <Link
                 to="/account"
                 aria-label="Account Profile"
-                className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity ml-1"
+                className="cursor-pointer hover:opacity-80 transition-opacity ml-1"
               >
-                <div className="hidden md:flex flex-col items-end mr-1">
-                  <span className="text-xs font-bold text-content">
-                    {state.profile.full_name || 'User'}
-                  </span>
-                  <span className="text-[10px] bg-surface-3 px-1 rounded text-content-muted uppercase">
-                    {state.profile.role || 'Guest'}
-                  </span>
-                </div>
                 <img
                   src={
                     state.profile.avatar_url ||
@@ -394,7 +328,11 @@ const Header: React.FC = () => {
                   className="flex items-center space-x-2"
                   onClick={() => setState((prev) => ({ ...prev, showMobileMenu: false }))}
                 >
-                  <img src="/icons/icon-192.png" alt="REAN Logo" className="h-8 w-8 rounded-xl shadow-sm" />
+                  <img
+                    src="/icons/icon-192.png"
+                    alt="REAN Logo"
+                    className="h-8 w-8 rounded-xl shadow-sm"
+                  />
                   <span className="text-lg font-bold text-primary tracking-tight">REAN - រៀន</span>
                 </Link>
                 <button
