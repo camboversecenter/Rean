@@ -281,7 +281,9 @@ const DocumentationPage: React.FC = () => {
                       <Award className="h-6 w-6" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-yellow-900 dark:text-yellow-200 text-lg">XP (បទពិសោធន៍)</h3>
+                      <h3 className="font-bold text-yellow-900 dark:text-yellow-200 text-lg">
+                        XP (បទពិសោធន៍)
+                      </h3>
                       <span className="text-[10px] uppercase font-bold bg-yellow-200 dark:bg-yellow-900/70 text-yellow-800 dark:text-yellow-300 px-2 py-0.5 rounded">
                         Reputation
                       </span>
@@ -311,7 +313,9 @@ const DocumentationPage: React.FC = () => {
                       <Gift className="h-6 w-6" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-green-900 dark:text-green-200 text-lg">Points (ពិន្ទុ)</h3>
+                      <h3 className="font-bold text-green-900 dark:text-green-200 text-lg">
+                        Points (ពិន្ទុ)
+                      </h3>
                       <span className="text-[10px] uppercase font-bold bg-green-200 dark:bg-green-900/70 text-green-800 dark:text-green-300 px-2 py-0.5 rounded">
                         Currency
                       </span>

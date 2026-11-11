@@ -448,8 +448,12 @@ const ClassroomPage: React.FC = () => {
 
                 {hw.status === 'Submitted' && (
                   <div className="bg-green-50 dark:bg-green-900/30 p-3 rounded-lg mt-3">
-                    <p className="text-xs font-bold text-green-800 dark:text-green-300 mb-1">កិច្ចការសិស្ស៖</p>
-                    <p className="text-sm text-green-900 dark:text-green-200">{hw.student_attachment}</p>
+                    <p className="text-xs font-bold text-green-800 dark:text-green-300 mb-1">
+                      កិច្ចការសិស្ស៖
+                    </p>
+                    <p className="text-sm text-green-900 dark:text-green-200">
+                      {hw.student_attachment}
+                    </p>
                   </div>
                 )}
               </div>

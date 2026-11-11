@@ -198,7 +198,11 @@ Rules:
 Return EXACTLY this JSON format, no other text:
 [{"question":"problem text here","hint":"a helpful hint here"},{"question":"...","hint":"..."},{"question":"...","hint":"..."}]`;
 
-      const responseText = await chatWithAI(prompt, [], 'You are a practice problem generator. Return only valid JSON arrays.');
+      const responseText = await chatWithAI(
+        prompt,
+        [],
+        'You are a practice problem generator. Return only valid JSON arrays.'
+      );
 
       const jsonMatch = responseText.match(/\[[\s\S]*\]/);
       if (jsonMatch) {
@@ -1189,8 +1193,13 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                   </h3>
                   <ul className="space-y-2">
                     {lessonTips.map((tip) => (
-                      <li key={tip} className="flex items-start text-sm text-amber-900/90 dark:text-amber-100/90">
-                        <span className="mr-2 mt-0.5 text-amber-500 dark:text-amber-400 flex-shrink-0">•</span>
+                      <li
+                        key={tip}
+                        className="flex items-start text-sm text-amber-900/90 dark:text-amber-100/90"
+                      >
+                        <span className="mr-2 mt-0.5 text-amber-500 dark:text-amber-400 flex-shrink-0">
+                          •
+                        </span>
                         <span className="leading-relaxed">{tip}</span>
                       </li>
                     ))}
@@ -1572,7 +1581,9 @@ const MissionWorkspace: React.FC<MissionWorkspaceProps> = ({
                   <div className="p-4 border-b border-yellow-100 dark:border-yellow-800 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <FileText className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
-                      <h3 className="font-bold text-yellow-900 dark:text-yellow-100">កំណត់ហេតុក្រុម (Squad Note)</h3>
+                      <h3 className="font-bold text-yellow-900 dark:text-yellow-100">
+                        កំណត់ហេតុក្រុម (Squad Note)
+                      </h3>
                     </div>
                     <div className="flex items-center gap-2">
                       {isSaving ? (

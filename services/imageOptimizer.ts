@@ -171,7 +171,9 @@ export const optimizeImage = async (
 
     const canvas = createCanvas(width, height);
     const context = canvas.getContext('2d') as
-      CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D | null;
+      | CanvasRenderingContext2D
+      | OffscreenCanvasRenderingContext2D
+      | null;
     if (!context) return input;
 
     context.drawImage(decoded.source, 0, 0, width, height);
